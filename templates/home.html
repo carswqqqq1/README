@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div>
+    <h1>Learn a language by doing</h1>
+    <p>Choose a language below and start building your streak with quick, friendly lessons.</p>
+    <div class="cta-row">
+      {% if user %}
+        <a class="button" href="{{ url_for('dashboard') }}">Go to Dashboard</a>
+      {% else %}
+        <a class="button" href="{{ url_for('register') }}">Start for free</a>
+        <a class="button ghost" href="{{ url_for('login') }}">I already have an account</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Available languages</h2>
+    <ul>
+      {% for name in languages.keys() %}
+        <li>{{ name }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}
