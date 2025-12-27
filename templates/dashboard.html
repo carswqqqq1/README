@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+  <h1>Hello, {{ user["display_name"] }}!</h1>
+  <p>Pick a skill to keep your streak alive. Completed skills are marked in green.</p>
+</section>
+<div class="grid">
+  {% for language, skills in languages.items() %}
+    <div class="panel">
+      <div class="panel-header">
+        <h2>{{ language }}</h2>
+        <a class="button ghost" href="{{ url_for('practice') }}">Practice</a>
+      </div>
+      <ul class="skills">
+        {% for skill in skills.keys() %}
+          {% set complete = progress.get((language, skill), 0) == 1 %}
+          <li class="skill {{ 'complete' if complete else '' }}">
+            <div>
+              <strong>{{ skill }}</strong>
+              <span>{{ skills[skill]|length }} phrases</span>
+            </div>
+            {% if complete %}
+              <span>✓</span>
+            {% else %}
+              <a class="button" href="{{ url_for('lesson', language=language, skill=skill) }}">Start</a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

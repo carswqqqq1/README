@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+  <h1>Practice queue</h1>
+  {% if upcoming %}
+    <p>Your next skill is <strong>{{ upcoming[1] }}</strong> in <strong>{{ upcoming[0] }}</strong>.</p>
+    <a class="button" href="{{ url_for('lesson', language=upcoming[0], skill=upcoming[1]) }}">Resume</a>
+  {% else %}
+    <p>All caught up! Explore a new skill from your dashboard.</p>
+  {% endif %}
+</section>
+{% endblock %}

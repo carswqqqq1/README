@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+  <div class="panel-header">
+    <div>
+      <p class="crumb">{{ language }} • {{ skill }}</p>
+      <h1>{{ skill }} phrases</h1>
+    </div>
+    <form action="{{ url_for('complete_skill', language=language, skill=skill) }}" method="post">
+      <button type="submit">Mark complete</button>
+    </form>
+  </div>
+  <ul class="phrases">
+    {% for phrase in phrases %}
+      <li>{{ phrase }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}
