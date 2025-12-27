@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Language Quest – Static Preview</title>
+  <style>
+    :root {
+      --green: #58cc02;
+      --green-dark: #3a9700;
+      --yellow: #ffc800;
+      --blue: #1cb0f6;
+      --bg: #f7f8fb;
+      --text: #2d2d2d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      font-size: 1.2rem;
+      color: var(--green);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    nav a {
+      margin-left: 1rem;
+      text-decoration: none;
+      color: #414141;
+      font-weight: 600;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+    }
+    nav a:hover {
+      background: #eef3ff;
+    }
+    .button {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 0.85rem 1.3rem;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+      box-shadow: 0 8px 18px rgba(88,204,2,0.28);
+    }
+    .button:hover { transform: translateY(-1px); }
+    .button.secondary {
+      background: white;
+      color: #1c1c1c;
+      border: 2px solid #dcdcdc;
+      box-shadow: none;
+    }
+    main { padding: 2rem 2.5rem 3rem; }
+    .hero {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+    .hero h1 { font-size: 2.4rem; margin-bottom: 0.7rem; }
+    .hero p { color: #4b5563; font-size: 1.05rem; }
+    .panel {
+      background: white;
+      border-radius: 18px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+    }
+    .tag { display: inline-block; padding: 0.35rem 0.75rem; border-radius: 999px; background: #eef8ff; color: #0b6ba8; font-weight: 700; font-size: 0.8rem; margin-bottom: 0.8rem; }
+    .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card { background: white; border-radius: 16px; padding: 1.1rem 1.25rem; box-shadow: 0 6px 16px rgba(0,0,0,0.06); display: flex; flex-direction: column; gap: 0.7rem; }
+    .card h3 { margin: 0; }
+    .skills { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .skill {
+      background: #f0f4ff;
+      color: #0f4ba2;
+      padding: 0.45rem 0.9rem;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 120ms ease;
+    }
+    .skill.completed { background: #e7f9ec; color: #187a2f; }
+    .skill:hover { transform: translateY(-2px); }
+    .progress {
+      background: #ecf0f5;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 12px;
+      position: relative;
+    }
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 42%;
+      background: linear-gradient(90deg, var(--green), #9de65e);
+      transition: width 240ms ease;
+    }
+    .lesson {
+      border: 2px solid #f1f5f9;
+      padding: 1rem;
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 1rem;
+    }
+    .lesson small { color: #6b7280; font-weight: 600; letter-spacing: 0.2px; }
+    .practice {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .pill { padding: 0.35rem 0.75rem; border-radius: 999px; background: #fff4e5; color: #b35c00; font-weight: 700; }
+    .footer { text-align: center; color: #6b7280; margin-top: 3rem; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <span>🦉</span>
+      <span>Language Quest</span>
+    </div>
+    <nav>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#lesson">Lesson</a>
+      <a href="#practice">Practice</a>
+      <a class="button secondary" href="#cta">Start free</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="tag">Static preview</div>
+        <h1>Learn by doing with a Duolingo-inspired flow</h1>
+        <p>Use this single HTML file to preview the experience without running a backend. It mirrors the dashboard, lesson view, and practice queue showcased in the Flask app.</p>
+        <div style="display:flex; gap:0.8rem; margin-top:1.4rem; flex-wrap: wrap;">
+          <button class="button" onclick="toast('Signed up as learner@example.com')">Start for free</button>
+          <button class="button secondary" onclick="toast('Continuing as guest')">Try as guest</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Languages preview</h3>
+        <p style="margin:0.5rem 0 1rem; color:#4b5563;">Tap a skill chip to mark it complete and watch progress update.</p>
+        <div class="skills" id="skill-list">
+          <div class="skill" data-skill="Basics">Basics</div>
+          <div class="skill" data-skill="Travel">Travel</div>
+          <div class="skill" data-skill="Food">Food</div>
+          <div class="skill" data-skill="School">School</div>
+          <div class="skill" data-skill="Greetings">Greetings</div>
+          <div class="skill" data-skill="Shopping">Shopping</div>
+        </div>
+        <p style="margin:1rem 0 0.4rem; font-weight:700;">Progress</p>
+        <div class="progress"><span id="progress-bar"></span></div>
+      </div>
+    </section>
+
+    <section id="dashboard" class="grid" style="margin-bottom: 2rem;">
+      <div class="card">
+        <small class="pill">Dashboard</small>
+        <h3>Track your streak</h3>
+        <p>Daily XP, completed skills, and upcoming lessons stay together so you always know the next move.</p>
+        <div class="lesson">
+          <div>
+            <small>Next up</small>
+            <div style="font-weight: 800; font-size:1.05rem;">Unit 2 · Travel phrases</div>
+          </div>
+          <button class="button" onclick="toast('Lesson started')">Start lesson</button>
+        </div>
+      </div>
+      <div class="card">
+        <small class="pill" style="background:#e9f7ff; color:#0b6ba8;">Lesson</small>
+        <h3 id="lesson">Bite-sized practice</h3>
+        <p>Each lesson pairs text and translation to reinforce core vocabulary without overwhelming you.</p>
+        <blockquote style="margin:0; font-weight:700; color:#111827;">“Hola, ¿cómo estás?” → “Hi, how are you?”</blockquote>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+          <button class="button secondary" onclick="toast('Marked correct')">Mark correct</button>
+          <button class="button secondary" onclick="toast('Need to review again')">Repeat</button>
+        </div>
+      </div>
+      <div class="card">
+        <small class="pill" style="background:#e8fff1; color:#187a2f;">Practice</small>
+        <h3 id="practice">Smart practice queue</h3>
+        <p>Incomplete skills bubble to the top so you can keep your streak alive with focused review.</p>
+        <div class="practice" id="practice-queue"></div>
+      </div>
+    </section>
+
+    <section id="cta" class="panel" style="text-align:center;">
+      <h2>Drop this file into your project</h2>
+      <p style="color:#4b5563; max-width:620px; margin: 0 auto 1.2rem;">Use this static preview to present the Duolingo-style flow without a server. Customize the copy, colors, or skill list to match your learning track.</p>
+      <div style="display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap;">
+        <button class="button" onclick="toast('Download started')">Download</button>
+        <button class="button secondary" onclick="toast('Copied embed snippet')">Copy embed snippet</button>
+      </div>
+    </section>
+
+    <p class="footer">Built as a static companion to the Flask demo. No setup required—just open in your browser.</p>
+  </main>
+
+  <script>
+    const skills = Array.from(document.querySelectorAll('.skill'));
+    const bar = document.getElementById('progress-bar');
+    const queue = document.getElementById('practice-queue');
+
+    function updateProgress() {
+      const completed = skills.filter(s => s.classList.contains('completed')).length;
+      const percent = Math.round((completed / skills.length) * 100);
+      bar.style.width = Math.max(percent, 6) + '%';
+      renderQueue();
+    }
+
+    function renderQueue() {
+      queue.innerHTML = '';
+      const incomplete = skills.filter(s => !s.classList.contains('completed'));
+      if (!incomplete.length) {
+        queue.innerHTML = '<p style="margin:0; color:#15803d; font-weight:700;">All caught up. Great job! 🎉</p>';
+        return;
+      }
+      incomplete.slice(0, 3).forEach((skill, idx) => {
+        const card = document.createElement('div');
+        card.className = 'lesson';
+        card.innerHTML = `<div><small>Practice ${idx + 1}</small><div style="font-weight:800;">${skill.dataset.skill}</div></div><button class="button" style="padding:0.6rem 1.1rem;" onclick="markDone('${skill.dataset.skill}')">Complete</button>`;
+        queue.appendChild(card);
+      });
+    }
+
+    function markDone(name) {
+      const match = skills.find(s => s.dataset.skill === name);
+      if (match) {
+        match.classList.add('completed');
+        toast(`${name} marked complete`);
+        updateProgress();
+      }
+    }
+
+    function toast(message) {
+      const note = document.createElement('div');
+      note.textContent = message;
+      note.style.position = 'fixed';
+      note.style.bottom = '1rem';
+      note.style.right = '1rem';
+      note.style.padding = '0.75rem 1rem';
+      note.style.borderRadius = '12px';
+      note.style.background = '#111827';
+      note.style.color = 'white';
+      note.style.fontWeight = '700';
+      note.style.boxShadow = '0 10px 24px rgba(0,0,0,0.18)';
+      note.style.zIndex = '9999';
+      document.body.appendChild(note);
+      setTimeout(() => note.remove(), 2200);
+    }
+
+    skills.forEach(skill => {
+      skill.addEventListener('click', () => {
+        skill.classList.toggle('completed');
+        updateProgress();
+      });
+    });
+
+    updateProgress();
+  </script>
+</body>
+</html>
