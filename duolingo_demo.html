@@ -212,8 +212,8 @@
       <h2>Drop this file into your project</h2>
       <p style="color:#4b5563; max-width:620px; margin: 0 auto 1.2rem;">Use this static preview to present the Duolingo-style flow without a server. Customize the copy, colors, or skill list to match your learning track.</p>
       <div style="display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap;">
-        <button class="button" onclick="toast('Download started')">Download</button>
-        <button class="button secondary" onclick="toast('Copied embed snippet')">Copy embed snippet</button>
+        <button class="button" onclick="downloadHtml()">Download</button>
+        <button class="button secondary" onclick="copyEmbed()">Copy embed snippet</button>
       </div>
     </section>
 
@@ -271,6 +271,38 @@
       note.style.zIndex = '9999';
       document.body.appendChild(note);
       setTimeout(() => note.remove(), 2200);
+    }
+
+    function downloadHtml() {
+      const html = '<!doctype html>' + document.documentElement.outerHTML;
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'language-quest-demo.html';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      toast('Download started');
+    }
+
+    async function copyEmbed() {
+      const html = '<!doctype html>' + document.documentElement.outerHTML;
+      try {
+        await navigator.clipboard.writeText(html);
+        toast('HTML copied to clipboard');
+      } catch (err) {
+        const textarea = document.createElement('textarea');
+        textarea.value = html;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '-1000px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        toast('HTML copied (fallback)');
+      }
     }
 
     skills.forEach(skill => {
