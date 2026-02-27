@@ -14,7 +14,7 @@ export default async function BrandDetail({ params }: { params: Promise<{ id: st
           <h2 className="text-2xl font-semibold">{brand.name}</h2>
           <p className="text-sm text-slate-600">{brand.websiteUrl}</p>
         </div>
-        <form action={`/api/brands/${id}/dna`} method="post">
+        <form action={`/api/brands/${id}/dna${brand.brandDna ? "?force=1" : ""}`} method="post">
           <button className="rounded bg-slate-900 px-4 py-2 text-white">{brand.brandDna ? "Rebuild DNA" : "Build DNA"}</button>
         </form>
       </div>
