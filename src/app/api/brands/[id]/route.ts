@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getBrandById, getDb } from '@/lib/db';
+import { getBrandById, deleteBrand } from '@/lib/db';
 
 export async function GET(_req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const brand = getBrandById(Number(params.id));
+    const brand = await getBrandById(Number(params.id));
     if (!brand) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     return NextResponse.json(brand);
   } catch (err) {
@@ -13,8 +13,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
 
 export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const db = getDb();
-    db.prepare('DELETE FROM brands WHERE id = ?').run(Number(params.id));
+    await deleteBrand(Number(params.id));
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });

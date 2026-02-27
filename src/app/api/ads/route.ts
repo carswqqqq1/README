@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
       limit: sp.get('limit') ? Number(sp.get('limit')) : 50,
       offset: sp.get('offset') ? Number(sp.get('offset')) : 0,
     };
-    const ads = getAds(filters);
+    const ads = await getAds(filters);
     return NextResponse.json(ads);
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });

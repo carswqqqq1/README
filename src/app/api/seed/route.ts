@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getDb } from '@/lib/db';
+import { getDb, insertBrand } from '@/lib/db';
 
 const DTC_BRANDS = [
   // Health & Nutrition
@@ -77,26 +77,28 @@ const DTC_BRANDS = [
 
 export async function POST() {
   try {
+    for (const brand of DTC_BRANDS) {
+      await insertBrand(brand);
+    }
+
     const db = getDb();
-    const insert = db.prepare(`
-      INSERT OR IGNORE INTO brands (name, category, library_url)
-      VALUES (@name, @category, @library_url)
-    `);
+    const result = await db.execute('SELECT COUNT(*) as count FROM brands');
+    const count = (result.rows[0] as any)?.count ?? 0;
 
-    const insertMany = db.transaction((brands: typeof DTC_BRANDS) => {
-      for (const brand of brands) insert.run(brand);
-    });
-
-    insertMany(DTC_BRANDS);
-
-    const count = (db.prepare('SELECT COUNT(*) as c FROM brands').get() as { c: number }).c;
     return NextResponse.json({ ok: true, total_brands: count, seeded: DTC_BRANDS.length });
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    const msg = err instanceof Error ? err.message : String(err);
+    // Ignore duplicate errors
+    if (msg.includes('UNIQUE')) {
+      const db = getDb();
+      const result = await db.execute('SELECT COUNT(*) as count FROM brands');
+      const count = (result.rows[0] as any)?.count ?? 0;
+      return NextResponse.json({ ok: true, total_brands: count, seeded: DTC_BRANDS.length });
+    }
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
 
 export async function GET() {
-  // GET also seeds so it's easy to trigger from the browser
   return POST();
 }

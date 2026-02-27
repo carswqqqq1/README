@@ -5,7 +5,7 @@ import { analyzeAd } from '@/lib/gemini';
 export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
   const adId = Number(params.id);
   try {
-    const ad = getAdById(adId) as Record<string, unknown> | undefined;
+    const ad = await getAdById(adId) as Record<string, unknown> | undefined;
     if (!ad) return NextResponse.json({ error: 'Ad not found' }, { status: 404 });
 
     const analysis = await analyzeAd({
@@ -17,7 +17,7 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
       thumbnail_url: ad.thumbnail_url as string,
     });
 
-    upsertAnalysis({ ad_id: adId, ...analysis });
+    await upsertAnalysis({ ad_id: adId, ...analysis });
 
     return NextResponse.json(analysis);
   } catch (err) {

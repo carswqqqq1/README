@@ -6,7 +6,7 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
   const brandId = Number(params.id);
 
   try {
-    const brand = getBrandById(brandId) as { id: number; library_url: string } | undefined;
+    const brand = await getBrandById(brandId) as any;
     if (!brand) return NextResponse.json({ error: 'Brand not found' }, { status: 404 });
 
     const rawAds = await scrapeAds(brand.library_url);
@@ -14,11 +14,11 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
     let inserted = 0;
     for (const raw of rawAds) {
       const normalized = normalizeAd(raw, brandId);
-      upsertAd(normalized);
+      await upsertAd(normalized);
       inserted++;
     }
 
-    updateBrandScrapedAt(brandId);
+    await updateBrandScrapedAt(brandId);
 
     return NextResponse.json({ ok: true, scraped: inserted });
   } catch (err) {

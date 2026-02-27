@@ -3,7 +3,7 @@ import { getAllBrands, insertBrand } from '@/lib/db';
 
 export async function GET() {
   try {
-    const brands = getAllBrands();
+    const brands = await getAllBrands();
     return NextResponse.json(brands);
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown error';
@@ -24,8 +24,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'name and library_url are required' }, { status: 400 });
     }
 
-    const result = insertBrand({ name, library_url, category: category ?? 'DTC' });
-    return NextResponse.json({ id: result.lastInsertRowid }, { status: 201 });
+    const result = await insertBrand({ name, library_url, category: category ?? 'DTC' });
+    return NextResponse.json({ id: (result as any).lastInsertRowid }, { status: 201 });
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown error';
     if (msg.includes('UNIQUE')) {
