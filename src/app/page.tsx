@@ -84,9 +84,22 @@ export default function Home() {
   const handleScrape = async (brandId: number) => {
     setScrapingId(brandId);
     try {
-      const res = await fetch(`/api/brands/${brandId}/scrape`, { method: 'POST' });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      // Step 1: start the run
+      const startRes = await fetch(`/api/brands/${brandId}/scrape`, { method: 'POST' });
+      const startData = await startRes.json();
+      if (!startRes.ok) throw new Error(startData.error);
+      const { runId } = startData;
+
+      // Step 2: poll until done (up to 6 minutes)
+      const deadline = Date.now() + 6 * 60 * 1000;
+      while (Date.now() < deadline) {
+        await new Promise(r => setTimeout(r, 8000));
+        const pollRes = await fetch(`/api/brands/${brandId}/scrape?runId=${runId}`);
+        const pollData = await pollRes.json();
+        if (!pollRes.ok) throw new Error(pollData.error);
+        if (pollData.done) break;
+      }
+
       await loadBrands();
       await loadAds(true);
     } catch (e) {

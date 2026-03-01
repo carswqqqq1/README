@@ -47,64 +47,73 @@ export interface ApifyAd {
   };
 }
 
-export async function scrapeAds(libraryUrl: string): Promise<ApifyAd[]> {
+const ACTOR = 'curious_coder~facebook-ads-library-scraper';
+
+/** Start an async Apify run. Returns the run ID immediately. */
+export async function startScrapeRun(libraryUrl: string): Promise<string> {
   const token = process.env.APIFY_API_TOKEN;
   if (!token) throw new Error('APIFY_API_TOKEN is not set');
 
-  // Start async run
-  const startRes = await fetch(
-    `https://api.apify.com/v2/acts/curious_coder~facebook-ads-library-scraper/runs?token=${token}&memory=512`,
+  const res = await fetch(
+    `https://api.apify.com/v2/acts/${ACTOR}/runs?token=${token}&memory=512`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        urls: [{ url: libraryUrl }],
-        maxResults: 50,
-      }),
+      body: JSON.stringify({ urls: [{ url: libraryUrl }], maxResults: 50 }),
     }
   );
 
-  if (!startRes.ok) {
-    const text = await startRes.text();
-    throw new Error(`Apify start failed (${startRes.status}): ${text}`);
-  }
+  const text = await res.text();
+  if (!res.ok) throw new Error(`Apify start failed (${res.status}): ${text}`);
 
-  const startData = await startRes.json();
-  const runId: string = startData?.data?.id;
+  let data: any;
+  try { data = JSON.parse(text); } catch { throw new Error(`Apify returned non-JSON: ${text.slice(0, 200)}`); }
+
+  const runId = data?.data?.id;
   if (!runId) throw new Error('Apify did not return a run ID');
+  return runId;
+}
 
-  // Poll until done (max 5 minutes)
-  const pollUrl = `https://api.apify.com/v2/acts/curious_coder~facebook-ads-library-scraper/runs/${runId}?token=${token}`;
-  const deadline = Date.now() + 5 * 60 * 1000;
+/** Check run status. Returns ads array if done, null if still running, throws on failure. */
+export async function checkScrapeRun(runId: string): Promise<ApifyAd[] | null> {
+  const token = process.env.APIFY_API_TOKEN;
+  if (!token) throw new Error('APIFY_API_TOKEN is not set');
 
-  while (Date.now() < deadline) {
-    await new Promise(r => setTimeout(r, 10_000));
-    const pollRes = await fetch(pollUrl);
-    const pollData = await pollRes.json();
-    const status: string = pollData?.data?.status ?? '';
+  const res = await fetch(
+    `https://api.apify.com/v2/acts/${ACTOR}/runs/${runId}?token=${token}`
+  );
+  const text = await res.text();
+  if (!res.ok) throw new Error(`Apify status check failed (${res.status}): ${text.slice(0, 200)}`);
 
-    if (status === 'SUCCEEDED') {
-      const datasetId: string = pollData.data.defaultDatasetId;
-      const itemsRes = await fetch(
-        `https://api.apify.com/v2/datasets/${datasetId}/items?token=${token}&limit=50`
-      );
-      const items: ApifyAd[] = await itemsRes.json();
-      return items;
+  let data: any;
+  try { data = JSON.parse(text); } catch { throw new Error(`Apify returned non-JSON: ${text.slice(0, 200)}`); }
+
+  const status: string = data?.data?.status ?? '';
+
+  if (status === 'SUCCEEDED') {
+    const datasetId: string = data.data.defaultDatasetId;
+    const itemsRes = await fetch(
+      `https://api.apify.com/v2/datasets/${datasetId}/items?token=${token}&limit=50`
+    );
+    const itemsText = await itemsRes.text();
+    try {
+      return JSON.parse(itemsText) as ApifyAd[];
+    } catch {
+      throw new Error(`Apify dataset returned non-JSON: ${itemsText.slice(0, 200)}`);
     }
-
-    if (status === 'FAILED' || status === 'ABORTED' || status === 'TIMED-OUT') {
-      throw new Error(`Apify run ${status.toLowerCase()}`);
-    }
-    // else RUNNING / READY — keep polling
   }
 
-  throw new Error('Apify run timed out after 5 minutes');
+  if (status === 'FAILED' || status === 'ABORTED' || status === 'TIMED-OUT') {
+    throw new Error(`Apify run ${status.toLowerCase()}`);
+  }
+
+  // RUNNING or READY — still in progress
+  return null;
 }
 
 export function normalizeAd(raw: ApifyAd, brandId: number) {
   const snap = raw.snapshot ?? {};
 
-  // Determine media type
   let mediaType: 'image' | 'video' | 'carousel' | 'unknown' = 'unknown';
   let mediaUrl: string | undefined;
   let thumbnailUrl: string | undefined;
@@ -140,14 +149,13 @@ export function normalizeAd(raw: ApifyAd, brandId: number) {
       ? snap.body
       : (snap.body as any)?.markup?.__html?.replace(/<[^>]+>/g, '') ?? '';
 
-  // impressions_with_index doesn't give lower/upper bounds — store index as lower as proxy
   const impIndex = raw.impressions_with_index?.impressions_index ?? undefined;
 
   return {
     brand_id: brandId,
     ad_archive_id: raw.ad_archive_id ?? raw.ad_id,
     title: snap.title ?? snap.cards?.[0]?.title ?? '',
-    body: body,
+    body,
     cta_text: snap.cta_text ?? snap.cta_type ?? snap.cards?.[0]?.cta_text ?? snap.cards?.[0]?.cta_type ?? '',
     cta_link: snap.link_url ?? snap.cards?.[0]?.link_url ?? '',
     media_type: mediaType,
