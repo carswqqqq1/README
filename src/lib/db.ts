@@ -1,6 +1,7 @@
 import { createClient } from '@libsql/client';
 
 let _client: ReturnType<typeof createClient> | null = null;
+let _initPromise: Promise<void> | null = null;
 
 export function getDb() {
   if (_client) return _client;
@@ -14,6 +15,13 @@ export function getDb() {
 
   _client = createClient({ url, authToken: token });
   return _client;
+}
+
+export async function ensureInit() {
+  if (!_initPromise) {
+    _initPromise = initDb();
+  }
+  return _initPromise;
 }
 
 export async function initDb() {
@@ -85,6 +93,7 @@ export async function initDb() {
 // ─── Brand helpers ────────────────────────────────────────────────────────────
 
 export async function getAllBrands() {
+  await ensureInit();
   const db = getDb();
   const result = await db.execute(`
     SELECT b.*, COUNT(a.id) as ad_count
@@ -112,6 +121,7 @@ export async function insertBrand(data: {
   category?: string;
   logo_url?: string;
 }) {
+  await ensureInit();
   const db = getDb();
   const result = await db.execute({
     sql: `
@@ -150,6 +160,7 @@ export async function getAds(filters: {
   limit?: number;
   offset?: number;
 }) {
+  await ensureInit();
   const db = getDb();
   const conditions: string[] = [];
   const args: unknown[] = [];
