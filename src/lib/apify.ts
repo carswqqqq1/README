@@ -1,27 +1,39 @@
 /**
  * Apify integration for scraping Meta Ad Library.
  *
- * Uses the `apify/facebook-ads-library-scraper` actor.
- * Docs: https://apify.com/apify/facebook-ads-library-scraper
+ * Uses the `curious_coder/facebook-ads-library-scraper` actor.
+ * Docs: https://apify.com/curious_coder/facebook-ads-library-scraper
  */
 
 export interface ApifyAd {
-  adArchiveID?: string;
-  adid?: string;
+  ad_archive_id?: string;
+  ad_id?: string;
+  page_id?: string;
+  page_name?: string;
+  is_active?: boolean;
+  currency?: string;
+  spend?: { lower_bound?: number; upper_bound?: number } | null;
+  impressions_with_index?: { impressions_text?: string | null; impressions_index?: number } | null;
+  start_date?: number;
+  end_date?: number;
   snapshot?: {
-    title?: string;
-    body?: { markup?: { __html?: string } } | string;
+    cta_text?: string;
     cta_type?: string;
     link_url?: string;
+    body?: string | { markup?: { __html?: string } };
+    caption?: string;
+    title?: string;
     cards?: Array<{
       title?: string;
       body?: string;
       cta_type?: string;
+      cta_text?: string;
       link_url?: string;
       video_sd_url?: string;
       video_hd_url?: string;
       original_image_url?: string;
       resized_image_url?: string;
+      video_preview_image_url?: string;
     }>;
     videos?: Array<{
       video_sd_url?: string;
@@ -33,75 +45,60 @@ export interface ApifyAd {
       resized_image_url?: string;
     }>;
   };
-  impressions?: { lower_bound?: number; upper_bound?: number };
-  spend?: { lower_bound?: number; upper_bound?: number };
-  currency?: string;
-  startDate?: number;
-  endDate?: number;
-  isActive?: boolean;
-  pageID?: string;
-  pageName?: string;
-}
-
-function extractPageId(libraryUrl: string): string | null {
-  // Handles formats like:
-  // https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=US&id=123456789
-  // https://www.facebook.com/ads/library/?search_type=page&view_all_page_id=123456789
-  const idMatch = libraryUrl.match(/[?&](?:id|view_all_page_id)=(\d+)/);
-  return idMatch ? idMatch[1] : null;
-}
-
-function extractSearchQuery(libraryUrl: string): string | null {
-  const qMatch = libraryUrl.match(/[?&]q=([^&]+)/);
-  return qMatch ? decodeURIComponent(qMatch[1]) : null;
 }
 
 export async function scrapeAds(libraryUrl: string): Promise<ApifyAd[]> {
   const token = process.env.APIFY_API_TOKEN;
   if (!token) throw new Error('APIFY_API_TOKEN is not set');
 
-  const pageId = extractPageId(libraryUrl);
-  const searchQuery = extractSearchQuery(libraryUrl);
-
-  // Build input for the Apify actor
-  const actorInput: Record<string, unknown> = {
-    country: 'US',
-    adType: 'ALL',
-    activeStatus: 'ALL',
-    publisherPlatform: ['facebook', 'instagram'],
-    sortBy: 'impressions',      // highest impressions first
-    maxResults: 50,
-  };
-
-  if (pageId) {
-    actorInput.pageIDs = [pageId];
-  } else if (searchQuery) {
-    actorInput.searchQuery = searchQuery;
-  } else {
-    // Try to extract brand name from URL path as fallback
-    const urlObj = new URL(libraryUrl);
-    const q = urlObj.searchParams.get('q');
-    if (q) actorInput.searchQuery = q;
-    else throw new Error('Could not extract page ID or search query from the provided URL');
-  }
-
-  // Run the actor and wait for finish
-  const runRes = await fetch(
-    `https://api.apify.com/v2/acts/apify~facebook-ads-library-scraper/run-sync-get-dataset-items?token=${token}&timeout=120&memory=1024`,
+  // Start async run
+  const startRes = await fetch(
+    `https://api.apify.com/v2/acts/curious_coder~facebook-ads-library-scraper/runs?token=${token}&memory=512`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(actorInput),
+      body: JSON.stringify({
+        urls: [{ url: libraryUrl }],
+        maxResults: 50,
+      }),
     }
   );
 
-  if (!runRes.ok) {
-    const text = await runRes.text();
-    throw new Error(`Apify run failed (${runRes.status}): ${text}`);
+  if (!startRes.ok) {
+    const text = await startRes.text();
+    throw new Error(`Apify start failed (${startRes.status}): ${text}`);
   }
 
-  const items: ApifyAd[] = await runRes.json();
-  return items;
+  const startData = await startRes.json();
+  const runId: string = startData?.data?.id;
+  if (!runId) throw new Error('Apify did not return a run ID');
+
+  // Poll until done (max 5 minutes)
+  const pollUrl = `https://api.apify.com/v2/acts/curious_coder~facebook-ads-library-scraper/runs/${runId}?token=${token}`;
+  const deadline = Date.now() + 5 * 60 * 1000;
+
+  while (Date.now() < deadline) {
+    await new Promise(r => setTimeout(r, 10_000));
+    const pollRes = await fetch(pollUrl);
+    const pollData = await pollRes.json();
+    const status: string = pollData?.data?.status ?? '';
+
+    if (status === 'SUCCEEDED') {
+      const datasetId: string = pollData.data.defaultDatasetId;
+      const itemsRes = await fetch(
+        `https://api.apify.com/v2/datasets/${datasetId}/items?token=${token}&limit=50`
+      );
+      const items: ApifyAd[] = await itemsRes.json();
+      return items;
+    }
+
+    if (status === 'FAILED' || status === 'ABORTED' || status === 'TIMED-OUT') {
+      throw new Error(`Apify run ${status.toLowerCase()}`);
+    }
+    // else RUNNING / READY — keep polling
+  }
+
+  throw new Error('Apify run timed out after 5 minutes');
 }
 
 export function normalizeAd(raw: ApifyAd, brandId: number) {
@@ -127,9 +124,10 @@ export function normalizeAd(raw: ApifyAd, brandId: number) {
     thumbnailUrl = mediaUrl;
   } else if (snap.cards && snap.cards.length === 1) {
     const c = snap.cards[0];
-    if (c.video_sd_url) {
+    if (c.video_sd_url || c.video_hd_url) {
       mediaType = 'video';
       mediaUrl = c.video_hd_url ?? c.video_sd_url;
+      thumbnailUrl = c.video_preview_image_url;
     } else {
       mediaType = 'image';
       mediaUrl = c.original_image_url ?? c.resized_image_url;
@@ -140,26 +138,29 @@ export function normalizeAd(raw: ApifyAd, brandId: number) {
   const body =
     typeof snap.body === 'string'
       ? snap.body
-      : snap.body?.markup?.__html?.replace(/<[^>]+>/g, '') ?? '';
+      : (snap.body as any)?.markup?.__html?.replace(/<[^>]+>/g, '') ?? '';
+
+  // impressions_with_index doesn't give lower/upper bounds — store index as lower as proxy
+  const impIndex = raw.impressions_with_index?.impressions_index ?? undefined;
 
   return {
     brand_id: brandId,
-    ad_archive_id: raw.adArchiveID ?? raw.adid,
+    ad_archive_id: raw.ad_archive_id ?? raw.ad_id,
     title: snap.title ?? snap.cards?.[0]?.title ?? '',
     body: body,
-    cta_text: snap.cta_type ?? snap.cards?.[0]?.cta_type ?? '',
+    cta_text: snap.cta_text ?? snap.cta_type ?? snap.cards?.[0]?.cta_text ?? snap.cards?.[0]?.cta_type ?? '',
     cta_link: snap.link_url ?? snap.cards?.[0]?.link_url ?? '',
     media_type: mediaType,
     media_url: mediaUrl ?? '',
     thumbnail_url: thumbnailUrl ?? '',
-    impressions_lower: raw.impressions?.lower_bound,
-    impressions_upper: raw.impressions?.upper_bound,
+    impressions_lower: impIndex !== undefined && impIndex >= 0 ? impIndex : undefined,
+    impressions_upper: undefined,
     spend_lower: raw.spend?.lower_bound,
     spend_upper: raw.spend?.upper_bound,
     currency: raw.currency ?? 'USD',
-    started_at: raw.startDate ? new Date(raw.startDate * 1000).toISOString() : undefined,
-    ended_at: raw.endDate ? new Date(raw.endDate * 1000).toISOString() : undefined,
-    is_active: raw.isActive ? 1 : 0,
+    started_at: raw.start_date ? new Date(raw.start_date * 1000).toISOString() : undefined,
+    ended_at: raw.end_date ? new Date(raw.end_date * 1000).toISOString() : undefined,
+    is_active: raw.is_active ? 1 : 0,
     raw_json: JSON.stringify(raw),
   };
 }
