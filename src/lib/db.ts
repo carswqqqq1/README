@@ -27,8 +27,8 @@ export async function ensureInit() {
 export async function initDb() {
   const db = getDb();
 
-  await db.execute(`
-    CREATE TABLE IF NOT EXISTS brands (
+  const statements = [
+    `CREATE TABLE IF NOT EXISTS brands (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       page_id TEXT,
@@ -37,9 +37,8 @@ export async function initDb() {
       logo_url TEXT,
       last_scraped_at TEXT,
       created_at TEXT DEFAULT (datetime('now'))
-    );
-
-    CREATE TABLE IF NOT EXISTS ads (
+    )`,
+    `CREATE TABLE IF NOT EXISTS ads (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       brand_id INTEGER NOT NULL REFERENCES brands(id) ON DELETE CASCADE,
       ad_archive_id TEXT UNIQUE,
@@ -60,9 +59,8 @@ export async function initDb() {
       is_active INTEGER DEFAULT 1,
       raw_json TEXT,
       created_at TEXT DEFAULT (datetime('now'))
-    );
-
-    CREATE TABLE IF NOT EXISTS ad_analyses (
+    )`,
+    `CREATE TABLE IF NOT EXISTS ad_analyses (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       ad_id INTEGER NOT NULL REFERENCES ads(id) ON DELETE CASCADE,
       asset_type TEXT,
@@ -73,21 +71,23 @@ export async function initDb() {
       summary TEXT,
       tags TEXT,
       analyzed_at TEXT DEFAULT (datetime('now'))
-    );
-
-    CREATE TABLE IF NOT EXISTS bookmarks (
+    )`,
+    `CREATE TABLE IF NOT EXISTS bookmarks (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       ad_id INTEGER NOT NULL REFERENCES ads(id) ON DELETE CASCADE UNIQUE,
       note TEXT,
       created_at TEXT DEFAULT (datetime('now'))
-    );
+    )`,
+    `CREATE INDEX IF NOT EXISTS idx_ads_brand_id ON ads(brand_id)`,
+    `CREATE INDEX IF NOT EXISTS idx_ads_media_type ON ads(media_type)`,
+    `CREATE INDEX IF NOT EXISTS idx_ads_impressions ON ads(impressions_lower DESC)`,
+    `CREATE INDEX IF NOT EXISTS idx_ad_analyses_ad_id ON ad_analyses(ad_id)`,
+    `CREATE INDEX IF NOT EXISTS idx_bookmarks_ad_id ON bookmarks(ad_id)`,
+  ];
 
-    CREATE INDEX IF NOT EXISTS idx_ads_brand_id ON ads(brand_id);
-    CREATE INDEX IF NOT EXISTS idx_ads_media_type ON ads(media_type);
-    CREATE INDEX IF NOT EXISTS idx_ads_impressions ON ads(impressions_lower DESC);
-    CREATE INDEX IF NOT EXISTS idx_ad_analyses_ad_id ON ad_analyses(ad_id);
-    CREATE INDEX IF NOT EXISTS idx_bookmarks_ad_id ON bookmarks(ad_id);
-  `);
+  for (const sql of statements) {
+    await db.execute(sql);
+  }
 }
 
 // ─── Brand helpers ────────────────────────────────────────────────────────────
