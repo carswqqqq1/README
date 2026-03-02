@@ -160,8 +160,25 @@
   if (testimonials.length > 1) startTl();
 
   /* ---- CONTACT FORM ---- */
-  var form    = document.getElementById('contact-form');
-  var success = document.getElementById('form-success');
+  var form            = document.getElementById('contact-form');
+  var success         = document.getElementById('form-success');
+  var errorMessage    = document.getElementById('form-error');
+  var ticketInput     = document.getElementById('ticket-id');
+  var submittedAt     = document.getElementById('submitted-at');
+  var pageUrl         = document.getElementById('page-url');
+  var ticketReference = document.getElementById('ticket-reference');
+
+  function encodeFormData(data) {
+    return Object.keys(data)
+      .map(function (key) { return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]); })
+      .join('&');
+  }
+
+  function createTicketId() {
+    var stamp = Date.now().toString(36).toUpperCase();
+    var rand = Math.random().toString(36).slice(2, 6).toUpperCase();
+    return 'TG-' + stamp + '-' + rand;
+  }
 
   if (form) {
     /* Phone format */
@@ -174,7 +191,7 @@
       });
     }
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
       var valid = true;
       form.querySelectorAll('[required]').forEach(function (f) {
@@ -182,16 +199,54 @@
         f.style.borderColor = ok ? '' : '#c62828';
         if (!ok) valid = false;
       });
-      if (!valid) return;
+      if (!valid) {
+        if (errorMessage) {
+          errorMessage.textContent = 'Please complete all required fields before submitting your ticket.';
+          errorMessage.style.display = 'block';
+        }
+        return;
+      }
+
+      if (errorMessage) {
+        errorMessage.textContent = '';
+        errorMessage.style.display = 'none';
+      }
+
+      var ticketId = createTicketId();
+      if (ticketInput) ticketInput.value = ticketId;
+      if (submittedAt) submittedAt.value = new Date().toISOString();
+      if (pageUrl) pageUrl.value = window.location.href;
 
       var btn = form.querySelector('[type="submit"]');
-      btn.textContent = 'Sending…';
+      var defaultBtnText = btn.textContent;
+      btn.textContent = 'Submitting…';
       btn.disabled = true;
 
-      setTimeout(function () {
+      var payload = {};
+      new FormData(form).forEach(function (value, key) {
+        payload[key] = String(value);
+      });
+
+      try {
+        var response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: encodeFormData(payload)
+        });
+
+        if (!response.ok) throw new Error('Submission failed');
+
         form.style.display = 'none';
         if (success) success.style.display = 'block';
-      }, 900);
+        if (ticketReference) ticketReference.textContent = ticketId;
+      } catch (error) {
+        if (errorMessage) {
+          errorMessage.textContent = 'We could not submit your ticket right now. Please call us at (480) 922-9497.';
+          errorMessage.style.display = 'block';
+        }
+        btn.disabled = false;
+        btn.textContent = defaultBtnText;
+      }
     });
 
     form.querySelectorAll('input, select, textarea').forEach(function (f) {

@@ -1100,12 +1100,58 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .contact__details a:hover { color: var(--white); }
 
+.ticket-panel {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,.08);
+}
+.ticket-panel__title {
+  font-size: .75rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.68);
+  margin-bottom: .85rem;
+}
+.ticket-panel__list {
+  display: grid;
+  gap: .55rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ticket-panel__list li {
+  position: relative;
+  font-size: .875rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,.9);
+  padding-left: 1rem;
+}
+.ticket-panel__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .55rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tan);
+}
+
 .contact__form-wrap {
   background: var(--paper);
   padding: clamp(3rem, 6vw, 5rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.hidden-field {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 .contact__form-title {
   font-family: var(--font-head);
@@ -1163,6 +1209,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   margin-top: .875rem;
   line-height: 1.6;
 }
+.form-error {
+  margin-top: .75rem;
+  font-size: .8125rem;
+  color: #a01f1f;
+  line-height: 1.5;
+}
 
 .contact__success {
   text-align: center;
@@ -1186,6 +1238,15 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-size: .9375rem;
   color: var(--ink-light);
   line-height: 1.75;
+}
+.ticket-ref {
+  margin-top: 1rem;
+  font-size: .875rem;
+  color: var(--ink);
+}
+.ticket-ref strong {
+  color: var(--green);
+  letter-spacing: .04em;
 }
 
 /* ============================================================
