@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio — Think Green Design | Build Landscape. Browse our completed landscape design and construction projects across Scottsdale, Paradise Valley, Phoenix, and the greater Valley." />
+  <title>Portfolio — Think Green Design | Build Landscape</title>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/jpeg" href="img/favicon-32.jpg" sizes="32x32" />
+  <link rel="icon" type="image/jpeg" href="img/favicon-192.jpg" sizes="192x192" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="portfolio.css" />
+</head>
+<body class="portfolio-page">
+
+  <!-- NAV (same as main site) -->
+  <header class="nav is-scrolled" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="Think Green Design Build Landscape — home">
+        <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img" width="60" height="54" />
+      </a>
+      <button class="nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links" id="nav-links" aria-label="Primary navigation">
+        <a href="index.html#services" class="nav__link">Services</a>
+        <a href="index.html#process" class="nav__link">Process</a>
+        <a href="portfolio.html" class="nav__link nav__link--active">Portfolio</a>
+        <a href="index.html#areas" class="nav__link">Areas</a>
+        <a href="index.html#contact" class="nav__cta">Free Consultation</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile overlay -->
+  <div class="nav__overlay" id="nav-overlay" aria-hidden="true">
+    <button class="nav__overlay-close" id="nav-close" aria-label="Close menu">&#x2715;</button>
+    <nav aria-label="Mobile navigation">
+      <a href="index.html#services" class="nav__overlay-link">Services</a>
+      <a href="index.html#process" class="nav__overlay-link">Process</a>
+      <a href="portfolio.html" class="nav__overlay-link">Portfolio</a>
+      <a href="index.html#areas" class="nav__overlay-link">Areas Served</a>
+      <a href="index.html#contact" class="nav__overlay-link nav__overlay-cta">Free Consultation</a>
+    </nav>
+    <div class="nav__overlay-contact">
+      <a href="tel:4809229497">(480) 922-9497</a>
+      <span>Scottsdale, AZ 85260</span>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- PAGE HERO -->
+    <section class="pf-hero">
+      <div class="pf-hero__inner container">
+        <a href="index.html" class="pf-hero__back">&#8592; Back to Home</a>
+        <p class="eyebrow">Our Portfolio</p>
+        <h1 class="pf-hero__title">Landscapes Built for Arizona Living</h1>
+        <p class="pf-hero__sub">From desert estates to resort backyards — every project is a collaboration between our vision and yours, built to stand the test of time.</p>
+      </div>
+    </section>
+
+    <!-- FILTER TABS -->
+    <div class="pf-filters container">
+      <div class="pf-filters__inner">
+        <button class="pf-filter is-active" data-filter="all">All Projects</button>
+        <button class="pf-filter" data-filter="backyard">Backyard Resort</button>
+        <button class="pf-filter" data-filter="hardscape">Hardscaping</button>
+        <button class="pf-filter" data-filter="desert">Desert &amp; Xeriscape</button>
+        <button class="pf-filter" data-filter="water">Water Features</button>
+        <button class="pf-filter" data-filter="outdoor">Outdoor Living</button>
+        <button class="pf-filter" data-filter="frontyard">Curb Appeal</button>
+      </div>
+    </div>
+
+    <!-- PORTFOLIO GRID -->
+    <section class="pf-grid-section container">
+      <div class="pf-grid" id="pf-grid">
+
+        <figure class="pf-item reveal" data-cat="backyard">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&q=85&auto=format&fit=crop" alt="Resort backyard Scottsdale" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Backyard Resort</span>
+              <h3>Private Sanctuary</h3>
+              <p>Scottsdale, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="hardscape">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85&auto=format&fit=crop" alt="Estate garden hardscape Paradise Valley" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Estate Gardens</span>
+              <h3>Architectural Grounds</h3>
+              <p>Paradise Valley, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="desert">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=85&auto=format&fit=crop" alt="Desert garden Fountain Hills" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Desert Garden</span>
+              <h3>Sonoran Composition</h3>
+              <p>Fountain Hills, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="frontyard">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=85&auto=format&fit=crop" alt="Luxury curb appeal Cave Creek" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Curb Appeal</span>
+              <h3>Estate Entrance</h3>
+              <p>Cave Creek, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="outdoor">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=85&auto=format&fit=crop" alt="Outdoor kitchen Phoenix" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Outdoor Kitchen</span>
+              <h3>Al Fresco Living</h3>
+              <p>Phoenix, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="desert">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1574172523695-5e3d9958fc7b?w=800&q=85&auto=format&fit=crop" alt="Xeriscape Scottsdale" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Xeriscape</span>
+              <h3>Water-Wise Beauty</h3>
+              <p>Scottsdale, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="backyard">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=800&q=85&auto=format&fit=crop" alt="Pool terrace resort Scottsdale" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Pool &amp; Surround</span>
+              <h3>Resort at Home</h3>
+              <p>Scottsdale, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="hardscape">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=85&auto=format&fit=crop" alt="Modern hardscape driveway Chandler" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Hardscaping</span>
+              <h3>Modern Driveway</h3>
+              <p>Chandler, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="outdoor">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&q=85&auto=format&fit=crop" alt="Fire pit patio Gilbert" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Fire Feature</span>
+              <h3>Fireside Gathering</h3>
+              <p>Gilbert, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="water">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=85&auto=format&fit=crop" alt="Water feature fountain Paradise Valley" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Water Feature</span>
+              <h3>Cascading Serenity</h3>
+              <p>Paradise Valley, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="frontyard">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=85&auto=format&fit=crop" alt="Luxury front yard North Phoenix" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Front Yard</span>
+              <h3>First Impression</h3>
+              <p>North Phoenix, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="outdoor">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&q=85&auto=format&fit=crop" alt="Pergola shade structure Tempe" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Pergola &amp; Shade</span>
+              <h3>Outdoor Room</h3>
+              <p>Tempe, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="hardscape">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1416075177003-af5b8b9fde0d?w=800&q=85&auto=format&fit=crop" alt="Garden pathway stonework Mesa" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Stonework</span>
+              <h3>Garden Pathway</h3>
+              <p>Mesa, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="desert">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1467691359-e20a2c7fbf73?w=800&q=85&auto=format&fit=crop" alt="Desert native plants Rio Verde" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Native Plants</span>
+              <h3>Desert Tapestry</h3>
+              <p>Rio Verde, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="backyard">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1590677872559-b06d5db4d3be?w=800&q=85&auto=format&fit=crop" alt="Putting green sport surface Carefree" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Putting Green</span>
+              <h3>Backyard Links</h3>
+              <p>Carefree, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="water">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=85&auto=format&fit=crop" alt="Decorative fountain courtyard Scottsdale" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Fountain</span>
+              <h3>Courtyard Focal Point</h3>
+              <p>Scottsdale, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="frontyard">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=85&auto=format&fit=crop" alt="Curb appeal renovation Chandler" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Front Yard</span>
+              <h3>Neighborhood Landmark</h3>
+              <p>Chandler, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="pf-item reveal" data-cat="outdoor">
+          <div class="pf-item__img-wrap">
+            <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=85&auto=format&fit=crop" alt="Outdoor dining area Gilbert" loading="lazy" />
+          </div>
+          <figcaption class="pf-item__cap">
+            <div class="pf-item__cap-inner">
+              <span class="pf-item__tag">Outdoor Dining</span>
+              <h3>Garden Table Setting</h3>
+              <p>Gilbert, AZ</p>
+            </div>
+          </figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+    <!-- CTA STRIP -->
+    <section class="pf-cta">
+      <div class="pf-cta__inner container">
+        <div class="pf-cta__text reveal">
+          <p class="eyebrow">Ready to Begin?</p>
+          <h2>Let's Design Your Outdoor Space.</h2>
+          <p>Every project starts with a free, no-pressure consultation at your property. We listen, we plan, we build — and we stand behind every inch of our work.</p>
+        </div>
+        <div class="pf-cta__actions reveal">
+          <a href="index.html#contact" class="btn btn--solid">Request Free Consultation</a>
+          <a href="tel:4809229497" class="btn btn--dark">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="width:16px;height:16px"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+            (480) 922-9497
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER (same as main) -->
+  <footer class="footer">
+    <div class="footer__top container">
+      <div class="footer__brand">
+        <a href="index.html" class="nav__logo nav__logo--footer" aria-label="Think Green Design Build Landscape">
+          <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img nav__logo-img--footer" width="80" height="72" />
+        </a>
+        <p>Award-winning landscape design and construction serving the greater Phoenix and Scottsdale Valley since 2000.</p>
+        <p class="footer__license">Licensed · Bonded · Insured<br>ROC# 157201 CR-21 &nbsp;|&nbsp; ROC# 304902 B-4</p>
+      </div>
+      <div class="footer__col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="index.html#services">Landscape Design &amp; Build</a></li>
+          <li><a href="index.html#services">Hardscaping</a></li>
+          <li><a href="index.html#services">Water Features</a></li>
+          <li><a href="index.html#services">Fire Features</a></li>
+          <li><a href="index.html#services">Outdoor Lighting</a></li>
+          <li><a href="index.html#services">Desert Landscaping</a></li>
+          <li><a href="index.html#services">Irrigation</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#process">Our Process</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="index.html#testimonials">Testimonials</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contact</h4>
+        <address>
+          <p><a href="tel:4809229497">(480) 922-9497</a></p>
+          <p><a href="mailto:thinkgreen@thinkgreenaz.com">thinkgreen@thinkgreenaz.com</a></p>
+          <p>7730 E. Gelding Dr. Ste 1<br>Scottsdale, AZ 85260</p>
+          <p>Mon–Fri: 7:00 AM – 5:00 PM</p>
+        </address>
+      </div>
+    </div>
+    <div class="footer__bottom container">
+      <p>&copy; 2025 Think Green Design | Build Landscape. All rights reserved.</p>
+      <p>Serving Scottsdale &middot; Paradise Valley &middot; Phoenix &amp; the Greater Valley of the Sun</p>
+    </div>
+  </footer>
+
+  <div class="sticky-bar" id="sticky-bar" aria-label="Mobile call to action">
+    <a href="tel:4809229497" class="btn btn--solid">
+      <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
+      Call Now
+    </a>
+    <a href="index.html#contact" class="btn btn--outline-dark">Free Consultation</a>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="portfolio.js"></script>
+</body>
+</html>
