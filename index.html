@@ -8,17 +8,72 @@
   <meta property="og:title" content="Think Green Design | Build Landscape" />
   <meta property="og:description" content="Scottsdale's premier landscape design and build studio — resort-style outdoor living since 2000." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://thinkgreen-az.netlify.app/" />
+  <meta name="theme-color" content="#1b4332" />
   <title>Think Green — Design | Build Landscape · Scottsdale, AZ</title>
   <!-- Favicons -->
   <link rel="icon" type="image/jpeg" href="img/favicon-32.jpg" sizes="32x32" />
   <link rel="icon" type="image/jpeg" href="img/favicon-192.jpg" sizes="192x192" />
   <link rel="apple-touch-icon" href="img/apple-touch-icon.jpg" />
   <meta property="og:image" content="img/favicon-192.jpg" />
+  <link rel="canonical" href="https://thinkgreen-az.netlify.app/" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LandscapeArchitect",
+      "name": "Think Green Design | Build Landscape",
+      "url": "https://thinkgreen-az.netlify.app/",
+      "telephone": "+1-480-922-9497",
+      "email": "thinkgreen@thinkgreenaz.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "7730 E. Gelding Dr. Ste 1",
+        "addressLocality": "Scottsdale",
+        "addressRegion": "AZ",
+        "postalCode": "85260",
+        "addressCountry": "US"
+      },
+      "areaServed": ["Scottsdale", "Paradise Valley", "Phoenix", "Fountain Hills", "Cave Creek", "Gilbert", "Tempe", "Mesa", "Chandler"],
+      "openingHours": "Mo-Fr 07:00-17:00"
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How quickly will someone contact me after I submit a ticket?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most tickets receive a response within one business day, often sooner."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you handle both design and construction in-house?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Think Green manages design, planning, and construction as one coordinated team."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you design specifically for water efficiency and low maintenance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, the team specializes in Sonoran-adapted planting palettes and efficient irrigation systems."
+          }
+        }
+      ]
+    }
+  </script>
 </head>
 <body>
 
@@ -39,6 +94,7 @@
         <a href="#services" class="nav__link">Services</a>
         <a href="#process" class="nav__link">Process</a>
         <a href="#portfolio" class="nav__link">Portfolio</a>
+        <a href="#faq" class="nav__link">FAQ</a>
         <a href="#areas" class="nav__link">Areas</a>
         <a href="#contact" class="nav__cta">Free Consultation</a>
       </nav>
@@ -52,6 +108,7 @@
       <a href="#services" class="nav__overlay-link">Services</a>
       <a href="#process" class="nav__overlay-link">Process</a>
       <a href="#portfolio" class="nav__overlay-link">Portfolio</a>
+      <a href="#faq" class="nav__overlay-link">FAQ</a>
       <a href="#areas" class="nav__overlay-link">Areas Served</a>
       <a href="#contact" class="nav__overlay-link nav__overlay-cta">Free Consultation</a>
     </nav>
@@ -83,6 +140,24 @@
         <div class="hero__actions">
           <a href="#portfolio" class="btn btn--ghost">View Our Work</a>
           <a href="#contact" class="btn btn--solid">Free Consultation</a>
+        </div>
+        <div class="hero__credibility reveal" aria-label="Why homeowners choose Think Green">
+          <div class="hero__cred-item">
+            <strong>24-Hour</strong>
+            <span>Ticket response time</span>
+          </div>
+          <div class="hero__cred-item">
+            <strong>25+ Years</strong>
+            <span>Design-build experience</span>
+          </div>
+          <div class="hero__cred-item">
+            <strong>500+ Projects</strong>
+            <span>Completed in the Valley</span>
+          </div>
+          <div class="hero__cred-item">
+            <strong>Licensed</strong>
+            <span>Bonded and fully insured</span>
+          </div>
         </div>
       </div>
 
@@ -493,6 +568,98 @@
     </section>
 
     <!-- ============================================================
+         PROJECT FIT
+    ============================================================ -->
+    <section class="project-fit" id="project-fit">
+      <div class="container">
+        <header class="project-fit__header reveal">
+          <p class="eyebrow">Project Fit</p>
+          <h2 class="section-title">Choose Your Project Type and We’ll Fast-Track Your Ticket</h2>
+          <p class="project-fit__sub">Select the project that best matches your goals. We will pre-fill your ticket so our team can route you to the right designer faster.</p>
+        </header>
+        <div class="project-fit__grid">
+          <article class="fit-card reveal">
+            <p class="fit-card__label">Most Requested</p>
+            <h3>Full Landscape Design &amp; Build</h3>
+            <p>Best for complete yard transformations, phased construction, and master planning.</p>
+            <button type="button" class="fit-card__action" data-service-choice="Landscape Design &amp; Build">I Need This</button>
+          </article>
+          <article class="fit-card reveal">
+            <p class="fit-card__label">Lifestyle Upgrade</p>
+            <h3>Hardscape, Fire, and Outdoor Living</h3>
+            <p>Great for patios, kitchens, fireplaces, pathways, and entertainment-centered layouts.</p>
+            <button type="button" class="fit-card__action" data-service-choice="Fire Feature / Outdoor Kitchen">I Need This</button>
+          </article>
+          <article class="fit-card reveal">
+            <p class="fit-card__label">Desert Smart</p>
+            <h3>Drought-Tolerant Modernization</h3>
+            <p>Ideal for water-wise upgrades, low-maintenance planting, and Arizona climate resilience.</p>
+            <button type="button" class="fit-card__action" data-service-choice="Desert / Drought-Tolerant Design">I Need This</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         FAQ
+    ============================================================ -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <header class="faq__header reveal">
+          <p class="eyebrow">Questions Answered</p>
+          <h2 class="section-title">Everything Homeowners Ask Before Getting Started</h2>
+        </header>
+        <div class="faq__list">
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>How quickly will someone contact me after I submit a ticket?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Most tickets receive a response within one business day, often sooner. Your submission is sent directly to our intake queue and prioritized by project type.</p>
+            </div>
+          </article>
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>Do you handle both design and construction in-house?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Yes. We manage design, planning, and construction as one coordinated team, so your project stays aligned from concept through final walkthrough.</p>
+            </div>
+          </article>
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>What budget range is typical for your projects?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Projects vary widely based on scope. The ticket form includes budget ranges so we can align recommendations and create an accurate plan from the start.</p>
+            </div>
+          </article>
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>Can you design specifically for water efficiency and low maintenance?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Absolutely. We specialize in Sonoran-adapted planting palettes, efficient irrigation, and materials that perform well in Arizona heat while staying visually exceptional.</p>
+            </div>
+          </article>
+          <article class="faq-item reveal">
+            <button class="faq__question" type="button" aria-expanded="false">
+              <span>Do you provide warranties?</span>
+              <span class="faq__icon" aria-hidden="true">+</span>
+            </button>
+            <div class="faq__answer">
+              <p>Yes. We provide workmanship and material warranty coverage, and we review warranty details with you at project handoff for complete clarity.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
          CONTACT — Split dark / light panel
     ============================================================ -->
     <section class="contact" id="contact">
@@ -540,6 +707,12 @@
         <div class="contact__form-wrap">
           <form class="contact__form" id="contact-form" name="project-ticket" method="POST" data-netlify="true" netlify-honeypot="bot-field" novalidate>
             <h3 class="contact__form-title">Submit a Project Ticket</h3>
+            <div class="ticket-progress" aria-live="polite">
+              <div class="ticket-progress__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <span id="ticket-progress-fill"></span>
+              </div>
+              <p class="ticket-progress__text" id="ticket-progress-text">0% complete</p>
+            </div>
 
             <input type="hidden" name="form-name" value="project-ticket" />
             <p class="hidden-field">
@@ -548,6 +721,10 @@
             <input type="hidden" id="ticket-id" name="ticket_id" value="" />
             <input type="hidden" id="submitted-at" name="submitted_at" value="" />
             <input type="hidden" id="page-url" name="page_url" value="" />
+            <input type="hidden" id="lead-source" name="lead_source" value="website-ticket" />
+            <input type="hidden" id="utm-source" name="utm_source" value="" />
+            <input type="hidden" id="utm-medium" name="utm_medium" value="" />
+            <input type="hidden" id="utm-campaign" name="utm_campaign" value="" />
 
             <div class="form-row">
               <div class="form-field">
@@ -639,6 +816,11 @@
             <h3>Your ticket was submitted.</h3>
             <p>A member of our team will reach out within one business day to schedule your complimentary consultation.</p>
             <p class="ticket-ref">Ticket ID: <strong id="ticket-reference">Pending</strong></p>
+            <ul class="success-next-steps">
+              <li>Watch for a call, text, or email from our team.</li>
+              <li>Have inspiration photos ready for your consultation.</li>
+              <li>Reference your ticket ID for any follow-up.</li>
+            </ul>
           </div>
         </div>
 
@@ -680,6 +862,7 @@
           <li><a href="#process">Our Process</a></li>
           <li><a href="#portfolio">Portfolio</a></li>
           <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#faq">FAQ</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div>

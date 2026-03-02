@@ -159,6 +159,35 @@
   });
   if (testimonials.length > 1) startTl();
 
+  /* ---- FAQ ACCORDION ---- */
+  var faqButtons = document.querySelectorAll('.faq__question');
+  faqButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = this.closest('.faq-item');
+      if (!item) return;
+      var willOpen = !item.classList.contains('is-open');
+
+      faqButtons.forEach(function (otherBtn) {
+        var otherItem = otherBtn.closest('.faq-item');
+        if (!otherItem) return;
+        otherItem.classList.remove('is-open');
+        otherBtn.setAttribute('aria-expanded', 'false');
+      });
+
+      if (willOpen) {
+        item.classList.add('is-open');
+        this.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+  if (faqButtons.length) {
+    var firstFaqItem = faqButtons[0].closest('.faq-item');
+    if (firstFaqItem) {
+      firstFaqItem.classList.add('is-open');
+      faqButtons[0].setAttribute('aria-expanded', 'true');
+    }
+  }
+
   /* ---- CONTACT FORM ---- */
   var form            = document.getElementById('contact-form');
   var success         = document.getElementById('form-success');
@@ -166,7 +195,15 @@
   var ticketInput     = document.getElementById('ticket-id');
   var submittedAt     = document.getElementById('submitted-at');
   var pageUrl         = document.getElementById('page-url');
+  var serviceInput    = document.getElementById('service');
+  var messageInput    = document.getElementById('message');
+  var utmSourceInput  = document.getElementById('utm-source');
+  var utmMediumInput  = document.getElementById('utm-medium');
+  var utmCampaignInput= document.getElementById('utm-campaign');
   var ticketReference = document.getElementById('ticket-reference');
+  var progressBar     = document.querySelector('.ticket-progress__bar');
+  var progressFill    = document.getElementById('ticket-progress-fill');
+  var progressText    = document.getElementById('ticket-progress-text');
 
   function encodeFormData(data) {
     return Object.keys(data)
@@ -180,7 +217,39 @@
     return 'TG-' + stamp + '-' + rand;
   }
 
+  function updateFormProgress() {
+    if (!form || !progressFill || !progressText || !progressBar) return;
+    var required = Array.from(form.querySelectorAll('[required]'));
+    var filled = required.filter(function (field) { return field.value.trim() !== ''; }).length;
+    var percent = required.length ? Math.round((filled / required.length) * 100) : 0;
+    progressFill.style.width = percent + '%';
+    progressText.textContent = percent + '% complete';
+    progressBar.setAttribute('aria-valuenow', String(percent));
+  }
+
   if (form) {
+    var params = new URLSearchParams(window.location.search);
+    if (utmSourceInput) utmSourceInput.value = params.get('utm_source') || '';
+    if (utmMediumInput) utmMediumInput.value = params.get('utm_medium') || '';
+    if (utmCampaignInput) utmCampaignInput.value = params.get('utm_campaign') || '';
+
+    var fitButtons = document.querySelectorAll('[data-service-choice]');
+    fitButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var choice = this.getAttribute('data-service-choice');
+        if (serviceInput && choice) {
+          serviceInput.value = choice;
+          serviceInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        if (messageInput && choice && !messageInput.value.trim()) {
+          messageInput.value = 'Interested in ' + choice + '. Please contact me about next steps.';
+          messageInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        var contactSection = document.getElementById('contact');
+        if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
     /* Phone format */
     var phoneInput = document.getElementById('phone');
     if (phoneInput) {
@@ -250,8 +319,13 @@
     });
 
     form.querySelectorAll('input, select, textarea').forEach(function (f) {
-      f.addEventListener('input', function () { this.style.borderColor = ''; });
+      f.addEventListener('input', function () {
+        this.style.borderColor = '';
+        updateFormProgress();
+      });
+      f.addEventListener('change', updateFormProgress);
     });
+    updateFormProgress();
   }
 
 })();
