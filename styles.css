@@ -196,38 +196,27 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .nav__logo {
   display: flex;
   align-items: center;
-  gap: .75rem;
   text-decoration: none;
-}
-.nav__logo-mark {
-  width: 36px;
-  height: 36px;
-  color: var(--green);
   flex-shrink: 0;
-  transition: color .2s;
 }
-.nav__logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
+.nav__logo-img {
+  height: 52px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  /* White filter on transparent/hero nav so logo shows over dark images */
+  filter: brightness(0) invert(1);
+  transition: filter .3s var(--ease);
 }
-.nav__logo-name {
-  font-family: var(--font-head);
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: var(--white);
-  transition: color .3s;
+.nav.is-scrolled .nav__logo-img {
+  /* Full color when nav is white (scrolled) */
+  filter: none;
 }
-.nav__logo-sub {
-  font-size: .625rem;
-  font-weight: 400;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.6);
-  transition: color .3s;
+.nav__logo-img--footer {
+  height: 70px;
+  /* White filter on dark footer background */
+  filter: brightness(0) invert(1);
 }
-.nav.is-scrolled .nav__logo-name { color: var(--ink); }
-.nav.is-scrolled .nav__logo-sub  { color: var(--ink-faint); }
 
 /* Nav links */
 .nav__links {
@@ -1213,8 +1202,6 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   padding-bottom: 4rem;
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
-.footer__brand .nav__logo-name { color: var(--white); font-size: 1.125rem; }
-.footer__brand .nav__logo-sub  { color: rgba(255,255,255,.4); }
 .footer__brand > p {
   font-size: .875rem;
   color: rgba(255,255,255,.45);
