@@ -193,13 +193,23 @@
   var success         = document.getElementById('form-success');
   var errorMessage    = document.getElementById('form-error');
   var ticketInput     = document.getElementById('ticket-id');
-  var submittedAt     = document.getElementById('submitted-at');
-  var pageUrl         = document.getElementById('page-url');
+  var submittedLocal  = document.getElementById('submitted-local');
+  var ownerSummary    = document.getElementById('owner-summary');
+  var ownerPriority   = document.getElementById('owner-priority');
+  var ownerContact    = document.getElementById('owner-contact-card');
+  var ownerProject    = document.getElementById('owner-project-snapshot');
+  var ownerTracking   = document.getElementById('owner-tracking');
   var serviceInput    = document.getElementById('service');
+  var firstNameInput  = document.getElementById('fname');
+  var lastNameInput   = document.getElementById('lname');
+  var emailInput      = document.getElementById('email');
+  var phoneInput      = document.getElementById('phone');
+  var cityInput       = document.getElementById('city');
+  var addressInput    = document.getElementById('property_address');
+  var budgetInput     = document.getElementById('budget');
+  var timelineInput   = document.getElementById('timeline');
+  var contactMethod   = document.getElementById('contact_method');
   var messageInput    = document.getElementById('message');
-  var utmSourceInput  = document.getElementById('utm-source');
-  var utmMediumInput  = document.getElementById('utm-medium');
-  var utmCampaignInput= document.getElementById('utm-campaign');
   var ticketReference = document.getElementById('ticket-reference');
   var progressBar     = document.querySelector('.ticket-progress__bar');
   var progressFill    = document.getElementById('ticket-progress-fill');
@@ -217,6 +227,31 @@
     return 'TG-' + stamp + '-' + rand;
   }
 
+  function formatPhoenixDateTime(date) {
+    return new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Phoenix',
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+      timeZoneName: 'short'
+    }).format(date);
+  }
+
+  function getPriority(budget, timeline) {
+    if (timeline === 'ASAP' || timeline === 'Within 30 days' || budget === '$100,000+') return 'High Priority';
+    if (budget === '$50,000 - $100,000' || timeline === '1-3 months') return 'Qualified Opportunity';
+    return 'Standard Intake';
+  }
+
+  function valueOrFallback(input, fallback) {
+    if (!input) return fallback;
+    return input.value && input.value.trim() ? input.value.trim() : fallback;
+  }
+
   function updateFormProgress() {
     if (!form || !progressFill || !progressText || !progressBar) return;
     var required = Array.from(form.querySelectorAll('[required]'));
@@ -229,9 +264,9 @@
 
   if (form) {
     var params = new URLSearchParams(window.location.search);
-    if (utmSourceInput) utmSourceInput.value = params.get('utm_source') || '';
-    if (utmMediumInput) utmMediumInput.value = params.get('utm_medium') || '';
-    if (utmCampaignInput) utmCampaignInput.value = params.get('utm_campaign') || '';
+    var utmSource = params.get('utm_source') || '';
+    var utmMedium = params.get('utm_medium') || '';
+    var utmCampaign = params.get('utm_campaign') || '';
 
     var fitButtons = document.querySelectorAll('[data-service-choice]');
     fitButtons.forEach(function (btn) {
@@ -251,7 +286,6 @@
     });
 
     /* Phone format */
-    var phoneInput = document.getElementById('phone');
     if (phoneInput) {
       phoneInput.addEventListener('input', function () {
         var v = this.value.replace(/\D/g, '');
@@ -282,9 +316,57 @@
       }
 
       var ticketId = createTicketId();
+      var submittedDate = new Date();
+      var submittedLocalTime = formatPhoenixDateTime(submittedDate);
+      var fullName = (valueOrFallback(firstNameInput, '') + ' ' + valueOrFallback(lastNameInput, '')).trim();
+      var service = valueOrFallback(serviceInput, 'Not selected');
+      var budget = valueOrFallback(budgetInput, 'Not selected');
+      var timeline = valueOrFallback(timelineInput, 'Not selected');
+      var priority = getPriority(budget, timeline);
+      var preferredContact = valueOrFallback(contactMethod, 'Not selected');
+      var projectCity = valueOrFallback(cityInput, 'Not provided');
+      var projectAddress = valueOrFallback(addressInput, 'Not provided');
+      var vision = valueOrFallback(messageInput, 'No project details provided.');
+      var email = valueOrFallback(emailInput, 'Not provided');
+      var phone = valueOrFallback(phoneInput, 'Not provided');
+
       if (ticketInput) ticketInput.value = ticketId;
-      if (submittedAt) submittedAt.value = new Date().toISOString();
-      if (pageUrl) pageUrl.value = window.location.href;
+      if (submittedLocal) submittedLocal.value = submittedLocalTime;
+      if (ownerPriority) ownerPriority.value = priority;
+      if (ownerSummary) {
+        ownerSummary.value = [
+          'New project ticket submitted.',
+          'Priority: ' + priority,
+          'Requested service: ' + service,
+          'Budget / Timeline: ' + budget + ' / ' + timeline
+        ].join('\n');
+      }
+      if (ownerContact) {
+        ownerContact.value = [
+          'Client: ' + (fullName || 'Not provided'),
+          'Email: ' + email,
+          'Phone: ' + phone,
+          'Preferred contact: ' + preferredContact
+        ].join('\n');
+      }
+      if (ownerProject) {
+        ownerProject.value = [
+          'Ticket ID: ' + ticketId,
+          'Submitted (Phoenix): ' + submittedLocalTime,
+          'Project location: ' + projectAddress + ', ' + projectCity,
+          'Project vision:',
+          vision
+        ].join('\n');
+      }
+      if (ownerTracking) {
+        ownerTracking.value = [
+          'Lead source: website-ticket',
+          'Page URL: ' + window.location.href,
+          'UTM source: ' + (utmSource || 'n/a'),
+          'UTM medium: ' + (utmMedium || 'n/a'),
+          'UTM campaign: ' + (utmCampaign || 'n/a')
+        ].join('\n');
+      }
 
       var btn = form.querySelector('[type="submit"]');
       var defaultBtnText = btn.textContent;

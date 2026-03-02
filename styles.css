@@ -189,7 +189,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   max-width: 1160px;
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 5vw, 2.5rem);
-  height: 76px;
+  height: 88px;
 }
 
 /* Logo */
@@ -200,7 +200,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   flex-shrink: 0;
 }
 .nav__logo-img {
-  height: 52px;
+  height: 64px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -213,7 +213,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   filter: none;
 }
 .nav__logo-img--footer {
-  height: 70px;
+  height: 84px;
   /* White filter on dark footer background */
   filter: brightness(0) invert(1);
 }
@@ -226,7 +226,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .nav__link {
   padding: .5rem 1rem;
-  font-size: .875rem;
+  font-size: .9rem;
   font-weight: 500;
   color: rgba(255,255,255,.85);
   border-radius: var(--r-sm);
@@ -393,7 +393,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   margin-bottom: 1.5rem;
 }
 .hero__sub {
-  font-size: clamp(.9375rem, 1.5vw, 1.125rem);
+  font-size: clamp(1rem, 1.55vw, 1.16rem);
   color: rgba(255,255,255,.78);
   max-width: 520px;
   line-height: 1.72;
@@ -570,7 +570,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   line-height: 1.2;
 }
 .feature-strip__body p {
-  font-size: 1rem;
+  font-size: 1.02rem;
   color: var(--ink-light);
   line-height: 1.75;
   margin-bottom: 1.75rem;
@@ -1641,6 +1641,15 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 @media (max-width: 768px) {
   .nav__links { display: none; }
   .nav__burger { display: flex; }
+  .nav__inner {
+    height: 78px;
+  }
+  .nav__logo-img {
+    height: 56px;
+  }
+  .nav__logo-img--footer {
+    height: 74px;
+  }
   .hero__credibility {
     grid-template-columns: 1fr;
     max-width: 420px;
@@ -1676,6 +1685,9 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 
 @media (max-width: 480px) {
   .hero__heading { font-size: clamp(2.75rem, 12vw, 3.5rem); }
+  .hero__sub {
+    font-size: 1rem;
+  }
   .hero__actions { flex-direction: column; }
   .hero__actions .btn { text-align: center; justify-content: center; }
   .about__badge { bottom: 1rem; left: 1rem; padding: 1rem; }
