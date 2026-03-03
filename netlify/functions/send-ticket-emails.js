@@ -32,17 +32,22 @@ function cleanupProcessedKeys(now = Date.now()) {
   }
 }
 
-function buildDedupeKey(submission, normalized) {
-  if (submission && submission.id) return `submission:${submission.id}`;
-  if (submission && submission.number) return `submission-number:${submission.number}`;
-  return `ticket:${normalized.ticket_id}:client:${normalized.email.toLowerCase()}`;
+function buildDedupeKeys(submission, normalized) {
+  const keys = [];
+
+  if (submission && submission.id) keys.push(`submission:${submission.id}`);
+  if (submission && submission.number) keys.push(`submission-number:${submission.number}`);
+
+  keys.push(`ticket:${normalized.ticket_id}:client:${normalized.email.toLowerCase()}`);
+  return keys;
 }
 
-function shouldSkipDuplicate(key) {
+function shouldSkipDuplicate(keys) {
   const now = Date.now();
   cleanupProcessedKeys(now);
-  if (processedKeys.has(key)) return true;
-  processedKeys.set(key, now);
+
+  if (keys.some((key) => processedKeys.has(key))) return true;
+  keys.forEach((key) => processedKeys.set(key, now));
   return false;
 }
 
@@ -492,8 +497,8 @@ exports.handler = async (event) => {
       ...normalized
     };
 
-    const dedupeKey = buildDedupeKey(submission, normalized);
-    if (shouldSkipDuplicate(dedupeKey)) {
+    const dedupeKeys = buildDedupeKeys(submission, normalized);
+    if (shouldSkipDuplicate(dedupeKeys)) {
       return {
         statusCode: 200,
         body: JSON.stringify({
