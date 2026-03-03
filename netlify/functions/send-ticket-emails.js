@@ -6,6 +6,7 @@ const OWNER_EMAIL = process.env.OWNER_EMAIL || 'carsonweso@icloud.com';
 const FROM_EMAIL = process.env.FROM_EMAIL || '';
 const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || '';
 const EMAIL_PROVIDER = String(process.env.EMAIL_PROVIDER || 'resend').toLowerCase();
+const OWNER_EMAIL_PROVIDER = String(process.env.OWNER_EMAIL_PROVIDER || 'smtp').toLowerCase();
 
 const SMTP_HOST = process.env.SMTP_HOST || 'smtp.gmail.com';
 const SMTP_PORT = Number(process.env.SMTP_PORT || '465');
@@ -145,7 +146,21 @@ function configuredProvider() {
   return 'resend';
 }
 
-function resolveEmailProvider() {
+function resolveEmailProvider(preferredProvider = '') {
+  const preferred = String(preferredProvider || '').toLowerCase();
+
+  if (preferred === 'smtp') {
+    if (hasSmtpCredentials()) return 'smtp';
+    if (hasResendCredentials()) return 'resend';
+    return 'none';
+  }
+
+  if (preferred === 'resend') {
+    if (hasResendCredentials()) return 'resend';
+    if (hasSmtpCredentials()) return 'smtp';
+    return 'none';
+  }
+
   const provider = configuredProvider();
 
   if (provider === 'auto') {
@@ -351,7 +366,7 @@ async function sendViaResend({ to, subject, html, replyTo }) {
 }
 
 async function sendEmail(args) {
-  const provider = resolveEmailProvider();
+  const provider = resolveEmailProvider(args.preferredProvider);
 
   if (provider === 'resend') {
     try {
@@ -503,7 +518,8 @@ exports.handler = async (event) => {
         to: OWNER_EMAIL,
         subject: ownerSubject,
         html: ownerHtml,
-        replyTo: normalized.email !== 'Not provided' ? normalized.email : undefined
+        replyTo: normalized.email !== 'Not provided' ? normalized.email : undefined,
+        preferredProvider: OWNER_EMAIL_PROVIDER
       })
     ];
 
@@ -543,6 +559,7 @@ exports.handler = async (event) => {
         ticket_id: ticketId,
         provider: emailResults.find((result) => result && result.provider)?.provider || resolveEmailProvider(),
         provider_config: configuredProvider(),
+        owner_provider_preference: OWNER_EMAIL_PROVIDER,
         from_email_used: getFromEmail(resolveEmailProvider()),
         email_results: emailResults,
         sheets_result: sheetsResult
