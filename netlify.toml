@@ -2,6 +2,13 @@
   publish = "."
   command = ""
 
+[build.environment]
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+
+[functions]
+  directory = "netlify/functions"
+  included_files = ["emails/**"]
+
 [[headers]]
   for = "/*"
   [headers.values]

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Think Green – New Project Ticket</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font-smoothing:antialiased;}
+.email-wrap{max-width:580px;margin:0 auto;background:#f5f0e8;}
+
+/* HEADER */
+.header{background:#0f2a18;padding:36px 48px;display:flex;align-items:center;gap:20px;border-bottom:3px solid #1b4728;}
+.header-logo{width:64px;height:64px;object-fit:contain;flex-shrink:0;}
+.header-text{}
+.header-tag{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#4a8c5c;font-weight:600;margin-bottom:4px;}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:#f5f0e8;line-height:1.2;}
+
+/* ALERT BANNER */
+.alert-banner{background:#1b4728;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;}
+.alert-left{font-size:12px;color:#a8c9b0;letter-spacing:0.06em;}
+.alert-left strong{color:#f5f0e8;display:block;font-size:13px;font-weight:600;margin-bottom:2px;}
+.priority-badge{padding:6px 16px;border-radius:2px;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;}
+.p-high{background:#fef3c7;color:#92400e;}
+.p-medium{background:#d1fae5;color:#065f46;}
+.p-low{background:#e0e7ff;color:#3730a3;}
+
+/* MAIN */
+.main{background:#fff;}
+
+/* CONTACT CARD */
+.contact-card{padding:32px 48px;border-bottom:1px solid #eae4da;}
+.card-head{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#1b4728;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.card-head::after{content:'';flex:1;height:1px;background:#e0d9cd;}
+.contact-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:#0f2a18;margin-bottom:4px;}
+.contact-location{font-size:13px;color:#7a7570;margin-bottom:20px;}
+.contact-links{display:flex;gap:12px;flex-wrap:wrap;}
+.contact-link{display:inline-flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #d9d2c6;border-radius:3px;padding:8px 14px;font-size:12.5px;color:#1b4728;text-decoration:none;font-weight:500;}
+.contact-link svg{width:14px;height:14px;}
+
+/* PROJECT DETAILS */
+.project-section{padding:32px 48px;border-bottom:1px solid #eae4da;}
+.detail-table{width:100%;border-collapse:collapse;}
+.detail-table tr{border-bottom:1px solid #f0ece4;}
+.detail-table tr:last-child{border-bottom:none;}
+.detail-table td{padding:12px 0;vertical-align:top;}
+.detail-table td:first-child{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#9a9590;width:38%;padding-right:16px;}
+.detail-table td:last-child{font-size:13.5px;color:#1a1a1a;}
+
+/* VISION */
+.vision-section{background:#f5f0e8;padding:28px 48px;border-bottom:1px solid #e0d9cd;}
+.vision-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#1b4728;font-weight:600;margin-bottom:12px;}
+.vision-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#2a2a2a;line-height:1.75;border-left:3px solid #1b4728;padding-left:18px;}
+
+/* OWNER INTEL */
+.intel-section{background:#0f2a18;padding:32px 48px;}
+.intel-head{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#4a8c5c;font-weight:600;margin-bottom:6px;}
+.intel-id{font-family:'Cormorant Garamond',serif;font-size:20px;color:#f5f0e8;margin-bottom:18px;}
+.intel-summary-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#4a8c5c;font-weight:600;margin-bottom:10px;}
+.intel-summary{font-size:13.5px;color:#b8d4bc;line-height:1.75;}
+.intel-divider{height:1px;background:#1e3a27;margin:20px 0;}
+.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.intel-cell{}
+.intel-cell-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#4a8c5c;margin-bottom:4px;}
+.intel-cell-val{font-size:13px;color:#d8edd9;font-weight:400;}
+
+/* QUICK ACTIONS */
+.actions-section{background:#fff;padding:28px 48px;display:flex;gap:12px;flex-wrap:wrap;}
+.action-btn{flex:1;min-width:140px;text-align:center;padding:12px 20px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-radius:2px;}
+.action-primary{background:#1b4728;color:#f5f0e8 !important;}
+.action-secondary{background:#f5f0e8;color:#1b4728 !important;border:1px solid #d0c9be;}
+
+/* FOOTER */
+.footer{background:#0a0a0a;padding:24px 48px;text-align:center;}
+.footer p{font-size:11px;color:#444;line-height:1.8;}
+.footer a{color:#4a8c5c;text-decoration:none;}
+
+@media(max-width:600px){
+  .header,.alert-banner,.contact-card,.project-section,.vision-section,.intel-section,.actions-section,.footer{padding-left:22px;padding-right:22px;}
+  .header{flex-direction:column;align-items:flex-start;gap:12px;}
+  .header-logo{width:76px;height:76px;}
+  .contact-name{font-size:24px;line-height:1.2;}
+  .contact-links{flex-direction:column;align-items:stretch;}
+  .contact-link{width:100%;}
+  .detail-table td:first-child{display:block;width:100%;padding-bottom:4px;}
+  .detail-table td:last-child{display:block;padding-top:0;padding-bottom:12px;}
+  .intel-grid{grid-template-columns:1fr;}
+  .actions-section{flex-direction:column;}
+  .action-btn{width:100%;}
+}
+</style>
+</head>
+<body>
+<div class="email-wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <img class="header-logo" src="https://thinkgreen-az.netlify.app/img/logo.png" alt="Think Green"/>
+    <div class="header-text">
+      <div class="header-tag">New Inbound Ticket</div>
+      <div class="header-title">Project Request Received</div>
+    </div>
+  </div>
+
+  <!-- ALERT BANNER -->
+  <div class="alert-banner">
+    <div class="alert-left">
+      <strong>Ticket #{{submission.data.ticket_id}}</strong>
+      {{submission.data.submitted_local}}
+    </div>
+    <span class="priority-badge p-high">{{submission.data.owner_priority}}</span>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- CONTACT CARD -->
+    <div class="contact-card">
+      <div class="card-head">Client</div>
+      <div class="contact-name">{{submission.data.first_name}} {{submission.data.last_name}}</div>
+      <div class="contact-location">{{submission.data.project_address}}, {{submission.data.city}}</div>
+      <div class="contact-links">
+        <a href="tel:{{submission.data.phone}}" class="contact-link">
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 2h3l1.5 3.5-1.5 1a8 8 0 004 4l1-1.5L13 10.5v3A1 1 0 0112 14C6.5 14 0 7.5 0 2a1 1 0 011-1h1z" fill="#1b4728"/></svg>
+          {{submission.data.phone}}
+        </a>
+        <a href="mailto:{{submission.data.email}}" class="contact-link">
+          <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1" stroke="#1b4728" stroke-width="1.2"/><path d="M1 4l6 4 6-4" stroke="#1b4728" stroke-width="1.2"/></svg>
+          {{submission.data.email}}
+        </a>
+      </div>
+    </div>
+
+    <!-- PROJECT DETAILS -->
+    <div class="project-section">
+      <div class="card-head">Project Details</div>
+      <table class="detail-table">
+        <tr><td>Service</td><td>{{submission.data.service}}</td></tr>
+        <tr><td>Budget Range</td><td>{{submission.data.budget}}</td></tr>
+        <tr><td>Start Timeline</td><td>{{submission.data.start_timeline}}</td></tr>
+        <tr><td>Contact Method</td><td>{{submission.data.preferred_contact}}</td></tr>
+        <tr><td>Project Address</td><td>{{submission.data.project_address}}, {{submission.data.city}}</td></tr>
+      </table>
+    </div>
+
+    <!-- VISION -->
+    <div class="vision-section">
+      <div class="vision-label">Client Vision</div>
+      <div class="vision-text">"{{submission.data.vision}}"</div>
+    </div>
+
+    <!-- OWNER INTEL -->
+    <div class="intel-section">
+      <div class="intel-head">Owner Intelligence</div>
+      <div class="intel-id">Ticket #{{submission.data.ticket_id}}</div>
+
+      <div class="intel-summary-label">AI Summary</div>
+      <div class="intel-summary">{{submission.data.owner_summary}}</div>
+
+      <div class="intel-divider"></div>
+
+      <div class="intel-grid">
+        <div class="intel-cell">
+          <div class="intel-cell-label">Priority</div>
+          <div class="intel-cell-val">{{submission.data.owner_priority}}</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Submitted</div>
+          <div class="intel-cell-val">{{submission.data.submitted_local}}</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Budget Signal</div>
+          <div class="intel-cell-val">{{submission.data.budget}}</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Urgency</div>
+          <div class="intel-cell-val">{{submission.data.start_timeline}}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="actions-section">
+      <a href="tel:{{submission.data.phone}}" class="action-btn action-primary">Call Client</a>
+      <a href="mailto:{{submission.data.email}}" class="action-btn action-secondary">Email Client</a>
+      <a href="https://thinkgreen-az.netlify.app" class="action-btn action-secondary">Dashboard</a>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Think Green Landscape — Owner Notification<br/>
+    <a href="https://thinkgreen-az.netlify.app">thinkgreen-az.netlify.app</a> · Scottsdale, AZ<br/>
+    <span style="color:#333;font-size:10px;">This email is for internal use only.</span></p>
+  </div>
+
+</div>
+</body>
+</html>
