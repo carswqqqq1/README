@@ -259,8 +259,37 @@ async function sendViaResend({ to, subject, html, replyTo }) {
 async function sendEmail(args) {
   const provider = resolveEmailProvider();
 
-  if (provider === 'resend') return sendViaResend(args);
-  if (provider === 'smtp') return sendViaSmtp(args);
+  if (provider === 'resend') {
+    try {
+      return await sendViaResend(args);
+    } catch (err) {
+      if (hasSmtpCredentials()) {
+        const smtpResult = await sendViaSmtp(args);
+        return {
+          ...smtpResult,
+          fallback_from: 'resend',
+          fallback_reason: String(err && err.message ? err.message : err)
+        };
+      }
+      throw err;
+    }
+  }
+
+  if (provider === 'smtp') {
+    try {
+      return await sendViaSmtp(args);
+    } catch (err) {
+      if (hasResendCredentials()) {
+        const resendResult = await sendViaResend(args);
+        return {
+          ...resendResult,
+          fallback_from: 'smtp',
+          fallback_reason: String(err && err.message ? err.message : err)
+        };
+      }
+      throw err;
+    }
+  }
 
   return {
     skipped: true,
@@ -390,12 +419,22 @@ exports.handler = async (event) => {
     }
 
     const [emailResults, sheetsResult] = await Promise.all([
-      Promise.all(emailTasks),
+      Promise.all(
+        emailTasks.map((task) => task.catch((err) => ({
+          ok: false,
+          error: String(err && err.message ? err.message : err)
+        })))
+      ),
       sendToGoogleSheets(normalized, {
         created_at: createdAt,
         page_url: pageUrl
       }).catch((err) => ({ ok: false, error: err.message }))
     ]);
+
+    const emailFailures = emailResults.filter((result) => result && result.ok === false);
+    if (emailFailures.length === emailResults.length) {
+      throw new Error(emailFailures.map((result) => result.error).join(' | '));
+    }
 
     return {
       statusCode: 200,
