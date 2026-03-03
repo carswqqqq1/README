@@ -13,11 +13,9 @@ body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
 a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font-size:inherit !important;font-family:inherit !important;font-weight:inherit !important;line-height:inherit !important;}
 
 /* HEADER */
-.header{background:#1b4728;padding:44px 44px 38px;text-align:center;position:relative;overflow:hidden;}
-.header::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.03);pointer-events:none;}
-.header::after{content:'';position:absolute;bottom:-80px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.02);pointer-events:none;}
-.logo-badge{display:inline-block;padding:8px;border-radius:999px;background:rgba(255,255,255,0.06);margin-bottom:14px;position:relative;z-index:1;}
-.logo-img{width:104px;height:104px;object-fit:contain;display:block;}
+.header{background:#1b4728;padding:40px 44px 34px;text-align:center;position:relative;overflow:hidden;}
+.logo-badge{display:inline-flex;align-items:center;justify-content:center;padding:10px;border-radius:999px;background:#ffffff;border:1px solid rgba(255,255,255,.55);box-shadow:0 8px 24px rgba(0,0,0,.16);margin-bottom:13px;position:relative;z-index:1;}
+.logo-img{width:96px;height:96px;object-fit:contain;display:block;}
 .header-tag{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#7ab88a;font-weight:500;margin-bottom:10px;}
 .header-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:600;color:#f5f0e8;line-height:1.15;position:relative;z-index:1;}
 .header-sub{font-size:13px;color:#a8c9b0;margin-top:8px;font-weight:300;letter-spacing:0.04em;}
@@ -31,8 +29,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .intro-text{font-size:14px;line-height:1.85;color:#505050;margin-bottom:0;}
 
 /* CONFIRMATION BADGE */
-.badge-strip{background:#f5f0e8;border-top:1px solid #e0d9cd;border-bottom:1px solid #e0d9cd;padding:20px 44px;display:flex;align-items:center;gap:18px;}
-.badge-icon{width:42px;height:42px;background:#1b4728;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.badge-strip{background:#f5f0e8;border-top:1px solid #e0d9cd;border-bottom:1px solid #e0d9cd;padding:18px 44px;display:flex;align-items:center;gap:14px;}
+.badge-icon{width:30px;height:30px;border:2px solid #1b4728;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;}
 .badge-icon svg{width:20px;height:20px;}
 .badge-text{flex:1;}
 .badge-text strong{display:block;font-size:13px;font-weight:600;color:#1b4728;letter-spacing:0.04em;margin-bottom:2px;}
@@ -42,11 +40,11 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .next-section{background:#fff;padding:36px 48px;}
 .section-head{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#1b4728;font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:12px;}
 .section-head::after{content:'';flex:1;height:1px;background:#e8e2d8;}
-.steps{display:block;}
-.step{display:table;width:100%;table-layout:fixed;padding:16px 0;border-bottom:1px solid #f0ece4;}
+.steps{display:grid;gap:.1rem;}
+.step{display:flex;align-items:flex-start;gap:12px;padding:15px 0;border-bottom:1px solid #f0ece4;}
 .step:last-child{border-bottom:none;}
-.step-num{display:table-cell;width:32px;height:28px;background:#1b4728;border-radius:50%;color:#f5f0e8;font-size:11px;font-weight:600;text-align:center;line-height:28px;vertical-align:top;}
-.step-body{display:table-cell;vertical-align:top;padding-left:14px;}
+.step-num{width:26px;height:26px;flex:0 0 26px;background:#1b4728;border-radius:50%;color:#f5f0e8;font-size:12px;font-weight:700;text-align:center;line-height:26px;margin-top:2px;}
+.step-body{flex:1;padding-left:0;}
 .step-body strong{display:block;font-size:13.5px;font-weight:600;color:#1a1a1a;margin-bottom:3px;}
 .step-body p{font-size:13px;color:#666;line-height:1.6;}
 
@@ -72,7 +70,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 
 /* FOOTER */
 .footer{background:#111;padding:32px 48px;text-align:center;}
-.footer-logo{width:52px;height:52px;object-fit:contain;opacity:0.9;margin-bottom:14px;}
+.footer-logo-wrap{display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:999px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.28);margin-bottom:14px;}
+.footer-logo{width:50px;height:50px;object-fit:contain;opacity:1;}
 .footer p{font-size:11px;color:#555;line-height:1.9;}
 .footer a{color:#4a8c5c;text-decoration:none;}
 .footer-divider{width:32px;height:1px;background:#2a2a2a;margin:14px auto;}
@@ -82,16 +81,18 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
   .header,.intro-panel,.next-section,.summary-section,.vision-section,.cta-section,.footer{padding-left:20px;padding-right:20px;}
   .badge-strip{padding:16px 22px;align-items:flex-start;}
   .header-title{font-size:26px;line-height:1.2;}
-  .logo-badge{padding:6px;margin-bottom:12px;}
-  .logo-img{width:88px;height:88px;}
+  .logo-badge{padding:8px;margin-bottom:12px;}
+  .logo-img{width:84px;height:84px;}
   .summary-row{display:block;padding:14px 16px;}
   .summary-key,.summary-val{display:block;width:100%;}
   .summary-key{padding-right:0;padding-bottom:4px;}
-  .step{gap:12px;}
-  .step-num{width:24px;height:24px;font-size:10px;line-height:24px;}
-  .step-body{padding-left:10px;}
+  .step{gap:10px;}
+  .step-num{width:24px;height:24px;flex-basis:24px;font-size:10px;line-height:24px;margin-top:3px;}
+  .step-body{padding-left:0;}
   .vision-quote{font-size:17px;line-height:1.6;padding-left:14px;}
   .cta-btn{display:block;width:100%;}
+  .footer-logo-wrap{width:66px;height:66px;}
+  .footer-logo{width:46px;height:46px;}
   .safe-pad{height:88px;}
 }
 </style>
@@ -102,7 +103,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 
   <!-- HEADER -->
   <div class="header">
-    <span class="logo-badge"><img class="logo-img" src="https://thinkgreen-az.netlify.app/img/logo-alt.png" alt="Think Green" width="104" height="104"/></span>
+    <span class="logo-badge"><img class="logo-img" src="https://thinkgreen-az.netlify.app/img/logo.png" alt="Think Green" width="96" height="96"/></span>
     <div class="header-tag">Project Confirmation</div>
     <h1 class="header-title">We've Got Your Ticket.</h1>
     <p class="header-sub">Submitted {{submission.data.submitted_local}}</p>
@@ -186,7 +187,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 
   <!-- FOOTER -->
   <div class="footer">
-    <img class="footer-logo" src="https://thinkgreen-az.netlify.app/img/logo-alt.png" alt="Think Green" width="52" height="52"/>
+    <span class="footer-logo-wrap"><img class="footer-logo" src="https://thinkgreen-az.netlify.app/img/logo.png" alt="Think Green" width="50" height="50"/></span>
     <div class="footer-divider"></div>
     <p>Think Green Landscape &nbsp;·&nbsp; Scottsdale, AZ<br/>
     <a href="https://thinkgreen-az.netlify.app">thinkgreen-az.netlify.app</a><br/>
