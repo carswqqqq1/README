@@ -9,6 +9,8 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;}
 .email-wrap{max-width:580px;margin:0 auto;background:#f5f0e8;}
+.preheader{display:none !important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;line-height:1px;font-size:1px;}
+a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font-size:inherit !important;font-family:inherit !important;font-weight:inherit !important;line-height:inherit !important;}
 
 /* HEADER */
 .header{background:#0f2a18;padding:34px 44px;display:flex;align-items:center;gap:20px;border-bottom:3px solid #1b4728;}
@@ -95,6 +97,7 @@ body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
 </style>
 </head>
 <body>
+<div class="preheader">New Think Green ticket {{submission.data.ticket_id}} ({{submission.data.owner_priority}} priority).</div>
 <div class="email-wrap">
 
   <!-- HEADER -->
@@ -167,6 +170,10 @@ body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
         <div class="intel-cell">
           <div class="intel-cell-label">Priority</div>
           <div class="intel-cell-val">{{submission.data.owner_priority}}</div>
+        </div>
+        <div class="intel-cell">
+          <div class="intel-cell-label">Lead Score</div>
+          <div class="intel-cell-val">{{submission.data.owner_lead_score}} / 100 ({{submission.data.owner_lead_tier}})</div>
         </div>
         <div class="intel-cell">
           <div class="intel-cell-label">Submitted</div>

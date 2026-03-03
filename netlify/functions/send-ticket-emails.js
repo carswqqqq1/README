@@ -73,6 +73,34 @@ function getPriorityClass(priorityValue) {
   return 'p-low';
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function buildPlainTextFromHtml(html) {
+  return String(html || '')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<\/(p|div|h1|h2|h3|h4|h5|h6|li|tr|section|header|footer|table)>/gi, '\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, '\'')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
+}
+
 function formatPhoenixDate(isoString) {
   try {
     const date = isoString ? new Date(isoString) : new Date();
@@ -179,6 +207,8 @@ function buildNormalizedData(rawData = {}, meta = {}) {
   normalized.owner_summary = safeText(rawData.owner_summary, meta.owner_summary);
   normalized.owner_priority = safeText(rawData.owner_priority, meta.owner_priority);
   normalized.owner_priority_class = getPriorityClass(normalized.owner_priority);
+  normalized.owner_lead_score = safeText(rawData.owner_lead_score, meta.owner_lead_score);
+  normalized.owner_lead_tier = safeText(rawData.owner_lead_tier, meta.owner_lead_tier);
 
   return normalized;
 }
@@ -204,6 +234,48 @@ function determinePriority(data) {
   return 'Low';
 }
 
+function determineLeadScore(data) {
+  const budget = cleanBudgetLabel(data.budget || data.budget_range).toLowerCase();
+  const timeline = safeText(data.start_timeline || data.timeline, '').toLowerCase();
+  const service = safeText(data.service, '').toLowerCase();
+  const contact = safeText(data.preferred_contact || data.preferred_contact_method, '').toLowerCase();
+  const vision = safeText(data.vision || data.message, '');
+  const city = safeText(data.city, '').toLowerCase();
+
+  let score = 52;
+
+  if (budget.includes('100,000')) score += 28;
+  else if (budget.includes('50,000')) score += 22;
+  else if (budget.includes('25,000')) score += 16;
+  else if (budget.includes('10,000')) score += 10;
+  else if (budget.includes('under')) score += 4;
+
+  if (timeline.includes('asap')) score += 20;
+  else if (timeline.includes('within 30')) score += 14;
+  else if (timeline.includes('1-3')) score += 10;
+  else if (timeline.includes('3-6')) score += 6;
+  else if (timeline.includes('planning')) score += 2;
+
+  if (service.includes('not sure')) score -= 4;
+  else if (service) score += 6;
+
+  if (contact.includes('phone') || contact.includes('text')) score += 4;
+
+  if (vision.length > 120) score += 6;
+  else if (vision.length > 40) score += 3;
+
+  if (city.includes('scottsdale') || city.includes('paradise valley')) score += 4;
+  else if (city) score += 2;
+
+  return Math.max(1, Math.min(100, score));
+}
+
+function determineLeadTier(score) {
+  if (score >= 78) return 'Hot';
+  if (score >= 58) return 'Warm';
+  return 'Nurture';
+}
+
 function fillTemplate(template, context) {
   return template.replace(/{{\s*([^}]+)\s*}}/g, (_, token) => {
     const pathParts = token.split('.').map((part) => part.trim());
@@ -218,7 +290,7 @@ function fillTemplate(template, context) {
       }
     }
 
-    return safeText(current, 'Not provided');
+    return escapeHtml(safeText(current, 'Not provided'));
   });
 }
 
@@ -228,11 +300,13 @@ async function sendViaSmtp({ to, subject, html, replyTo }) {
   }
 
   const transporter = getSmtpTransporter();
+  const text = buildPlainTextFromHtml(html);
   const info = await transporter.sendMail({
     from: getFromEmail('smtp'),
     to,
     subject,
     html,
+    text,
     replyTo
   });
 
@@ -250,6 +324,7 @@ async function sendViaResend({ to, subject, html, replyTo }) {
     return { skipped: true, reason: 'missing_resend_api_key', to };
   }
 
+  const text = buildPlainTextFromHtml(html);
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -261,6 +336,7 @@ async function sendViaResend({ to, subject, html, replyTo }) {
       to,
       subject,
       html,
+      text,
       reply_to: replyTo
     })
   });
@@ -337,6 +413,8 @@ async function sendToGoogleSheets(normalized, meta = {}) {
     preferred_contact_method: normalized.preferred_contact,
     message: normalized.vision,
     owner_priority: normalized.owner_priority,
+    owner_lead_score: normalized.owner_lead_score,
+    owner_lead_tier: normalized.owner_lead_tier,
     owner_summary: normalized.owner_summary,
     page_url: safeText(meta.page_url, 'Not provided')
   };
@@ -380,12 +458,16 @@ exports.handler = async (event) => {
     const pageUrl = payload.page_url || payload.url || submission.url || '';
     const submittedLocal = formatPhoenixDate(createdAt);
     const ticketId = data.ticket_id || `TG-${createdAt.replace(/[^0-9]/g, '').slice(0, 12)}`;
+    const leadScore = determineLeadScore(data);
+    const leadTier = determineLeadTier(leadScore);
 
     const normalized = buildNormalizedData(data, {
       ticket_id: ticketId,
       submitted_local: submittedLocal,
       owner_priority: data.owner_priority || determinePriority(data),
-      owner_summary: data.owner_summary || buildOwnerSummary(data)
+      owner_lead_score: String(leadScore),
+      owner_lead_tier: leadTier,
+      owner_summary: data.owner_summary || `${buildOwnerSummary(data)} · Lead Score: ${leadScore}/100 (${leadTier})`
     });
 
     const context = {
