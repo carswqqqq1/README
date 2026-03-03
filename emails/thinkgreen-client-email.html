@@ -7,14 +7,14 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font-smoothing:antialiased;}
-.email-wrap{max-width:580px;margin:0 auto;}
+body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;}
+.email-wrap{max-width:580px;margin:0 auto;background:#e8e3d9;}
 
 /* HEADER */
-.header{background:#1b4728;padding:48px 48px 40px;text-align:center;position:relative;overflow:hidden;}
+.header{background:#1b4728;padding:44px 44px 38px;text-align:center;position:relative;overflow:hidden;}
 .header::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,0.03);pointer-events:none;}
 .header::after{content:'';position:absolute;bottom:-80px;left:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.02);pointer-events:none;}
-.logo-img{width:90px;height:90px;object-fit:contain;margin-bottom:22px;position:relative;z-index:1;}
+.logo-img{width:104px;height:104px;object-fit:contain;margin-bottom:18px;position:relative;z-index:1;}
 .header-tag{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#7ab88a;font-weight:500;margin-bottom:10px;}
 .header-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:600;color:#f5f0e8;line-height:1.15;position:relative;z-index:1;}
 .header-sub{font-size:13px;color:#a8c9b0;margin-top:8px;font-weight:300;letter-spacing:0.04em;}
@@ -28,7 +28,7 @@ body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
 .intro-text{font-size:14px;line-height:1.85;color:#505050;margin-bottom:0;}
 
 /* CONFIRMATION BADGE */
-.badge-strip{background:#f5f0e8;border-top:1px solid #e0d9cd;border-bottom:1px solid #e0d9cd;padding:20px 48px;display:flex;align-items:center;gap:20px;}
+.badge-strip{background:#f5f0e8;border-top:1px solid #e0d9cd;border-bottom:1px solid #e0d9cd;padding:20px 44px;display:flex;align-items:center;gap:18px;}
 .badge-icon{width:42px;height:42px;background:#1b4728;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .badge-icon svg{width:20px;height:20px;}
 .badge-text{flex:1;}
@@ -39,20 +39,21 @@ body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
 .next-section{background:#fff;padding:36px 48px;}
 .section-head{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#1b4728;font-weight:600;margin-bottom:24px;display:flex;align-items:center;gap:12px;}
 .section-head::after{content:'';flex:1;height:1px;background:#e8e2d8;}
-.steps{display:flex;flex-direction:column;gap:0;}
-.step{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid #f0ece4;}
+.steps{display:block;}
+.step{display:table;width:100%;table-layout:fixed;padding:16px 0;border-bottom:1px solid #f0ece4;}
 .step:last-child{border-bottom:none;}
-.step-num{width:28px;height:28px;background:#1b4728;border-radius:50%;color:#f5f0e8;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.step-num{display:table-cell;width:32px;height:28px;background:#1b4728;border-radius:50%;color:#f5f0e8;font-size:11px;font-weight:600;text-align:center;line-height:28px;vertical-align:top;}
+.step-body{display:table-cell;vertical-align:top;padding-left:14px;}
 .step-body strong{display:block;font-size:13.5px;font-weight:600;color:#1a1a1a;margin-bottom:3px;}
 .step-body p{font-size:13px;color:#666;line-height:1.6;}
 
 /* YOUR SUBMISSION SUMMARY */
 .summary-section{background:#f5f0e8;padding:36px 48px;}
 .summary-card{background:#fff;border-radius:8px;overflow:hidden;border:1px solid #e0d9cd;}
-.summary-row{display:flex;padding:13px 20px;border-bottom:1px solid #f0ece4;align-items:baseline;gap:16px;}
+.summary-row{display:table;width:100%;table-layout:fixed;padding:13px 20px;border-bottom:1px solid #f0ece4;}
 .summary-row:last-child{border-bottom:none;}
-.summary-key{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#9a9590;width:140px;flex-shrink:0;}
-.summary-val{font-size:13.5px;color:#1a1a1a;line-height:1.5;flex:1;}
+.summary-key{display:table-cell;vertical-align:top;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#9a9590;width:140px;padding-right:14px;}
+.summary-val{display:table-cell;vertical-align:top;font-size:13.5px;color:#1a1a1a;line-height:1.5;word-break:break-word;overflow-wrap:anywhere;}
 
 /* VISION QUOTE */
 .vision-section{background:#1b4728;padding:36px 48px;}
@@ -72,17 +73,22 @@ body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
 .footer p{font-size:11px;color:#555;line-height:1.9;}
 .footer a{color:#4a8c5c;text-decoration:none;}
 .footer-divider{width:32px;height:1px;background:#2a2a2a;margin:14px auto;}
+.safe-pad{height:58px;background:#111;}
 
 @media(max-width:600px){
-  .header,.intro-panel,.next-section,.summary-section,.vision-section,.cta-section,.footer{padding-left:22px;padding-right:22px;}
+  .header,.intro-panel,.next-section,.summary-section,.vision-section,.cta-section,.footer{padding-left:20px;padding-right:20px;}
   .badge-strip{padding:16px 22px;align-items:flex-start;}
   .header-title{font-size:26px;line-height:1.2;}
-  .logo-img{width:74px;height:74px;margin-bottom:18px;}
-  .summary-row{flex-direction:column;align-items:flex-start;gap:4px;padding:14px 16px;}
-  .summary-key{width:100%;}
+  .logo-img{width:88px;height:88px;margin-bottom:16px;}
+  .summary-row{display:block;padding:14px 16px;}
+  .summary-key,.summary-val{display:block;width:100%;}
+  .summary-key{padding-right:0;padding-bottom:4px;}
   .step{gap:12px;}
-  .step-num{width:24px;height:24px;font-size:10px;}
+  .step-num{width:24px;height:24px;font-size:10px;line-height:24px;}
+  .step-body{padding-left:10px;}
   .vision-quote{font-size:17px;line-height:1.6;padding-left:14px;}
+  .cta-btn{display:block;width:100%;}
+  .safe-pad{height:88px;}
 }
 </style>
 </head>
@@ -170,7 +176,7 @@ body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
   <div class="cta-section">
     <p class="cta-msg">In the meantime, explore our work and get inspired for your project.</p>
     <a href="https://thinkgreen-az.netlify.app" class="cta-btn">Explore Our Work</a>
-    <p class="cta-phone">Need to reach us now? Call <a href="tel:4805550000">(480) 555-0000</a></p>
+    <p class="cta-phone">Need to reach us now? Call <a href="tel:4809229497">(480) 922-9497</a></p>
   </div>
 
   <!-- FOOTER -->
@@ -182,6 +188,7 @@ body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
     <span style="color:#333;font-size:10px;margin-top:6px;display:block;">You're receiving this because you submitted a project ticket. We never share your information.</span>
     </p>
   </div>
+  <div class="safe-pad" aria-hidden="true"></div>
 
 </div>
 </body>

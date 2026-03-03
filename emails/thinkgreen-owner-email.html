@@ -7,67 +7,69 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font-smoothing:antialiased;}
+body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;}
 .email-wrap{max-width:580px;margin:0 auto;background:#f5f0e8;}
 
 /* HEADER */
-.header{background:#0f2a18;padding:36px 48px;display:flex;align-items:center;gap:20px;border-bottom:3px solid #1b4728;}
-.header-logo{width:64px;height:64px;object-fit:contain;flex-shrink:0;}
+.header{background:#0f2a18;padding:34px 44px;display:flex;align-items:center;gap:20px;border-bottom:3px solid #1b4728;}
+.header-logo{width:78px;height:78px;object-fit:contain;flex-shrink:0;}
 .header-text{}
 .header-tag{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#4a8c5c;font-weight:600;margin-bottom:4px;}
 .header-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:#f5f0e8;line-height:1.2;}
 
 /* ALERT BANNER */
-.alert-banner{background:#1b4728;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;}
+.alert-banner{background:#1b4728;padding:14px 44px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
 .alert-left{font-size:12px;color:#a8c9b0;letter-spacing:0.06em;}
 .alert-left strong{color:#f5f0e8;display:block;font-size:13px;font-weight:600;margin-bottom:2px;}
 .priority-badge{padding:6px 16px;border-radius:2px;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;}
 .p-high{background:#fef3c7;color:#92400e;}
 .p-medium{background:#d1fae5;color:#065f46;}
-.p-low{background:#e0e7ff;color:#3730a3;}
+.p-low{background:#eee7d7;color:#6f5126;}
 
 /* MAIN */
 .main{background:#fff;}
 
 /* CONTACT CARD */
-.contact-card{padding:32px 48px;border-bottom:1px solid #eae4da;}
+.contact-card{padding:30px 44px;border-bottom:1px solid #eae4da;}
 .card-head{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#1b4728;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
 .card-head::after{content:'';flex:1;height:1px;background:#e0d9cd;}
 .contact-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:#0f2a18;margin-bottom:4px;}
-.contact-location{font-size:13px;color:#7a7570;margin-bottom:20px;}
+.contact-location{font-size:13px;color:#7a7570;margin-bottom:20px;word-break:break-word;overflow-wrap:anywhere;}
 .contact-links{display:flex;gap:12px;flex-wrap:wrap;}
-.contact-link{display:inline-flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #d9d2c6;border-radius:3px;padding:8px 14px;font-size:12.5px;color:#1b4728;text-decoration:none;font-weight:500;}
+.contact-link{display:inline-flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #d9d2c6;border-radius:3px;padding:8px 14px;font-size:12.5px;color:#1b4728;text-decoration:none;font-weight:500;word-break:break-word;overflow-wrap:anywhere;}
 .contact-link svg{width:14px;height:14px;}
 
 /* PROJECT DETAILS */
-.project-section{padding:32px 48px;border-bottom:1px solid #eae4da;}
+.project-section{padding:30px 44px;border-bottom:1px solid #eae4da;}
 .detail-table{width:100%;border-collapse:collapse;}
 .detail-table tr{border-bottom:1px solid #f0ece4;}
 .detail-table tr:last-child{border-bottom:none;}
 .detail-table td{padding:12px 0;vertical-align:top;}
 .detail-table td:first-child{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#9a9590;width:38%;padding-right:16px;}
-.detail-table td:last-child{font-size:13.5px;color:#1a1a1a;}
+.detail-table td:last-child{font-size:13.5px;color:#1a1a1a;word-break:break-word;overflow-wrap:anywhere;}
 
 /* VISION */
-.vision-section{background:#f5f0e8;padding:28px 48px;border-bottom:1px solid #e0d9cd;}
+.vision-section{background:#f5f0e8;padding:28px 44px;border-bottom:1px solid #e0d9cd;}
 .vision-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#1b4728;font-weight:600;margin-bottom:12px;}
 .vision-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#2a2a2a;line-height:1.75;border-left:3px solid #1b4728;padding-left:18px;}
 
 /* OWNER INTEL */
-.intel-section{background:#0f2a18;padding:32px 48px;}
+.intel-section{background:#0f2a18;padding:30px 44px;}
 .intel-head{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#4a8c5c;font-weight:600;margin-bottom:6px;}
 .intel-id{font-family:'Cormorant Garamond',serif;font-size:20px;color:#f5f0e8;margin-bottom:18px;}
 .intel-summary-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#4a8c5c;font-weight:600;margin-bottom:10px;}
 .intel-summary{font-size:13.5px;color:#b8d4bc;line-height:1.75;}
 .intel-divider{height:1px;background:#1e3a27;margin:20px 0;}
-.intel-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.intel-cell{}
+.intel-grid{display:block;}
+.intel-cell{padding:10px 0;border-bottom:1px solid #1e3a27;}
+.intel-cell:last-child{border-bottom:none;}
 .intel-cell-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#4a8c5c;margin-bottom:4px;}
 .intel-cell-val{font-size:13px;color:#d8edd9;font-weight:400;}
 
 /* QUICK ACTIONS */
-.actions-section{background:#fff;padding:28px 48px;display:flex;gap:12px;flex-wrap:wrap;}
-.action-btn{flex:1;min-width:140px;text-align:center;padding:12px 20px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-radius:2px;}
+.actions-section{background:#fff;padding:28px 44px;display:block;}
+.action-btn{display:block;width:100%;text-align:center;padding:12px 20px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-radius:2px;margin-bottom:10px;}
+.action-btn:last-child{margin-bottom:0;}
 .action-primary{background:#1b4728;color:#f5f0e8 !important;}
 .action-secondary{background:#f5f0e8;color:#1b4728 !important;border:1px solid #d0c9be;}
 
@@ -75,19 +77,20 @@ body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
 .footer{background:#0a0a0a;padding:24px 48px;text-align:center;}
 .footer p{font-size:11px;color:#444;line-height:1.8;}
 .footer a{color:#4a8c5c;text-decoration:none;}
+.safe-pad{height:58px;background:#0a0a0a;}
 
 @media(max-width:600px){
   .header,.alert-banner,.contact-card,.project-section,.vision-section,.intel-section,.actions-section,.footer{padding-left:22px;padding-right:22px;}
   .header{flex-direction:column;align-items:flex-start;gap:12px;}
-  .header-logo{width:76px;height:76px;}
+  .header-logo{width:90px;height:90px;}
+  .alert-banner{flex-direction:column;align-items:flex-start;}
+  .priority-badge{margin-top:6px;}
   .contact-name{font-size:24px;line-height:1.2;}
   .contact-links{flex-direction:column;align-items:stretch;}
   .contact-link{width:100%;}
   .detail-table td:first-child{display:block;width:100%;padding-bottom:4px;}
   .detail-table td:last-child{display:block;padding-top:0;padding-bottom:12px;}
-  .intel-grid{grid-template-columns:1fr;}
-  .actions-section{flex-direction:column;}
-  .action-btn{width:100%;}
+  .safe-pad{height:88px;}
 }
 </style>
 </head>
@@ -109,7 +112,7 @@ body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
       <strong>Ticket #{{submission.data.ticket_id}}</strong>
       {{submission.data.submitted_local}}
     </div>
-    <span class="priority-badge p-high">{{submission.data.owner_priority}}</span>
+    <span class="priority-badge {{submission.data.owner_priority_class}}">{{submission.data.owner_priority}}</span>
   </div>
 
   <!-- MAIN -->
@@ -184,7 +187,7 @@ body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
     <div class="actions-section">
       <a href="tel:{{submission.data.phone}}" class="action-btn action-primary">Call Client</a>
       <a href="mailto:{{submission.data.email}}" class="action-btn action-secondary">Email Client</a>
-      <a href="https://thinkgreen-az.netlify.app" class="action-btn action-secondary">Dashboard</a>
+      <a href="https://thinkgreen-az.netlify.app" class="action-btn action-secondary">Open Website</a>
     </div>
 
   </div>
@@ -195,6 +198,7 @@ body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font
     <a href="https://thinkgreen-az.netlify.app">thinkgreen-az.netlify.app</a> · Scottsdale, AZ<br/>
     <span style="color:#333;font-size:10px;">This email is for internal use only.</span></p>
   </div>
+  <div class="safe-pad" aria-hidden="true"></div>
 
 </div>
 </body>

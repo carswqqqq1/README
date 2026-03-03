@@ -35,13 +35,14 @@
 
 /* ----- Reset ----- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: 100px; }
 body {
   font-family: var(--font-body);
   color: var(--ink);
   background: var(--white);
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; text-decoration: none; }
@@ -189,7 +190,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   max-width: 1160px;
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 5vw, 2.5rem);
-  height: 88px;
+  height: 94px;
 }
 
 /* Logo */
@@ -200,7 +201,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   flex-shrink: 0;
 }
 .nav__logo-img {
-  height: 64px;
+  height: 72px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -371,7 +372,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   max-width: 1160px;
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 5vw, 2.5rem);
-  padding-top: 76px;
+  padding-top: 96px;
 }
 
 .hero__eyebrow {
@@ -1567,16 +1568,33 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   position: fixed;
   bottom: 0; left: 0; right: 0;
   z-index: 150;
-  background: var(--white);
-  padding: .75rem 1rem;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: .625rem .875rem calc(.625rem + env(safe-area-inset-bottom));
   gap: .75rem;
   box-shadow: 0 -4px 20px rgba(0,0,0,.12);
   border-top: 1px solid var(--paper-alt);
+  opacity: 0;
+  transform: translateY(110%);
+  pointer-events: none;
+  transition: opacity .25s var(--ease), transform .25s var(--ease);
+}
+.sticky-bar.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 .sticky-bar .btn {
   flex: 1;
   justify-content: center;
-  padding-block: .75rem;
+  padding-block: .68rem;
+  font-size: .8rem;
+  letter-spacing: .05em;
+}
+.sticky-bar .btn svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* ============================================================
@@ -1642,18 +1660,34 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .nav__links { display: none; }
   .nav__burger { display: flex; }
   .nav__inner {
-    height: 78px;
+    height: 84px;
   }
   .nav__logo-img {
-    height: 56px;
+    height: 64px;
   }
   .nav__logo-img--footer {
     height: 74px;
   }
-  .hero__credibility {
-    grid-template-columns: 1fr;
-    max-width: 420px;
+  .hero {
+    min-height: 920px;
   }
+  .hero__content {
+    padding-top: 108px;
+    padding-bottom: 7.25rem;
+  }
+  .hero__scroll { display: none; }
+  .hero__indicators { bottom: 6.25rem; }
+  .hero__credibility {
+    grid-template-columns: 1fr 1fr;
+    max-width: 100%;
+    margin-top: 1.25rem;
+    gap: .625rem;
+  }
+  .hero__cred-item {
+    padding: .8rem .85rem;
+  }
+  .hero__cred-item strong { font-size: 1rem; }
+  .hero__cred-item span { font-size: .72rem; }
   .feature-strip {
     grid-template-columns: 1fr;
     direction: ltr;
@@ -1680,17 +1714,39 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .footer__brand { grid-column: span 1; }
   .footer__bottom { flex-direction: column; text-align: center; }
   .sticky-bar { display: flex; }
-  body { padding-bottom: 72px; }
+  body { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
 }
 
 @media (max-width: 480px) {
-  .hero__heading { font-size: clamp(2.75rem, 12vw, 3.5rem); }
+  .hero {
+    min-height: 980px;
+  }
+  .hero__heading { font-size: clamp(2.7rem, 11.5vw, 3.45rem); }
   .hero__sub {
-    font-size: 1rem;
+    font-size: .95rem;
+    line-height: 1.55;
+    margin-bottom: 1.5rem;
   }
   .hero__actions { flex-direction: column; }
-  .hero__actions .btn { text-align: center; justify-content: center; }
+  .hero__actions .btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  .hero__credibility {
+    grid-template-columns: 1fr 1fr;
+  }
+  .hero__indicators { bottom: 5.6rem; }
   .about__badge { bottom: 1rem; left: 1rem; padding: 1rem; }
   .about__badge strong { font-size: 1.75rem; }
   .contact__form-wrap { padding: 2rem 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -16,24 +16,49 @@
   var burger  = document.getElementById('nav-burger');
   var overlay = document.getElementById('nav-overlay');
   var close   = document.getElementById('nav-close');
+  var stickyBar = document.getElementById('sticky-bar');
+  var contactSection = document.getElementById('contact');
+  var isContactInView = false;
+
+  function updateStickyBar() {
+    if (!stickyBar) return;
+    var isMobile = window.innerWidth <= 768;
+    var passedHero = window.scrollY > Math.max(220, window.innerHeight * 0.35);
+    var menuOpen = overlay && overlay.classList.contains('is-open');
+    var shouldShow = isMobile && passedHero && !menuOpen && !isContactInView;
+    stickyBar.classList.toggle('is-visible', shouldShow);
+  }
 
   function openMenu() {
     overlay.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
     burger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    updateStickyBar();
   }
   function closeMenu() {
     overlay.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
     burger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    updateStickyBar();
   }
   if (burger) burger.addEventListener('click', openMenu);
   if (close)  close.addEventListener('click', closeMenu);
   overlay.querySelectorAll('a').forEach(function (a) {
     a.addEventListener('click', closeMenu);
   });
+
+  if ('IntersectionObserver' in window && contactSection) {
+    var contactObs = new IntersectionObserver(function (entries) {
+      isContactInView = entries.some(function (entry) { return entry.isIntersecting; });
+      updateStickyBar();
+    }, { threshold: 0.2 });
+    contactObs.observe(contactSection);
+  }
+  window.addEventListener('scroll', updateStickyBar, { passive: true });
+  window.addEventListener('resize', updateStickyBar);
+  updateStickyBar();
 
   /* ---- SMOOTH SCROLL ---- */
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
