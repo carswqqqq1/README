@@ -16,22 +16,22 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Cache-Control = "public, max-age=3600"
+    Cache-Control = "public, max-age=600, must-revalidate"
 
 [[headers]]
   for = "/styles.css"
   [headers.values]
-    Cache-Control = "public, max-age=86400"
+    Cache-Control = "public, max-age=300, must-revalidate"
 
 [[headers]]
   for = "/script.js"
   [headers.values]
-    Cache-Control = "public, max-age=86400"
+    Cache-Control = "public, max-age=300, must-revalidate"
 
 [[headers]]
   for = "/site-config.js"
   [headers.values]
-    Cache-Control = "public, max-age=300"
+    Cache-Control = "public, max-age=120, must-revalidate"
 
 [[headers]]
   for = "/img/*"
