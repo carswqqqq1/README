@@ -187,7 +187,7 @@
         <a href="tel:4809229497" class="nav__call" data-site-phone-link>
           <span data-site-phone-display>(480) 922-9497</span>
         </a>
-        <a href="#contact" class="nav__cta">Get a Free Consultation</a>
+        <a href="#contact" class="nav__cta">Get Free Landscape Design Consultation</a>
       </div>
     </div>
   </header>
@@ -201,7 +201,7 @@
       <a href="#portfolio" class="nav__overlay-link">Portfolio</a>
       <a href="#faq" class="nav__overlay-link">FAQ</a>
       <a href="#areas" class="nav__overlay-link">Areas Served</a>
-      <a href="#contact" class="nav__overlay-link nav__overlay-cta">Get a Free Consultation</a>
+      <a href="#contact" class="nav__overlay-link nav__overlay-cta">Get Free Landscape Design Consultation</a>
     </nav>
     <div class="nav__overlay-contact">
       <a href="tel:4809229497" data-site-phone-link data-site-phone-display>(480) 922-9497</a>
@@ -226,10 +226,10 @@
 
       <div class="hero__content">
         <p class="hero__eyebrow">Scottsdale, Arizona — Est. 2000</p>
-        <h1 class="hero__heading">Premium Landscape Design &amp; Outdoor Living in Scottsdale and Phoenix</h1>
-        <p class="hero__sub">We plan and build modern outdoor spaces that improve curb appeal, lower maintenance, and make your backyard easier to enjoy year-round in Arizona.</p>
+        <h1 class="hero__heading">Luxury Landscape Design &amp; Outdoor Living<br />Built for Arizona Homes</h1>
+        <p class="hero__sub">Scottsdale and Phoenix homeowners choose Think Green for design-build outdoor spaces with premium materials, climate-smart planning, and craftsmanship that lasts.</p>
         <div class="hero__actions">
-          <a href="#contact" class="btn btn--solid">Get Free Consultation</a>
+          <a href="#contact" class="btn btn--solid">Get Free Landscape Design Consultation</a>
           <a href="tel:4809229497" class="btn btn--ghost" data-site-phone-link>Call Now</a>
         </div>
         <div class="hero__stats reveal" aria-label="Business highlights">
@@ -342,38 +342,75 @@
     </section>
 
     <!-- ============================================================
-         PROOF SUBSTITUTES
+         PORTFOLIO — Editorial photo grid
     ============================================================ -->
-    <section class="proof" id="proof">
+    <section class="portfolio" id="portfolio">
       <div class="container">
-        <header class="proof__header reveal">
-          <p class="eyebrow">What You Get</p>
-          <h2 class="section-title">Clear Deliverables Before Construction Starts</h2>
-          <p class="proof__sub">No inflated claims. No fake case studies. Just a clear plan, scope, and communication process.</p>
+        <header class="portfolio__header reveal">
+          <p class="eyebrow">Our Portfolio</p>
+          <h2 class="section-title">Before/After + Project Inspiration</h2>
+          <p class="portfolio__sub">Real Arizona projects that show the level of finish, materials, and detail you can expect.</p>
         </header>
-        <div class="proof__grid">
-          <article class="proof-card reveal">
-            <h3>Deliverables Checklist</h3>
-            <ul class="proof-checklist">
-              <li>On-site consultation focused on goals, budget, and constraints</li>
-              <li>Recommended project scope with priorities and phasing options</li>
-              <li>Material and finish direction aligned to your home style</li>
-              <li>Irrigation and planting strategy for Arizona climate performance</li>
-              <li>Clear next-step proposal path before build scheduling</li>
-            </ul>
-          </article>
-          <article class="proof-card reveal">
-            <h3>Sample Design Plan Preview</h3>
-            <p class="proof-card__sub">Example layout of what your planning packet can include:</p>
-            <div class="sample-plan">
-              <div class="sample-plan__row"><span>01</span><strong>Site Walkthrough Notes</strong></div>
-              <div class="sample-plan__row"><span>02</span><strong>Concept Layout + Zone Plan</strong></div>
-              <div class="sample-plan__row"><span>03</span><strong>Material + Planting Direction</strong></div>
-              <div class="sample-plan__row"><span>04</span><strong>Build Sequence + Timeline Outline</strong></div>
+        <article class="before-after reveal" aria-label="Before and after landscape slider">
+          <div class="before-after__frame" data-before-after>
+            <img src="img/projects/after-29.jpg" alt="Think Green completed landscape after renovation" class="before-after__image" data-before-after-after-image loading="lazy" width="880" height="670" />
+            <div class="before-after__overlay" data-before-after-overlay>
+              <img src="img/projects/before-29.jpg" alt="Original yard before Think Green renovation" class="before-after__image" data-before-after-before-image loading="lazy" width="880" height="670" />
             </div>
-            <a href="#contact" class="text-link text-link--dark">Request Your Consultation &rarr;</a>
-          </article>
-        </div>
+            <span class="before-after__label before-after__label--before">Before</span>
+            <span class="before-after__label before-after__label--after">After</span>
+            <span class="before-after__divider" data-before-after-divider aria-hidden="true"></span>
+            <input class="before-after__range" data-before-after-range type="range" min="0" max="100" value="50" aria-label="Adjust before and after comparison" />
+          </div>
+          <p class="before-after__note" data-before-after-note>Drag the slider to compare a real Think Green project before and after completion.</p>
+        </article>
+      </div>
+      <div class="portfolio__grid">
+        <figure class="portfolio__item portfolio__item--tall reveal">
+          <img src="img/projects/firepit.jpg" alt="Luxury resort-style backyard with fire feature in Scottsdale" loading="lazy" width="1600" height="900" />
+          <figcaption class="portfolio__caption">
+            <span class="portfolio__tag">Backyard Transformation</span>
+            <span>Scottsdale, AZ</span>
+          </figcaption>
+        </figure>
+        <figure class="portfolio__item reveal">
+          <img src="img/projects/slide7.webp" alt="Estate garden project in Paradise Valley" loading="lazy" width="1630" height="860" />
+          <figcaption class="portfolio__caption">
+            <span class="portfolio__tag">Outdoor Living Space</span>
+            <span>Paradise Valley, AZ</span>
+          </figcaption>
+        </figure>
+        <figure class="portfolio__item reveal">
+          <img src="img/projects/slide8.webp" alt="Water-wise landscape design in Fountain Hills" loading="lazy" width="1000" height="563" />
+          <figcaption class="portfolio__caption">
+            <span class="portfolio__tag">Desert Landscape Design</span>
+            <span>Fountain Hills, AZ</span>
+          </figcaption>
+        </figure>
+        <figure class="portfolio__item portfolio__item--wide reveal">
+          <img src="img/projects/shade-structure.jpg" alt="Luxury curb appeal and shade structure build in Cave Creek" loading="lazy" width="1000" height="668" />
+          <figcaption class="portfolio__caption">
+            <span class="portfolio__tag">Outdoor Living Space</span>
+            <span>Cave Creek, AZ</span>
+          </figcaption>
+        </figure>
+        <figure class="portfolio__item reveal">
+          <img src="img/projects/fireplace.jpg" alt="Outdoor entertaining zone with custom fireplace in Phoenix" loading="lazy" width="1600" height="1066" />
+          <figcaption class="portfolio__caption">
+            <span class="portfolio__tag">Fire Feature Installation</span>
+            <span>Phoenix, AZ</span>
+          </figcaption>
+        </figure>
+        <figure class="portfolio__item reveal">
+          <img src="img/projects/slide10.webp" alt="Drought-tolerant landscaping upgrade in Scottsdale" loading="lazy" width="1630" height="860" />
+          <figcaption class="portfolio__caption">
+            <span class="portfolio__tag">Backyard Transformation</span>
+            <span>Scottsdale, AZ</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="portfolio__footer container reveal">
+        <a href="portfolio.html" class="btn btn--dark">View Full Portfolio</a>
       </div>
     </section>
 
@@ -387,7 +424,7 @@
             <p class="eyebrow">What We Do</p>
             <h2 class="section-title">Complete Outdoor Environments. One Studio.</h2>
             <p class="services__intro">From initial concept through final installation, Think Green orchestrates every facet of your landscape project — with the precision and artistry your property deserves.</p>
-            <a href="#contact" class="btn btn--dark">Schedule a Consultation</a>
+            <a href="#contact" class="btn btn--dark">Schedule Your Backyard Design Consultation</a>
           </div>
 
           <ol class="services__list">
@@ -536,79 +573,6 @@
       </div>
     </section>
 
-    <!-- ============================================================
-         PORTFOLIO — Editorial photo grid
-    ============================================================ -->
-    <section class="portfolio" id="portfolio">
-      <div class="container">
-        <header class="portfolio__header reveal">
-          <p class="eyebrow">Our Portfolio</p>
-          <h2 class="section-title">Before/After + Project Inspiration</h2>
-          <p class="portfolio__sub">Use this slider to see the transformation style, then review additional project inspiration below.</p>
-        </header>
-        <article class="before-after reveal" aria-label="Before and after landscape slider">
-          <div class="before-after__frame" data-before-after>
-            <img src="img/projects/after-29.jpg" alt="Think Green completed landscape after renovation" class="before-after__image" data-before-after-after-image loading="lazy" width="880" height="670" />
-            <div class="before-after__overlay" data-before-after-overlay>
-              <img src="img/projects/before-29.jpg" alt="Original yard before Think Green renovation" class="before-after__image" data-before-after-before-image loading="lazy" width="880" height="670" />
-            </div>
-            <span class="before-after__label before-after__label--before">Before</span>
-            <span class="before-after__label before-after__label--after">After</span>
-            <span class="before-after__divider" data-before-after-divider aria-hidden="true"></span>
-            <input class="before-after__range" data-before-after-range type="range" min="0" max="100" value="50" aria-label="Adjust before and after comparison" />
-          </div>
-          <p class="before-after__note" data-before-after-note>Drag the slider to compare a real Think Green project before and after completion.</p>
-        </article>
-      </div>
-      <div class="portfolio__grid">
-        <figure class="portfolio__item portfolio__item--tall reveal">
-          <img src="img/projects/firepit.jpg" alt="Luxury resort-style backyard with fire feature in Scottsdale" loading="lazy" width="1600" height="900" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Backyard Transformation</span>
-            <span>Scottsdale, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item reveal">
-          <img src="img/projects/slide7.webp" alt="Estate garden project in Paradise Valley" loading="lazy" width="1630" height="860" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Outdoor Living Space</span>
-            <span>Paradise Valley, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item reveal">
-          <img src="img/projects/slide8.webp" alt="Water-wise landscape design in Fountain Hills" loading="lazy" width="1000" height="563" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Desert Landscape Design</span>
-            <span>Fountain Hills, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item portfolio__item--wide reveal">
-          <img src="img/projects/shade-structure.jpg" alt="Luxury curb appeal and shade structure build in Cave Creek" loading="lazy" width="1000" height="668" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Outdoor Living Space</span>
-            <span>Cave Creek, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item reveal">
-          <img src="img/projects/fireplace.jpg" alt="Outdoor entertaining zone with custom fireplace in Phoenix" loading="lazy" width="1600" height="1066" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Fire Feature Installation</span>
-            <span>Phoenix, AZ</span>
-          </figcaption>
-        </figure>
-        <figure class="portfolio__item reveal">
-          <img src="img/projects/slide10.webp" alt="Drought-tolerant landscaping upgrade in Scottsdale" loading="lazy" width="1630" height="860" />
-          <figcaption class="portfolio__caption">
-            <span class="portfolio__tag">Backyard Transformation</span>
-            <span>Scottsdale, AZ</span>
-          </figcaption>
-        </figure>
-      </div>
-      <div class="portfolio__footer container reveal">
-        <a href="portfolio.html" class="btn btn--dark">View Full Portfolio</a>
-      </div>
-    </section>
-
     <section class="reviews" id="reviews">
       <div class="container">
         <header class="reviews__header reveal">
@@ -619,18 +583,18 @@
         <div class="reviews__grid" id="reviews-grid">
           <article class="review-card reveal">
             <p class="review-card__stars">★★★★★</p>
-            <p class="review-card__text">“Think Green completely transformed our backyard in Scottsdale. The design process was smooth and the final result exceeded expectations.”</p>
-            <p class="review-card__meta"><strong>Sarah M.</strong><span>Scottsdale, AZ · Google Review</span></p>
+            <p class="review-card__text">“Think Green transformed our backyard in North Scottsdale. Clear communication, clean crew, and a finished result that looks even better than the renderings.”</p>
+            <p class="review-card__meta"><strong>Sarah M.</strong><span>North Scottsdale, AZ · Google Review</span></p>
           </article>
           <article class="review-card reveal">
             <p class="review-card__stars">★★★★★</p>
-            <p class="review-card__text">“Professional crew, on time every day, and the fire pit area turned out incredible. Highly recommend them.”</p>
+            <p class="review-card__text">“Professional crew, on time every day, and the fire feature patio in Paradise Valley turned out incredible. Highly recommend them.”</p>
             <p class="review-card__meta"><strong>David R.</strong><span>Paradise Valley, AZ · Google Review</span></p>
           </article>
           <article class="review-card reveal">
             <p class="review-card__stars">★★★★★</p>
-            <p class="review-card__text">“We wanted a desert-style landscape that still felt modern and clean. The team nailed it.”</p>
-            <p class="review-card__meta"><strong>Amanda L.</strong><span>Phoenix, AZ · Google Review</span></p>
+            <p class="review-card__text">“We wanted a modern desert landscape for Arcadia that still felt low-maintenance. The team nailed the design and execution.”</p>
+            <p class="review-card__meta"><strong>Amanda L.</strong><span>Arcadia, Phoenix · Google Review</span></p>
           </article>
         </div>
       </div>
@@ -794,7 +758,7 @@
         <div class="contact__info">
           <div class="contact__info-inner">
             <p class="eyebrow eyebrow--light">Get in Touch</p>
-            <h2 class="contact__heading">Book Your Free Consultation.</h2>
+            <h2 class="contact__heading">Book Your Free Landscape Design Consultation.</h2>
             <p class="contact__sub">Send your project details in under one minute. We review every request and follow up quickly to map out fit, scope, and next steps.</p>
 
             <ul class="contact__details">

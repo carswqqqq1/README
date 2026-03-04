@@ -417,6 +417,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   inset: 0;
   background-size: cover;
   background-position: center;
+  filter: brightness(1.08);
   opacity: 0;
   transition: opacity 1.6s var(--ease);
   will-change: opacity;
@@ -428,8 +429,8 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(0,0,0,0.25) 0%,
-    rgba(0,0,0,0.45) 100%
+    rgba(0,0,0,0.14) 0%,
+    rgba(0,0,0,0.34) 100%
   );
   pointer-events: none;
 }
@@ -457,7 +458,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .hero__heading {
   font-family: var(--font-head);
   font-size: clamp(2.25rem, 5.9vw, 4.8rem);
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.05;
   letter-spacing: -.012em;
   color: var(--white);
@@ -468,7 +469,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .hero__sub {
   font-size: clamp(1rem, 1.55vw, 1.16rem);
-  color: rgba(255,255,255,.78);
+  color: rgba(255,255,255,.9);
   text-shadow: 0 4px 14px rgba(0,0,0,.42);
   max-width: 620px;
   line-height: 1.72;
@@ -1262,6 +1263,13 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-size: .95rem;
   letter-spacing: .14em;
   color: #f4b400;
+}
+.review-card__stars::after {
+  content: " 5.0";
+  font-size: .76rem;
+  letter-spacing: .03em;
+  color: var(--ink-light);
+  font-weight: 600;
 }
 .review-card__text {
   margin-top: .62rem;
@@ -2149,9 +2157,8 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     margin-inline: auto;
     padding-inline: clamp(1.1rem, 5vw, 1.6rem);
   }
-  .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.45) 100%); }
+  .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,0.14) 0%, rgba(0,0,0,0.34) 100%); }
   .featured,
-  .proof,
   .services,
   .about,
   .process,
@@ -2176,7 +2183,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .hero-stat {
     padding: .7rem .72rem;
     border-radius: 12px;
-    background: rgba(8, 16, 11, .45);
+    background: rgba(8, 16, 11, .34);
   }
   .hero-stat strong {
     font-size: 1.04rem;

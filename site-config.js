@@ -63,21 +63,21 @@
     reviews: [
       {
         author: 'Sarah M.',
-        location: 'Scottsdale, AZ',
+        location: 'North Scottsdale, AZ',
         rating: 5,
-        text: 'Think Green completely transformed our backyard in Scottsdale. The design process was smooth and the final result exceeded expectations.'
+        text: 'Think Green transformed our backyard in North Scottsdale. Clear communication, clean crew, and a finished result that looks even better than the renderings.'
       },
       {
         author: 'David R.',
         location: 'Paradise Valley, AZ',
         rating: 5,
-        text: 'Professional crew, on time every day, and the fire pit area turned out incredible. Highly recommend them.'
+        text: 'Professional crew, on time every day, and the fire feature patio in Paradise Valley turned out incredible. Highly recommend them.'
       },
       {
         author: 'Amanda L.',
-        location: 'Phoenix, AZ',
+        location: 'Arcadia, Phoenix',
         rating: 5,
-        text: 'We wanted a desert-style landscape that still felt modern and clean. The team nailed it.'
+        text: 'We wanted a modern desert landscape for Arcadia that still felt low-maintenance. The team nailed the design and execution.'
       }
     ],
     analytics: {
