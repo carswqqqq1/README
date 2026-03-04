@@ -332,6 +332,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   gap: 0;
   opacity: 0;
   transition: opacity .3s var(--ease);
+  overflow-y: auto;
 }
 .nav__overlay.is-open {
   display: flex;
@@ -339,7 +340,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .nav__overlay nav {
   width: min(360px, 100%);
-  margin: clamp(5rem, 12vh, 6.5rem) auto 0;
+  margin: calc(4.25rem + env(safe-area-inset-top)) auto 0;
   display: flex;
   flex-direction: column;
   gap: .62rem;
@@ -426,9 +427,9 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   inset: 0;
   background: linear-gradient(
     160deg,
-    rgba(10,20,12,.72) 0%,
-    rgba(10,20,12,.48) 55%,
-    rgba(10,20,12,.3) 100%
+    rgba(7, 14, 10, .82) 0%,
+    rgba(7, 14, 10, .56) 52%,
+    rgba(7, 14, 10, .34) 100%
   );
   pointer-events: none;
 }
@@ -460,12 +461,14 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   line-height: 1.05;
   letter-spacing: -.02em;
   color: var(--white);
+  text-shadow: 0 6px 18px rgba(0,0,0,.45);
   margin-bottom: 1.2rem;
   max-width: 920px;
 }
 .hero__sub {
   font-size: clamp(1rem, 1.55vw, 1.16rem);
   color: rgba(255,255,255,.78);
+  text-shadow: 0 4px 14px rgba(0,0,0,.42);
   max-width: 640px;
   line-height: 1.72;
   margin-bottom: 2rem;
@@ -483,14 +486,14 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   gap: .7rem;
 }
 .hero-stat {
-  background: rgba(255, 255, 255, .11);
-  border: 1px solid rgba(255, 255, 255, .28);
+  background: rgba(10, 19, 14, .56);
+  border: 1px solid rgba(255, 255, 255, .24);
   border-radius: 14px;
   padding: .85rem .9rem .8rem;
   color: rgba(255, 255, 255, .95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, .16);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, .2);
 }
 .hero-stat__icon {
   width: 30px;
@@ -521,7 +524,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-size: .8rem;
   letter-spacing: .02em;
   line-height: 1.35;
-  color: rgba(255, 255, 255, .82);
+  color: rgba(255, 255, 255, .88);
 }
 
 /* Slide dots */
@@ -1070,10 +1073,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .before-after__overlay {
   position: absolute;
-  inset: 0 auto 0 0;
-  width: 50%;
+  inset: 0;
+  width: 100%;
   overflow: hidden;
-  border-right: 2px solid rgba(255,255,255,.92);
+  clip-path: inset(0 50% 0 0);
+  -webkit-clip-path: inset(0 50% 0 0);
 }
 .before-after__label {
   position: absolute;
@@ -1206,6 +1210,64 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .portfolio__footer {
   text-align: center;
   padding-block: 4rem;
+}
+
+/* ============================================================
+   REVIEWS
+   ============================================================ */
+.reviews {
+  background: var(--paper);
+  padding-block: clamp(4rem, 7vw, 6rem);
+}
+.reviews__header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.reviews__header .section-title {
+  margin-top: .5rem;
+}
+.reviews__sub {
+  margin: .78rem auto 0;
+  max-width: 620px;
+  font-size: .93rem;
+  line-height: 1.72;
+  color: var(--ink-light);
+}
+.reviews__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .9rem;
+}
+.review-card {
+  background: var(--white);
+  border: 1px solid var(--paper-alt);
+  border-radius: 12px;
+  padding: 1.05rem;
+  box-shadow: var(--shadow-sm);
+}
+.review-card__stars {
+  font-size: .92rem;
+  letter-spacing: .14em;
+  color: var(--tan);
+}
+.review-card__text {
+  margin-top: .55rem;
+  font-size: .92rem;
+  line-height: 1.72;
+  color: var(--ink);
+}
+.review-card__meta {
+  margin-top: .82rem;
+  display: grid;
+  gap: .1rem;
+}
+.review-card__meta strong {
+  font-size: .82rem;
+  color: var(--ink);
+}
+.review-card__meta span {
+  font-size: .76rem;
+  color: var(--ink-faint);
 }
 
 /* ============================================================
@@ -2006,6 +2068,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     aspect-ratio: 16/7;
   }
   .portfolio__item { aspect-ratio: 4/3; }
+  .reviews__grid {
+    grid-template-columns: 1fr;
+    max-width: 700px;
+    margin-inline: auto;
+  }
   .project-fit__grid {
     grid-template-columns: 1fr;
     max-width: 680px;
@@ -2023,10 +2090,13 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .footer__brand { grid-column: span 2; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .nav__links { display: none; }
   .nav__actions { display: none; }
   .nav__burger { display: flex; }
+}
+
+@media (max-width: 768px) {
   .nav {
     background: linear-gradient(180deg, rgba(8,14,10,.8) 0%, rgba(8,14,10,.18) 100%);
     backdrop-filter: blur(3px);
@@ -2036,10 +2106,10 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     background: rgba(255,255,255,.96);
   }
   .nav__inner {
-    height: 88px;
+    height: 94px;
   }
   .nav__logo-img {
-    height: 66px;
+    height: 76px;
   }
   .nav__logo-img--footer {
     height: 80px;
@@ -2050,8 +2120,22 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     padding-bottom: 0;
   }
   .hero__content {
-    padding-top: 102px;
+    padding-top: 106px;
     padding-bottom: 4rem;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    margin-inline: auto;
+    padding-inline: clamp(1.1rem, 5vw, 1.6rem);
+  }
+  .hero__overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(5, 10, 7, .78) 0%,
+      rgba(5, 10, 7, .6) 30%,
+      rgba(5, 10, 7, .48) 58%,
+      rgba(5, 10, 7, .72) 100%
+    );
   }
   .hero__eyebrow {
     max-width: calc(100% - 68px);
@@ -2067,6 +2151,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .hero-stat {
     padding: .7rem .72rem;
     border-radius: 12px;
+    background: rgba(8, 16, 11, .7);
   }
   .hero-stat strong {
     font-size: 1.04rem;
@@ -2113,7 +2198,10 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 
 @media (max-width: 480px) {
-  .nav__overlay nav { gap: .55rem; }
+  .nav__overlay nav {
+    gap: .55rem;
+    margin-top: calc(3.6rem + env(safe-area-inset-top));
+  }
   .nav__overlay-link {
     font-size: .9rem;
     padding: .78rem .72rem;

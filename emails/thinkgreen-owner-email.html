@@ -3,96 +3,90 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Think Green – New Project Ticket</title>
+<title>Think Green - New Project Ticket</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#1a1a1a;font-family:'Jost',sans-serif;color:#2a2a2a;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;}
-.email-wrap{max-width:580px;margin:0 auto;background:#f5f0e8;}
+body{background:#171717;font-family:'Jost',sans-serif;color:#1f1f1f;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;}
+.email-wrap{max-width:600px;margin:0 auto;background:#f5f0e8;}
 .preheader{display:none !important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;line-height:1px;font-size:1px;}
 a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font-size:inherit !important;font-family:inherit !important;font-weight:inherit !important;line-height:inherit !important;}
 
-/* HEADER */
-.header{background:#0f2a18;padding:34px 44px;display:flex;align-items:center;gap:20px;border-bottom:3px solid #1b4728;}
-.header-logo{width:78px;height:78px;object-fit:contain;flex-shrink:0;}
-.header-text{}
-.header-tag{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:#4a8c5c;font-weight:600;margin-bottom:4px;}
-.header-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:#f5f0e8;line-height:1.2;}
+.header{background:#0f2a18;padding:24px 34px;border-bottom:3px solid #1b4728;}
+.header-table{width:100%;border-collapse:collapse;}
+.header-logo-cell{width:106px;vertical-align:middle;}
+.header-logo-shell{display:inline-flex;align-items:center;justify-content:center;width:86px;height:86px;border-radius:999px;background:#ffffff;box-shadow:0 8px 20px rgba(0,0,0,.25);}
+.header-logo{width:62px;height:62px;object-fit:contain;display:block;}
+.header-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#66ab78;font-weight:600;margin-bottom:4px;}
+.header-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;font-weight:600;line-height:1.04;color:#f5f0e8;}
 
-/* ALERT BANNER */
-.alert-banner{background:#1b4728;padding:14px 44px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.alert-left{font-size:12px;color:#a8c9b0;letter-spacing:0.06em;}
-.alert-left strong{color:#f5f0e8;display:block;font-size:13px;font-weight:600;margin-bottom:2px;}
-.priority-badge{padding:6px 16px;border-radius:2px;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;}
+.alert{background:#1b4728;padding:14px 34px;border-bottom:1px solid rgba(255,255,255,.14);}
+.alert-table{width:100%;border-collapse:collapse;}
+.alert-left{font-size:12px;line-height:1.55;color:#a8c9b0;vertical-align:middle;}
+.alert-left strong{display:block;font-size:14px;color:#f5f0e8;font-weight:600;letter-spacing:0.03em;word-break:break-word;overflow-wrap:anywhere;}
+.alert-right{text-align:right;vertical-align:middle;}
+.priority-badge{display:inline-block;padding:6px 13px;border-radius:2px;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;}
 .p-high{background:#fef3c7;color:#92400e;}
 .p-medium{background:#d1fae5;color:#065f46;}
 .p-low{background:#eee7d7;color:#6f5126;}
 
-/* MAIN */
-.main{background:#fff;}
+.main{background:#ffffff;}
+.section{padding:28px 34px;border-bottom:1px solid #ebe4d8;}
+.section-head{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#1b4728;font-weight:600;margin-bottom:16px;}
 
-/* CONTACT CARD */
-.contact-card{padding:30px 44px;border-bottom:1px solid #eae4da;}
-.card-head{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#1b4728;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
-.card-head::after{content:'';flex:1;height:1px;background:#e0d9cd;}
-.contact-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:#0f2a18;margin-bottom:4px;}
-.contact-location{font-size:13px;color:#7a7570;margin-bottom:20px;word-break:break-word;overflow-wrap:anywhere;}
-.contact-links{display:flex;gap:12px;flex-wrap:wrap;}
-.contact-link{display:inline-flex;align-items:center;gap:6px;background:#f5f0e8;border:1px solid #d9d2c6;border-radius:3px;padding:8px 14px;font-size:12.5px;color:#1b4728;text-decoration:none;font-weight:500;word-break:break-word;overflow-wrap:anywhere;}
-.contact-link svg{width:14px;height:14px;}
+.client-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:38px;color:#0f2a18;line-height:0.95;margin-bottom:10px;word-break:break-word;overflow-wrap:anywhere;}
+.client-location{font-size:14px;color:#6f6a64;margin-bottom:16px;word-break:break-word;overflow-wrap:anywhere;}
+.contact-actions{width:100%;border-collapse:separate;border-spacing:0 10px;}
+.contact-btn{display:block;width:100%;padding:11px 12px;background:#f5f0e8;border:1px solid #d8cfbf;border-radius:4px;font-size:14px;font-weight:600;color:#1b4728;text-decoration:none;word-break:break-word;overflow-wrap:anywhere;}
 
-/* PROJECT DETAILS */
-.project-section{padding:30px 44px;border-bottom:1px solid #eae4da;}
-.detail-table{width:100%;border-collapse:collapse;}
-.detail-table tr{border-bottom:1px solid #f0ece4;}
+.detail-table{width:100%;border-collapse:collapse;table-layout:fixed;}
+.detail-table tr{border-bottom:1px solid #efe9de;}
 .detail-table tr:last-child{border-bottom:none;}
-.detail-table td{padding:12px 0;vertical-align:top;}
-.detail-table td:first-child{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#9a9590;width:38%;padding-right:16px;}
-.detail-table td:last-child{font-size:13.5px;color:#1a1a1a;word-break:break-word;overflow-wrap:anywhere;}
+.detail-table th{width:42%;text-align:left;padding:12px 0;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:#99948f;vertical-align:top;}
+.detail-table td{padding:12px 0 12px 12px;font-size:14px;color:#181818;line-height:1.55;word-break:break-word;overflow-wrap:anywhere;vertical-align:top;}
 
-/* VISION */
-.vision-section{background:#f5f0e8;padding:28px 44px;border-bottom:1px solid #e0d9cd;}
-.vision-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#1b4728;font-weight:600;margin-bottom:12px;}
-.vision-text{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#2a2a2a;line-height:1.75;border-left:3px solid #1b4728;padding-left:18px;}
+.vision{background:#f5f0e8;}
+.vision-quote{font-family:'Cormorant Garamond',Georgia,serif;font-size:33px;font-style:italic;line-height:1.22;color:#2a2a2a;border-left:3px solid #1b4728;padding-left:16px;word-break:break-word;overflow-wrap:anywhere;}
 
-/* OWNER INTEL */
-.intel-section{background:#0f2a18;padding:30px 44px;}
-.intel-head{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#4a8c5c;font-weight:600;margin-bottom:6px;}
-.intel-id{font-family:'Cormorant Garamond',serif;font-size:20px;color:#f5f0e8;margin-bottom:18px;}
-.intel-summary-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#4a8c5c;font-weight:600;margin-bottom:10px;}
-.intel-summary{font-size:13.5px;color:#b8d4bc;line-height:1.75;}
-.intel-divider{height:1px;background:#1e3a27;margin:20px 0;}
-.intel-grid{display:block;}
-.intel-cell{padding:10px 0;border-bottom:1px solid #1e3a27;}
-.intel-cell:last-child{border-bottom:none;}
-.intel-cell-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#4a8c5c;margin-bottom:4px;}
-.intel-cell-val{font-size:13px;color:#d8edd9;font-weight:400;}
+.intel{background:#0f2a18;color:#d8edd9;}
+.intel .section-head{color:#5fa470;}
+.intel-ticket{font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;line-height:1.1;color:#f5f0e8;margin-bottom:14px;word-break:break-word;overflow-wrap:anywhere;}
+.intel-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#5fa470;font-weight:600;margin-bottom:8px;}
+.intel-summary{font-size:14px;line-height:1.72;color:#bdd9c3;word-break:break-word;overflow-wrap:anywhere;}
+.intel-divider{height:1px;background:#1d3f2a;margin:16px 0;}
+.intel-grid{width:100%;border-collapse:collapse;}
+.intel-grid td{padding:9px 0;border-bottom:1px solid #1d3f2a;vertical-align:top;}
+.intel-grid tr:last-child td{border-bottom:none;}
+.intel-grid .k{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#5fa470;width:42%;}
+.intel-grid .v{font-size:14px;color:#e6f2e8;line-height:1.6;word-break:break-word;overflow-wrap:anywhere;}
 
-/* QUICK ACTIONS */
-.actions-section{background:#fff;padding:28px 44px;display:block;}
-.action-btn{display:block;width:100%;text-align:center;padding:12px 20px;font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-radius:2px;margin-bottom:10px;}
+.actions{background:#ffffff;padding:24px 34px;}
+.action-btn{display:block;width:100%;text-align:center;padding:12px 16px;margin-bottom:10px;font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;border-radius:2px;}
 .action-btn:last-child{margin-bottom:0;}
-.action-primary{background:#1b4728;color:#f5f0e8 !important;}
-.action-secondary{background:#f5f0e8;color:#1b4728 !important;border:1px solid #d0c9be;}
+.action-primary{background:#1b4728;color:#f5f0e8 !important;border:1px solid #1b4728;}
+.action-secondary{background:#f5f0e8;color:#1b4728 !important;border:1px solid #d0c6b5;}
 
-/* FOOTER */
-.footer{background:#0a0a0a;padding:24px 48px;text-align:center;}
-.footer p{font-size:11px;color:#444;line-height:1.8;}
-.footer a{color:#4a8c5c;text-decoration:none;}
-.safe-pad{height:58px;background:#0a0a0a;}
+.footer{background:#0b0b0b;padding:24px 34px;text-align:center;}
+.footer p{font-size:12px;color:#8c938f;line-height:1.8;}
+.footer a{color:#66b67a;text-decoration:none;}
+.footer small{display:block;color:#616763;font-size:10px;margin-top:6px;}
+.safe-pad{height:52px;background:#0b0b0b;}
 
 @media(max-width:600px){
-  .header,.alert-banner,.contact-card,.project-section,.vision-section,.intel-section,.actions-section,.footer{padding-left:22px;padding-right:22px;}
-  .header{flex-direction:column;align-items:flex-start;gap:12px;}
-  .header-logo{width:90px;height:90px;}
-  .alert-banner{flex-direction:column;align-items:flex-start;}
-  .priority-badge{margin-top:6px;}
-  .contact-name{font-size:24px;line-height:1.2;}
-  .contact-links{flex-direction:column;align-items:stretch;}
-  .contact-link{width:100%;}
-  .detail-table td:first-child{display:block;width:100%;padding-bottom:4px;}
-  .detail-table td:last-child{display:block;padding-top:0;padding-bottom:12px;}
-  .safe-pad{height:88px;}
+  .header,.alert,.section,.actions,.footer{padding-left:20px !important;padding-right:20px !important;}
+  .header-logo-cell{width:86px;}
+  .header-logo-shell{width:74px;height:74px;}
+  .header-logo{width:54px;height:54px;}
+  .header-title{font-size:30px;line-height:1.06;}
+  .alert-right{text-align:left;padding-top:8px;}
+  .alert-table td{display:block;width:100%;}
+  .client-name{font-size:34px;}
+  .detail-table th,.detail-table td{display:block;width:100%;padding:10px 0;}
+  .detail-table td{padding-top:0;padding-bottom:11px;}
+  .vision-quote{font-size:29px;line-height:1.2;padding-left:14px;}
+  .intel-grid .k,.intel-grid .v{display:block;width:100%;}
+  .intel-grid .v{padding-top:3px;}
+  .safe-pad{height:84px;}
 }
 </style>
 </head>
@@ -100,110 +94,89 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 <div class="preheader">New Think Green ticket {{submission.data.ticket_id}} ({{submission.data.owner_priority}} priority).</div>
 <div class="email-wrap">
 
-  <!-- HEADER -->
   <div class="header">
-    <img class="header-logo" src="https://thinkgreen-az.netlify.app/img/logo.png" alt="Think Green"/>
-    <div class="header-text">
-      <div class="header-tag">New Inbound Ticket</div>
-      <div class="header-title">Project Request Received</div>
-    </div>
+    <table class="header-table" role="presentation">
+      <tr>
+        <td class="header-logo-cell">
+          <span class="header-logo-shell"><img class="header-logo" src="https://thinkgreen-az.netlify.app/img/logo.png" alt="Think Green" width="62" height="62"/></span>
+        </td>
+        <td>
+          <div class="header-tag">New Inbound Ticket</div>
+          <div class="header-title">Project Request Received</div>
+        </td>
+      </tr>
+    </table>
   </div>
 
-  <!-- ALERT BANNER -->
-  <div class="alert-banner">
-    <div class="alert-left">
-      <strong>Ticket #{{submission.data.ticket_id}}</strong>
-      {{submission.data.submitted_local}}
-    </div>
-    <span class="priority-badge {{submission.data.owner_priority_class}}">{{submission.data.owner_priority}}</span>
+  <div class="alert">
+    <table class="alert-table" role="presentation">
+      <tr>
+        <td class="alert-left">
+          <strong>Ticket #{{submission.data.ticket_id}}</strong>
+          {{submission.data.submitted_local}}
+        </td>
+        <td class="alert-right">
+          <span class="priority-badge {{submission.data.owner_priority_class}}">{{submission.data.owner_priority}}</span>
+        </td>
+      </tr>
+    </table>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
-
-    <!-- CONTACT CARD -->
-    <div class="contact-card">
-      <div class="card-head">Client</div>
-      <div class="contact-name">{{submission.data.first_name}} {{submission.data.last_name}}</div>
-      <div class="contact-location">{{submission.data.project_address}}, {{submission.data.city}}</div>
-      <div class="contact-links">
-        <a href="tel:{{submission.data.phone}}" class="contact-link">
-          <svg viewBox="0 0 14 14" fill="none"><path d="M2 2h3l1.5 3.5-1.5 1a8 8 0 004 4l1-1.5L13 10.5v3A1 1 0 0112 14C6.5 14 0 7.5 0 2a1 1 0 011-1h1z" fill="#1b4728"/></svg>
-          {{submission.data.phone}}
-        </a>
-        <a href="mailto:{{submission.data.email}}" class="contact-link">
-          <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1" stroke="#1b4728" stroke-width="1.2"/><path d="M1 4l6 4 6-4" stroke="#1b4728" stroke-width="1.2"/></svg>
-          {{submission.data.email}}
-        </a>
-      </div>
-    </div>
-
-    <!-- PROJECT DETAILS -->
-    <div class="project-section">
-      <div class="card-head">Project Details</div>
-      <table class="detail-table">
-        <tr><td>Service</td><td>{{submission.data.service}}</td></tr>
-        <tr><td>Budget Range</td><td>{{submission.data.budget}}</td></tr>
-        <tr><td>Start Timeline</td><td>{{submission.data.start_timeline}}</td></tr>
-        <tr><td>Contact Method</td><td>{{submission.data.preferred_contact}}</td></tr>
-        <tr><td>Project Address</td><td>{{submission.data.project_address}}, {{submission.data.city}}</td></tr>
+    <div class="section">
+      <div class="section-head">Client</div>
+      <div class="client-name">{{submission.data.full_name}}</div>
+      <div class="client-location">{{submission.data.project_location}}</div>
+      <table class="contact-actions" role="presentation">
+        <tr><td><a class="contact-btn" href="tel:{{submission.data.phone}}">Call: {{submission.data.phone}}</a></td></tr>
+        <tr><td><a class="contact-btn" href="mailto:{{submission.data.email}}">Email: {{submission.data.email}}</a></td></tr>
       </table>
     </div>
 
-    <!-- VISION -->
-    <div class="vision-section">
-      <div class="vision-label">Client Vision</div>
-      <div class="vision-text">"{{submission.data.vision}}"</div>
+    <div class="section">
+      <div class="section-head">Project Details</div>
+      <table class="detail-table" role="presentation">
+        <tr><th>Service</th><td>{{submission.data.service}}</td></tr>
+        <tr><th>Budget Range</th><td>{{submission.data.budget}}</td></tr>
+        <tr><th>Start Timeline</th><td>{{submission.data.start_timeline}}</td></tr>
+        <tr><th>Contact Method</th><td>{{submission.data.preferred_contact}}</td></tr>
+        <tr><th>Project Location</th><td>{{submission.data.project_location}}</td></tr>
+      </table>
     </div>
 
-    <!-- OWNER INTEL -->
-    <div class="intel-section">
-      <div class="intel-head">Owner Intelligence</div>
-      <div class="intel-id">Ticket #{{submission.data.ticket_id}}</div>
+    <div class="section vision">
+      <div class="section-head">Client Vision</div>
+      <div class="vision-quote">"{{submission.data.vision}}"</div>
+    </div>
 
-      <div class="intel-summary-label">AI Summary</div>
+    <div class="section intel">
+      <div class="section-head">Owner Intelligence</div>
+      <div class="intel-ticket">Ticket #{{submission.data.ticket_id}}</div>
+      <div class="intel-label">Summary</div>
       <div class="intel-summary">{{submission.data.owner_summary}}</div>
-
       <div class="intel-divider"></div>
-
-      <div class="intel-grid">
-        <div class="intel-cell">
-          <div class="intel-cell-label">Priority</div>
-          <div class="intel-cell-val">{{submission.data.owner_priority}}</div>
-        </div>
-        <div class="intel-cell">
-          <div class="intel-cell-label">Lead Score</div>
-          <div class="intel-cell-val">{{submission.data.owner_lead_score}} / 100 ({{submission.data.owner_lead_tier}})</div>
-        </div>
-        <div class="intel-cell">
-          <div class="intel-cell-label">Submitted</div>
-          <div class="intel-cell-val">{{submission.data.submitted_local}}</div>
-        </div>
-        <div class="intel-cell">
-          <div class="intel-cell-label">Budget Signal</div>
-          <div class="intel-cell-val">{{submission.data.budget}}</div>
-        </div>
-        <div class="intel-cell">
-          <div class="intel-cell-label">Urgency</div>
-          <div class="intel-cell-val">{{submission.data.start_timeline}}</div>
-        </div>
-      </div>
+      <table class="intel-grid" role="presentation">
+        <tr><td class="k">Priority</td><td class="v">{{submission.data.owner_priority}}</td></tr>
+        <tr><td class="k">Lead Score</td><td class="v">{{submission.data.owner_lead_score}} / 100 ({{submission.data.owner_lead_tier}})</td></tr>
+        <tr><td class="k">Submitted</td><td class="v">{{submission.data.submitted_local}}</td></tr>
+        <tr><td class="k">Budget Signal</td><td class="v">{{submission.data.budget}}</td></tr>
+        <tr><td class="k">Urgency</td><td class="v">{{submission.data.start_timeline}}</td></tr>
+      </table>
     </div>
 
-    <!-- QUICK ACTIONS -->
-    <div class="actions-section">
+    <div class="actions">
       <a href="tel:{{submission.data.phone}}" class="action-btn action-primary">Call Client</a>
       <a href="mailto:{{submission.data.email}}" class="action-btn action-secondary">Email Client</a>
       <a href="https://thinkgreen-az.netlify.app" class="action-btn action-secondary">Open Website</a>
     </div>
-
   </div>
 
-  <!-- FOOTER -->
   <div class="footer">
-    <p>Think Green Landscape — Owner Notification<br/>
-    <a href="https://thinkgreen-az.netlify.app">thinkgreen-az.netlify.app</a> · Scottsdale, AZ<br/>
-    <span style="color:#333;font-size:10px;">This email is for internal use only.</span></p>
+    <p>
+      Think Green Landscape - Owner Notification<br/>
+      <a href="https://thinkgreen-az.netlify.app">thinkgreen-az.netlify.app</a> - Scottsdale, AZ
+      <small>This email is for internal use only.</small>
+    </p>
   </div>
   <div class="safe-pad" aria-hidden="true"></div>
 

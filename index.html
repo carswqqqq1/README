@@ -169,7 +169,7 @@
   <header class="nav" id="nav">
     <div class="nav__inner">
       <a href="#" class="nav__logo" aria-label="Think Green Design Build Landscape — home">
-        <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img" width="118" height="108" />
+        <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img" data-site-logo width="118" height="108" />
       </a>
 
       <button class="nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
@@ -205,7 +205,7 @@
     </nav>
     <div class="nav__overlay-contact">
       <a href="tel:4809229497" data-site-phone-link data-site-phone-display>(480) 922-9497</a>
-      <span>Scottsdale, AZ 85260</span>
+      <span><span data-site-city>Scottsdale</span>, <span data-site-state>AZ</span> <span data-site-zip>85260</span></span>
     </div>
   </div>
 
@@ -548,16 +548,16 @@
         </header>
         <article class="before-after reveal" aria-label="Before and after landscape slider">
           <div class="before-after__frame" data-before-after>
-            <img src="img/projects/after-29.jpg" alt="Think Green completed landscape after renovation" class="before-after__image" loading="lazy" />
+            <img src="img/projects/after-29.jpg" alt="Think Green completed landscape after renovation" class="before-after__image" data-before-after-after-image loading="lazy" />
             <div class="before-after__overlay" data-before-after-overlay>
-              <img src="img/projects/before-29.jpg" alt="Original yard before Think Green renovation" class="before-after__image" loading="lazy" />
+              <img src="img/projects/before-29.jpg" alt="Original yard before Think Green renovation" class="before-after__image" data-before-after-before-image loading="lazy" />
             </div>
             <span class="before-after__label before-after__label--before">Before</span>
             <span class="before-after__label before-after__label--after">After</span>
             <span class="before-after__divider" data-before-after-divider aria-hidden="true"></span>
             <input class="before-after__range" data-before-after-range type="range" min="0" max="100" value="50" aria-label="Adjust before and after comparison" />
           </div>
-          <p class="before-after__note">Drag the slider to compare a real Think Green project before and after completion.</p>
+          <p class="before-after__note" data-before-after-note>Drag the slider to compare a real Think Green project before and after completion.</p>
         </article>
       </div>
       <div class="portfolio__grid">
@@ -606,6 +606,33 @@
       </div>
       <div class="portfolio__footer container reveal">
         <a href="portfolio.html" class="btn btn--dark">View Full Portfolio</a>
+      </div>
+    </section>
+
+    <section class="reviews" id="reviews">
+      <div class="container">
+        <header class="reviews__header reveal">
+          <p class="eyebrow">Verified Reviews</p>
+          <h2 class="section-title">What Homeowners Say</h2>
+          <p class="reviews__sub">Use verified Google reviews here. These placeholders are ready to swap per client.</p>
+        </header>
+        <div class="reviews__grid" id="reviews-grid">
+          <article class="review-card reveal">
+            <p class="review-card__stars">★★★★★</p>
+            <p class="review-card__text">Placeholder: Add a verified Google review quote here.</p>
+            <p class="review-card__meta"><strong>Verified Google Review</strong><span>Scottsdale, AZ</span></p>
+          </article>
+          <article class="review-card reveal">
+            <p class="review-card__stars">★★★★★</p>
+            <p class="review-card__text">Placeholder: Add a verified Google review quote here.</p>
+            <p class="review-card__meta"><strong>Verified Google Review</strong><span>Phoenix, AZ</span></p>
+          </article>
+          <article class="review-card reveal">
+            <p class="review-card__stars">★★★★★</p>
+            <p class="review-card__text">Placeholder: Add a verified Google review quote here.</p>
+            <p class="review-card__meta"><strong>Verified Google Review</strong><span>Paradise Valley, AZ</span></p>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -776,11 +803,11 @@
               </li>
               <li>
                 <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-                <a href="mailto:thinkgreen@thinkgreenaz.com">thinkgreen@thinkgreenaz.com</a>
+                <a href="mailto:thinkgreen@thinkgreenaz.com" data-site-email-link data-site-email-display>thinkgreen@thinkgreenaz.com</a>
               </li>
               <li>
                 <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
-                <address>7730 E. Gelding Dr. Ste 1<br>Scottsdale, AZ 85260</address>
+                <address><span data-site-address-line1>7730 E. Gelding Dr. Ste 1</span><br><span data-site-city>Scottsdale</span>, <span data-site-state>AZ</span> <span data-site-zip>85260</span></address>
               </li>
               <li>
                 <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
@@ -850,7 +877,7 @@
             </div>
             <div class="form-field">
               <label for="service">Project Type</label>
-              <select id="service" name="service" required>
+              <select id="service" name="service" data-service-select required>
                 <option value="">Select a project type…</option>
                 <option>Landscape Design &amp; Build</option>
                 <option>Hardscaping</option>
@@ -884,7 +911,7 @@
               <li>Have inspiration photos ready for your consultation.</li>
               <li>Reference your ticket ID for any follow-up.</li>
             </ul>
-            <p class="success-spam-note">Email tip: add <strong>carson.elevatemarketing@gmail.com</strong> to contacts so future messages land in inbox.</p>
+            <p class="success-spam-note">Email tip: add <strong data-site-email-display>thinkgreen@thinkgreenaz.com</strong> to contacts so future messages land in inbox.</p>
           </div>
         </div>
 
@@ -900,7 +927,7 @@
     <div class="footer__top container">
       <div class="footer__brand">
         <a href="#" class="nav__logo nav__logo--footer" aria-label="Think Green Design Build Landscape">
-          <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img nav__logo-img--footer" width="132" height="118" />
+          <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img nav__logo-img--footer" data-site-logo width="132" height="118" />
         </a>
         <p>Premium landscape design and construction serving Scottsdale, Phoenix, and nearby Valley communities.</p>
         <p class="footer__license">Licensed · Bonded · Insured<br>ROC# 157201 CR-21 &nbsp;|&nbsp; ROC# 304902 B-4</p>
@@ -935,16 +962,16 @@
         <h4>Contact</h4>
         <address>
           <p><a href="tel:4809229497" data-site-phone-link data-site-phone-display>(480) 922-9497</a></p>
-          <p><a href="mailto:thinkgreen@thinkgreenaz.com">thinkgreen@thinkgreenaz.com</a></p>
-          <p>7730 E. Gelding Dr. Ste 1<br>Scottsdale, AZ 85260</p>
+          <p><a href="mailto:thinkgreen@thinkgreenaz.com" data-site-email-link data-site-email-display>thinkgreen@thinkgreenaz.com</a></p>
+          <p><span data-site-address-line1>7730 E. Gelding Dr. Ste 1</span><br><span data-site-city>Scottsdale</span>, <span data-site-state>AZ</span> <span data-site-zip>85260</span></p>
           <p>Mon–Fri: 7:00 AM – 5:00 PM</p>
         </address>
       </div>
     </div>
 
     <div class="footer__bottom container">
-      <p>&copy; 2026 Think Green Design | Build Landscape. All rights reserved.</p>
-      <p>Serving Scottsdale &middot; Paradise Valley &middot; Phoenix &amp; the Greater Valley of the Sun</p>
+      <p>&copy; <span data-site-year>2026</span> <span data-site-name>Think Green Design | Build Landscape</span>. All rights reserved.</p>
+      <p>Serving <span data-site-city>Scottsdale</span> &middot; Paradise Valley &middot; Phoenix &amp; the Greater Valley of the Sun</p>
     </div>
   </footer>
 
@@ -957,6 +984,7 @@
     <a href="#contact" class="btn btn--outline-dark">Book</a>
   </div>
 
+  <script src="site-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

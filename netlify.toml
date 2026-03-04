@@ -29,6 +29,11 @@
     Cache-Control = "public, max-age=86400"
 
 [[headers]]
+  for = "/site-config.js"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
+
+[[headers]]
   for = "/img/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
