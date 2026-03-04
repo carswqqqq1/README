@@ -128,6 +128,13 @@
 
   if (slides.length > 1) startCarousel();
 
+  /* ---- GA4 PHONE CLICK TRACKING ---- */
+  document.querySelectorAll('a[href^="tel:"]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (typeof gtag === 'function') gtag('event', 'call_click', { event_category: 'lead', event_label: this.href });
+    });
+  });
+
   /* ---- BEFORE / AFTER SLIDER ---- */
   document.querySelectorAll('[data-before-after]').forEach(function (slider) {
     var range = slider.querySelector('[data-before-after-range]');
@@ -415,6 +422,7 @@
         form.style.display = 'none';
         if (success) success.style.display = 'block';
         if (ticketReference) ticketReference.textContent = ticketId;
+        if (typeof gtag === 'function') gtag('event', 'form_submit', { event_category: 'lead', event_label: service, value: 1 });
       } catch (error) {
         if (errorMessage) {
           errorMessage.textContent = 'We could not submit your ticket right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
