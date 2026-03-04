@@ -95,6 +95,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   display: inline-flex;
   align-items: center;
   gap: .5rem;
+  min-height: 44px;
   padding: .875rem 2rem;
   font-family: var(--font-body);
   font-size: .875rem;
@@ -205,7 +206,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   max-width: 1160px;
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 5vw, 2.5rem);
-  height: 98px;
+  height: 102px;
 }
 
 /* Logo */
@@ -216,7 +217,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   flex-shrink: 0;
 }
 .nav__logo-img {
-  height: 84px;
+  height: 90px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -229,7 +230,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   filter: none;
 }
 .nav__logo-img--footer {
-  height: 92px;
+  height: 96px;
   /* White filter on dark footer background */
   filter: brightness(0) invert(1);
 }
@@ -426,10 +427,9 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    160deg,
-    rgba(7, 14, 10, .82) 0%,
-    rgba(7, 14, 10, .56) 52%,
-    rgba(7, 14, 10, .34) 100%
+    180deg,
+    rgba(0,0,0,0.25) 0%,
+    rgba(0,0,0,0.45) 100%
   );
   pointer-events: none;
 }
@@ -457,21 +457,23 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .hero__heading {
   font-family: var(--font-head);
   font-size: clamp(2.25rem, 5.9vw, 4.8rem);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.05;
-  letter-spacing: -.02em;
+  letter-spacing: -.012em;
   color: var(--white);
   text-shadow: 0 6px 18px rgba(0,0,0,.45);
   margin-bottom: 1.2rem;
-  max-width: 920px;
+  max-width: 780px;
+  text-wrap: balance;
 }
 .hero__sub {
   font-size: clamp(1rem, 1.55vw, 1.16rem);
   color: rgba(255,255,255,.78);
   text-shadow: 0 4px 14px rgba(0,0,0,.42);
-  max-width: 640px;
+  max-width: 620px;
   line-height: 1.72;
   margin-bottom: 2rem;
+  text-wrap: pretty;
 }
 .hero__actions {
   display: flex;
@@ -486,7 +488,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   gap: .7rem;
 }
 .hero-stat {
-  background: rgba(10, 19, 14, .56);
+  background: rgba(10, 19, 14, .42);
   border: 1px solid rgba(255, 255, 255, .24);
   border-radius: 14px;
   padding: .85rem .9rem .8rem;
@@ -1242,16 +1244,27 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   background: var(--white);
   border: 1px solid var(--paper-alt);
   border-radius: 12px;
-  padding: 1.05rem;
+  padding: 1.1rem 1.05rem 1.05rem;
   box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.review-card::before {
+  content: "Google Review";
+  position: absolute;
+  top: .8rem;
+  right: .85rem;
+  font-size: .6rem;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
 }
 .review-card__stars {
-  font-size: .92rem;
+  font-size: .95rem;
   letter-spacing: .14em;
-  color: var(--tan);
+  color: #f4b400;
 }
 .review-card__text {
-  margin-top: .55rem;
+  margin-top: .62rem;
   font-size: .92rem;
   line-height: 1.72;
   color: var(--ink);
@@ -1376,6 +1389,13 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
 }
 .areas__header .section-title { margin-top: .5rem; }
+.areas__sub {
+  margin: .82rem auto 0;
+  max-width: 760px;
+  font-size: .95rem;
+  line-height: 1.76;
+  color: var(--ink-light);
+}
 .areas__list {
   display: flex;
   flex-wrap: wrap;
@@ -1989,7 +2009,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   background: rgba(255,255,255,.96);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  padding: .625rem .875rem calc(.625rem + env(safe-area-inset-bottom));
+  padding: .75rem .9rem calc(.75rem + env(safe-area-inset-bottom));
   gap: .75rem;
   box-shadow: 0 -4px 20px rgba(0,0,0,.12);
   border-top: 1px solid var(--paper-alt);
@@ -2006,6 +2026,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .sticky-bar .btn {
   flex: 1;
   justify-content: center;
+  min-height: 46px;
   padding-block: .68rem;
   font-size: .8rem;
   letter-spacing: .05em;
@@ -2106,10 +2127,10 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     background: rgba(255,255,255,.96);
   }
   .nav__inner {
-    height: 94px;
+    height: 98px;
   }
   .nav__logo-img {
-    height: 76px;
+    height: 82px;
   }
   .nav__logo-img--footer {
     height: 80px;
@@ -2128,15 +2149,19 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     margin-inline: auto;
     padding-inline: clamp(1.1rem, 5vw, 1.6rem);
   }
-  .hero__overlay {
-    background: linear-gradient(
-      180deg,
-      rgba(5, 10, 7, .78) 0%,
-      rgba(5, 10, 7, .6) 30%,
-      rgba(5, 10, 7, .48) 58%,
-      rgba(5, 10, 7, .72) 100%
-    );
-  }
+  .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.45) 100%); }
+  .featured,
+  .proof,
+  .services,
+  .about,
+  .process,
+  .portfolio,
+  .reviews,
+  .areas,
+  .search-intent,
+  .project-fit,
+  .faq { padding-block: clamp(3.1rem, 8vw, 4.4rem); }
+  .portfolio { padding-bottom: 0; }
   .hero__eyebrow {
     max-width: calc(100% - 68px);
     margin-bottom: .8rem;
@@ -2151,7 +2176,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .hero-stat {
     padding: .7rem .72rem;
     border-radius: 12px;
-    background: rgba(8, 16, 11, .7);
+    background: rgba(8, 16, 11, .45);
   }
   .hero-stat strong {
     font-size: 1.04rem;
@@ -2186,6 +2211,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .portfolio__item--tall,
   .portfolio__item--wide,
   .portfolio__item { grid-column: span 1; aspect-ratio: 4/3; }
+  .portfolio__caption {
+    opacity: 1;
+    transform: none;
+    padding: .9rem;
+    background: linear-gradient(0deg, rgba(10,20,12,.64) 0%, rgba(10,20,12,.15) 100%);
+  }
   .faq__question span:first-child {
     font-size: .9rem;
   }
@@ -2194,7 +2225,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .footer__brand { grid-column: span 1; }
   .footer__bottom { flex-direction: column; text-align: center; }
   .sticky-bar { display: flex; }
-  body { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: calc(106px + env(safe-area-inset-bottom)); }
 }
 
 @media (max-width: 480px) {

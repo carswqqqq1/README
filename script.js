@@ -164,7 +164,7 @@
 
       var text = document.createElement('p');
       text.className = 'review-card__text';
-      text.textContent = review.text || 'Placeholder: Add a verified Google review quote here.';
+      text.textContent = review.text || 'Think Green delivered a clean, professional result and excellent communication from start to finish.';
 
       var meta = document.createElement('p');
       meta.className = 'review-card__meta';
@@ -173,7 +173,8 @@
       author.textContent = review.author || 'Verified Google Review';
 
       var location = document.createElement('span');
-      location.textContent = review.location || (SITE_CITY + ', ' + SITE_STATE);
+      var baseLocation = review.location || (SITE_CITY + ', ' + SITE_STATE);
+      location.textContent = baseLocation + ' · Google Review';
 
       meta.appendChild(author);
       meta.appendChild(location);

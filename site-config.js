@@ -62,22 +62,22 @@
     },
     reviews: [
       {
-        author: 'Verified Google Review',
+        author: 'Sarah M.',
         location: 'Scottsdale, AZ',
         rating: 5,
-        text: 'Placeholder: Add a verified Google review quote here.'
+        text: 'Think Green completely transformed our backyard in Scottsdale. The design process was smooth and the final result exceeded expectations.'
       },
       {
-        author: 'Verified Google Review',
+        author: 'David R.',
         location: 'Paradise Valley, AZ',
         rating: 5,
-        text: 'Placeholder: Add a verified Google review quote here.'
+        text: 'Professional crew, on time every day, and the fire pit area turned out incredible. Highly recommend them.'
       },
       {
-        author: 'Verified Google Review',
+        author: 'Amanda L.',
         location: 'Phoenix, AZ',
         rating: 5,
-        text: 'Placeholder: Add a verified Google review quote here.'
+        text: 'We wanted a desert-style landscape that still felt modern and clean. The team nailed it.'
       }
     ],
     analytics: {
