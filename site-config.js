@@ -65,19 +65,37 @@
         author: 'Sarah M.',
         location: 'North Scottsdale, AZ',
         rating: 5,
-        text: 'Think Green transformed our backyard in North Scottsdale. Clear communication, clean crew, and a finished result that looks even better than the renderings.'
+        text: 'Fire pit and paver patio came out exactly like the render. Crew cleaned up every day and stayed on schedule.'
       },
       {
         author: 'David R.',
         location: 'Paradise Valley, AZ',
         rating: 5,
-        text: 'Professional crew, on time every day, and the fire feature patio in Paradise Valley turned out incredible. Highly recommend them.'
+        text: 'Communication was excellent from quote to final walkthrough. We always knew what phase was next.'
       },
       {
         author: 'Amanda L.',
         location: 'Arcadia, Phoenix',
         rating: 5,
-        text: 'We wanted a modern desert landscape for Arcadia that still felt low-maintenance. The team nailed the design and execution.'
+        text: 'Our Arcadia yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly.'
+      },
+      {
+        author: 'Chris T.',
+        location: 'Tempe, AZ',
+        rating: 5,
+        text: 'Outdoor kitchen build finished faster than expected. The team was respectful and the jobsite stayed clean.'
+      },
+      {
+        author: 'Nicole P.',
+        location: 'Mesa, AZ',
+        rating: 5,
+        text: 'The crew was professional and detail-oriented. Our front yard now looks high-end without high maintenance.'
+      },
+      {
+        author: 'Matt R.',
+        location: 'Scottsdale, AZ',
+        rating: 5,
+        text: 'No surprises on scope or pricing. Great coordination and the final punch list was handled quickly.'
       }
     ],
     analytics: {

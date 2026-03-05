@@ -161,6 +161,7 @@
       stars.className = 'review-card__stars';
       var rating = Number(review.rating || 5);
       stars.textContent = '★'.repeat(Math.max(1, Math.min(5, rating)));
+      stars.setAttribute('data-rating', String(Math.max(1, Math.min(5, rating)).toFixed(1)));
 
       var text = document.createElement('p');
       text.className = 'review-card__text';
@@ -361,6 +362,7 @@
     var overlayPanel = slider.querySelector('[data-before-after-overlay]');
     var divider = slider.querySelector('[data-before-after-divider]');
     if (!range || !overlayPanel || !divider) return;
+    var activePointerId = null;
 
     function updateBeforeAfter() {
       var value = Number(range.value || 50);
@@ -370,8 +372,48 @@
       divider.style.left = value + '%';
     }
 
+    function updateFromClientX(clientX) {
+      var rect = slider.getBoundingClientRect();
+      if (!rect.width) return;
+      var value = ((clientX - rect.left) / rect.width) * 100;
+      value = Math.max(0, Math.min(100, value));
+      range.value = String(value);
+      updateBeforeAfter();
+    }
+
+    function startDrag(event) {
+      activePointerId = event.pointerId;
+      slider.classList.add('is-dragging');
+      if (typeof slider.setPointerCapture === 'function' && event.pointerId !== undefined) {
+        slider.setPointerCapture(event.pointerId);
+      }
+      updateFromClientX(event.clientX);
+    }
+
+    function moveDrag(event) {
+      if (activePointerId === null) return;
+      if (event.pointerId !== undefined && event.pointerId !== activePointerId) return;
+      event.preventDefault();
+      updateFromClientX(event.clientX);
+    }
+
+    function endDrag(event) {
+      if (activePointerId === null) return;
+      if (event && event.pointerId !== undefined && event.pointerId !== activePointerId) return;
+      slider.classList.remove('is-dragging');
+      if (event && typeof slider.releasePointerCapture === 'function' && event.pointerId !== undefined) {
+        try { slider.releasePointerCapture(event.pointerId); } catch (err) {}
+      }
+      activePointerId = null;
+    }
+
     range.addEventListener('input', updateBeforeAfter);
     range.addEventListener('change', updateBeforeAfter);
+    slider.addEventListener('pointerdown', startDrag);
+    slider.addEventListener('pointermove', moveDrag);
+    slider.addEventListener('pointerup', endDrag);
+    slider.addEventListener('pointercancel', endDrag);
+    slider.addEventListener('pointerleave', endDrag);
     updateBeforeAfter();
   });
 
@@ -449,6 +491,7 @@
   var budgetInput = document.getElementById('budget');
   var timelineInput = document.getElementById('timeline');
   var contactMethod = document.getElementById('contact_method');
+  var leadTierInput = document.getElementById('lead_tier');
   var messageInput = document.getElementById('message');
   var ticketReference = document.getElementById('ticket-reference');
   var progressBar = document.querySelector('.ticket-progress__bar');
@@ -544,6 +587,49 @@
 
   bindFitButtons();
 
+  function bindLeadTierButtons() {
+    var tierButtons = document.querySelectorAll('[data-lead-tier]');
+    if (!tierButtons.length) return;
+
+    tierButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var tier = String(this.getAttribute('data-lead-tier') || '').trim();
+        if (!tier) return;
+
+        tierButtons.forEach(function (other) { other.classList.remove('is-selected'); });
+        this.classList.add('is-selected');
+
+        if (leadTierInput) leadTierInput.value = tier;
+        if (budgetInput && (!budgetInput.value || budgetInput.value === 'Not discussed yet')) {
+          budgetInput.value = tier;
+        }
+
+        if (messageInput) {
+          var tierLine = 'Interested in the ' + tier + ' tier.';
+          var current = String(messageInput.value || '').trim();
+          if (!current) {
+            messageInput.value = tierLine;
+          } else if (!current.includes(tierLine)) {
+            messageInput.value = current + '\n' + tierLine;
+          }
+          messageInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        if (typeof window.trackLeadEvent === 'function') {
+          window.trackLeadEvent('lead_tier_select', {
+            lead_tier: tier,
+            page_location: window.location.href
+          });
+        }
+
+        var section = document.getElementById('contact');
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
+
+  bindLeadTierButtons();
+
   if (form) {
     var params = new URLSearchParams(window.location.search);
     var utmSource = params.get('utm_source') || '';
@@ -592,6 +678,7 @@
       var service = valueOrFallback(serviceInput, 'Not selected');
       var budget = valueOrFallback(budgetInput, 'Not selected');
       var timeline = valueOrFallback(timelineInput, 'Not selected');
+      var leadTier = valueOrFallback(leadTierInput, 'Not selected');
       var priority = getPriority(budget, timeline);
       var preferredContact = valueOrFallback(contactMethod, 'Not selected');
       var projectCity = valueOrFallback(cityInput, 'Not provided');
@@ -609,7 +696,8 @@
           'New project ticket submitted.',
           'Priority: ' + priority,
           'Requested service: ' + service,
-          'Budget / Timeline: ' + budget + ' / ' + timeline
+          'Budget / Timeline: ' + budget + ' / ' + timeline,
+          'Consultation tier: ' + leadTier
         ].join('\n');
       }
 
@@ -627,6 +715,7 @@
           'Ticket ID: ' + ticketId,
           'Submitted (Phoenix): ' + submittedLocalTime,
           'Project location: ' + projectAddress + ', ' + projectCity,
+          'Consultation tier: ' + leadTier,
           'Project vision:',
           vision
         ].join('\n');
@@ -668,6 +757,7 @@
           window.trackLeadEvent('form_submit', {
             ticket_id: ticketId,
             service: service,
+            lead_tier: leadTier,
             city: projectCity,
             page_location: window.location.href
           });

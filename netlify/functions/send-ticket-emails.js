@@ -251,6 +251,7 @@ function buildNormalizedData(rawData = {}, meta = {}) {
   normalized.city = safeText(rawData.city || rawData.project_city);
   normalized.project_location = buildProjectLocation(normalized.project_address, normalized.city);
   normalized.service = safeText(rawData.service || rawData.project_type);
+  normalized.lead_tier = safeText(rawData.lead_tier, 'Not selected');
 
   normalized.budget = cleanBudgetLabel(rawData.budget || rawData.budget_range || rawData.budget_value);
   normalized.start_timeline = safeText(rawData.start_timeline || rawData.timeline || rawData.start_window, 'To be discussed');
@@ -278,6 +279,7 @@ function buildNormalizedData(rawData = {}, meta = {}) {
 function buildOwnerSummary(data) {
   const pieces = [];
   pieces.push(`Service: ${safeText(data.service)}`);
+  pieces.push(`Budget Tier: ${safeText(data.lead_tier, 'Not selected')}`);
   pieces.push(`Budget: ${safeText(data.budget || data.budget_range)}`);
   pieces.push(`Timeline: ${safeText(data.start_timeline || data.timeline)}`);
   pieces.push(`Contact: ${safeText(data.preferred_contact || data.preferred_contact_method)}`);
@@ -298,6 +300,7 @@ function determinePriority(data) {
 
 function determineLeadScore(data) {
   const budget = cleanBudgetLabel(data.budget || data.budget_range).toLowerCase();
+  const leadTier = safeText(data.lead_tier, '').toLowerCase();
   const timeline = safeText(data.start_timeline || data.timeline, '').toLowerCase();
   const service = safeText(data.service, '').toLowerCase();
   const contact = safeText(data.preferred_contact || data.preferred_contact_method, '').toLowerCase();
@@ -311,6 +314,10 @@ function determineLeadScore(data) {
   else if (budget.includes('25,000')) score += 16;
   else if (budget.includes('10,000')) score += 10;
   else if (budget.includes('under')) score += 4;
+
+  if (leadTier.includes('60k')) score += 14;
+  else if (leadTier.includes('25k')) score += 8;
+  else if (leadTier.includes('10k')) score += 4;
 
   if (timeline.includes('asap')) score += 20;
   else if (timeline.includes('within 30')) score += 14;
@@ -470,6 +477,7 @@ async function sendToGoogleSheets(normalized, meta = {}) {
     project_address: normalized.project_address,
     city: normalized.city,
     service: normalized.service,
+    lead_tier: normalized.lead_tier,
     budget_range: normalized.budget,
     timeline: normalized.start_timeline,
     preferred_contact_method: normalized.preferred_contact,
