@@ -38,36 +38,28 @@ const processedKeys = new Map();
 const rateLimitStore = new Map();
 const DIRECT_SHEET_HEADERS = [
   'timestamp',
+  'submitted_local',
+  'status',
   'ticket_id',
   'name',
-  'email',
   'phone',
-  'project_location',
+  'email',
   'city',
+  'project_location',
   'service',
   'consultation_tier',
   'budget_range',
   'start_timeline',
   'contact_method',
-  'lead_source',
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'utm_content',
-  'referrer',
-  'landing_path',
-  'page_url',
   'lead_score',
   'lead_tags',
-  'status',
+  'next_action',
   'follow_up_due',
   'last_touched',
-  'next_action',
-  'assigned_to',
   'notes',
+  'lead_source',
   'project_reference',
-  'style_reference',
-  'submitted_local'
+  'style_reference'
 ];
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 const DISPOSABLE_EMAIL_DOMAINS = new Set([
@@ -719,6 +711,17 @@ function buildGoogleSheetUrl(sheetId) {
   return `https://docs.google.com/spreadsheets/d/${id}/edit`;
 }
 
+function columnIndexToA1(columnIndex) {
+  let index = Number(columnIndex || 0);
+  let result = '';
+  while (index > 0) {
+    const remainder = (index - 1) % 26;
+    result = String.fromCharCode(65 + remainder) + result;
+    index = Math.floor((index - 1) / 26);
+  }
+  return result || 'A';
+}
+
 async function getGoogleAccessToken() {
   if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_OAUTH_REFRESH_TOKEN) {
     throw new Error('Missing Google OAuth credentials for direct Sheets write');
@@ -847,7 +850,8 @@ async function detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, e
   const hasPhone = normalizedPhone.length > 0;
   if (!hasEmail && !hasPhone) return false;
 
-  const encodedRange = encodeURIComponent(`${tabName}!A2:AF`);
+  const lastColumn = columnIndexToA1(DIRECT_SHEET_HEADERS.length);
+  const encodedRange = encodeURIComponent(`${tabName}!A2:${lastColumn}`);
   const response = await fetch(
     `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodedRange}`,
     {
@@ -867,8 +871,8 @@ async function detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, e
     if (Number.isFinite(timestamp) && now - timestamp > SEVEN_DAYS_MS) {
       break;
     }
-    const rowEmail = String(row[3] || '').trim().toLowerCase();
-    const rowPhone = normalizePhone(row[4] || '');
+    const rowPhone = normalizePhone(row[5] || '');
+    const rowEmail = String(row[6] || '').trim().toLowerCase();
     if ((hasEmail && rowEmail && rowEmail === targetEmail) || (hasPhone && rowPhone && rowPhone === normalizedPhone)) {
       return true;
     }
@@ -937,42 +941,35 @@ async function sendToGoogleSheetsDirect(row) {
   const followUpDue = isDuplicate ? '' : new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
   const rowValues = [
     timestamp,
+    safeText(row.submitted_local, ''),
+    status,
     safeText(row.ticket_id, ''),
     safeText(row.name, ''),
-    safeText(row.email, ''),
     safeText(row.phone, ''),
-    safeText(row.project_location, ''),
+    safeText(row.email, ''),
     safeText(row.city, ''),
+    safeText(row.project_location, ''),
     safeText(row.service, ''),
     safeText(row.consultation_tier, ''),
     safeText(row.budget_range, ''),
     safeText(row.start_timeline, ''),
     safeText(row.contact_method, ''),
-    safeText(row.lead_source, ''),
-    safeText(row.utm_source, ''),
-    safeText(row.utm_medium, ''),
-    safeText(row.utm_campaign, ''),
-    safeText(row.utm_content, ''),
-    safeText(row.referrer, ''),
-    safeText(row.landing_path, ''),
-    safeText(row.page_url, ''),
     safeText(row.lead_score, ''),
     Array.from(tags).join(', '),
-    status,
+    isDuplicate ? 'Review Duplicate' : 'Call',
     followUpDue,
     timestamp,
-    isDuplicate ? 'Review Duplicate' : 'Call',
     '',
-    '',
+    safeText(row.lead_source, ''),
     safeText(row.selected_project_label, ''),
-    safeText(row.selected_style, ''),
-    safeText(row.submitted_local, '')
+    safeText(row.selected_style, '')
   ];
 
   const appendResult = await appendGoogleSheetRow(accessToken, spreadsheetId, tabName, rowValues);
   const spreadsheetUrl = safeText(sheetMeta.spreadsheetUrl, buildGoogleSheetUrl(spreadsheetId));
+  const lastColumn = columnIndexToA1(DIRECT_SHEET_HEADERS.length);
   const rowUrl = appendResult.rowNumber
-    ? `${spreadsheetUrl}#gid=${Number(sheetMeta.sheetId || 0)}&range=${encodeURIComponent(`A${appendResult.rowNumber}:AF${appendResult.rowNumber}`)}`
+    ? `${spreadsheetUrl}#gid=${Number(sheetMeta.sheetId || 0)}&range=${encodeURIComponent(`A${appendResult.rowNumber}:${lastColumn}${appendResult.rowNumber}`)}`
     : spreadsheetUrl;
 
   return {
