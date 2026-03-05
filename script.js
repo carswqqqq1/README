@@ -398,10 +398,19 @@
 
   function installAnalytics() {
     var measurementId = String(ANALYTICS.ga4MeasurementId || '').trim();
+    var trackingContext = {
+      lead_source: DETECTED_LEAD_SOURCE || 'website',
+      utm_source: String(URL_PARAMS.get('utm_source') || '').trim(),
+      utm_medium: String(URL_PARAMS.get('utm_medium') || '').trim(),
+      utm_campaign: String(URL_PARAMS.get('utm_campaign') || '').trim(),
+      utm_content: String(URL_PARAMS.get('utm_content') || '').trim(),
+      referrer: String(document.referrer || '').trim(),
+      landing_path: String(window.location.pathname || '/')
+    };
 
     window.trackLeadEvent = function trackLeadEvent(name, params) {
       if (typeof window.gtag !== 'function') return;
-      window.gtag('event', name, params || {});
+      window.gtag('event', name, Object.assign({}, trackingContext, params || {}));
     };
 
     if (measurementId) {
@@ -426,16 +435,18 @@
       if (callClickMap.has(link)) return;
       callClickMap.add(link);
       link.addEventListener('click', function () {
-        window.trackLeadEvent('call_click', {
+        var payload = {
           method: 'tel_link',
           source: DETECTED_LEAD_SOURCE,
           page_location: window.location.href
-        });
+        };
+        window.trackLeadEvent('call_click', payload);
+        window.trackLeadEvent('click_call', payload);
       });
     });
 
     var trackedDepths = {};
-    var depthThresholds = [25, 50, 75, 100];
+    var depthThresholds = [25, 50, 75, 90];
     function trackScrollDepth() {
       var body = document.body;
       var html = document.documentElement;
@@ -473,11 +484,30 @@
 
       if (!isCta) return;
 
+      var ctaLabel = String(trigger.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+      var ctaTarget = trigger.getAttribute('href') || trigger.id || 'button';
       window.trackLeadEvent('cta_click', {
-        cta_label: String(trigger.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80),
-        cta_target: trigger.getAttribute('href') || trigger.id || 'button',
+        cta_label: ctaLabel,
+        cta_target: ctaTarget,
         page_location: window.location.href
       });
+
+      var normalizedLabel = ctaLabel.toLowerCase();
+      var normalizedTarget = String(ctaTarget).toLowerCase();
+      if (normalizedLabel.indexOf('consultation') >= 0 || normalizedTarget.indexOf('#contact') >= 0) {
+        window.trackLeadEvent('click_get_consultation', {
+          cta_label: ctaLabel,
+          cta_target: ctaTarget,
+          page_location: window.location.href
+        });
+      }
+      if (normalizedLabel.indexOf('portfolio') >= 0 || normalizedTarget.indexOf('portfolio') >= 0) {
+        window.trackLeadEvent('click_portfolio', {
+          cta_label: ctaLabel,
+          cta_target: ctaTarget,
+          page_location: window.location.href
+        });
+      }
     });
 
     if (window.location.pathname.indexOf('thank-you.html') !== -1) {
@@ -754,11 +784,20 @@
   var cityInput = document.getElementById('city');
   var addressInput = document.getElementById('property_address');
   var budgetInput = document.getElementById('budget');
+  var consultationTierInput = document.getElementById('consultation_tier');
   var timelineInput = document.getElementById('timeline');
+  var startTimelineInput = document.getElementById('start_timeline');
   var estimatedTimelineInput = document.getElementById('estimated_timeline');
   var contactMethod = document.getElementById('contact_method');
+  var contactMethodValueInput = document.getElementById('contact_method_value');
   var leadTierInput = document.getElementById('lead_tier');
   var leadSourceInput = document.getElementById('lead_source');
+  var utmSourceInput = document.getElementById('utm_source');
+  var utmMediumInput = document.getElementById('utm_medium');
+  var utmCampaignInput = document.getElementById('utm_campaign');
+  var utmContentInput = document.getElementById('utm_content');
+  var referrerInput = document.getElementById('referrer');
+  var landingPathInput = document.getElementById('landing_path');
   var selectedServiceInput = document.getElementById('selected_service');
   var selectedStyleInput = document.getElementById('selected_style');
   var selectedImageInput = document.getElementById('selected_image');
@@ -817,6 +856,23 @@
     };
   }
 
+  function normalizeTierText(value) {
+    return String(value || '')
+      .replace(/[–—]/g, '-')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+  }
+
+  function getBudgetRangeFromTier(tierLabel) {
+    var tier = normalizeTierText(tierLabel);
+    if (!tier) return 'Not provided';
+    if (tier.indexOf('10k') >= 0 && tier.indexOf('25k') >= 0) return '$10,000 - $25,000';
+    if (tier.indexOf('25k') >= 0 && tier.indexOf('60k') >= 0) return '$25,000 - $60,000';
+    if (tier.indexOf('60k') >= 0) return '$60,000 - $150,000';
+    return 'Not provided';
+  }
+
   function updateFormProgress() {
     if (!form || !progressFill || !progressText || !progressBar) return;
     var required = Array.from(form.querySelectorAll('[required]'));
@@ -871,9 +927,8 @@
         this.classList.add('is-selected');
 
         if (leadTierInput) leadTierInput.value = tier;
-        if (budgetInput && (!budgetInput.value || budgetInput.value === 'Not discussed yet')) {
-          budgetInput.value = tier;
-        }
+        if (consultationTierInput) consultationTierInput.value = tier;
+        if (budgetInput) budgetInput.value = getBudgetRangeFromTier(tier);
 
         if (messageInput) {
           var tierLine = 'Interested in the ' + tier + ' tier.';
@@ -906,12 +961,16 @@
     var utmSource = params.get('utm_source') || '';
     var utmMedium = params.get('utm_medium') || '';
     var utmCampaign = params.get('utm_campaign') || '';
+    var utmContent = params.get('utm_content') || '';
     var requestedService = params.get('service') || '';
     var requestedStyle = params.get('selected_style') || '';
     var requestedImage = params.get('selected_image') || '';
     var requestedProjectLabel = params.get('selected_project_label') || '';
     var requestedSource = params.get('source') || '';
     var requestedTimeline = params.get('estimated_timeline') || params.get('timeline') || '';
+    var referrerValue = String(document.referrer || '');
+    var landingPathValue = String(window.location.pathname || '/');
+    var hasTrackedFormStarted = false;
 
     function normalizeServiceSlug(value) {
       return String(value || '')
@@ -1007,6 +1066,12 @@
     if (leadSourceInput) {
       leadSourceInput.value = requestedSource || utmSource || DETECTED_LEAD_SOURCE || 'website';
     }
+    if (utmSourceInput) utmSourceInput.value = utmSource;
+    if (utmMediumInput) utmMediumInput.value = utmMedium;
+    if (utmCampaignInput) utmCampaignInput.value = utmCampaign;
+    if (utmContentInput) utmContentInput.value = utmContent;
+    if (referrerInput) referrerInput.value = referrerValue || 'direct';
+    if (landingPathInput) landingPathInput.value = landingPathValue || '/';
 
     if (selectedStyleInput && requestedStyle) selectedStyleInput.value = requestedStyle;
     if (selectedImageInput && requestedImage) selectedImageInput.value = requestedImage;
@@ -1019,11 +1084,19 @@
         return sameValue;
       });
     }
-    if (estimatedTimelineInput && timelineInput) {
-      timelineInput.value = estimatedTimelineInput.value || timelineInput.value || 'Planning for later';
+    if (estimatedTimelineInput) {
+      var syncTimeline = function syncTimeline(value) {
+        var next = value || 'Planning for later';
+        if (timelineInput) timelineInput.value = next;
+        if (startTimelineInput) startTimelineInput.value = next;
+      };
+      syncTimeline(estimatedTimelineInput.value || (timelineInput && timelineInput.value));
       estimatedTimelineInput.addEventListener('change', function () {
-        timelineInput.value = this.value || 'Planning for later';
+        syncTimeline(this.value);
       });
+    }
+    if (contactMethodValueInput) {
+      contactMethodValueInput.value = contactMethod && contactMethod.value ? contactMethod.value : 'Phone call';
     }
 
     applyServicePrefillFromQuery();
@@ -1051,6 +1124,23 @@
         this.value = v;
       });
     }
+
+    function trackFormStarted() {
+      if (hasTrackedFormStarted) return;
+      hasTrackedFormStarted = true;
+      if (typeof window.trackLeadEvent === 'function') {
+        window.trackLeadEvent('form_started', {
+          form_id: 'contact-form',
+          page_location: window.location.href
+        });
+      }
+    }
+
+    form.querySelectorAll('input, select, textarea, button').forEach(function (field) {
+      field.addEventListener('focus', trackFormStarted, { once: true });
+      field.addEventListener('input', trackFormStarted, { once: true });
+      field.addEventListener('change', trackFormStarted, { once: true });
+    });
 
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
@@ -1084,15 +1174,22 @@
 
       var fullName = (valueOrFallback(firstNameInput, '') + ' ' + valueOrFallback(lastNameInput, '')).trim();
       var service = valueOrFallback(serviceInput, 'Not selected');
-      var budget = valueOrFallback(budgetInput, 'Not selected');
-      var timeline = valueOrFallback(timelineInput, 'Not selected');
       var leadTier = valueOrFallback(leadTierInput, 'Not selected');
+      var consultationTier = valueOrFallback(consultationTierInput, 'Not selected');
+      if (consultationTier === 'Not selected' && leadTier !== 'Not selected') {
+        consultationTier = leadTier;
+      }
+      var budget = valueOrFallback(budgetInput, 'Not provided');
+      if (!budget || budget === 'Not provided' || budget === 'Not discussed yet') {
+        budget = getBudgetRangeFromTier(consultationTier || leadTier);
+      }
+      var timeline = valueOrFallback(startTimelineInput || timelineInput, 'Not selected');
       var leadSource = valueOrFallback(leadSourceInput, DETECTED_LEAD_SOURCE || 'website');
       var selectedStyle = valueOrFallback(selectedStyleInput, 'Not selected');
       var selectedImage = valueOrFallback(selectedImageInput, 'Not selected');
       var selectedProjectLabel = valueOrFallback(selectedProjectLabelInput, 'Not selected');
       var priority = getPriority(budget, timeline);
-      var preferredContact = valueOrFallback(contactMethod, 'Not selected');
+      var preferredContact = valueOrFallback(contactMethodValueInput || contactMethod, 'Phone call');
       var projectCity = valueOrFallback(cityInput, 'Not provided');
       var projectAddress = valueOrFallback(addressInput, 'Not provided');
       var vision = valueOrFallback(messageInput, 'No project details provided.');
@@ -1100,7 +1197,13 @@
       var phone = valueOrFallback(phoneInput, 'Not provided');
 
       if (ticketInput) ticketInput.value = ticketId;
+      if (consultationTierInput) consultationTierInput.value = consultationTier;
+      if (budgetInput) budgetInput.value = budget;
       if (submittedLocal) submittedLocal.value = submittedLocalTime;
+      if (timelineInput) timelineInput.value = timeline;
+      if (startTimelineInput) startTimelineInput.value = timeline;
+      if (contactMethod) contactMethod.value = preferredContact;
+      if (contactMethodValueInput) contactMethodValueInput.value = preferredContact;
       if (ownerPriority) ownerPriority.value = priority;
 
       if (ownerSummary) {
@@ -1109,7 +1212,7 @@
           'Priority: ' + priority,
           'Requested service: ' + service,
           'Budget / Timeline: ' + budget + ' / ' + timeline,
-          'Consultation tier: ' + leadTier,
+          'Consultation tier: ' + consultationTier,
           'Source: ' + leadSource,
           'Style reference: ' + selectedStyle,
           'Project reference: ' + selectedProjectLabel
@@ -1130,7 +1233,8 @@
           'Ticket ID: ' + ticketId,
           'Submitted (Phoenix): ' + submittedLocalTime,
           'Project location: ' + projectAddress + ', ' + projectCity,
-          'Consultation tier: ' + leadTier,
+          'Consultation tier: ' + consultationTier,
+          'Budget range: ' + budget,
           'Estimated timeline: ' + timeline,
           'Selected style: ' + selectedStyle,
           'Selected image: ' + selectedImage,
@@ -1147,6 +1251,9 @@
           'UTM source: ' + (utmSource || 'n/a'),
           'UTM medium: ' + (utmMedium || 'n/a'),
           'UTM campaign: ' + (utmCampaign || 'n/a'),
+          'UTM content: ' + (utmContent || 'n/a'),
+          'Referrer: ' + (referrerValue || 'direct'),
+          'Landing path: ' + (landingPathValue || '/'),
           'Selected style: ' + selectedStyle,
           'Selected image: ' + selectedImage,
           'Selected project label: ' + selectedProjectLabel
@@ -1172,15 +1279,19 @@
 
         if (!response.ok) throw new Error('Submission failed');
         if (typeof window.trackLeadEvent === 'function') {
-          window.trackLeadEvent('form_submit', {
+          var submitPayload = {
             ticket_id: ticketId,
             service: service,
+            consultation_tier: consultationTier,
             lead_tier: leadTier,
+            budget_range: budget,
             lead_source: leadSource,
             selected_style: selectedStyle,
             city: projectCity,
             page_location: window.location.href
-          });
+          };
+          window.trackLeadEvent('form_submit', submitPayload);
+          window.trackLeadEvent('form_submitted', submitPayload);
         } else if (typeof window.gtag === 'function') {
           window.gtag('event', 'form_submit', {
             event_category: 'lead',

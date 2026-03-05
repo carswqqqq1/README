@@ -24,7 +24,22 @@ Set these vars for site `thinkgreen-az`:
 
 - `GOOGLE_SHEETS_WEBHOOK_URL` = your web app URL
 - `GOOGLE_SHEETS_WEBHOOK_SECRET` = same secret from script
+- `GOOGLE_SHEET_URL` = full URL of the target sheet (used in owner email fallback button)
 
 ## 4) Verify
 
 Submit the contact form once. The script auto-creates a spreadsheet named `Think Green Leads` and writes rows to the `Leads` tab.
+
+Expected behavior:
+
+1. New leads default to:
+   - `status = New`
+   - `follow_up_due = NOW()+1 day`
+   - `next_action = Call`
+2. Duplicate leads (same email or phone in last 7 days) are marked:
+   - `status = Duplicate`
+   - `lead_tags` includes `duplicate`
+3. Webhook response includes:
+   - `row_id`
+   - `row_url`
+   - `status`

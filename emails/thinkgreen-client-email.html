@@ -12,9 +12,9 @@ body{background:#e8e3d9;font-family:'Jost',sans-serif;color:#1d1d1d;-webkit-font
 .preheader{display:none !important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;line-height:1px;font-size:1px;}
 a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font-size:inherit !important;font-family:inherit !important;font-weight:inherit !important;line-height:inherit !important;}
 
-.header{background:#1b4728;padding:34px 40px 30px;text-align:center;}
-.logo-shell{display:inline-flex;align-items:center;justify-content:center;width:118px;height:118px;border-radius:999px;background:#ffffff;border:1px solid rgba(255,255,255,.7);box-shadow:0 10px 26px rgba(0,0,0,.22);margin-bottom:14px;}
-.logo-img{width:88px;height:88px;object-fit:contain;display:block;}
+.header{background:linear-gradient(180deg,#1b4728 0%,#1a3f26 100%);padding:34px 40px 30px;text-align:center;}
+.logo-shell{display:inline-flex;align-items:center;justify-content:center;width:124px;height:124px;border-radius:999px;background:#ffffff;border:2px solid rgba(255,255,255,.82);box-shadow:0 10px 26px rgba(0,0,0,.28);margin-bottom:14px;}
+.logo-img{width:94px;height:94px;object-fit:contain;display:block;}
 .header-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#8dc39a;font-weight:500;margin-bottom:8px;}
 .header-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:40px;font-weight:600;color:#f8f5ef;line-height:1.04;margin-bottom:10px;}
 .header-sub{font-size:13px;color:#bdd9c5;letter-spacing:0.04em;}
@@ -61,8 +61,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 .cta-phone a{color:#1b4728;text-decoration:none;font-weight:600;}
 
 .footer{background:#0d0d0d;padding:30px 40px;text-align:center;}
-.footer-logo-shell{display:inline-flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:999px;background:#ffffff;box-shadow:0 8px 20px rgba(0,0,0,.28);margin-bottom:12px;}
-.footer-logo{width:54px;height:54px;object-fit:contain;display:block;}
+.footer-logo-shell{display:inline-flex;align-items:center;justify-content:center;width:86px;height:86px;border-radius:999px;background:#ffffff;border:1px solid rgba(255,255,255,.75);box-shadow:0 8px 20px rgba(0,0,0,.34);margin-bottom:12px;}
+.footer-logo{width:62px;height:62px;object-fit:contain;display:block;}
 .footer-divider{width:40px;height:1px;background:#2f2f2f;margin:10px auto 12px;}
 .footer p{font-size:12px;line-height:1.8;color:#9ea6a2;}
 .footer a{color:#66b67a;text-decoration:none;}
@@ -71,8 +71,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 
 @media(max-width:600px){
   .header,.section,.confirm-strip,.summary-inner,.vision,.cta,.footer{padding-left:20px !important;padding-right:20px !important;}
-  .logo-shell{width:104px;height:104px;margin-bottom:12px;}
-  .logo-img{width:78px;height:78px;}
+  .logo-shell{width:110px;height:110px;margin-bottom:12px;}
+  .logo-img{width:82px;height:82px;}
   .header-title{font-size:34px;line-height:1.08;}
   .salutation{font-size:42px;}
   .step-index{width:38px;}
@@ -84,8 +84,8 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
   .summary-table td{padding-top:0;padding-bottom:12px;}
   .vision-quote{font-size:30px;line-height:1.18;padding-left:14px;}
   .cta-btn{display:block;width:100%;}
-  .footer-logo-shell{width:72px;height:72px;}
-  .footer-logo{width:50px;height:50px;}
+  .footer-logo-shell{width:78px;height:78px;}
+  .footer-logo{width:56px;height:56px;}
   .safe-pad{height:86px;}
 }
 </style>
@@ -156,11 +156,11 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
           <tr><th>Phone</th><td>{{submission.data.phone}}</td></tr>
           <tr><th>Project Location</th><td>{{submission.data.project_location}}</td></tr>
           <tr><th>Service</th><td>{{submission.data.service}}</td></tr>
-          <tr><th>Consultation Tier</th><td>{{submission.data.lead_tier}}</td></tr>
-          <tr><th>Budget</th><td>{{submission.data.budget}}</td></tr>
+          <tr><th>Consultation Tier</th><td>{{submission.data.consultation_tier}}</td></tr>
+          <tr><th>Budget</th><td>{{submission.data.budget_range}}</td></tr>
           <tr><th>Start Timeline</th><td>{{submission.data.start_timeline}}</td></tr>
           <tr><th>Estimated Timeline</th><td>{{submission.data.estimated_timeline}}</td></tr>
-          <tr><th>Contact Method</th><td>{{submission.data.preferred_contact}}</td></tr>
+          <tr><th>Contact Method</th><td>{{submission.data.contact_method}}</td></tr>
           <tr><th>Requested Style</th><td>{{submission.data.selected_style}}</td></tr>
         </table>
       </div>

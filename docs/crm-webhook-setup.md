@@ -16,7 +16,9 @@ Each webhook receives JSON with:
 
 - contact fields (`first_name`, `last_name`, `email`, `phone`)
 - project fields (`service`, `selected_style`, `selected_image`, `selected_project_label`)
-- qualification fields (`lead_tier`, `budget_range`, `estimated_timeline`)
+- qualification fields (`consultation_tier`, `lead_tier`, `budget_range`, `start_timeline`, `estimated_timeline`, `contact_method`)
+- attribution fields (`lead_source`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `referrer`, `landing_path`, `page_url`)
+- sheet context (`sheet_status`, `sheet_row_id`, `sheet_row_url`)
 - triage fields (`owner_priority`, `owner_lead_score`, `owner_lead_tier`, `owner_lead_tags`, `high_intent`, `budget_fit`, `service_match`)
 
 ## Retry Behavior

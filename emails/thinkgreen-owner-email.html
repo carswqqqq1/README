@@ -12,11 +12,11 @@ body{background:#171717;font-family:'Jost',sans-serif;color:#1f1f1f;-webkit-font
 .preheader{display:none !important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;line-height:1px;font-size:1px;}
 a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !important;font-size:inherit !important;font-family:inherit !important;font-weight:inherit !important;line-height:inherit !important;}
 
-.header{background:#0f2a18;padding:24px 34px;border-bottom:3px solid #1b4728;}
+.header{background:linear-gradient(180deg,#0f2a18 0%,#123121 100%);padding:24px 34px;border-bottom:3px solid #1b4728;}
 .header-table{width:100%;border-collapse:collapse;}
 .header-logo-cell{width:106px;vertical-align:middle;}
-.header-logo-shell{display:inline-flex;align-items:center;justify-content:center;width:86px;height:86px;border-radius:999px;background:#ffffff;box-shadow:0 8px 20px rgba(0,0,0,.25);}
-.header-logo{width:62px;height:62px;object-fit:contain;display:block;}
+.header-logo-shell{display:inline-flex;align-items:center;justify-content:center;width:92px;height:92px;border-radius:999px;background:#ffffff;border:1px solid rgba(255,255,255,.78);box-shadow:0 8px 20px rgba(0,0,0,.28);}
+.header-logo{width:68px;height:68px;object-fit:contain;display:block;}
 .header-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#66ab78;font-weight:600;margin-bottom:4px;}
 .header-title{font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;font-weight:600;line-height:1.04;color:#f5f0e8;}
 
@@ -74,9 +74,9 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
 
 @media(max-width:600px){
   .header,.alert,.section,.actions,.footer{padding-left:20px !important;padding-right:20px !important;}
-  .header-logo-cell{width:86px;}
-  .header-logo-shell{width:74px;height:74px;}
-  .header-logo{width:54px;height:54px;}
+  .header-logo-cell{width:90px;}
+  .header-logo-shell{width:78px;height:78px;}
+  .header-logo{width:58px;height:58px;}
   .header-title{font-size:30px;line-height:1.06;}
   .alert-right{text-align:left;padding-top:8px;}
   .alert-table td{display:block;width:100%;}
@@ -142,6 +142,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
         <tr><th>Start Timeline</th><td>{{submission.data.start_timeline}}</td></tr>
         <tr><th>Estimated Timeline</th><td>{{submission.data.estimated_timeline}}</td></tr>
         <tr><th>Contact Method</th><td>{{submission.data.preferred_contact}}</td></tr>
+        <tr><th>Status</th><td>{{submission.data.sheet_status}}</td></tr>
         <tr><th>Lead Source</th><td>{{submission.data.lead_source}}</td></tr>
         <tr><th>Style Reference</th><td>{{submission.data.selected_style}}</td></tr>
         <tr><th>Project Reference</th><td>{{submission.data.selected_project_label}}</td></tr>
@@ -164,9 +165,10 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
         <tr><td class="k">Priority</td><td class="v">{{submission.data.owner_priority}}</td></tr>
         <tr><td class="k">Lead Score</td><td class="v">{{submission.data.owner_lead_score}} / 100 ({{submission.data.owner_lead_tier}})</td></tr>
         <tr><td class="k">Lead Tags</td><td class="v">{{submission.data.owner_lead_tags}}</td></tr>
-        <tr><td class="k">Consultation Tier</td><td class="v">{{submission.data.lead_tier}}</td></tr>
+        <tr><td class="k">Consultation Tier</td><td class="v">{{submission.data.consultation_tier}}</td></tr>
+        <tr><td class="k">Status</td><td class="v">{{submission.data.sheet_status}}</td></tr>
         <tr><td class="k">Submitted</td><td class="v">{{submission.data.submitted_local}}</td></tr>
-        <tr><td class="k">Budget Signal</td><td class="v">{{submission.data.budget}}</td></tr>
+        <tr><td class="k">Budget Signal</td><td class="v">{{submission.data.budget_range}}</td></tr>
         <tr><td class="k">Urgency</td><td class="v">{{submission.data.start_timeline}}</td></tr>
       </table>
     </div>
@@ -174,6 +176,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
     <div class="actions">
       <a href="tel:{{submission.data.phone}}" class="action-btn action-primary">Call Client</a>
       <a href="mailto:{{submission.data.email}}" class="action-btn action-secondary">Email Client</a>
+      <a href="{{submission.data.sheet_row_url}}" class="action-btn action-secondary">Open Sheet</a>
       <a href="https://thinkgreen-az.netlify.app" class="action-btn action-secondary">Open Website</a>
     </div>
   </div>
