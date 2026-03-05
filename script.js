@@ -1382,3 +1382,152 @@
     updateFormProgress();
   }
 })();
+
+/* ============================================================
+   Scroll-to-top button
+   ============================================================ */
+(function () {
+  var btn = document.createElement('button');
+  btn.className = 'scroll-top';
+  btn.setAttribute('aria-label', 'Scroll to top');
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg>';
+  document.body.appendChild(btn);
+
+  function onScroll() {
+    btn.classList.toggle('is-visible', window.scrollY > 400);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+/* ============================================================
+   Loading skeletons for dynamic grids
+   ============================================================ */
+(function () {
+  function buildSkeletons(count) {
+    var html = '';
+    for (var i = 0; i < count; i++) {
+      html += '<div class="skeleton-card">' +
+        '<div class="skeleton-card__img skeleton"></div>' +
+        '<div class="skeleton-card__body">' +
+        '<div class="skeleton-card__line skeleton skeleton-card__line--med"></div>' +
+        '<div class="skeleton-card__line skeleton skeleton-card__line--short"></div>' +
+        '</div></div>';
+    }
+    return html;
+  }
+
+  var reviewsGrid = document.getElementById('reviews-grid');
+  if (reviewsGrid && !reviewsGrid.hasChildNodes()) {
+    reviewsGrid.innerHTML = buildSkeletons(3);
+  }
+
+  var projectsGrid = document.getElementById('recent-projects-grid');
+  if (projectsGrid && !projectsGrid.hasChildNodes()) {
+    projectsGrid.innerHTML = buildSkeletons(3);
+  }
+})();
+
+/* ============================================================
+   Cookie consent banner
+   ============================================================ */
+(function () {
+  var COOKIE_KEY = 'tg_cookie_consent';
+  if (localStorage.getItem(COOKIE_KEY)) return;
+
+  var banner = document.createElement('div');
+  banner.className = 'cookie-banner';
+  banner.setAttribute('role', 'region');
+  banner.setAttribute('aria-label', 'Cookie consent');
+  banner.innerHTML =
+    '<p>We use cookies to improve your experience and analyze site traffic. ' +
+    'By continuing, you agree to our use of cookies.</p>' +
+    '<div class="cookie-banner__actions">' +
+    '<button class="cookie-banner__decline" type="button">Decline</button>' +
+    '<button class="cookie-banner__accept" type="button">Accept All</button>' +
+    '</div>';
+  document.body.appendChild(banner);
+
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      banner.classList.add('is-visible');
+    });
+  });
+
+  function dismiss(accepted) {
+    localStorage.setItem(COOKIE_KEY, accepted ? 'accepted' : 'declined');
+    banner.classList.remove('is-visible');
+    setTimeout(function () { banner.remove(); }, 450);
+  }
+
+  banner.querySelector('.cookie-banner__accept').addEventListener('click', function () { dismiss(true); });
+  banner.querySelector('.cookie-banner__decline').addEventListener('click', function () { dismiss(false); });
+})();
+
+/* ============================================================
+   Exit-intent popup
+   ============================================================ */
+(function () {
+  var POPUP_KEY = 'tg_exit_popup_seen';
+  if (localStorage.getItem(POPUP_KEY)) return;
+
+  var shown = false;
+  var minTimeMs = 15000;
+  var pageEnteredAt = Date.now();
+
+  function show() {
+    if (shown) return;
+    shown = true;
+    localStorage.setItem(POPUP_KEY, '1');
+
+    var popup = document.createElement('div');
+    popup.className = 'exit-popup';
+    popup.setAttribute('role', 'dialog');
+    popup.setAttribute('aria-modal', 'true');
+    popup.setAttribute('aria-label', 'Before you go');
+    popup.innerHTML =
+      '<div class="exit-popup__backdrop"></div>' +
+      '<div class="exit-popup__card">' +
+      '<button class="exit-popup__close" aria-label="Close">&times;</button>' +
+      '<div class="exit-popup__icon" aria-hidden="true">🌿</div>' +
+      '<p class="exit-popup__eyebrow">Wait — one moment</p>' +
+      '<h2 class="exit-popup__title">Get a Free Landscape Consultation</h2>' +
+      '<p class="exit-popup__sub">Before you go — let our team build you a complimentary design plan. No pressure, no obligation.</p>' +
+      '<div class="exit-popup__actions">' +
+      '<a href="/#contact" class="btn btn--primary exit-popup__cta">Book My Free Consultation</a>' +
+      '<button class="exit-popup__dismiss" type="button">No thanks, I\'ll pass</button>' +
+      '</div>' +
+      '</div>';
+    document.body.appendChild(popup);
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        popup.classList.add('is-open');
+      });
+    });
+
+    function close() {
+      popup.classList.remove('is-open');
+      setTimeout(function () { popup.remove(); }, 400);
+    }
+
+    popup.querySelector('.exit-popup__close').addEventListener('click', close);
+    popup.querySelector('.exit-popup__dismiss').addEventListener('click', close);
+    popup.querySelector('.exit-popup__backdrop').addEventListener('click', close);
+    popup.querySelector('.exit-popup__cta').addEventListener('click', close);
+
+    document.addEventListener('keydown', function esc(e) {
+      if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+    });
+  }
+
+  document.addEventListener('mouseleave', function (e) {
+    if (e.clientY > 0) return;
+    if (Date.now() - pageEnteredAt < minTimeMs) return;
+    show();
+  });
+})();

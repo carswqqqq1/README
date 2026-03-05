@@ -2768,6 +2768,318 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   100% { opacity: 1; transform: none; }
 }
 
+/* ============================================================
+   Scroll-to-top button
+   ============================================================ */
+.scroll-top {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 200;
+  box-shadow: 0 4px 14px rgba(27,67,50,.35);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity .3s, transform .3s, background .2s;
+}
+.scroll-top.is-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.scroll-top:hover { background: var(--green-dark, #14532d); }
+.scroll-top svg { width: 18px; height: 18px; }
+/* Keep above sticky bar on mobile */
+@media (max-width: 640px) {
+  .scroll-top { bottom: calc(106px + 1rem + env(safe-area-inset-bottom)); right: 1rem; }
+}
+
+/* ============================================================
+   Cookie consent banner
+   ============================================================ */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 400;
+  background: #fff;
+  border-top: 1px solid var(--paper-alt);
+  box-shadow: 0 -4px 24px rgba(0,0,0,.08);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  transform: translateY(100%);
+  transition: transform .4s var(--ease-out);
+}
+.cookie-banner.is-visible { transform: none; }
+.cookie-banner p {
+  margin: 0;
+  font-size: .84rem;
+  color: var(--ink-light);
+  line-height: 1.6;
+  flex: 1;
+  min-width: 200px;
+}
+.cookie-banner p a { color: var(--green); font-weight: 500; }
+.cookie-banner__actions {
+  display: flex;
+  gap: .65rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.cookie-banner__accept {
+  padding: .52rem 1.2rem;
+  font-size: .82rem;
+  font-weight: 600;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-sm, 6px);
+  cursor: pointer;
+  transition: background .2s;
+}
+.cookie-banner__accept:hover { background: var(--green-dark, #14532d); }
+.cookie-banner__decline {
+  padding: .52rem 1rem;
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--ink-faint);
+  background: none;
+  border: 1.5px solid var(--paper-alt);
+  border-radius: var(--r-sm, 6px);
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.cookie-banner__decline:hover { color: var(--ink); border-color: var(--ink-faint); }
+@media (max-width: 640px) {
+  .cookie-banner { flex-direction: column; align-items: stretch; }
+  .cookie-banner__actions { justify-content: stretch; }
+  .cookie-banner__accept, .cookie-banner__decline { flex: 1; text-align: center; }
+}
+
+/* ============================================================
+   Exit-intent popup
+   ============================================================ */
+.exit-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s;
+}
+.exit-popup.is-open {
+  pointer-events: auto;
+  opacity: 1;
+}
+.exit-popup__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5,8,6,.65);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.exit-popup__card {
+  position: relative;
+  background: #fff;
+  border-radius: var(--r-md);
+  max-width: 480px;
+  width: 100%;
+  padding: 2.25rem 2rem 2rem;
+  box-shadow: 0 24px 64px rgba(0,0,0,.22);
+  text-align: center;
+  transform: scale(0.94) translateY(16px);
+  transition: transform .35s var(--ease-out);
+}
+.exit-popup.is-open .exit-popup__card {
+  transform: none;
+}
+.exit-popup__icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+.exit-popup__eyebrow {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: .5rem;
+}
+.exit-popup__title {
+  font-family: var(--font-head);
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: .75rem;
+}
+.exit-popup__sub {
+  font-size: .9rem;
+  color: var(--ink-light);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+.exit-popup__actions {
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+}
+.exit-popup__cta {
+  width: 100%;
+  justify-content: center;
+}
+.exit-popup__dismiss {
+  font-size: .8rem;
+  color: var(--ink-faint);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: .25rem;
+  transition: color .2s;
+}
+.exit-popup__dismiss:hover { color: var(--ink); }
+.exit-popup__close {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--paper);
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--ink-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, color .2s;
+}
+.exit-popup__close:hover { background: var(--paper-alt); color: var(--ink); }
+@media (prefers-reduced-motion: reduce) {
+  .exit-popup__card { transition: none; }
+}
+
+/* ============================================================
+   Breadcrumbs
+   ============================================================ */
+.breadcrumbs {
+  padding-block: .75rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--paper-alt);
+}
+.breadcrumbs__list {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: .8125rem;
+  color: var(--ink-faint);
+}
+.breadcrumbs__list a {
+  color: var(--ink-light);
+  transition: color .2s;
+}
+.breadcrumbs__list a:hover { color: var(--green); }
+.breadcrumbs__sep {
+  opacity: .45;
+  font-size: .7rem;
+  user-select: none;
+}
+.breadcrumbs__current {
+  color: var(--green);
+  font-weight: 500;
+}
+
+/* ============================================================
+   Loading skeletons
+   ============================================================ */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--paper-alt) 25%, #e8ede9 50%, var(--paper-alt) 75%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: var(--r-sm, 6px);
+}
+.skeleton-card {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--paper-alt);
+}
+.skeleton-card__img {
+  aspect-ratio: 4/3;
+}
+.skeleton-card__body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+.skeleton-card__line {
+  height: .85rem;
+  border-radius: 4px;
+}
+.skeleton-card__line--short { width: 55%; }
+.skeleton-card__line--med   { width: 80%; }
+.skeleton-card__line--full  { width: 100%; }
+
+/* ---- Mobile: reduce heavy animation weight ---- */
+@media (max-width: 768px) {
+  /* Disable Ken Burns on mobile — saves GPU, avoids jank */
+  .hero__slide.is-active { animation: none; }
+
+  /* Shorten reveal transitions */
+  .reveal {
+    transition-duration: .35s !important;
+  }
+
+  /* Flatten extreme transforms to simple fade */
+  .reveal--left  { transform: translateX(-24px); }
+  .reveal--right { transform: translateX(24px); }
+  .reveal--scale { transform: scale(0.94); }
+  .reveal--zoom  { transform: scale(1.03); }
+  .reveal--tilt  { transform: translateY(16px) perspective(600px) rotateX(4deg); }
+  .reveal--lift  { transform: translateY(20px) scale(0.97); }
+
+  /* Badge float — halve amplitude */
+  @keyframes floatBadge {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-4px); }
+  }
+
+  /* Hero text animations — tighten up */
+  .hero__eyebrow { animation-duration: .4s; animation-delay: .15s; }
+  .hero__heading { animation-duration: .5s; animation-delay: .25s; }
+  .hero__sub     { animation-duration: .5s; animation-delay: .35s; }
+  .hero__actions { animation-duration: .5s; animation-delay: .45s; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: .01ms !important;
@@ -2775,4 +3087,13 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     transition-duration: .01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* Ensure Ken Burns is off */
+  .hero__slide.is-active { animation: none; }
+
+  /* Areas list — show immediately */
+  .areas__list li { opacity: 1; transform: none; }
+
+  /* Process connector — show immediately */
+  .process__connector::after { transform: scaleX(1); }
 }
