@@ -77,7 +77,7 @@
         <span></span><span></span><span></span>
       </button>
       <nav class="nav__links" id="nav-links" aria-label="Primary navigation">
-        <a href="index.html#services" class="nav__link">Services</a>
+        <a href="services.html" class="nav__link">Services</a>
         <a href="index.html#process" class="nav__link">Process</a>
         <a href="portfolio.html" class="nav__link nav__link--active">Portfolio</a>
         <a href="index.html#areas" class="nav__link">Areas</a>
@@ -95,7 +95,7 @@
   <div class="nav__overlay" id="nav-overlay" aria-hidden="true">
     <button class="nav__overlay-close" id="nav-close" aria-label="Close menu">&#x2715;</button>
     <nav aria-label="Mobile navigation">
-      <a href="index.html#services" class="nav__overlay-link">Services</a>
+      <a href="services.html" class="nav__overlay-link">Services</a>
       <a href="index.html#process" class="nav__overlay-link">Process</a>
       <a href="portfolio.html" class="nav__overlay-link">Portfolio</a>
       <a href="index.html#areas" class="nav__overlay-link">Areas Served</a>
@@ -137,7 +137,7 @@
     <section class="pf-grid-section container">
       <div class="pf-request reveal">
         <p>Like what you see? Request a free consultation.</p>
-        <a href="index.html#contact" class="btn btn--dark">Request This Style</a>
+        <a href="index.html?source=portfolio#contact" class="btn btn--dark" id="pf-request-style">Request This Style</a>
       </div>
       <header class="pf-grid__header reveal">
         <h2>Browse Project Styles</h2>
@@ -436,13 +436,12 @@
       <div class="footer__col">
         <h4>Services</h4>
         <ul>
-          <li><a href="index.html#services">Landscape Design &amp; Build</a></li>
-          <li><a href="index.html#services">Hardscaping</a></li>
-          <li><a href="index.html#services">Water Features</a></li>
-          <li><a href="index.html#services">Fire Features</a></li>
-          <li><a href="index.html#services">Outdoor Lighting</a></li>
-          <li><a href="index.html#services">Desert Landscaping</a></li>
-          <li><a href="index.html#services">Irrigation</a></li>
+          <li><a href="services/landscape-design.html">Landscape Design &amp; Build</a></li>
+          <li><a href="services/hardscaping.html">Hardscaping</a></li>
+          <li><a href="services/outdoor-kitchens.html">Outdoor Kitchens</a></li>
+          <li><a href="services/fire-features.html">Fire Features</a></li>
+          <li><a href="services/artificial-turf.html">Artificial Turf</a></li>
+          <li><a href="services/irrigation.html">Irrigation</a></li>
         </ul>
       </div>
       <div class="footer__col">
@@ -489,9 +488,10 @@
         <figcaption class="pf-lightbox__cap">
           <div class="pf-lightbox__chips">
             <span class="pf-lightbox__chip" id="pf-lightbox-type">Outdoor Living</span>
-            <span class="pf-lightbox__chip pf-lightbox__chip--location" id="pf-lightbox-location">Scottsdale, AZ</span>
+            <span class="pf-lightbox__chip pf-lightbox__chip--location" id="pf-lightbox-location">Scottsdale / Phoenix Area</span>
           </div>
           <p id="pf-lightbox-detail"></p>
+          <a href="index.html?source=portfolio#contact" class="btn btn--solid pf-lightbox__request" id="pf-lightbox-request">Request This Style</a>
         </figcaption>
       </figure>
       <button type="button" class="pf-lightbox__nav pf-lightbox__nav--next" id="pf-lightbox-next" aria-label="Next project">&#10095;</button>

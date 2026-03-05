@@ -323,6 +323,13 @@
   line-height: 1.6;
   color: var(--ink);
 }
+.pf-lightbox__request {
+  margin-top: .75rem;
+  width: 100%;
+  justify-content: center;
+  font-size: .74rem;
+  padding: .62rem .9rem;
+}
 .pf-lightbox__close {
   position: absolute;
   top: .65rem;

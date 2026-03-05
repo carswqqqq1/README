@@ -16,15 +16,17 @@
 ## Key Pages
 - [Home](https://thinkgreen-az.netlify.app/): Primary service overview, process, FAQs, and quote request form
 - [Portfolio](https://thinkgreen-az.netlify.app/portfolio.html): Real project gallery and design inspiration
+- [Services Hub](https://thinkgreen-az.netlify.app/services.html): Service overview and consultation paths
+- [Scottsdale Landscaping](https://thinkgreen-az.netlify.app/scottsdale-landscaping.html): Local project proof and Scottsdale FAQ
+- [Phoenix Landscaping](https://thinkgreen-az.netlify.app/phoenix-landscaping.html): Local project proof and Phoenix FAQ
+- [Search Topics](https://thinkgreen-az.netlify.app/search.html): Long-tail topic navigation for project intent
 
 ## Primary Services
 - Landscape design and build
 - Hardscaping and stonework
-- Fire features and outdoor kitchens
-- Water features
-- Outdoor lighting design
-- Drought-tolerant / desert landscapes
-- Shade structures
+- Outdoor kitchens
+- Fire features
+- Artificial turf and desert-friendly modernization
 - Irrigation systems
 
 ## Contact

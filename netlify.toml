@@ -24,6 +24,11 @@
     Cache-Control = "public, max-age=300, must-revalidate"
 
 [[headers]]
+  for = "/pages.css"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+
+[[headers]]
   for = "/script.js"
   [headers.values]
     Cache-Control = "public, max-age=300, must-revalidate"
@@ -52,3 +57,73 @@
   from = "/index.html"
   to = "/"
   status = 301
+
+[[redirects]]
+  from = "/services"
+  to = "/services.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/"
+  to = "/services.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/landscape-design"
+  to = "/services/landscape-design.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/hardscaping"
+  to = "/services/hardscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/outdoor-kitchens"
+  to = "/services/outdoor-kitchens.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/fire-features"
+  to = "/services/fire-features.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/artificial-turf"
+  to = "/services/artificial-turf.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/irrigation"
+  to = "/services/irrigation.html"
+  status = 200
+
+[[redirects]]
+  from = "/scottsdale-landscaping"
+  to = "/scottsdale-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/phoenix-landscaping"
+  to = "/phoenix-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/search"
+  to = "/search.html"
+  status = 200
+
+[[redirects]]
+  from = "/best-landscaper-scottsdale"
+  to = "/best-landscaper-scottsdale.html"
+  status = 200
+
+[[redirects]]
+  from = "/project-planning-checklist"
+  to = "/project-planning-checklist.html"
+  status = 200
+
+[[redirects]]
+  from = "/thank-you"
+  to = "/thank-you.html"
+  status = 200

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check:speed": "node scripts/check-speed-budget.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.15.0",

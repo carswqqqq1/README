@@ -140,7 +140,11 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
         <tr><th>Consultation Tier</th><td>{{submission.data.lead_tier}}</td></tr>
         <tr><th>Budget Range</th><td>{{submission.data.budget}}</td></tr>
         <tr><th>Start Timeline</th><td>{{submission.data.start_timeline}}</td></tr>
+        <tr><th>Estimated Timeline</th><td>{{submission.data.estimated_timeline}}</td></tr>
         <tr><th>Contact Method</th><td>{{submission.data.preferred_contact}}</td></tr>
+        <tr><th>Lead Source</th><td>{{submission.data.lead_source}}</td></tr>
+        <tr><th>Style Reference</th><td>{{submission.data.selected_style}}</td></tr>
+        <tr><th>Project Reference</th><td>{{submission.data.selected_project_label}}</td></tr>
         <tr><th>Project Location</th><td>{{submission.data.project_location}}</td></tr>
       </table>
     </div>
@@ -159,6 +163,7 @@ a[x-apple-data-detectors]{color:inherit !important;text-decoration:none !importa
       <table class="intel-grid" role="presentation">
         <tr><td class="k">Priority</td><td class="v">{{submission.data.owner_priority}}</td></tr>
         <tr><td class="k">Lead Score</td><td class="v">{{submission.data.owner_lead_score}} / 100 ({{submission.data.owner_lead_tier}})</td></tr>
+        <tr><td class="k">Lead Tags</td><td class="v">{{submission.data.owner_lead_tags}}</td></tr>
         <tr><td class="k">Consultation Tier</td><td class="v">{{submission.data.lead_tier}}</td></tr>
         <tr><td class="k">Submitted</td><td class="v">{{submission.data.submitted_local}}</td></tr>
         <tr><td class="k">Budget Signal</td><td class="v">{{submission.data.budget}}</td></tr>

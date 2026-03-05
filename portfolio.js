@@ -1,4 +1,4 @@
-/* Portfolio page filter + lightbox logic */
+/* Portfolio page filter + lightbox + request-style prefill flow */
 (function () {
   'use strict';
 
@@ -11,12 +11,15 @@
   var currentLightboxIndex = -1;
   var touchStartX = 0;
   var touchEndX = 0;
+  var requestStyleButton = document.getElementById('pf-request-style');
+  var pageParams = new URLSearchParams(window.location.search);
 
   var lightbox = document.getElementById('pf-lightbox');
   var lightboxImg = document.getElementById('pf-lightbox-img');
   var lightboxType = document.getElementById('pf-lightbox-type');
   var lightboxLocation = document.getElementById('pf-lightbox-location');
   var lightboxDetail = document.getElementById('pf-lightbox-detail');
+  var lightboxRequest = document.getElementById('pf-lightbox-request');
   var lightboxClose = document.getElementById('pf-lightbox-close');
   var lightboxPrev = document.getElementById('pf-lightbox-prev');
   var lightboxNext = document.getElementById('pf-lightbox-next');
@@ -25,6 +28,82 @@
 
   function visibleItems() {
     return items.filter(function (item) { return !item.classList.contains('is-hidden'); });
+  }
+
+  function normalizeSlug(value) {
+    return String(value || '')
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function toTitle(value) {
+    return String(value || '')
+      .replace(/[-_]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .replace(/\b([a-z])/g, function (_, letter) { return letter.toUpperCase(); });
+  }
+
+  function extractImageId(item) {
+    var image = item ? item.querySelector('img') : null;
+    if (!image) return 'portfolio-style';
+    var src = image.currentSrc || image.getAttribute('src') || '';
+    var file = src.split('/').pop() || 'portfolio-style';
+    return file;
+  }
+
+  function extractProjectLabel(item) {
+    var heading = item ? item.querySelector('.pf-item__cap h3') : null;
+    if (heading && heading.textContent.trim()) return heading.textContent.trim();
+    return toTitle(item && item.dataset.type ? item.dataset.type : currentFilter || 'Project style');
+  }
+
+  function mapCategoryToServiceSlug(category, itemType) {
+    var slug = normalizeSlug(category);
+    var type = normalizeSlug(itemType);
+    if (slug === 'hardscape' || type.indexOf('hardscape') >= 0) return 'hardscaping';
+    if (slug === 'water' || type.indexOf('water') >= 0) return 'irrigation';
+    if (slug === 'outdoor' || type.indexOf('outdoor') >= 0 || type.indexOf('kitchen') >= 0) return 'outdoor-kitchens';
+    if (slug === 'desert' || type.indexOf('desert') >= 0 || type.indexOf('xeriscape') >= 0) return 'artificial-turf';
+    if (slug === 'frontyard' || type.indexOf('curb') >= 0) return 'landscape-design';
+    if (type.indexOf('fire') >= 0) return 'fire-features';
+    if (slug === 'backyard') return 'landscape-design';
+    return 'landscape-design';
+  }
+
+  function mapServiceToFilter(serviceSlug) {
+    var slug = normalizeSlug(serviceSlug);
+    if (!slug) return 'all';
+    if (slug === 'hardscaping') return 'hardscape';
+    if (slug === 'outdoor-kitchens') return 'outdoor';
+    if (slug === 'fire-features') return 'outdoor';
+    if (slug === 'artificial-turf') return 'desert';
+    if (slug === 'irrigation') return 'water';
+    if (slug === 'landscape-design') return 'backyard';
+    return 'all';
+  }
+
+  function buildRequestHref(item) {
+    var category = item && item.dataset.cat ? item.dataset.cat : currentFilter;
+    if (!category || category === 'all') category = 'backyard';
+    var itemType = item && item.dataset.type ? item.dataset.type : '';
+    var params = new URLSearchParams({
+      source: 'portfolio',
+      service: mapCategoryToServiceSlug(category, itemType),
+      selected_style: normalizeSlug(category),
+      selected_image: extractImageId(item),
+      selected_project_label: extractProjectLabel(item)
+    });
+    return 'index.html?' + params.toString() + '#contact';
+  }
+
+  function updateRequestLinks(item) {
+    var targetItem = item || visibleItems()[0] || items[0];
+    var href = buildRequestHref(targetItem);
+    if (requestStyleButton) requestStyleButton.setAttribute('href', href);
+    if (lightboxRequest) lightboxRequest.setAttribute('href', href);
   }
 
   function updateFilterCounts() {
@@ -50,16 +129,10 @@
       var match = cat === 'all' || item.dataset.cat === cat;
       item.classList.toggle('is-hidden', !match);
       item.setAttribute('aria-hidden', match ? 'false' : 'true');
-
-      if (match) {
-        item.classList.remove('is-visible');
-        requestAnimationFrame(function () {
-          requestAnimationFrame(function () {
-            item.classList.add('is-visible');
-          });
-        });
-      }
+      item.classList.toggle('is-visible', match);
     });
+
+    updateRequestLinks(visibleItems()[0]);
   }
 
   function updateLightboxFrame(item) {
@@ -70,8 +143,9 @@
     lightboxImg.src = image.currentSrc || image.src;
     lightboxImg.alt = image.alt || 'Project image preview';
     lightboxType.textContent = item.dataset.type || 'Landscape Project';
-    lightboxLocation.textContent = item.dataset.location || 'Scottsdale, AZ';
+    lightboxLocation.textContent = item.dataset.location || 'Scottsdale / Phoenix Area';
     lightboxDetail.textContent = item.dataset.detail || 'Design-build landscape project by Think Green.';
+    updateRequestLinks(item);
   }
 
   function openLightboxByItem(item) {
@@ -155,6 +229,11 @@
     if (event.key === 'ArrowLeft') moveLightbox(-1);
     if (event.key === 'ArrowRight') moveLightbox(1);
   });
+
+  var initialServiceFilter = mapServiceToFilter(pageParams.get('service'));
+  if (initialServiceFilter && initialServiceFilter !== 'all') {
+    currentFilter = initialServiceFilter;
+  }
 
   updateFilterCounts();
   applyFilter(currentFilter);

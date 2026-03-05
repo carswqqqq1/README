@@ -30,16 +30,8 @@
   <link rel="apple-touch-icon" href="img/apple-touch-icon.jpg" />
   <link rel="canonical" href="https://thinkgreen-az.netlify.app/" />
   <link rel="alternate" hreflang="en-us" href="https://thinkgreen-az.netlify.app/" />
-  <link rel="preload" as="image" href="img/projects/slide1.webp" fetchpriority="high" />
-
-  <!-- Google Analytics 4 — replace G-XXXXXXXXXX with your Measurement ID -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
+  <link rel="preload" as="image" href="img/projects/slide1-1280.avif" type="image/avif" fetchpriority="high" />
+  <link rel="preload" as="image" href="img/projects/slide1.webp" type="image/webp" fetchpriority="high" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -177,11 +169,12 @@
       </button>
 
       <nav class="nav__links" id="nav-links" aria-label="Primary navigation">
-        <a href="#services" class="nav__link">Services</a>
-        <a href="#process" class="nav__link">Process</a>
+        <a href="#hero" class="nav__link">Home</a>
+        <a href="services.html" class="nav__link">Services</a>
         <a href="#portfolio" class="nav__link">Portfolio</a>
-        <a href="#faq" class="nav__link">FAQ</a>
-        <a href="#areas" class="nav__link">Areas</a>
+        <a href="#process" class="nav__link">Process</a>
+        <a href="#reviews" class="nav__link">Reviews</a>
+        <a href="#contact" class="nav__link">Contact</a>
       </nav>
       <div class="nav__actions">
         <a href="tel:4809229497" class="nav__call" data-site-phone-link>
@@ -196,11 +189,12 @@
   <div class="nav__overlay" id="nav-overlay" aria-hidden="true">
     <button class="nav__overlay-close" id="nav-close" aria-label="Close menu">&#x2715;</button>
     <nav aria-label="Mobile navigation">
-      <a href="#services" class="nav__overlay-link">Services</a>
-      <a href="#process" class="nav__overlay-link">Process</a>
+      <a href="#hero" class="nav__overlay-link">Home</a>
+      <a href="services.html" class="nav__overlay-link">Services</a>
       <a href="#portfolio" class="nav__overlay-link">Portfolio</a>
-      <a href="#faq" class="nav__overlay-link">FAQ</a>
-      <a href="#areas" class="nav__overlay-link">Areas Served</a>
+      <a href="#process" class="nav__overlay-link">Process</a>
+      <a href="#reviews" class="nav__overlay-link">Reviews</a>
+      <a href="#contact" class="nav__overlay-link">Contact</a>
       <a href="#contact" class="nav__overlay-link nav__overlay-cta">Get Free Landscape Design Consultation</a>
     </nav>
     <div class="nav__overlay-contact">
@@ -216,37 +210,49 @@
     ============================================================ -->
     <section class="hero" id="hero" aria-label="Hero">
       <div class="hero__slides" aria-hidden="true">
-        <div class="hero__slide is-active" style="background-image:url('img/projects/slide1.webp')"></div>
-        <div class="hero__slide" style="background-image:url('img/projects/slide2.webp')"></div>
-        <div class="hero__slide" style="background-image:url('img/projects/slide3.webp')"></div>
-        <div class="hero__slide" style="background-image:url('img/projects/slide4.webp')"></div>
-        <div class="hero__slide" style="background-image:url('img/projects/slide5.webp')"></div>
+        <div class="hero__slide is-active" style="background-image:image-set(url('img/projects/slide1-1280.avif') type('image/avif'), url('img/projects/slide1.webp') type('image/webp'))"></div>
+        <div class="hero__slide" style="background-image:image-set(url('img/projects/slide2-1280.avif') type('image/avif'), url('img/projects/slide2.webp') type('image/webp'))"></div>
+        <div class="hero__slide" style="background-image:image-set(url('img/projects/slide3-1280.avif') type('image/avif'), url('img/projects/slide3.webp') type('image/webp'))"></div>
+        <div class="hero__slide" style="background-image:image-set(url('img/projects/slide4-1280.avif') type('image/avif'), url('img/projects/slide4.webp') type('image/webp'))"></div>
+        <div class="hero__slide" style="background-image:image-set(url('img/projects/slide5-1280.avif') type('image/avif'), url('img/projects/slide5.webp') type('image/webp'))"></div>
       </div>
       <div class="hero__overlay"></div>
 
       <div class="hero__content">
         <div class="hero__panel">
           <p class="hero__eyebrow">Scottsdale, Arizona — Est. 2000</p>
-          <h1 class="hero__heading">Luxury Landscape Design &amp; Outdoor Living<br />Built for Arizona Homes</h1>
-          <p class="hero__sub">Scottsdale and Phoenix homeowners choose Think Green for design-build outdoor spaces with premium materials, climate-smart planning, and craftsmanship that lasts.</p>
+          <h1 class="hero__heading">Transform Your Backyard Into a Luxury Outdoor Retreat</h1>
+          <p class="hero__sub">Scottsdale and Phoenix homeowners choose Think Green for premium design-build landscapes with clear communication, durable materials, and year-round outdoor living.</p>
           <div class="hero__actions">
             <a href="#contact" class="btn btn--solid">Get Free Landscape Design Consultation</a>
             <a href="tel:4809229497" class="btn btn--ghost" data-site-phone-link>Call Now</a>
           </div>
           <div class="hero__stats reveal" aria-label="Business highlights">
             <article class="hero-stat">
-              <strong>&#11088; 4.9 Rating</strong>
+              <span class="hero-stat__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3.7l2.5 5.1 5.6.8-4.1 4 1 5.6-5-2.6-5 2.6 1-5.6-4.1-4 5.6-.8z"/></svg>
+              </span>
+              <strong>4.9 Rating</strong>
               <p>Verified homeowner feedback</p>
             </article>
             <article class="hero-stat">
+              <span class="hero-stat__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19h16"></path><path d="M5 19V7l7-4 7 4v12"></path><path d="M9 12h6"></path></svg>
+              </span>
               <strong>500+ Projects</strong>
               <p>Completed across the Valley</p>
             </article>
             <article class="hero-stat">
+              <span class="hero-stat__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 4v6c0 5-3.2 7.8-8 9-4.8-1.2-8-4-8-9V7l8-4z"></path><path d="M9 12l2 2 4-4"></path></svg>
+              </span>
               <strong>Licensed &middot; Bonded &middot; Insured</strong>
               <p>Arizona ROC compliant team</p>
             </article>
             <article class="hero-stat">
+              <span class="hero-stat__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+              </span>
               <strong>24hr Response</strong>
               <p>Fast consultation follow-up</p>
             </article>
@@ -272,16 +278,13 @@
     ============================================================ -->
     <section class="statement" id="statement">
       <div class="statement__inner">
-        <blockquote class="statement__quote reveal">
-          "Every landscape we create is a living expression of your vision — designed to flourish in Arizona's desert climate and endure for generations."
-        </blockquote>
-        <div class="statement__meta reveal">
-          <span>Licensed · Bonded · Insured</span>
-          <span class="statement__divider" aria-hidden="true"></span>
-          <span>ROC&nbsp;#&nbsp;157201 &amp; 304902</span>
-          <span class="statement__divider" aria-hidden="true"></span>
-          <span>Design + Build, One Team</span>
-        </div>
+        <p class="eyebrow statement__eyebrow reveal">Serving Scottsdale &amp; Phoenix Homeowners</p>
+        <ul class="statement__proof reveal">
+          <li>500+ Outdoor Living Projects Completed</li>
+          <li>Licensed &middot; Bonded &middot; Insured</li>
+          <li>Free Design Consultation</li>
+          <li>24hr Response on New Requests</li>
+        </ul>
       </div>
     </section>
 
@@ -412,73 +415,52 @@
         <div class="services__grid">
           <div class="services__header reveal">
             <p class="eyebrow">What We Do</p>
-            <h2 class="section-title">Complete Outdoor Environments. One Studio.</h2>
-            <p class="services__intro">From initial concept through final installation, Think Green orchestrates every facet of your landscape project — with the precision and artistry your property deserves.</p>
-            <a href="#contact" class="btn btn--dark">Schedule Your Backyard Design Consultation</a>
+            <h2 class="section-title">Custom Outdoor Living Spaces Built to Increase Home Value</h2>
+            <p class="services__intro">We design and build premium outdoor environments that improve curb appeal and create a backyard your family can use year-round in Arizona.</p>
+            <a href="services.html" class="btn btn--dark">Explore All Services</a>
           </div>
 
           <ol class="services__list">
             <li class="service-item reveal">
               <span class="service-item__num">01</span>
               <div class="service-item__body">
-                <h3>Landscape Design &amp; Build</h3>
+                <h3><a href="services/landscape-design.html">Landscape Design &amp; Build</a></h3>
                 <p>Full-service design from concept to completion — including 3D renderings so you see exactly what we'll build before we break ground.</p>
               </div>
             </li>
             <li class="service-item reveal">
               <span class="service-item__num">02</span>
               <div class="service-item__body">
-                <h3>Hardscaping &amp; Stonework</h3>
+                <h3><a href="services/hardscaping.html">Hardscaping &amp; Stonework</a></h3>
                 <p>Custom patios, driveways, pathways, retaining walls, and decorative masonry — built to complement your home and endure Arizona's climate.</p>
               </div>
             </li>
             <li class="service-item reveal">
               <span class="service-item__num">03</span>
               <div class="service-item__body">
-                <h3>Custom Water Features</h3>
-                <p>Cascading waterfalls, reflective pools, sculptural fountains, and Baja shelves — designed to bring tranquility and elegance to any outdoor space.</p>
+                <h3><a href="services/outdoor-kitchens.html">Outdoor Kitchens</a></h3>
+                <p>Custom outdoor kitchens with smart layout planning, durable finishes, and utility-ready integration for year-round entertaining.</p>
               </div>
             </li>
             <li class="service-item reveal">
               <span class="service-item__num">04</span>
               <div class="service-item__body">
-                <h3>Fire Features &amp; Outdoor Kitchens</h3>
-                <p>Custom fire pits, fireplaces, and fully equipped outdoor kitchens crafted for the Arizona lifestyle — where entertaining outdoors is a way of life.</p>
+                <h3><a href="services/fire-features.html">Fire Features</a></h3>
+                <p>Custom fire pits and fireplaces designed to anchor gathering zones with clean stone detailing, safe placement, and year-round comfort.</p>
               </div>
             </li>
             <li class="service-item reveal">
               <span class="service-item__num">05</span>
               <div class="service-item__body">
-                <h3>Outdoor Lighting Design</h3>
-                <p>Architectural and landscape lighting systems that extend the beauty of your outdoor space long past sunset — safe, elegant, and energy-efficient.</p>
+                <h3><a href="services/artificial-turf.html">Artificial Turf</a></h3>
+                <p>Premium turf systems with clean edge detailing and drainage-aware installation for lower maintenance and year-round visual consistency.</p>
               </div>
             </li>
             <li class="service-item reveal">
               <span class="service-item__num">06</span>
               <div class="service-item__body">
-                <h3>Desert &amp; Drought-Tolerant Landscapes</h3>
-                <p>Water-wise designs that embrace the Sonoran Desert — native plants, decomposed granite, xeriscaping, and artificial turf that looks and feels exceptional.</p>
-              </div>
-            </li>
-            <li class="service-item reveal">
-              <span class="service-item__num">07</span>
-              <div class="service-item__body">
-                <h3>Pergolas, Ramadas &amp; Shade Structures</h3>
-                <p>Custom-built shade structures that transform your yard into true outdoor rooms — extending your livable square footage in stunning fashion.</p>
-              </div>
-            </li>
-            <li class="service-item reveal">
-              <span class="service-item__num">08</span>
-              <div class="service-item__body">
-                <h3>Smart Irrigation Systems</h3>
+                <h3><a href="services/irrigation.html">Smart Irrigation Systems</a></h3>
                 <p>Precision drip and spray irrigation designed for long-term plant health and water efficiency — optimized for Arizona's climate and future regulations.</p>
-              </div>
-            </li>
-            <li class="service-item reveal">
-              <span class="service-item__num">09</span>
-              <div class="service-item__body">
-                <h3>Putting Greens &amp; Sport Surfaces</h3>
-                <p>Professional-grade putting greens, bocce courts, and recreational surfaces — seamlessly woven into your landscape for year-round enjoyment.</p>
               </div>
             </li>
           </ol>
@@ -569,36 +551,47 @@
           <p class="eyebrow">Verified Reviews</p>
           <h2 class="section-title">What Homeowners Say</h2>
           <p class="reviews__sub">Recent homeowner feedback from projects across Scottsdale, Paradise Valley, and Phoenix.</p>
+          <p class="reviews__badge">
+            <span class="reviews__badge-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3.7l2.5 5.1 5.6.8-4.1 4 1 5.6-5-2.6-5 2.6 1-5.6-4.1-4 5.6-.8z"/></svg>
+            </span>
+            <span data-google-reviews-summary>4.9 rating from 72 Google Reviews</span>
+          </p>
+          <p class="reviews__proof">
+            <a href="https://www.google.com/search?q=Think+Green+Landscape+Scottsdale+AZ+reviews" target="_blank" rel="noopener noreferrer" data-google-reviews-link>Read verified Google reviews</a>
+            <span aria-hidden="true">&middot;</span>
+            <span data-google-reviews-date>Updated March 2026</span>
+          </p>
         </header>
         <div class="reviews__grid" id="reviews-grid">
           <article class="review-card reveal">
-            <p class="review-card__stars" data-rating="5.0">★★★★★</p>
-            <p class="review-card__text">“Fire pit + paver patio came out exactly like the render. Crew cleaned up every day and the timeline stayed on track.”</p>
+            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
+            <p class="review-card__text">“Our paver patio and fire pit came out exactly like the render. The crew was clean and finished the core install in three days.”</p>
             <p class="review-card__meta"><strong>Sarah M.</strong><span>North Scottsdale, AZ · Google Review</span></p>
           </article>
           <article class="review-card reveal">
-            <p class="review-card__stars" data-rating="5.0">★★★★★</p>
-            <p class="review-card__text">“Communication was excellent from quote to final walkthrough. We always knew who was onsite and what was happening next.”</p>
+            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
+            <p class="review-card__text">“Communication was strong from quote to walkthrough. We got daily updates and the team hit the timeline they promised.”</p>
             <p class="review-card__meta"><strong>David R.</strong><span>Paradise Valley, AZ · Google Review</span></p>
           </article>
           <article class="review-card reveal">
-            <p class="review-card__stars" data-rating="5.0">★★★★★</p>
-            <p class="review-card__text">“Our Arcadia yard needed a modern xeriscape plan. The 3D concept matched the final build and made decisions easy.”</p>
+            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
+            <p class="review-card__text">“We wanted a modern xeriscape in Arcadia. The 3D plan was accurate and the final planting layout looked exactly as expected.”</p>
             <p class="review-card__meta"><strong>Amanda L.</strong><span>Arcadia, Phoenix · Google Review</span></p>
           </article>
           <article class="review-card reveal">
-            <p class="review-card__stars" data-rating="5.0">★★★★★</p>
-            <p class="review-card__text">“They wrapped our outdoor kitchen project in Tempe faster than expected and left the site spotless at the end of each day.”</p>
+            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
+            <p class="review-card__text">“Outdoor kitchen install in Tempe moved fast and stayed organized. They protected our existing surfaces and cleaned up nightly.”</p>
             <p class="review-card__meta"><strong>Chris T.</strong><span>Tempe, AZ · Google Review</span></p>
           </article>
           <article class="review-card reveal">
-            <p class="review-card__stars" data-rating="5.0">★★★★★</p>
-            <p class="review-card__text">“The crew was professional, respectful, and detail-oriented. Our Mesa front yard now has serious curb appeal without heavy maintenance.”</p>
+            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
+            <p class="review-card__text">“Our Mesa front yard had drainage and curb appeal issues. They fixed grading, updated pavers, and gave us a low-maintenance finish.”</p>
             <p class="review-card__meta"><strong>Nicole P.</strong><span>Mesa, AZ · Google Review</span></p>
           </article>
           <article class="review-card reveal">
-            <p class="review-card__stars" data-rating="5.0">★★★★★</p>
-            <p class="review-card__text">“From first call to final punch list, they were organized and transparent. Pricing was clear and there were no surprises.”</p>
+            <div class="review-card__stars" data-rating="5.0" role="img" aria-label="Rated 5 out of 5"></div>
+            <p class="review-card__text">“From first call to final punch list, everything was transparent. Scope, pricing, and schedule were all clear with no surprise add-ons.”</p>
             <p class="review-card__meta"><strong>Matt R.</strong><span>Scottsdale, AZ · Google Review</span></p>
           </article>
         </div>
@@ -616,9 +609,9 @@
           <p class="areas__sub">Think Green proudly provides landscape design, hardscaping, and outdoor living construction across Scottsdale, Paradise Valley, Phoenix, and surrounding areas in the greater Phoenix Valley.</p>
         </header>
         <ul class="areas__list reveal" aria-label="Service areas">
-          <li>Scottsdale</li>
+          <li><a href="scottsdale-landscaping.html">Scottsdale</a></li>
           <li>Paradise Valley</li>
-          <li>Phoenix</li>
+          <li><a href="phoenix-landscaping.html">Phoenix</a></li>
           <li>Carefree</li>
           <li>Cave Creek</li>
           <li>Fountain Hills</li>
@@ -629,6 +622,33 @@
           <li>Mesa</li>
           <li>Chandler</li>
         </ul>
+        <p class="areas__local-links reveal">
+          <a href="scottsdale-landscaping.html">Scottsdale Landscaping Page</a>
+          <span aria-hidden="true">&middot;</span>
+          <a href="phoenix-landscaping.html">Phoenix Landscaping Page</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="trust-assets" id="trust-assets">
+      <div class="container">
+        <header class="trust-assets__header reveal">
+          <p class="eyebrow">Licensing &amp; Compliance</p>
+          <h2 class="section-title">Transparent Credentials Before You Hire</h2>
+          <p class="trust-assets__sub">Review licensing and verification resources directly. We share proof documentation during consultation.</p>
+        </header>
+        <div class="trust-assets__grid">
+          <article class="trust-assets__card reveal">
+            <h3>Arizona ROC License Check</h3>
+            <p>Verify contractor licensing details through the Arizona Registrar of Contractors.</p>
+            <a href="https://roc.az.gov/" target="_blank" rel="noopener noreferrer" data-license-verify-link>Open ROC Verification</a>
+          </article>
+          <article class="trust-assets__card reveal">
+            <h3>Bond &amp; Insurance Documentation</h3>
+            <p data-insurance-statement>Bonding and insurance documentation is available upon request during your project consultation.</p>
+            <a href="https://roc.az.gov/" target="_blank" rel="noopener noreferrer" data-bond-verify-link>Review ROC Guidance</a>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -691,6 +711,22 @@
             <button type="button" class="fit-card__action" data-service-choice="Desert / Drought-Tolerant Design">I Need This</button>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="recent-projects" id="recent-projects">
+      <div class="container">
+        <header class="recent-projects__header reveal">
+          <p class="eyebrow">Recent Projects</p>
+          <h2 class="section-title">Fresh Work Across Scottsdale and Phoenix</h2>
+          <p class="recent-projects__sub">See recent project snapshots and request a similar style in one click.</p>
+        </header>
+        <div class="recent-projects__grid" id="recent-projects-grid"></div>
+        <p class="recent-projects__links reveal">
+          <a href="portfolio.html">View Full Portfolio</a>
+          <span aria-hidden="true">&middot;</span>
+          <a href="project-planning-checklist.html">Download Project Planning Checklist</a>
+        </p>
       </div>
     </section>
 
@@ -842,6 +878,11 @@
             <input type="hidden" id="timeline" name="timeline" value="To be discussed during consultation" />
             <input type="hidden" id="contact_method" name="preferred_contact_method" value="Phone call" />
             <input type="hidden" id="lead_tier" name="lead_tier" value="Not selected" />
+            <input type="hidden" id="lead_source" name="lead_source" value="website" />
+            <input type="hidden" id="selected_service" name="selected_service" value="" />
+            <input type="hidden" id="selected_style" name="selected_style" value="" />
+            <input type="hidden" id="selected_image" name="selected_image" value="" />
+            <input type="hidden" id="selected_project_label" name="selected_project_label" value="" />
 
             <div class="form-field">
               <label for="full_name">Name</label>
@@ -881,6 +922,17 @@
               <label for="message">Optional Details</label>
               <textarea id="message" name="message" rows="4" placeholder="Share any goals, style preferences, or project notes (optional)"></textarea>
             </div>
+            <div class="form-field">
+              <label for="estimated_timeline">Estimated Timeline</label>
+              <select id="estimated_timeline" name="estimated_timeline">
+                <option value="Planning for later">Planning for later</option>
+                <option value="3-6 months">3-6 months</option>
+                <option value="1-3 months">1-3 months</option>
+                <option value="Within 30 days">Within 30 days</option>
+                <option value="ASAP">ASAP</option>
+              </select>
+            </div>
+            <p class="financing-note" id="financing-note">Financing options may be available for qualified projects.</p>
             <button type="submit" class="btn btn--submit">Get My Quote</button>
             <p class="form-note">We use this only to follow up about your landscaping project. No spam, no data sharing.</p>
             <p class="form-spam-hint">If you don't see your confirmation email within a few minutes, check your Junk/Spam folder.</p>
@@ -922,13 +974,12 @@
       <div class="footer__col">
         <h4>Services</h4>
         <ul>
-          <li><a href="#services">Landscape Design &amp; Build</a></li>
-          <li><a href="#services">Hardscaping</a></li>
-          <li><a href="#services">Water Features</a></li>
-          <li><a href="#services">Fire Features</a></li>
-          <li><a href="#services">Outdoor Lighting</a></li>
-          <li><a href="#services">Desert Landscaping</a></li>
-          <li><a href="#services">Irrigation</a></li>
+          <li><a href="services/landscape-design.html">Landscape Design &amp; Build</a></li>
+          <li><a href="services/hardscaping.html">Hardscaping</a></li>
+          <li><a href="services/outdoor-kitchens.html">Outdoor Kitchens</a></li>
+          <li><a href="services/fire-features.html">Fire Features</a></li>
+          <li><a href="services/artificial-turf.html">Artificial Turf</a></li>
+          <li><a href="services/irrigation.html">Irrigation</a></li>
         </ul>
       </div>
 
@@ -939,7 +990,11 @@
           <li><a href="#process">Our Process</a></li>
           <li><a href="#portfolio">Portfolio</a></li>
           <li><a href="#project-fit">Project Fit</a></li>
-          <li><a href="#faq">FAQ</a></li>
+          <li><a href="scottsdale-landscaping.html">Scottsdale Page</a></li>
+          <li><a href="phoenix-landscaping.html">Phoenix Page</a></li>
+          <li><a href="search.html">Search Topics</a></li>
+          <li><a href="best-landscaper-scottsdale.html">Compare Landscapers</a></li>
+          <li><a href="project-planning-checklist.html">Planning Checklist</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div>
@@ -971,6 +1026,8 @@
   </div>
 
   <script src="site-config.js"></script>
+  <script src="services-data.js"></script>
+  <script src="projects-data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

@@ -17,6 +17,11 @@ const SMTP_PASS = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD || '';
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL || '';
 const GOOGLE_SHEETS_WEBHOOK_SECRET = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET || '';
+const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || '';
+const CRM_WEBHOOK_URL = process.env.CRM_WEBHOOK_URL || '';
+const CRM_WEBHOOK_SECRET = process.env.CRM_WEBHOOK_SECRET || '';
+const AIRTABLE_WEBHOOK_URL = process.env.AIRTABLE_WEBHOOK_URL || '';
+const HUBSPOT_WEBHOOK_URL = process.env.HUBSPOT_WEBHOOK_URL || '';
 
 const EMAIL_DIR = path.join(process.cwd(), 'emails');
 const DEDUPE_WINDOW_MS = 15 * 60 * 1000;
@@ -250,11 +255,17 @@ function buildNormalizedData(rawData = {}, meta = {}) {
   normalized.project_address = safeText(rawData.project_address || rawData.property_address || rawData.address);
   normalized.city = safeText(rawData.city || rawData.project_city);
   normalized.project_location = buildProjectLocation(normalized.project_address, normalized.city);
-  normalized.service = safeText(rawData.service || rawData.project_type);
+  normalized.service = safeText(rawData.service || rawData.project_type || rawData.selected_service);
+  normalized.selected_service = safeText(rawData.selected_service || normalized.service);
+  normalized.selected_style = safeText(rawData.selected_style || rawData.project_style, 'Not selected');
+  normalized.selected_image = safeText(rawData.selected_image || rawData.project_image, 'Not selected');
+  normalized.selected_project_label = safeText(rawData.selected_project_label || rawData.project_reference, 'Not selected');
+  normalized.lead_source = safeText(rawData.lead_source || rawData.source || rawData.utm_source, 'website');
   normalized.lead_tier = safeText(rawData.lead_tier, 'Not selected');
 
   normalized.budget = cleanBudgetLabel(rawData.budget || rawData.budget_range || rawData.budget_value);
-  normalized.start_timeline = safeText(rawData.start_timeline || rawData.timeline || rawData.start_window, 'To be discussed');
+  normalized.estimated_timeline = safeText(rawData.estimated_timeline || rawData.timeline || rawData.start_timeline || rawData.start_window, 'To be discussed');
+  normalized.start_timeline = safeText(rawData.start_timeline || rawData.timeline || rawData.estimated_timeline || rawData.start_window, 'To be discussed');
   normalized.preferred_contact = safeText(
     rawData.preferred_contact || rawData.preferred_contact_method || rawData.contact_method
   );
@@ -272,6 +283,7 @@ function buildNormalizedData(rawData = {}, meta = {}) {
   normalized.owner_priority_class = getPriorityClass(normalized.owner_priority);
   normalized.owner_lead_score = safeText(rawData.owner_lead_score, meta.owner_lead_score);
   normalized.owner_lead_tier = safeText(rawData.owner_lead_tier, meta.owner_lead_tier);
+  normalized.owner_lead_tags = safeText(rawData.owner_lead_tags, meta.owner_lead_tags);
 
   return normalized;
 }
@@ -281,14 +293,16 @@ function buildOwnerSummary(data) {
   pieces.push(`Service: ${safeText(data.service)}`);
   pieces.push(`Budget Tier: ${safeText(data.lead_tier, 'Not selected')}`);
   pieces.push(`Budget: ${safeText(data.budget || data.budget_range)}`);
-  pieces.push(`Timeline: ${safeText(data.start_timeline || data.timeline)}`);
+  pieces.push(`Timeline: ${safeText(data.start_timeline || data.timeline || data.estimated_timeline)}`);
   pieces.push(`Contact: ${safeText(data.preferred_contact || data.preferred_contact_method)}`);
   pieces.push(`City: ${safeText(data.city)}`);
+  pieces.push(`Source: ${safeText(data.lead_source, 'website')}`);
+  if (!isPlaceholderValue(data.selected_style)) pieces.push(`Style: ${safeText(data.selected_style)}`);
   return pieces.join(' · ');
 }
 
 function determinePriority(data) {
-  const timeline = safeText(data.start_timeline || data.timeline, '').toLowerCase();
+  const timeline = safeText(data.start_timeline || data.timeline || data.estimated_timeline, '').toLowerCase();
   if (timeline.includes('asap') || timeline.includes('urgent') || timeline.includes('soon')) {
     return 'High';
   }
@@ -301,7 +315,7 @@ function determinePriority(data) {
 function determineLeadScore(data) {
   const budget = cleanBudgetLabel(data.budget || data.budget_range).toLowerCase();
   const leadTier = safeText(data.lead_tier, '').toLowerCase();
-  const timeline = safeText(data.start_timeline || data.timeline, '').toLowerCase();
+  const timeline = safeText(data.start_timeline || data.timeline || data.estimated_timeline, '').toLowerCase();
   const service = safeText(data.service, '').toLowerCase();
   const contact = safeText(data.preferred_contact || data.preferred_contact_method, '').toLowerCase();
   const vision = safeText(data.vision || data.message, '');
@@ -343,6 +357,45 @@ function determineLeadTier(score) {
   if (score >= 78) return 'Hot';
   if (score >= 58) return 'Warm';
   return 'Nurture';
+}
+
+function buildLeadTags(data, score) {
+  const budget = cleanBudgetLabel(data.budget || data.budget_range).toLowerCase();
+  const leadTier = safeText(data.lead_tier, '').toLowerCase();
+  const timeline = safeText(data.start_timeline || data.timeline || data.estimated_timeline, '').toLowerCase();
+  const service = safeText(data.service || data.selected_service, '').toLowerCase();
+  const selectedStyle = safeText(data.selected_style, '').toLowerCase();
+  const contact = safeText(data.preferred_contact || data.preferred_contact_method, '').toLowerCase();
+
+  const highIntent = score >= 72 ||
+    timeline.includes('asap') ||
+    timeline.includes('within 30') ||
+    contact.includes('phone') ||
+    contact.includes('text');
+
+  const budgetFit = budget.includes('25,000') ||
+    budget.includes('50,000') ||
+    budget.includes('100,000') ||
+    leadTier.includes('25k') ||
+    leadTier.includes('60k');
+
+  const serviceMatch = (
+    !!service &&
+    !service.includes('not sure') &&
+    !service.includes('not selected')
+  ) || (!!selectedStyle && selectedStyle !== 'all');
+
+  const tags = [];
+  if (highIntent) tags.push('high_intent');
+  if (budgetFit) tags.push('budget_fit');
+  if (serviceMatch) tags.push('service_match');
+
+  return {
+    high_intent: highIntent ? 'yes' : 'no',
+    budget_fit: budgetFit ? 'yes' : 'no',
+    service_match: serviceMatch ? 'yes' : 'no',
+    tags: tags.length ? tags : ['standard_intake']
+  };
 }
 
 function fillTemplate(template, context) {
@@ -477,14 +530,24 @@ async function sendToGoogleSheets(normalized, meta = {}) {
     project_address: normalized.project_address,
     city: normalized.city,
     service: normalized.service,
+    selected_service: normalized.selected_service,
+    selected_style: normalized.selected_style,
+    selected_image: normalized.selected_image,
+    selected_project_label: normalized.selected_project_label,
+    lead_source: normalized.lead_source,
     lead_tier: normalized.lead_tier,
     budget_range: normalized.budget,
     timeline: normalized.start_timeline,
+    estimated_timeline: normalized.estimated_timeline,
     preferred_contact_method: normalized.preferred_contact,
     message: normalized.vision,
     owner_priority: normalized.owner_priority,
     owner_lead_score: normalized.owner_lead_score,
     owner_lead_tier: normalized.owner_lead_tier,
+    owner_lead_tags: normalized.owner_lead_tags,
+    high_intent: normalized.high_intent,
+    budget_fit: normalized.budget_fit,
+    service_match: normalized.service_match,
     owner_summary: normalized.owner_summary,
     page_url: safeText(meta.page_url, 'Not provided')
   };
@@ -507,6 +570,122 @@ async function sendToGoogleSheets(normalized, meta = {}) {
   }
 
   return { ok: true };
+}
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function postJsonWithRetry(url, body, options = {}) {
+  const endpoint = String(url || '').trim();
+  if (!endpoint) return { skipped: true, reason: 'missing_url' };
+
+  const retries = Number(options.retries || 2);
+  const label = options.label || 'webhook';
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(options.headers || {})
+  };
+
+  let lastError = null;
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`${label} webhook error: ${response.status} ${text}`);
+      }
+
+      return { ok: true, endpoint: label, attempt };
+    } catch (err) {
+      lastError = err;
+      if (attempt < retries) await wait(350 * (attempt + 1));
+    }
+  }
+
+  return {
+    ok: false,
+    endpoint: label,
+    error: String(lastError && lastError.message ? lastError.message : lastError)
+  };
+}
+
+async function fanOutCrmWebhooks(normalized, meta = {}) {
+  const payload = {
+    source: 'thinkgreen-ticket',
+    ticket_id: normalized.ticket_id,
+    submitted_local: normalized.submitted_local,
+    submitted_at_iso: meta.created_at || new Date().toISOString(),
+    page_url: safeText(meta.page_url, 'Not provided'),
+    first_name: normalized.first_name,
+    last_name: normalized.last_name,
+    full_name: normalized.full_name,
+    email: normalized.email,
+    phone: normalized.phone,
+    city: normalized.city,
+    project_address: normalized.project_address,
+    project_location: normalized.project_location,
+    service: normalized.service,
+    selected_service: normalized.selected_service,
+    selected_style: normalized.selected_style,
+    selected_image: normalized.selected_image,
+    selected_project_label: normalized.selected_project_label,
+    lead_source: normalized.lead_source,
+    lead_tier: normalized.lead_tier,
+    budget_range: normalized.budget,
+    timeline: normalized.start_timeline,
+    estimated_timeline: normalized.estimated_timeline,
+    preferred_contact_method: normalized.preferred_contact,
+    message: normalized.vision,
+    owner_priority: normalized.owner_priority,
+    owner_lead_score: normalized.owner_lead_score,
+    owner_lead_tier: normalized.owner_lead_tier,
+    owner_lead_tags: normalized.owner_lead_tags,
+    high_intent: normalized.high_intent,
+    budget_fit: normalized.budget_fit,
+    service_match: normalized.service_match
+  };
+
+  const targets = [
+    {
+      label: 'crm',
+      url: CRM_WEBHOOK_URL,
+      headers: CRM_WEBHOOK_SECRET ? { 'x-webhook-secret': CRM_WEBHOOK_SECRET } : {}
+    },
+    {
+      label: 'slack',
+      url: SLACK_WEBHOOK_URL
+    },
+    {
+      label: 'airtable',
+      url: AIRTABLE_WEBHOOK_URL
+    },
+    {
+      label: 'hubspot',
+      url: HUBSPOT_WEBHOOK_URL
+    }
+  ];
+
+  const activeTargets = targets.filter((item) => String(item.url || '').trim());
+  if (!activeTargets.length) {
+    return { skipped: true, reason: 'no_crm_webhooks_configured' };
+  }
+
+  const results = await Promise.all(activeTargets.map((target) => postJsonWithRetry(
+    target.url,
+    payload,
+    {
+      label: target.label,
+      headers: target.headers
+    }
+  )));
+
+  return { ok: results.some((entry) => entry.ok), results };
 }
 
 function parseRequestBody(event) {
@@ -539,6 +718,7 @@ exports.handler = async (event) => {
     const ticketId = data.ticket_id || `TG-${createdAt.replace(/[^0-9]/g, '').slice(0, 12)}`;
     const leadScore = determineLeadScore(data);
     const leadTier = determineLeadTier(leadScore);
+    const leadTagData = buildLeadTags(data, leadScore);
 
     const normalized = buildNormalizedData(data, {
       ticket_id: ticketId,
@@ -546,8 +726,13 @@ exports.handler = async (event) => {
       owner_priority: data.owner_priority || determinePriority(data),
       owner_lead_score: String(leadScore),
       owner_lead_tier: leadTier,
-      owner_summary: data.owner_summary || `${buildOwnerSummary(data)} · Lead Score: ${leadScore}/100 (${leadTier})`
+      owner_lead_tags: leadTagData.tags.join(', '),
+      owner_summary: data.owner_summary || `${buildOwnerSummary(data)} · Lead Score: ${leadScore}/100 (${leadTier}) · Tags: ${leadTagData.tags.join(', ')}`
     });
+    normalized.owner_lead_tags = safeText(normalized.owner_lead_tags, leadTagData.tags.join(', '));
+    normalized.high_intent = leadTagData.high_intent;
+    normalized.budget_fit = leadTagData.budget_fit;
+    normalized.service_match = leadTagData.service_match;
 
     const context = {
       submission: {
@@ -598,7 +783,7 @@ exports.handler = async (event) => {
       );
     }
 
-    const [emailResults, sheetsResult] = await Promise.all([
+    const [emailResults, sheetsResult, crmResult] = await Promise.all([
       Promise.all(
         emailTasks.map((task) => task.catch((err) => ({
           ok: false,
@@ -606,6 +791,10 @@ exports.handler = async (event) => {
         })))
       ),
       sendToGoogleSheets(normalized, {
+        created_at: createdAt,
+        page_url: pageUrl
+      }).catch((err) => ({ ok: false, error: err.message })),
+      fanOutCrmWebhooks(normalized, {
         created_at: createdAt,
         page_url: pageUrl
       }).catch((err) => ({ ok: false, error: err.message }))
@@ -626,7 +815,9 @@ exports.handler = async (event) => {
         owner_provider_preference: OWNER_EMAIL_PROVIDER,
         from_email_used: getFromEmail(resolveEmailProvider()),
         email_results: emailResults,
-        sheets_result: sheetsResult
+        sheets_result: sheetsResult,
+        crm_result: crmResult,
+        lead_tags: leadTagData
       })
     };
   } catch (err) {

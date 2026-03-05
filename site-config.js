@@ -9,6 +9,26 @@
       raw: '4809229497',
       display: '(480) 922-9497'
     },
+    phoneTracking: {
+      default: {
+        raw: '4809229497',
+        display: '(480) 922-9497'
+      },
+      sources: {
+        google: {
+          raw: '4809229497',
+          display: '(480) 922-9497'
+        },
+        gbp: {
+          raw: '4809229497',
+          display: '(480) 922-9497'
+        },
+        ads: {
+          raw: '4809229497',
+          display: '(480) 922-9497'
+        }
+      }
+    },
     address: {
       line1: '7730 E. Gelding Dr. Ste 1',
       city: 'Scottsdale',
@@ -98,6 +118,22 @@
         text: 'No surprises on scope or pricing. Great coordination and the final punch list was handled quickly.'
       }
     ],
+    googleReviews: {
+      rating: '4.9',
+      count: '72',
+      platform: 'Google Reviews',
+      profileUrl: 'https://www.google.com/search?q=Think+Green+Landscape+Scottsdale+AZ+reviews',
+      snapshotDate: 'Updated March 2026'
+    },
+    trustAssets: {
+      licenseVerifyUrl: 'https://roc.az.gov/',
+      bondVerifyUrl: 'https://roc.az.gov/',
+      insuranceStatement: 'Insurance and bonding documentation available during consultation.'
+    },
+    financing: {
+      enabled: true,
+      copy: 'Financing options may be available for qualified projects.'
+    },
     analytics: {
       ga4MeasurementId: ''
     }

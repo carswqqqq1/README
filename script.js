@@ -8,11 +8,17 @@
   var BRAND = SITE_CONFIG.brand || {};
   var ADDRESS = SITE_CONFIG.address || {};
   var PHONE = SITE_CONFIG.phone || {};
+  var PHONE_TRACKING = SITE_CONFIG.phoneTracking || {};
+  var GOOGLE_REVIEWS = SITE_CONFIG.googleReviews || {};
+  var TRUST_ASSETS = SITE_CONFIG.trustAssets || {};
+  var FINANCING = SITE_CONFIG.financing || {};
   var ANALYTICS = SITE_CONFIG.analytics || {};
+  var URL_PARAMS = new URLSearchParams(window.location.search);
 
   var SITE_NAME = SITE_CONFIG.businessName || 'Think Green Design | Build Landscape';
   var SITE_PHONE_RAW = String(PHONE.raw || '4809229497').replace(/\D/g, '');
   var SITE_PHONE_DISPLAY = PHONE.display || '(480) 922-9497';
+  var DETECTED_LEAD_SOURCE = 'website';
   var SITE_EMAIL = SITE_CONFIG.email || 'thinkgreen@thinkgreenaz.com';
   var SITE_ADDRESS_LINE1 = ADDRESS.line1 || '7730 E. Gelding Dr. Ste 1';
   var SITE_CITY = ADDRESS.city || 'Scottsdale';
@@ -31,6 +37,58 @@
     });
   }
 
+  function normalizePhone(rawValue) {
+    return String(rawValue || '').replace(/\D/g, '');
+  }
+
+  function toTitleCase(value) {
+    return String(value || '')
+      .toLowerCase()
+      .replace(/(^|[-_\s])([a-z])/g, function (_, prefix, letter) {
+        return prefix + letter.toUpperCase();
+      });
+  }
+
+  function buildStarIcons(ratingValue) {
+    var count = Math.max(1, Math.min(5, Number(ratingValue || 5)));
+    var icon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3.8l2.48 5.03 5.56.81-4.02 3.91.95 5.54L12 16.49l-4.97 2.58.95-5.54-4.02-3.91 5.56-.81L12 3.8z"></path></svg>';
+    return new Array(count + 1).join(icon);
+  }
+
+  function detectLeadSource() {
+    var explicitSource = String(URL_PARAMS.get('source') || '').toLowerCase().trim();
+    if (explicitSource) return explicitSource;
+
+    var utmSource = String(URL_PARAMS.get('utm_source') || '').toLowerCase().trim();
+    var utmMedium = String(URL_PARAMS.get('utm_medium') || '').toLowerCase().trim();
+    var hasGclid = URL_PARAMS.has('gclid');
+    var referrer = String(document.referrer || '').toLowerCase();
+
+    if (hasGclid || /cpc|ppc|paid|ads/.test(utmMedium) || /ads|googleads|adwords/.test(utmSource)) {
+      return 'ads';
+    }
+    if (/gbp|google-business|googlebusiness|maps/.test(utmSource)) {
+      return 'gbp';
+    }
+    if (referrer.includes('google.') || utmSource.includes('google')) {
+      return 'google';
+    }
+    return 'website';
+  }
+
+  function applyTrackedPhone() {
+    var source = detectLeadSource();
+    var sourceMap = PHONE_TRACKING.sources || {};
+    var defaultTracking = PHONE_TRACKING.default || {};
+    var sourceConfig = sourceMap[source] || defaultTracking || PHONE || {};
+    var resolvedRaw = normalizePhone(sourceConfig.raw || PHONE.raw || '4809229497');
+    var resolvedDisplay = sourceConfig.display || PHONE.display || '(480) 922-9497';
+
+    SITE_PHONE_RAW = resolvedRaw || SITE_PHONE_RAW;
+    SITE_PHONE_DISPLAY = resolvedDisplay || SITE_PHONE_DISPLAY;
+    DETECTED_LEAD_SOURCE = source || 'website';
+  }
+
   function applyBrandTokens() {
     var root = document.documentElement;
     if (BRAND.primary) root.style.setProperty('--green', BRAND.primary);
@@ -38,12 +96,21 @@
     if (BRAND.paper) root.style.setProperty('--paper', BRAND.paper);
   }
 
+  function toRootAssetPath(path) {
+    var value = String(path || '').trim();
+    if (!value) return value;
+    if (/^(https?:)?\/\//i.test(value) || value.indexOf('data:') === 0) return value;
+    if (value.charAt(0) === '/') return value;
+    return '/' + value.replace(/^\.?\//, '');
+  }
+
   function applySiteBranding() {
     applyBrandTokens();
 
     if (BRAND.logoPath) {
+      var resolvedLogoPath = toRootAssetPath(BRAND.logoPath);
       document.querySelectorAll('[data-site-logo]').forEach(function (logo) {
-        logo.setAttribute('src', BRAND.logoPath);
+        logo.setAttribute('src', resolvedLogoPath);
       });
     }
 
@@ -157,11 +224,13 @@
       var article = document.createElement('article');
       article.className = 'review-card reveal';
 
-      var stars = document.createElement('p');
+      var stars = document.createElement('div');
       stars.className = 'review-card__stars';
       var rating = Number(review.rating || 5);
-      stars.textContent = '★'.repeat(Math.max(1, Math.min(5, rating)));
+      stars.innerHTML = buildStarIcons(rating);
       stars.setAttribute('data-rating', String(Math.max(1, Math.min(5, rating)).toFixed(1)));
+      stars.setAttribute('role', 'img');
+      stars.setAttribute('aria-label', 'Rated ' + stars.getAttribute('data-rating') + ' out of 5');
 
       var text = document.createElement('p');
       text.className = 'review-card__text';
@@ -187,6 +256,146 @@
     });
   }
 
+  function applyGoogleReviewSnapshot() {
+    var rating = String(GOOGLE_REVIEWS.rating || '').trim();
+    var count = String(GOOGLE_REVIEWS.count || '').trim();
+    var platform = String(GOOGLE_REVIEWS.platform || 'Google Reviews').trim();
+    var summary = '';
+
+    if (rating && count) {
+      summary = rating + ' rating from ' + count + ' ' + platform;
+    } else if (rating) {
+      summary = rating + ' verified rating';
+    } else if (count) {
+      summary = count + ' verified reviews';
+    }
+
+    if (summary) {
+      setText('[data-google-reviews-summary]', summary);
+    }
+
+    var dateText = String(GOOGLE_REVIEWS.snapshotDate || '').trim();
+    if (dateText) {
+      setText('[data-google-reviews-date]', dateText);
+    }
+
+    var profileUrl = String(GOOGLE_REVIEWS.profileUrl || '').trim();
+    if (profileUrl) {
+      document.querySelectorAll('[data-google-reviews-link]').forEach(function (link) {
+        link.setAttribute('href', profileUrl);
+      });
+    }
+  }
+
+  function applyTrustAssets() {
+    var licenseUrl = String(TRUST_ASSETS.licenseVerifyUrl || '').trim();
+    var bondUrl = String(TRUST_ASSETS.bondVerifyUrl || '').trim();
+    var insuranceCopy = String(TRUST_ASSETS.insuranceStatement || '').trim();
+
+    if (licenseUrl) {
+      document.querySelectorAll('[data-license-verify-link]').forEach(function (link) {
+        link.setAttribute('href', licenseUrl);
+      });
+    }
+
+    if (bondUrl) {
+      document.querySelectorAll('[data-bond-verify-link]').forEach(function (link) {
+        link.setAttribute('href', bondUrl);
+      });
+    }
+
+    if (insuranceCopy) {
+      setText('[data-insurance-statement]', insuranceCopy);
+    }
+  }
+
+  function applyFinancingNote() {
+    var financingNote = document.getElementById('financing-note');
+    if (!financingNote) return;
+
+    var enabled = FINANCING.enabled !== false;
+    var copy = String(FINANCING.copy || '').trim();
+
+    if (!enabled) {
+      financingNote.style.display = 'none';
+      return;
+    }
+
+    if (copy) {
+      financingNote.textContent = copy;
+    }
+  }
+
+  function buildProjectThumbSourceSet(imagePath) {
+    var cleanPath = String(imagePath || '').trim();
+    if (!cleanPath) return '';
+    var normalized = cleanPath.replace(/^\.\//, '').replace(/^\//, '');
+    var extMatch = normalized.match(/\.([a-z0-9]+)$/i);
+    if (!extMatch) return '';
+    var ext = extMatch[1].toLowerCase();
+    var base = normalized.slice(0, -1 * (ext.length + 1));
+    var sources = [];
+
+    sources.push('/' + base + '-640.avif 640w');
+
+    if (ext === 'webp') {
+      sources.push('/' + normalized + ' 1200w');
+    } else if (ext === 'jpg' || ext === 'jpeg' || ext === 'png') {
+      sources.push('/' + normalized + ' 1200w');
+    }
+
+    return sources.join(', ');
+  }
+
+  function renderRecentProjects() {
+    var list = Array.isArray(window.RECENT_PROJECTS) ? window.RECENT_PROJECTS : [];
+    var grid = document.getElementById('recent-projects-grid');
+    if (!grid || !list.length) return;
+
+    grid.innerHTML = list.map(function (project, index) {
+      var title = String(project.title || 'Recent Project').trim();
+      var location = String(project.location || SITE_CITY + ', ' + SITE_STATE).trim();
+      var styleSlug = String(project.styleSlug || 'all').trim();
+      var serviceSlug = String(project.serviceSlug || '').trim();
+      var src = String(project.image || '').trim();
+      var srcset = buildProjectThumbSourceSet(src);
+      var alt = String(project.imageAlt || title + ' in ' + location).trim();
+      var width = Number(project.width || 1600);
+      var height = Number(project.height || 900);
+      var requestQuery = new URLSearchParams({
+        source: 'recent_projects',
+        service: serviceSlug || '',
+        selected_style: styleSlug,
+        selected_image: src || ('recent-project-' + (index + 1)),
+        selected_project_label: title
+      });
+
+      return '' +
+        '<article class="recent-project reveal">' +
+        '  <figure class="recent-project__media">' +
+        '    <img src="' + src + '" alt="' + alt + '" title="' + alt + '" loading="lazy" decoding="async" width="' + width + '" height="' + height + '"' +
+        (srcset ? ' srcset="' + srcset + '" sizes="(max-width: 768px) 100vw, 33vw"' : '') +
+        ' />' +
+        '    <span class="recent-project__chip">' + (project.type || 'Project') + '</span>' +
+        '  </figure>' +
+        '  <div class="recent-project__body">' +
+        '    <h3>' + title + '</h3>' +
+        '    <p>' + location + '</p>' +
+        '    <a href="index.html?' + requestQuery.toString() + '#contact" class="text-link">Request This Style &rarr;</a>' +
+        '  </div>' +
+        '</article>';
+    }).join('');
+  }
+
+  function applyImageTitleFallbacks() {
+    document.querySelectorAll('img').forEach(function (img) {
+      var alt = String(img.getAttribute('alt') || '').trim();
+      if (alt && !img.getAttribute('title')) {
+        img.setAttribute('title', alt);
+      }
+    });
+  }
+
   function installAnalytics() {
     var measurementId = String(ANALYTICS.ga4MeasurementId || '').trim();
 
@@ -195,38 +404,101 @@
       window.gtag('event', name, params || {});
     };
 
-    if (!measurementId) return;
+    if (measurementId) {
+      var gaScript = document.createElement('script');
+      gaScript.async = true;
+      gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+      document.head.appendChild(gaScript);
 
-    var gaScript = document.createElement('script');
-    gaScript.async = true;
-    gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
-    document.head.appendChild(gaScript);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function gtag() {
+        window.dataLayer.push(arguments);
+      };
 
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function gtag() {
-      window.dataLayer.push(arguments);
-    };
+      window.gtag('js', new Date());
+      window.gtag('config', measurementId, {
+        anonymize_ip: true
+      });
+    }
 
-    window.gtag('js', new Date());
-    window.gtag('config', measurementId, {
-      anonymize_ip: true
-    });
-
-    document.querySelectorAll('[data-site-phone-link]').forEach(function (link) {
+    var callClickMap = new WeakSet();
+    document.querySelectorAll('[data-site-phone-link], a[href^="tel:"]').forEach(function (link) {
+      if (callClickMap.has(link)) return;
+      callClickMap.add(link);
       link.addEventListener('click', function () {
         window.trackLeadEvent('call_click', {
           method: 'tel_link',
+          source: DETECTED_LEAD_SOURCE,
           page_location: window.location.href
         });
       });
     });
+
+    var trackedDepths = {};
+    var depthThresholds = [25, 50, 75, 100];
+    function trackScrollDepth() {
+      var body = document.body;
+      var html = document.documentElement;
+      var scrollTop = window.scrollY || html.scrollTop || body.scrollTop || 0;
+      var scrollHeight = Math.max(body.scrollHeight, html.scrollHeight, body.offsetHeight, html.offsetHeight);
+      var windowHeight = window.innerHeight || html.clientHeight || 0;
+      var maxScrollable = Math.max(1, scrollHeight - windowHeight);
+      var depth = Math.min(100, Math.round((scrollTop / maxScrollable) * 100));
+
+      depthThresholds.forEach(function (threshold) {
+        if (depth >= threshold && !trackedDepths[threshold]) {
+          trackedDepths[threshold] = true;
+          window.trackLeadEvent('scroll_depth', {
+            depth_percent: threshold,
+            page_location: window.location.href
+          });
+        }
+      });
+    }
+
+    window.addEventListener('scroll', trackScrollDepth, { passive: true });
+    trackScrollDepth();
+
+    document.addEventListener('click', function (event) {
+      var trigger = event.target && event.target.closest
+        ? event.target.closest('a, button')
+        : null;
+      if (!trigger) return;
+
+      var isCta = trigger.classList.contains('btn') ||
+        trigger.classList.contains('nav__cta') ||
+        trigger.classList.contains('fit-card__action') ||
+        trigger.classList.contains('lead-tier__btn') ||
+        trigger.classList.contains('text-link');
+
+      if (!isCta) return;
+
+      window.trackLeadEvent('cta_click', {
+        cta_label: String(trigger.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80),
+        cta_target: trigger.getAttribute('href') || trigger.id || 'button',
+        page_location: window.location.href
+      });
+    });
+
+    if (window.location.pathname.indexOf('thank-you.html') !== -1) {
+      window.trackLeadEvent('thank_you_view', {
+        page_location: window.location.href,
+        source: String(URL_PARAMS.get('source') || DETECTED_LEAD_SOURCE || 'website')
+      });
+    }
   }
 
+  applyTrackedPhone();
   applySiteBranding();
   applyContactFormServices();
   applyProjectFitCards();
   applyBeforeAfterContent();
   renderReviewCards();
+  applyGoogleReviewSnapshot();
+  applyTrustAssets();
+  applyFinancingNote();
+  renderRecentProjects();
+  applyImageTitleFallbacks();
   installAnalytics();
 
   /* ---- NAV SCROLL STATE ---- */
@@ -348,13 +620,6 @@
   });
 
   if (slides.length > 1) startCarousel();
-
-  /* ---- GA4 PHONE CLICK TRACKING ---- */
-  document.querySelectorAll('a[href^="tel:"]').forEach(function (a) {
-    a.addEventListener('click', function () {
-      if (typeof gtag === 'function') gtag('event', 'call_click', { event_category: 'lead', event_label: this.href });
-    });
-  });
 
   /* ---- BEFORE / AFTER SLIDER ---- */
   document.querySelectorAll('[data-before-after]').forEach(function (slider) {
@@ -490,8 +755,14 @@
   var addressInput = document.getElementById('property_address');
   var budgetInput = document.getElementById('budget');
   var timelineInput = document.getElementById('timeline');
+  var estimatedTimelineInput = document.getElementById('estimated_timeline');
   var contactMethod = document.getElementById('contact_method');
   var leadTierInput = document.getElementById('lead_tier');
+  var leadSourceInput = document.getElementById('lead_source');
+  var selectedServiceInput = document.getElementById('selected_service');
+  var selectedStyleInput = document.getElementById('selected_style');
+  var selectedImageInput = document.getElementById('selected_image');
+  var selectedProjectLabelInput = document.getElementById('selected_project_label');
   var messageInput = document.getElementById('message');
   var ticketReference = document.getElementById('ticket-reference');
   var progressBar = document.querySelector('.ticket-progress__bar');
@@ -631,10 +902,147 @@
   bindLeadTierButtons();
 
   if (form) {
-    var params = new URLSearchParams(window.location.search);
+    var params = URL_PARAMS;
     var utmSource = params.get('utm_source') || '';
     var utmMedium = params.get('utm_medium') || '';
     var utmCampaign = params.get('utm_campaign') || '';
+    var requestedService = params.get('service') || '';
+    var requestedStyle = params.get('selected_style') || '';
+    var requestedImage = params.get('selected_image') || '';
+    var requestedProjectLabel = params.get('selected_project_label') || '';
+    var requestedSource = params.get('source') || '';
+    var requestedTimeline = params.get('estimated_timeline') || params.get('timeline') || '';
+
+    function normalizeServiceSlug(value) {
+      return String(value || '')
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+    }
+
+    function mapStyleToService(styleValue) {
+      var slug = normalizeServiceSlug(styleValue);
+      if (!slug) return '';
+      if (slug.indexOf('hardscape') >= 0) return 'Hardscaping';
+      if (slug.indexOf('water') >= 0) return 'Water Feature';
+      if (slug.indexOf('fire') >= 0) return 'Fire Feature / Outdoor Kitchen';
+      if (slug.indexOf('outdoor') >= 0) return 'Fire Feature / Outdoor Kitchen';
+      if (slug.indexOf('desert') >= 0 || slug.indexOf('xeriscape') >= 0 || slug.indexOf('turf') >= 0) {
+        return 'Desert / Drought-Tolerant Design';
+      }
+      if (slug.indexOf('irrigation') >= 0) return 'Irrigation';
+      if (slug.indexOf('frontyard') >= 0 || slug.indexOf('backyard') >= 0 || slug.indexOf('curb') >= 0) {
+        return 'Landscape Design & Build';
+      }
+      return '';
+    }
+
+    function resolveServicePrefill(value) {
+      if (!value || !serviceInput) return '';
+      var cleanValue = String(value).trim();
+      if (!cleanValue) return '';
+      var requestedSlug = normalizeServiceSlug(cleanValue);
+
+      var catalog = Array.isArray(window.SERVICES_DATA) ? window.SERVICES_DATA : [];
+      var serviceFromCatalog = catalog.find(function (item) {
+        return normalizeServiceSlug(item.slug) === requestedSlug;
+      });
+      if (serviceFromCatalog) {
+        return String(serviceFromCatalog.formValue || serviceFromCatalog.title || '');
+      }
+
+      var options = Array.from(serviceInput.options).map(function (option) {
+        return String(option.value || '').trim();
+      }).filter(Boolean);
+
+      var directMatch = options.find(function (option) {
+        return option.toLowerCase() === cleanValue.toLowerCase();
+      });
+      if (directMatch) return directMatch;
+
+      var slugMatch = options.find(function (option) {
+        return normalizeServiceSlug(option) === requestedSlug;
+      });
+      if (slugMatch) return slugMatch;
+
+      return '';
+    }
+
+    function applyServicePrefillFromQuery() {
+      if (!serviceInput) return;
+      if (serviceInput.value && serviceInput.value.trim()) return;
+
+      var styleMappedService = mapStyleToService(requestedStyle);
+      var resolvedService = resolveServicePrefill(requestedService) || resolveServicePrefill(styleMappedService);
+      if (!resolvedService) return;
+
+      serviceInput.value = resolvedService;
+      serviceInput.dispatchEvent(new Event('input', { bubbles: true }));
+      serviceInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+      if (selectedServiceInput) selectedServiceInput.value = resolvedService;
+
+      var prefillLines = [];
+      prefillLines.push('Interested in ' + resolvedService + '.');
+      if (requestedStyle) prefillLines.push('Preferred style: ' + toTitleCase(String(requestedStyle).replace(/[-_]/g, ' ')) + '.');
+      if (requestedProjectLabel) prefillLines.push('Project reference: ' + requestedProjectLabel + '.');
+      var prefill = prefillLines.join(' ');
+
+      if (messageInput && !messageInput.value.trim()) {
+        messageInput.value = prefill + ' Please contact me about next steps.';
+      } else if (messageInput && prefill && !messageInput.value.includes(prefill)) {
+        messageInput.value = String(messageInput.value).trim() + '\n' + prefill;
+      }
+
+      if (typeof window.trackLeadEvent === 'function') {
+        window.trackLeadEvent('service_prefill', {
+          service: resolvedService,
+          source: requestedSource || DETECTED_LEAD_SOURCE || 'url_param',
+          page_location: window.location.href
+        });
+      }
+    }
+
+    if (leadSourceInput) {
+      leadSourceInput.value = requestedSource || utmSource || DETECTED_LEAD_SOURCE || 'website';
+    }
+
+    if (selectedStyleInput && requestedStyle) selectedStyleInput.value = requestedStyle;
+    if (selectedImageInput && requestedImage) selectedImageInput.value = requestedImage;
+    if (selectedProjectLabelInput && requestedProjectLabel) selectedProjectLabelInput.value = requestedProjectLabel;
+
+    if (estimatedTimelineInput && requestedTimeline) {
+      Array.from(estimatedTimelineInput.options).some(function (option) {
+        var sameValue = option.value.toLowerCase() === String(requestedTimeline).toLowerCase();
+        if (sameValue) estimatedTimelineInput.value = option.value;
+        return sameValue;
+      });
+    }
+    if (estimatedTimelineInput && timelineInput) {
+      timelineInput.value = estimatedTimelineInput.value || timelineInput.value || 'Planning for later';
+      estimatedTimelineInput.addEventListener('change', function () {
+        timelineInput.value = this.value || 'Planning for later';
+      });
+    }
+
+    applyServicePrefillFromQuery();
+
+    if (messageInput && !messageInput.value.trim() && (requestedStyle || requestedProjectLabel)) {
+      var styleLine = requestedStyle ? ('Interested in a ' + toTitleCase(String(requestedStyle).replace(/[-_]/g, ' ')) + ' project.') : '';
+      var projectLine = requestedProjectLabel ? (' Project reference: ' + requestedProjectLabel + '.') : '';
+      messageInput.value = (styleLine + projectLine).trim();
+    }
+
+    if (serviceInput && selectedServiceInput) {
+      serviceInput.addEventListener('change', function () {
+        selectedServiceInput.value = this.value || '';
+      });
+      serviceInput.addEventListener('input', function () {
+        selectedServiceInput.value = this.value || '';
+      });
+      if (serviceInput.value) selectedServiceInput.value = serviceInput.value;
+    }
 
     if (phoneInput) {
       phoneInput.addEventListener('input', function () {
@@ -679,6 +1087,10 @@
       var budget = valueOrFallback(budgetInput, 'Not selected');
       var timeline = valueOrFallback(timelineInput, 'Not selected');
       var leadTier = valueOrFallback(leadTierInput, 'Not selected');
+      var leadSource = valueOrFallback(leadSourceInput, DETECTED_LEAD_SOURCE || 'website');
+      var selectedStyle = valueOrFallback(selectedStyleInput, 'Not selected');
+      var selectedImage = valueOrFallback(selectedImageInput, 'Not selected');
+      var selectedProjectLabel = valueOrFallback(selectedProjectLabelInput, 'Not selected');
       var priority = getPriority(budget, timeline);
       var preferredContact = valueOrFallback(contactMethod, 'Not selected');
       var projectCity = valueOrFallback(cityInput, 'Not provided');
@@ -697,7 +1109,10 @@
           'Priority: ' + priority,
           'Requested service: ' + service,
           'Budget / Timeline: ' + budget + ' / ' + timeline,
-          'Consultation tier: ' + leadTier
+          'Consultation tier: ' + leadTier,
+          'Source: ' + leadSource,
+          'Style reference: ' + selectedStyle,
+          'Project reference: ' + selectedProjectLabel
         ].join('\n');
       }
 
@@ -716,6 +1131,10 @@
           'Submitted (Phoenix): ' + submittedLocalTime,
           'Project location: ' + projectAddress + ', ' + projectCity,
           'Consultation tier: ' + leadTier,
+          'Estimated timeline: ' + timeline,
+          'Selected style: ' + selectedStyle,
+          'Selected image: ' + selectedImage,
+          'Selected project label: ' + selectedProjectLabel,
           'Project vision:',
           vision
         ].join('\n');
@@ -723,11 +1142,14 @@
 
       if (ownerTracking) {
         ownerTracking.value = [
-          'Lead source: website-ticket',
+          'Lead source: ' + leadSource,
           'Page URL: ' + window.location.href,
           'UTM source: ' + (utmSource || 'n/a'),
           'UTM medium: ' + (utmMedium || 'n/a'),
-          'UTM campaign: ' + (utmCampaign || 'n/a')
+          'UTM campaign: ' + (utmCampaign || 'n/a'),
+          'Selected style: ' + selectedStyle,
+          'Selected image: ' + selectedImage,
+          'Selected project label: ' + selectedProjectLabel
         ].join('\n');
       }
 
@@ -749,15 +1171,13 @@
         });
 
         if (!response.ok) throw new Error('Submission failed');
-
-        form.style.display = 'none';
-        if (success) success.style.display = 'block';
-        if (ticketReference) ticketReference.textContent = ticketId;
         if (typeof window.trackLeadEvent === 'function') {
           window.trackLeadEvent('form_submit', {
             ticket_id: ticketId,
             service: service,
             lead_tier: leadTier,
+            lead_source: leadSource,
+            selected_style: selectedStyle,
             city: projectCity,
             page_location: window.location.href
           });
@@ -768,6 +1188,16 @@
             value: 1
           });
         }
+
+        var thankYouParams = new URLSearchParams({
+          ticket_id: ticketId,
+          service: service,
+          city: projectCity,
+          source: leadSource,
+          selected_style: selectedStyle,
+          selected_project_label: selectedProjectLabel
+        });
+        window.location.href = 'thank-you.html?' + thankYouParams.toString();
       } catch (error) {
         if (errorMessage) {
           errorMessage.textContent = 'We could not submit your ticket right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
