@@ -222,7 +222,7 @@
 
     reviews.forEach(function (review) {
       var article = document.createElement('article');
-      article.className = 'review-card reveal';
+      article.className = 'review-card reveal reveal--tilt';
 
       var stars = document.createElement('div');
       stars.className = 'review-card__stars';
@@ -371,7 +371,7 @@
       });
 
       return '' +
-        '<article class="recent-project reveal">' +
+        '<article class="recent-project reveal reveal--scale">' +
         '  <figure class="recent-project__media">' +
         '    <img src="' + src + '" alt="' + alt + '" title="' + alt + '" loading="lazy" decoding="async" width="' + width + '" height="' + height + '"' +
         (srcset ? ' srcset="' + srcset + '" sizes="(max-width: 768px) 100vw, 33vw"' : '') +
@@ -723,13 +723,66 @@
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
 
-    document.querySelectorAll('.reveal').forEach(function (el, i) {
-      el.style.transitionDelay = Math.min((i % 6) * 0.08, 0.4) + 's';
+    /* Per-section stagger: elements in the same section get incrementing delays */
+    var sectionCounters = new Map();
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      /* Skip JS delay for elements that have explicit delay class */
+      if (/reveal--d[1-8]/.test(el.className)) {
+        revealObs.observe(el);
+        return;
+      }
+      var section = el.closest('section') || el.closest('main') || document.body;
+      var idx = sectionCounters.get(section) || 0;
+      el.style.transitionDelay = Math.min(idx * 0.1, 0.5) + 's';
+      sectionCounters.set(section, idx + 1);
       revealObs.observe(el);
+    });
+
+    /* Process connector draw animation */
+    var connectorObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-drawn');
+          connectorObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.process__connector').forEach(function (c) {
+      connectorObs.observe(c);
+    });
+
+    /* Number counter animation for hero stats */
+    var counterObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        counterObserver.unobserve(el);
+        var target = parseFloat(el.getAttribute('data-count'));
+        var suffix = el.getAttribute('data-suffix') || '';
+        var isFloat = String(target).indexOf('.') !== -1;
+        var duration = 1200;
+        var start = performance.now();
+        function step(now) {
+          var elapsed = now - start;
+          var progress = Math.min(elapsed / duration, 1);
+          /* ease-out cubic */
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var current = eased * target;
+          el.textContent = (isFloat ? current.toFixed(1) : Math.round(current)) + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      counterObserver.observe(el);
     });
   } else {
     document.querySelectorAll('.reveal').forEach(function (el) {
       el.classList.add('is-visible');
+    });
+    document.querySelectorAll('.process__connector').forEach(function (c) {
+      c.classList.add('is-drawn');
     });
   }
 

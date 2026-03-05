@@ -90,6 +90,44 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   transform: none;
 }
 
+/* ---- Reveal direction / effect variants ---- */
+.reveal--left   { transform: translateX(-52px); }
+.reveal--right  { transform: translateX(52px); }
+.reveal--scale  { transform: scale(0.86); }
+.reveal--zoom   { transform: scale(1.08); }
+.reveal--fade   { transform: none; }
+.reveal--rotate { transform: translateY(28px) rotate(2deg); }
+
+.reveal--left.is-visible,
+.reveal--right.is-visible,
+.reveal--scale.is-visible,
+.reveal--zoom.is-visible,
+.reveal--fade.is-visible,
+.reveal--rotate.is-visible { opacity: 1; transform: none; }
+
+/* Clip-path wipe (for images, separators) */
+.reveal--clip {
+  clip-path: inset(0 100% 0 0);
+  opacity: 1;
+  transform: none;
+  transition: clip-path .9s var(--ease-out), opacity .65s var(--ease-out);
+}
+.reveal--clip.is-visible { clip-path: inset(0 0% 0 0); opacity: 1; }
+
+/* Explicit stagger delay helpers */
+.reveal--d1 { transition-delay: .1s !important; }
+.reveal--d2 { transition-delay: .2s !important; }
+.reveal--d3 { transition-delay: .3s !important; }
+.reveal--d4 { transition-delay: .4s !important; }
+.reveal--d5 { transition-delay: .5s !important; }
+.reveal--d6 { transition-delay: .6s !important; }
+.reveal--d7 { transition-delay: .7s !important; }
+.reveal--d8 { transition-delay: .8s !important; }
+
+/* Duration variants */
+.reveal--slow { transition-duration: 1s !important; }
+.reveal--fast { transition-duration: .4s !important; }
+
 /* ----- Buttons ----- */
 .btn {
   display: inline-flex;
@@ -422,7 +460,14 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   transition: opacity 1.6s var(--ease);
   will-change: opacity;
 }
-.hero__slide.is-active { opacity: 1; }
+.hero__slide.is-active {
+  opacity: 1;
+  animation: kenBurns 8s ease-in-out forwards;
+}
+@keyframes kenBurns {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.06) translate(-0.5%, -0.5%); }
+}
 
 .hero__overlay {
   position: absolute;
@@ -456,6 +501,16 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   padding: clamp(1rem, 2vw, 1.25rem) clamp(1rem, 2.2vw, 1.25rem);
 }
 
+/* Hero text entry animations — staggered on page load */
+@keyframes heroSlideUp {
+  from { opacity: 0; transform: translateY(36px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes heroSlideLeft {
+  from { opacity: 0; transform: translateX(-28px); }
+  to   { opacity: 1; transform: none; }
+}
+
 .hero__eyebrow {
   font-family: var(--font-body);
   font-size: .6875rem;
@@ -465,6 +520,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   color: rgba(255,255,255,.72);
   margin-bottom: 1.25rem;
   text-shadow: 0 2px 12px rgba(0,0,0,.55);
+  animation: heroSlideLeft .7s var(--ease-out) .3s both;
 }
 .hero__heading {
   font-family: var(--font-head);
@@ -477,6 +533,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   margin-bottom: 1.2rem;
   max-width: 780px;
   text-wrap: balance;
+  animation: heroSlideUp .85s var(--ease-out) .5s both;
 }
 .hero__sub {
   font-size: clamp(1rem, 1.55vw, 1.16rem);
@@ -486,11 +543,13 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   line-height: 1.72;
   margin-bottom: 2rem;
   text-wrap: pretty;
+  animation: heroSlideUp .85s var(--ease-out) .65s both;
 }
 .hero__actions {
   display: flex;
   gap: .85rem;
   flex-wrap: wrap;
+  animation: heroSlideUp .85s var(--ease-out) .8s both;
 }
 .hero__stats {
   margin-top: 1.6rem;
@@ -937,6 +996,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   border-radius: var(--r-md);
   line-height: 1.1;
   text-align: center;
+  animation: floatBadge 4s ease-in-out infinite;
+}
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
 }
 .about__badge span {
   display: block;
@@ -1056,6 +1120,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   height: 1px;
   background: linear-gradient(90deg, var(--green), transparent);
   opacity: .4;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .8s var(--ease-out);
+}
+.process__connector.is-drawn::after {
+  transform: scaleX(1);
 }
 
 /* ============================================================
@@ -2621,6 +2691,81 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .about__badge { bottom: 1rem; left: 1rem; padding: 1rem; }
   .about__badge strong { font-size: 1.75rem; }
   .contact__form-wrap { padding: 2rem 1.25rem; }
+}
+
+/* ---- CTA pulse ring ---- */
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0 rgba(27, 67, 50, .35); }
+  70%  { box-shadow: 0 0 0 14px rgba(27, 67, 50, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(27, 67, 50, 0); }
+}
+.btn--solid:hover { animation: pulseRing .6s ease-out; }
+
+/* ---- Service item number spin ---- */
+.service-item.is-visible .service-item__num {
+  animation: numPop .5s var(--ease-out) both;
+}
+@keyframes numPop {
+  0%   { transform: scale(0.5) rotate(-12deg); opacity: 0; }
+  60%  { transform: scale(1.1) rotate(2deg); opacity: 1; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* ---- Process step number ring pulse ---- */
+.process__step.is-visible .process__step-num {
+  animation: ringPulse .6s var(--ease-out) .2s both;
+}
+@keyframes ringPulse {
+  0%   { transform: scale(0.6); opacity: 0; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ---- Review card tilt-in ---- */
+.review-card.reveal--tilt {
+  transform: translateY(28px) perspective(600px) rotateX(8deg);
+  transform-origin: center bottom;
+}
+.review-card.reveal--tilt.is-visible {
+  transform: none;
+}
+
+/* ---- Fit card lift ---- */
+.fit-card.reveal--lift {
+  transform: translateY(40px) scale(0.95);
+}
+.fit-card.reveal--lift.is-visible {
+  transform: none;
+}
+
+/* ---- Areas list stagger ---- */
+.areas__list li {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .4s var(--ease-out), transform .4s var(--ease-out);
+}
+.areas__list.is-visible li {
+  opacity: 1;
+  transform: none;
+}
+.areas__list.is-visible li:nth-child(1)  { transition-delay: .05s; }
+.areas__list.is-visible li:nth-child(2)  { transition-delay: .1s; }
+.areas__list.is-visible li:nth-child(3)  { transition-delay: .15s; }
+.areas__list.is-visible li:nth-child(4)  { transition-delay: .2s; }
+.areas__list.is-visible li:nth-child(5)  { transition-delay: .25s; }
+.areas__list.is-visible li:nth-child(6)  { transition-delay: .3s; }
+.areas__list.is-visible li:nth-child(7)  { transition-delay: .35s; }
+.areas__list.is-visible li:nth-child(8)  { transition-delay: .4s; }
+.areas__list.is-visible li:nth-child(9)  { transition-delay: .45s; }
+.areas__list.is-visible li:nth-child(10) { transition-delay: .5s; }
+.areas__list.is-visible li:nth-child(11) { transition-delay: .55s; }
+.areas__list.is-visible li:nth-child(12) { transition-delay: .6s; }
+
+/* ---- Hero stat counter flash ---- */
+@keyframes statFlash {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.9); }
+  60%  { opacity: 1; transform: translateY(-2px) scale(1.04); }
+  100% { opacity: 1; transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -128,7 +128,7 @@
 
     hubGrid.innerHTML = services.map(function (service) {
       return '' +
-        '<article class="service-card reveal">' +
+        '<article class="service-card reveal reveal--scale">' +
         '  <p class="service-card__eyebrow">Scottsdale &amp; Phoenix</p>' +
         '  <h3>' + service.title + '</h3>' +
         '  <p>' + service.heroSubtext + '</p>' +
