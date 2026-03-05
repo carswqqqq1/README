@@ -19,6 +19,11 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL || '';
 const GOOGLE_SHEETS_WEBHOOK_SECRET = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET || '';
 const GOOGLE_SHEET_URL = process.env.GOOGLE_SHEET_URL || '';
+const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID || '';
+const GOOGLE_SHEET_TAB = process.env.GOOGLE_SHEET_TAB || 'Leads';
+const GOOGLE_OAUTH_CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID || '';
+const GOOGLE_OAUTH_CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET || '';
+const GOOGLE_OAUTH_REFRESH_TOKEN = process.env.GOOGLE_OAUTH_REFRESH_TOKEN || process.env.GOOGLE_REFRESH_TOKEN || '';
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || '';
 const CRM_WEBHOOK_URL = process.env.CRM_WEBHOOK_URL || '';
 const CRM_WEBHOOK_SECRET = process.env.CRM_WEBHOOK_SECRET || '';
@@ -31,6 +36,40 @@ const EMAIL_DIR = path.join(process.cwd(), 'emails');
 const DEDUPE_WINDOW_MS = 15 * 60 * 1000;
 const processedKeys = new Map();
 const rateLimitStore = new Map();
+const DIRECT_SHEET_HEADERS = [
+  'timestamp',
+  'ticket_id',
+  'name',
+  'email',
+  'phone',
+  'project_location',
+  'city',
+  'service',
+  'consultation_tier',
+  'budget_range',
+  'start_timeline',
+  'contact_method',
+  'lead_source',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'referrer',
+  'landing_path',
+  'page_url',
+  'lead_score',
+  'lead_tags',
+  'status',
+  'follow_up_due',
+  'last_touched',
+  'next_action',
+  'assigned_to',
+  'notes',
+  'project_reference',
+  'style_reference',
+  'submitted_local'
+];
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 const DISPOSABLE_EMAIL_DOMAINS = new Set([
   'mailinator.com',
   'tempmail.com',
@@ -665,11 +704,287 @@ async function sendEmail(args) {
   };
 }
 
-async function sendToGoogleSheets(normalized, meta = {}) {
-  if (!GOOGLE_SHEETS_WEBHOOK_URL) {
-    return { skipped: true, reason: 'missing_google_sheets_webhook_url' };
+function resolveGoogleSheetId() {
+  const raw = String(GOOGLE_SHEET_ID || GOOGLE_SHEET_URL || '').trim();
+  if (!raw) return '';
+  const match = raw.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (match) return match[1];
+  if (/^[a-zA-Z0-9_-]{20,}$/.test(raw)) return raw;
+  return '';
+}
+
+function buildGoogleSheetUrl(sheetId) {
+  const id = String(sheetId || '').trim();
+  if (!id) return safeText(GOOGLE_SHEET_URL, '');
+  return `https://docs.google.com/spreadsheets/d/${id}/edit`;
+}
+
+async function getGoogleAccessToken() {
+  if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_OAUTH_REFRESH_TOKEN) {
+    throw new Error('Missing Google OAuth credentials for direct Sheets write');
   }
 
+  const response = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      client_id: GOOGLE_OAUTH_CLIENT_ID,
+      client_secret: GOOGLE_OAUTH_CLIENT_SECRET,
+      refresh_token: GOOGLE_OAUTH_REFRESH_TOKEN,
+      grant_type: 'refresh_token'
+    }).toString()
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Google OAuth token error: ${response.status} ${text}`);
+  }
+
+  const payload = await response.json();
+  return safeText(payload.access_token, '');
+}
+
+async function ensureGoogleSheetTab(accessToken, spreadsheetId, title) {
+  const metaResponse = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?fields=spreadsheetUrl,sheets(properties(sheetId,title))`,
+    {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }
+  );
+
+  if (!metaResponse.ok) {
+    const text = await metaResponse.text();
+    throw new Error(`Google Sheets metadata error: ${metaResponse.status} ${text}`);
+  }
+
+  const meta = await metaResponse.json();
+  const existing = (meta.sheets || []).find((sheet) => safeText(sheet && sheet.properties && sheet.properties.title, '') === title);
+  if (existing && existing.properties) {
+    return {
+      sheetId: Number(existing.properties.sheetId || 0),
+      spreadsheetUrl: safeText(meta.spreadsheetUrl, buildGoogleSheetUrl(spreadsheetId))
+    };
+  }
+
+  const addResponse = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      requests: [
+        {
+          addSheet: {
+            properties: {
+              title,
+              gridProperties: { rowCount: 2000, columnCount: 40 }
+            }
+          }
+        }
+      ]
+    })
+  });
+
+  if (!addResponse.ok) {
+    const text = await addResponse.text();
+    throw new Error(`Google Sheets add-sheet error: ${addResponse.status} ${text}`);
+  }
+
+  const addPayload = await addResponse.json();
+  const added = (((addPayload || {}).replies || [])[0] || {}).addSheet || {};
+  const properties = added.properties || {};
+  return {
+    sheetId: Number(properties.sheetId || 0),
+    spreadsheetUrl: safeText(meta.spreadsheetUrl, buildGoogleSheetUrl(spreadsheetId))
+  };
+}
+
+async function ensureGoogleSheetHeaders(accessToken, spreadsheetId, tabName) {
+  const encodedRange = encodeURIComponent(`${tabName}!1:1`);
+  const getResponse = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodedRange}`,
+    {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }
+  );
+
+  if (!getResponse.ok) {
+    const text = await getResponse.text();
+    throw new Error(`Google Sheets header-read error: ${getResponse.status} ${text}`);
+  }
+
+  const payload = await getResponse.json();
+  const current = ((payload.values || [])[0] || []).map((value) => safeText(value, ''));
+  const needsHeader = DIRECT_SHEET_HEADERS.some((header, index) => current[index] !== header);
+  if (!needsHeader) return;
+
+  const updateResponse = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodedRange}?valueInputOption=RAW`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        range: `${tabName}!1:1`,
+        majorDimension: 'ROWS',
+        values: [DIRECT_SHEET_HEADERS]
+      })
+    }
+  );
+
+  if (!updateResponse.ok) {
+    const text = await updateResponse.text();
+    throw new Error(`Google Sheets header-write error: ${updateResponse.status} ${text}`);
+  }
+}
+
+async function detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, email, phone) {
+  const hasEmail = isValidEmailAddress(email);
+  const normalizedPhone = normalizePhone(phone);
+  const hasPhone = normalizedPhone.length > 0;
+  if (!hasEmail && !hasPhone) return false;
+
+  const encodedRange = encodeURIComponent(`${tabName}!A2:AF`);
+  const response = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodedRange}`,
+    {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    }
+  );
+
+  if (!response.ok) return false;
+  const payload = await response.json();
+  const rows = payload.values || [];
+  const now = Date.now();
+  const targetEmail = String(email || '').trim().toLowerCase();
+
+  for (let index = rows.length - 1; index >= 0; index -= 1) {
+    const row = rows[index];
+    const timestamp = Date.parse(row[0] || '');
+    if (Number.isFinite(timestamp) && now - timestamp > SEVEN_DAYS_MS) {
+      break;
+    }
+    const rowEmail = String(row[3] || '').trim().toLowerCase();
+    const rowPhone = normalizePhone(row[4] || '');
+    if ((hasEmail && rowEmail && rowEmail === targetEmail) || (hasPhone && rowPhone && rowPhone === normalizedPhone)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+async function appendGoogleSheetRow(accessToken, spreadsheetId, tabName, rowValues) {
+  const appendRange = encodeURIComponent(`${tabName}!A1`);
+  const response = await fetch(
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${appendRange}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        range: `${tabName}!A1`,
+        majorDimension: 'ROWS',
+        values: [rowValues]
+      })
+    }
+  );
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Google Sheets append error: ${response.status} ${text}`);
+  }
+
+  const payload = await response.json();
+  const updatedRange = safeText((((payload || {}).updates || {}).updatedRange), '');
+  const rangeMatch = updatedRange.match(/!A(\d+):/);
+  return {
+    updatedRange,
+    rowNumber: rangeMatch ? Number(rangeMatch[1]) : 0
+  };
+}
+
+async function sendToGoogleSheetsDirect(row) {
+  const spreadsheetId = resolveGoogleSheetId();
+  if (!spreadsheetId) {
+    return { skipped: true, reason: 'missing_google_sheet_id' };
+  }
+  if (!GOOGLE_OAUTH_CLIENT_ID || !GOOGLE_OAUTH_CLIENT_SECRET || !GOOGLE_OAUTH_REFRESH_TOKEN) {
+    return { skipped: true, reason: 'missing_google_oauth_credentials' };
+  }
+
+  const accessToken = await getGoogleAccessToken();
+  const tabName = safeText(GOOGLE_SHEET_TAB, 'Leads');
+  const sheetMeta = await ensureGoogleSheetTab(accessToken, spreadsheetId, tabName);
+  await ensureGoogleSheetHeaders(accessToken, spreadsheetId, tabName);
+
+  const isDuplicate = await detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, row.email, row.phone);
+  const tags = new Set(
+    String(row.lead_tags || '')
+      .split(',')
+      .map((entry) => normalizeWhitespace(entry))
+      .filter(Boolean)
+  );
+  if (isDuplicate) tags.add('duplicate');
+
+  const status = isDuplicate ? 'Duplicate' : 'New';
+  const timestamp = safeText(row.timestamp, new Date().toISOString());
+  const followUpDue = isDuplicate ? '' : new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+  const rowValues = [
+    timestamp,
+    safeText(row.ticket_id, ''),
+    safeText(row.name, ''),
+    safeText(row.email, ''),
+    safeText(row.phone, ''),
+    safeText(row.project_location, ''),
+    safeText(row.city, ''),
+    safeText(row.service, ''),
+    safeText(row.consultation_tier, ''),
+    safeText(row.budget_range, ''),
+    safeText(row.start_timeline, ''),
+    safeText(row.contact_method, ''),
+    safeText(row.lead_source, ''),
+    safeText(row.utm_source, ''),
+    safeText(row.utm_medium, ''),
+    safeText(row.utm_campaign, ''),
+    safeText(row.utm_content, ''),
+    safeText(row.referrer, ''),
+    safeText(row.landing_path, ''),
+    safeText(row.page_url, ''),
+    safeText(row.lead_score, ''),
+    Array.from(tags).join(', '),
+    status,
+    followUpDue,
+    timestamp,
+    isDuplicate ? 'Review Duplicate' : 'Call',
+    '',
+    '',
+    safeText(row.selected_project_label, ''),
+    safeText(row.selected_style, ''),
+    safeText(row.submitted_local, '')
+  ];
+
+  const appendResult = await appendGoogleSheetRow(accessToken, spreadsheetId, tabName, rowValues);
+  const spreadsheetUrl = safeText(sheetMeta.spreadsheetUrl, buildGoogleSheetUrl(spreadsheetId));
+  const rowUrl = appendResult.rowNumber
+    ? `${spreadsheetUrl}#gid=${Number(sheetMeta.sheetId || 0)}&range=${encodeURIComponent(`A${appendResult.rowNumber}:AF${appendResult.rowNumber}`)}`
+    : spreadsheetUrl;
+
+  return {
+    ok: true,
+    row_id: appendResult.rowNumber ? String(appendResult.rowNumber) : '',
+    row_url: rowUrl,
+    status,
+    spreadsheet_url: spreadsheetUrl
+  };
+}
+
+async function sendToGoogleSheets(normalized, meta = {}) {
   const row = {
     timestamp: meta.created_at || new Date().toISOString(),
     ticket_id: normalized.ticket_id,
@@ -717,6 +1032,10 @@ async function sendToGoogleSheets(normalized, meta = {}) {
     owner_summary: normalized.owner_summary,
     page_url: safeText(meta.page_url, 'Not provided')
   };
+
+  if (!GOOGLE_SHEETS_WEBHOOK_URL) {
+    return sendToGoogleSheetsDirect(row);
+  }
 
   const headers = {
     'Content-Type': 'application/json'
