@@ -611,6 +611,10 @@
     overlay.querySelectorAll('a').forEach(function (a) {
       a.addEventListener('click', closeMenu);
     });
+    /* Close menu when tapping the darkened backdrop area (outside nav panel) */
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeMenu();
+    });
   }
 
   if ('IntersectionObserver' in window && contactSection) {
@@ -690,6 +694,15 @@
   });
 
   if (slides.length > 1) startCarousel();
+
+  /* Pause carousel on hover or keyboard focus (accessibility) */
+  var heroSection = document.querySelector('.hero');
+  if (heroSection) {
+    heroSection.addEventListener('mouseenter', function () { clearInterval(heroTimer); });
+    heroSection.addEventListener('mouseleave', function () { if (slides.length > 1) startCarousel(); });
+    heroSection.addEventListener('focusin',    function () { clearInterval(heroTimer); });
+    heroSection.addEventListener('focusout',   function () { if (slides.length > 1) startCarousel(); });
+  }
 
   /* ---- BEFORE / AFTER SLIDER ---- */
   document.querySelectorAll('[data-before-after]').forEach(function (slider) {
