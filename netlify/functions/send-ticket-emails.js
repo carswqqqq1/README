@@ -288,6 +288,11 @@ function isMeaningfulValue(value) {
   return !isPlaceholderValue(value);
 }
 
+
+function ownerSheetValue(value, fallback = '') {
+  return isMeaningfulValue(value) ? safeText(value, fallback) : fallback;
+}
+
 function escapeAttribute(value) {
   return escapeHtml(value).replace(/"/g, '&quot;');
 }
@@ -1382,31 +1387,31 @@ async function sendToGoogleSheetsDirect(row) {
   const rowValues = [
     timestamp,
     status,
-    safeText(row.name, ''),
-    safeText(row.phone, ''),
-    safeText(row.email, ''),
-    safeText(row.city, ''),
-    safeText(row.service, ''),
-    safeText(row.budget_range, ''),
-    safeText(row.start_timeline, ''),
-    safeText(row.lead_quality, 'Low'),
-    safeText(row.estimated_project_value, 'Varies by scope'),
+    ownerSheetValue(row.name),
+    ownerSheetValue(row.phone),
+    ownerSheetValue(row.email),
+    ownerSheetValue(row.city),
+    ownerSheetValue(row.service),
+    ownerSheetValue(row.budget_range),
+    ownerSheetValue(row.start_timeline),
+    ownerSheetValue(row.lead_quality, 'Low'),
+    ownerSheetValue(row.estimated_project_value, 'Varies by scope'),
     isDuplicate ? 'Review Duplicate' : 'Call',
     followUpDue,
     '',
     safeText(row.ticket_id, ''),
     Array.from(tags).join(', '),
-    safeText(row.lead_source, ''),
-    safeText(row.selected_project_label, ''),
-    safeText(row.selected_style, ''),
-    safeText(row.project_location, ''),
-    safeText(row.contact_method, ''),
-    safeText(row.submitted_local, ''),
+    ownerSheetValue(row.lead_source),
+    ownerSheetValue(row.selected_project_label),
+    ownerSheetValue(row.selected_style),
+    ownerSheetValue(row.project_location),
+    ownerSheetValue(row.contact_method),
+    ownerSheetValue(row.submitted_local),
     timestamp,
-    safeText(row.page_url, ''),
-    safeText(row.utm_source, ''),
-    safeText(row.utm_medium, ''),
-    safeText(row.utm_campaign, '')
+    ownerSheetValue(row.page_url),
+    ownerSheetValue(row.utm_source),
+    ownerSheetValue(row.utm_medium),
+    ownerSheetValue(row.utm_campaign)
   ];
 
   const appendResult = await appendGoogleSheetRow(accessToken, spreadsheetId, tabName, rowValues);
