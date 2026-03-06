@@ -137,6 +137,16 @@
     }
   }
 
+  function applyDemoLabel() {
+    document.querySelectorAll('.footer__brand').forEach(function (brand) {
+      if (!brand || brand.querySelector('.footer__demo-label')) return;
+      var label = document.createElement('p');
+      label.className = 'footer__demo-label';
+      label.textContent = 'Example Landscaping Company Website';
+      brand.appendChild(label);
+    });
+  }
+
   function applyContactFormServices() {
     var select = document.querySelector('[data-service-select]');
     var configuredServices = SITE_CONFIG.contactFormServices;
@@ -176,13 +186,13 @@
       title.textContent = item.title || 'Landscape Project';
 
       var description = document.createElement('p');
-      description.textContent = item.description || 'Tell us what you want to build and we will route your ticket.';
+      description.textContent = item.description || 'Tell us what you want to build and we will route your project request.';
 
       var button = document.createElement('button');
       button.type = 'button';
       button.className = 'fit-card__action';
       button.setAttribute('data-service-choice', item.ctaService || item.title || 'Not sure yet');
-      button.textContent = 'I Need This';
+      button.textContent = 'Request This Service';
 
       article.appendChild(label);
       article.appendChild(title);
@@ -240,7 +250,7 @@
       meta.className = 'review-card__meta';
 
       var author = document.createElement('strong');
-      author.textContent = review.author || 'Verified Google Review';
+      author.textContent = review.author || 'Google Review';
 
       var location = document.createElement('span');
       var baseLocation = review.location || (SITE_CITY + ', ' + SITE_STATE);
@@ -263,11 +273,13 @@
     var summary = '';
 
     if (rating && count) {
-      summary = rating + ' rating from ' + count + ' ' + platform;
+      summary = 'Google review profile: ' + rating + ' rating across ' + count + ' reviews';
     } else if (rating) {
-      summary = rating + ' verified rating';
+      summary = 'Google review profile: ' + rating + ' rating';
     } else if (count) {
-      summary = count + ' verified reviews';
+      summary = 'Google review profile: ' + count + ' reviews';
+    } else {
+      summary = 'Read recent homeowner feedback on our review profile';
     }
 
     if (summary) {
@@ -520,6 +532,7 @@
 
   applyTrackedPhone();
   applySiteBranding();
+  applyDemoLabel();
   applyContactFormServices();
   applyProjectFitCards();
   applyBeforeAfterContent();
@@ -547,6 +560,12 @@
   var stickyBar = document.getElementById('sticky-bar');
   var contactSection = document.getElementById('contact');
   var isContactInView = false;
+  var scrollTopButton = document.createElement('button');
+  scrollTopButton.type = 'button';
+  scrollTopButton.className = 'scroll-top';
+  scrollTopButton.setAttribute('aria-label', 'Scroll back to top');
+  scrollTopButton.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 19V5"></path><path d="M6 11l6-6 6 6"></path></svg>';
+  document.body.appendChild(scrollTopButton);
 
   function updateStickyBar() {
     if (!stickyBar) return;
@@ -557,22 +576,33 @@
     stickyBar.classList.toggle('is-visible', shouldShow);
   }
 
+  function updateScrollTop() {
+    if (!scrollTopButton) return;
+    var menuOpen = overlay && overlay.classList.contains('is-open');
+    var shouldShow = window.scrollY > Math.max(420, window.innerHeight * 0.7);
+    scrollTopButton.classList.toggle('is-visible', shouldShow && !menuOpen);
+  }
+
   function openMenu() {
     if (!overlay || !burger) return;
     overlay.classList.add('is-open');
+    burger.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
     burger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
     updateStickyBar();
+    updateScrollTop();
   }
 
   function closeMenu() {
     if (!overlay || !burger) return;
     overlay.classList.remove('is-open');
+    burger.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
     burger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
     updateStickyBar();
+    updateScrollTop();
   }
 
   if (burger) burger.addEventListener('click', openMenu);
@@ -595,7 +625,17 @@
 
   window.addEventListener('scroll', updateStickyBar, { passive: true });
   window.addEventListener('resize', updateStickyBar);
+  window.addEventListener('scroll', updateScrollTop, { passive: true });
+  window.addEventListener('resize', updateScrollTop);
   updateStickyBar();
+  updateScrollTop();
+
+  scrollTopButton.addEventListener('click', function () {
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+    });
+  });
 
   /* ---- SMOOTH SCROLL ---- */
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
@@ -713,6 +753,75 @@
   });
 
   /* ---- SCROLL REVEAL ---- */
+  function assignRevealVariants() {
+    var selectors = [
+      '.feature-strip',
+      '.service-item',
+      '.review-card',
+      '.fit-card',
+      '.cost-card',
+      '.why-card',
+      '.process__step',
+      '.pf-item',
+      '.pf-story',
+      '.trust-assets__card',
+      '.recent-project'
+    ];
+
+    selectors.forEach(function (selector) {
+      document.querySelectorAll(selector + '.reveal').forEach(function (el, index) {
+        if (el.classList.contains('reveal--left') ||
+            el.classList.contains('reveal--right') ||
+            el.classList.contains('reveal--lift') ||
+            el.classList.contains('reveal--scale') ||
+            el.classList.contains('reveal--soft')) {
+          return;
+        }
+
+        if (selector === '.pf-item') {
+          el.classList.add(index % 3 === 0 ? 'reveal--left' : (index % 3 === 1 ? 'reveal--lift' : 'reveal--right'));
+          return;
+        }
+
+        if (selector === '.review-card' || selector === '.recent-project') {
+          el.classList.add(index % 2 === 0 ? 'reveal--soft' : 'reveal--scale');
+          return;
+        }
+
+        if (selector === '.process__step' || selector === '.cost-card' || selector === '.why-card') {
+          el.classList.add(index % 2 === 0 ? 'reveal--left' : 'reveal--right');
+          return;
+        }
+
+        if (selector === '.pf-story' || selector === '.feature-strip') {
+          el.classList.add('reveal--lift');
+          return;
+        }
+
+        el.classList.add(index % 2 === 0 ? 'reveal--left' : 'reveal--right');
+      });
+    });
+
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      if (el.classList.contains('hero__stats') ||
+          el.classList.contains('portfolio__header') ||
+          el.classList.contains('services__header') ||
+          el.classList.contains('featured-project__header') ||
+          el.classList.contains('reviews__header') ||
+          el.classList.contains('areas__header') ||
+          el.classList.contains('project-fit__header') ||
+          el.classList.contains('cost-expectations__header') ||
+          el.classList.contains('faq__header') ||
+          el.classList.contains('why-choose__header') ||
+          el.classList.contains('pf-grid__header') ||
+          el.classList.contains('pf-request')) {
+        el.classList.add('reveal--soft');
+      }
+    });
+  }
+
+  assignRevealVariants();
+
   if ('IntersectionObserver' in window) {
     var revealObs = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -726,7 +835,6 @@
     /* Per-section stagger: elements in the same section get incrementing delays */
     var sectionCounters = new Map();
     document.querySelectorAll('.reveal').forEach(function (el) {
-      /* Skip JS delay for elements that have explicit delay class */
       if (/reveal--d[1-8]/.test(el.className)) {
         revealObs.observe(el);
         return;
@@ -851,6 +959,7 @@
   var utmContentInput = document.getElementById('utm_content');
   var referrerInput = document.getElementById('referrer');
   var landingPathInput = document.getElementById('landing_path');
+  var pageUrlInput = document.getElementById('page_url');
   var selectedServiceInput = document.getElementById('selected_service');
   var selectedStyleInput = document.getElementById('selected_style');
   var selectedImageInput = document.getElementById('selected_image');
@@ -900,7 +1009,7 @@
 
   function splitName(fullName) {
     var cleaned = String(fullName || '').trim().replace(/\s+/g, ' ');
-    if (!cleaned) return { first: 'Not provided', last: '' };
+      if (!cleaned) return { first: '', last: '' };
     var parts = cleaned.split(' ');
     if (parts.length === 1) return { first: parts[0], last: '' };
     return {
@@ -919,11 +1028,11 @@
 
   function getBudgetRangeFromTier(tierLabel) {
     var tier = normalizeTierText(tierLabel);
-    if (!tier) return 'Not provided';
+    if (!tier) return '';
     if (tier.indexOf('10k') >= 0 && tier.indexOf('25k') >= 0) return '$10,000 - $25,000';
     if (tier.indexOf('25k') >= 0 && tier.indexOf('60k') >= 0) return '$25,000 - $60,000';
     if (tier.indexOf('60k') >= 0) return '$60,000 - $150,000';
-    return 'Not provided';
+    return '';
   }
 
   function updateFormProgress() {
@@ -1009,6 +1118,61 @@
 
   bindLeadTierButtons();
 
+  function bindFormPrefillTriggers() {
+    var triggers = document.querySelectorAll('[data-form-prefill-trigger]');
+    if (!triggers.length) return;
+
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener('click', function (event) {
+        if (!form) return;
+        event.preventDefault();
+
+        var prefillService = this.getAttribute('data-prefill-service') || '';
+        var prefillStyle = this.getAttribute('data-prefill-style') || '';
+        var prefillProjectLabel = this.getAttribute('data-prefill-project-label') || '';
+        var prefillImage = this.getAttribute('data-prefill-image') || '';
+        var prefillMessage = this.getAttribute('data-prefill-message') || '';
+        var prefillSource = this.getAttribute('data-prefill-source') || 'website';
+
+        if (serviceInput && prefillService) {
+          serviceInput.value = prefillService;
+          serviceInput.dispatchEvent(new Event('input', { bubbles: true }));
+          serviceInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        if (selectedServiceInput && prefillService) selectedServiceInput.value = prefillService;
+        if (selectedStyleInput && prefillStyle) selectedStyleInput.value = prefillStyle;
+        if (selectedImageInput && prefillImage) selectedImageInput.value = prefillImage;
+        if (selectedProjectLabelInput && prefillProjectLabel) selectedProjectLabelInput.value = prefillProjectLabel;
+        if (leadSourceInput && prefillSource) leadSourceInput.value = prefillSource;
+
+        if (messageInput && prefillMessage) {
+          var currentMessage = String(messageInput.value || '').trim();
+          if (!currentMessage) {
+            messageInput.value = prefillMessage + ' Please contact me about next steps.';
+          } else if (!currentMessage.includes(prefillMessage)) {
+            messageInput.value = currentMessage + '\n' + prefillMessage;
+          }
+          messageInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+
+        if (typeof window.trackLeadEvent === 'function') {
+          window.trackLeadEvent('click_get_consultation', {
+            source: prefillSource,
+            service: prefillService || 'not_set',
+            selected_style: prefillStyle || 'not_set',
+            selected_project_label: prefillProjectLabel || 'not_set',
+            page_location: window.location.href
+          });
+        }
+
+        var section = document.getElementById('contact');
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
+
+  bindFormPrefillTriggers();
+
   if (form) {
     var params = URL_PARAMS;
     var utmSource = params.get('utm_source') || '';
@@ -1019,10 +1183,12 @@
     var requestedStyle = params.get('selected_style') || '';
     var requestedImage = params.get('selected_image') || '';
     var requestedProjectLabel = params.get('selected_project_label') || '';
+    var requestedPrefillMessage = params.get('prefill_message') || '';
     var requestedSource = params.get('source') || '';
     var requestedTimeline = params.get('estimated_timeline') || params.get('timeline') || '';
     var referrerValue = String(document.referrer || '');
     var landingPathValue = String(window.location.pathname || '/');
+    var currentPageUrl = String(window.location.href || '');
     var hasTrackedFormStarted = false;
 
     function normalizeServiceSlug(value) {
@@ -1096,7 +1262,7 @@
       if (selectedServiceInput) selectedServiceInput.value = resolvedService;
 
       var prefillLines = [];
-      prefillLines.push('Interested in ' + resolvedService + '.');
+      prefillLines.push(requestedPrefillMessage || ('Interested in ' + resolvedService + '.'));
       if (requestedStyle) prefillLines.push('Preferred style: ' + toTitleCase(String(requestedStyle).replace(/[-_]/g, ' ')) + '.');
       if (requestedProjectLabel) prefillLines.push('Project reference: ' + requestedProjectLabel + '.');
       var prefill = prefillLines.join(' ');
@@ -1125,6 +1291,7 @@
     if (utmContentInput) utmContentInput.value = utmContent;
     if (referrerInput) referrerInput.value = referrerValue || 'direct';
     if (landingPathInput) landingPathInput.value = landingPathValue || '/';
+    if (pageUrlInput) pageUrlInput.value = currentPageUrl || window.location.href;
 
     if (selectedStyleInput && requestedStyle) selectedStyleInput.value = requestedStyle;
     if (selectedImageInput && requestedImage) selectedImageInput.value = requestedImage;
@@ -1206,7 +1373,7 @@
 
       if (!valid) {
         if (errorMessage) {
-          errorMessage.textContent = 'Please complete all required fields before submitting your ticket.';
+          errorMessage.textContent = 'Please complete all required fields before submitting your project request.';
           errorMessage.style.display = 'block';
         }
         return;
@@ -1226,28 +1393,28 @@
       if (emailInput) emailInput.value = valueOrFallback(emailVisibleInput, '');
 
       var fullName = (valueOrFallback(firstNameInput, '') + ' ' + valueOrFallback(lastNameInput, '')).trim();
-      var service = valueOrFallback(serviceInput, 'Not selected');
-      var leadTier = valueOrFallback(leadTierInput, 'Not selected');
-      var consultationTier = valueOrFallback(consultationTierInput, 'Not selected');
-      if (consultationTier === 'Not selected' && leadTier !== 'Not selected') {
+      var service = valueOrFallback(serviceInput, '');
+      var leadTier = valueOrFallback(leadTierInput, '');
+      var consultationTier = valueOrFallback(consultationTierInput, '');
+      if (!consultationTier && leadTier) {
         consultationTier = leadTier;
       }
-      var budget = valueOrFallback(budgetInput, 'Not provided');
-      if (!budget || budget === 'Not provided' || budget === 'Not discussed yet') {
+      var budget = valueOrFallback(budgetInput, '');
+      if (!budget || budget === 'Not discussed yet') {
         budget = getBudgetRangeFromTier(consultationTier || leadTier);
       }
-      var timeline = valueOrFallback(startTimelineInput || timelineInput, 'Not selected');
+      var timeline = valueOrFallback(startTimelineInput || timelineInput, '');
       var leadSource = valueOrFallback(leadSourceInput, DETECTED_LEAD_SOURCE || 'website');
-      var selectedStyle = valueOrFallback(selectedStyleInput, 'Not selected');
-      var selectedImage = valueOrFallback(selectedImageInput, 'Not selected');
-      var selectedProjectLabel = valueOrFallback(selectedProjectLabelInput, 'Not selected');
+      var selectedStyle = valueOrFallback(selectedStyleInput, '');
+      var selectedImage = valueOrFallback(selectedImageInput, '');
+      var selectedProjectLabel = valueOrFallback(selectedProjectLabelInput, '');
       var priority = getPriority(budget, timeline);
       var preferredContact = valueOrFallback(contactMethodValueInput || contactMethod, 'Phone call');
-      var projectCity = valueOrFallback(cityInput, 'Not provided');
-      var projectAddress = valueOrFallback(addressInput, 'Not provided');
+      var projectCity = valueOrFallback(cityInput, '');
+      var projectAddress = valueOrFallback(addressInput, '');
       var vision = valueOrFallback(messageInput, 'No project details provided.');
-      var email = valueOrFallback(emailInput, 'Not provided');
-      var phone = valueOrFallback(phoneInput, 'Not provided');
+      var email = valueOrFallback(emailInput, '');
+      var phone = valueOrFallback(phoneInput, '');
 
       if (ticketInput) ticketInput.value = ticketId;
       if (consultationTierInput) consultationTierInput.value = consultationTier;
@@ -1261,40 +1428,39 @@
 
       if (ownerSummary) {
         ownerSummary.value = [
-          'New project ticket submitted.',
+          'New project request submitted.',
           'Priority: ' + priority,
-          'Requested service: ' + service,
-          'Budget / Timeline: ' + budget + ' / ' + timeline,
-          'Consultation tier: ' + consultationTier,
-          'Source: ' + leadSource,
-          'Style reference: ' + selectedStyle,
-          'Project reference: ' + selectedProjectLabel
-        ].join('\n');
+          service ? 'Requested service: ' + service : '',
+          [budget, timeline].filter(Boolean).length ? 'Budget / Timeline: ' + [budget, timeline].filter(Boolean).join(' / ') : '',
+          consultationTier ? 'Consultation tier: ' + consultationTier : '',
+          leadSource ? 'Source: ' + leadSource : '',
+          selectedStyle ? 'Style reference: ' + selectedStyle : '',
+          selectedProjectLabel ? 'Project reference: ' + selectedProjectLabel : ''
+        ].filter(Boolean).join('\n');
       }
 
       if (ownerContact) {
         ownerContact.value = [
-          'Client: ' + (fullName || 'Not provided'),
-          'Email: ' + email,
-          'Phone: ' + phone,
-          'Preferred contact: ' + preferredContact
-        ].join('\n');
+          fullName ? 'Client: ' + fullName : '',
+          email ? 'Email: ' + email : '',
+          phone ? 'Phone: ' + phone : '',
+          preferredContact ? 'Preferred contact: ' + preferredContact : ''
+        ].filter(Boolean).join('\n');
       }
 
       if (ownerProject) {
         ownerProject.value = [
-          'Ticket ID: ' + ticketId,
-          'Submitted (Phoenix): ' + submittedLocalTime,
-          'Project location: ' + projectAddress + ', ' + projectCity,
-          'Consultation tier: ' + consultationTier,
-          'Budget range: ' + budget,
-          'Estimated timeline: ' + timeline,
-          'Selected style: ' + selectedStyle,
-          'Selected image: ' + selectedImage,
-          'Selected project label: ' + selectedProjectLabel,
-          'Project vision:',
-          vision
-        ].join('\n');
+          ticketId ? 'Request ID: ' + ticketId : '',
+          submittedLocalTime ? 'Submitted (Phoenix): ' + submittedLocalTime : '',
+          [projectAddress, projectCity].filter(Boolean).length ? 'Project location: ' + [projectAddress, projectCity].filter(Boolean).join(', ') : '',
+          consultationTier ? 'Consultation tier: ' + consultationTier : '',
+          budget ? 'Budget range: ' + budget : '',
+          timeline ? 'Estimated timeline: ' + timeline : '',
+          selectedStyle ? 'Selected style: ' + selectedStyle : '',
+          selectedImage ? 'Selected image: ' + selectedImage : '',
+          selectedProjectLabel ? 'Selected project label: ' + selectedProjectLabel : '',
+          vision ? 'Project vision:\n' + vision : ''
+        ].filter(Boolean).join('\n');
       }
 
       if (ownerTracking) {
@@ -1313,6 +1479,10 @@
         ].join('\n');
       }
 
+      if (pageUrlInput) {
+        pageUrlInput.value = window.location.href;
+      }
+
       var btn = form.querySelector('[type="submit"]');
       var defaultBtnText = btn.textContent;
       btn.textContent = 'Submitting…';
@@ -1324,7 +1494,7 @@
       });
 
       try {
-        var response = await fetch('/', {
+        var response = await fetch('/.netlify/functions/send-ticket-emails', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: encodeFormData(payload)
@@ -1335,11 +1505,11 @@
           var submitPayload = {
             ticket_id: ticketId,
             service: service,
-            consultation_tier: consultationTier,
-            lead_tier: leadTier,
-            budget_range: budget,
+            consultation_tier: consultationTier || undefined,
+            lead_tier: leadTier || undefined,
+            budget_range: budget || undefined,
             lead_source: leadSource,
-            selected_style: selectedStyle,
+            selected_style: selectedStyle || undefined,
             city: projectCity,
             page_location: window.location.href
           };
@@ -1364,7 +1534,7 @@
         window.location.href = 'thank-you.html?' + thankYouParams.toString();
       } catch (error) {
         if (errorMessage) {
-          errorMessage.textContent = 'We could not submit your ticket right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
+          errorMessage.textContent = 'We could not submit your request right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
           errorMessage.style.display = 'block';
         }
         btn.disabled = false;

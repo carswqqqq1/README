@@ -187,6 +187,24 @@
       whatYouGet.innerHTML = service.whatYouGet.map(function (item) {
         return '<li>' + item + '</li>';
       }).join('');
+
+      var existingRange = document.getElementById('service-typical-range');
+      if (existingRange) existingRange.remove();
+      if (service.typicalRange) {
+        var rangeCard = document.createElement('div');
+        rangeCard.className = 'service-range reveal';
+        rangeCard.id = 'service-typical-range';
+        rangeCard.innerHTML = '' +
+          '<div class="service-range__intro">' +
+          '  <p class="eyebrow">Planning Range</p>' +
+          '  <h3>Typical Project Range</h3>' +
+          '</div>' +
+          '<div class="service-range__content">' +
+          '  <p class="service-range__value">' + service.typicalRange + '</p>' +
+          '  <p class="service-range__note">Final pricing depends on scope and site conditions.</p>' +
+          '</div>';
+        whatYouGet.insertAdjacentElement('afterend', rangeCard);
+      }
     }
 
     if (process) {

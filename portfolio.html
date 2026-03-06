@@ -23,6 +23,7 @@
   <link rel="icon" type="image/jpeg" href="img/favicon-32.jpg" sizes="32x32" />
   <link rel="icon" type="image/jpeg" href="img/favicon-192.jpg" sizes="192x192" />
   <link rel="apple-touch-icon" href="img/apple-touch-icon.jpg" />
+  <link rel="manifest" href="site.webmanifest" />
   <link rel="canonical" href="https://thinkgreen-az.netlify.app/portfolio.html" />
   <link rel="alternate" hreflang="en-us" href="https://thinkgreen-az.netlify.app/portfolio.html" />
   <link rel="preload" as="image" href="img/projects/slide6.webp" fetchpriority="high" />
@@ -80,7 +81,6 @@
         <a href="index.html" class="nav__link">Home</a>
         <a href="services.html" class="nav__link">Services</a>
         <a href="portfolio.html" class="nav__link nav__link--active">Portfolio</a>
-        <a href="scottsdale-landscaping.html" class="nav__link">Areas</a>
         <a href="index.html#process" class="nav__link">Process</a>
         <a href="index.html#reviews" class="nav__link">Reviews</a>
         <a href="index.html#contact" class="nav__link">Contact</a>
@@ -89,7 +89,7 @@
         <a href="tel:4809229497" class="nav__call" data-site-phone-link>
           <span data-site-phone-display>(480) 922-9497</span>
         </a>
-        <a href="index.html#contact" class="nav__cta">Get Free Landscape Design Consultation</a>
+        <a href="index.html#contact" class="nav__cta">Get Free Design Consultation</a>
       </div>
     </div>
   </header>
@@ -101,12 +101,10 @@
       <a href="index.html" class="nav__overlay-link">Home</a>
       <a href="services.html" class="nav__overlay-link">Services</a>
       <a href="portfolio.html" class="nav__overlay-link">Portfolio</a>
-      <a href="scottsdale-landscaping.html" class="nav__overlay-link">Scottsdale</a>
-      <a href="phoenix-landscaping.html" class="nav__overlay-link">Phoenix</a>
       <a href="index.html#process" class="nav__overlay-link">Process</a>
       <a href="index.html#reviews" class="nav__overlay-link">Reviews</a>
       <a href="index.html#contact" class="nav__overlay-link">Contact</a>
-      <a href="index.html#contact" class="nav__overlay-link nav__overlay-cta">Get Free Landscape Design Consultation</a>
+      <a href="index.html#contact" class="nav__overlay-link nav__overlay-cta">Get Free Design Consultation</a>
     </nav>
     <div class="nav__overlay-contact">
       <a href="tel:4809229497" data-site-phone-link data-site-phone-display>(480) 922-9497</a>
@@ -124,6 +122,15 @@
         <h1 class="pf-hero__title">Landscape Design Inspiration for Arizona Homes</h1>
         <p class="pf-hero__sub">Use this gallery to compare layout styles, planting direction, and outdoor-living ideas before your consultation.</p>
         <p class="pf-hero__local">Think Green builds hardscaping, outdoor kitchens, fire features, water features, and xeriscape projects across Scottsdale, Paradise Valley, Phoenix, Tempe, and Mesa.</p>
+        <ul class="pf-hero__proof">
+          <li>Real project photos from local installs</li>
+          <li>Request a similar layout in one click</li>
+          <li>Best for consultations, scope, and style direction</li>
+        </ul>
+        <div class="pf-hero__actions">
+          <a href="index.html?source=portfolio_hero#contact" class="btn btn--solid">Get Free Design Consultation</a>
+          <a href="index.html?source=portfolio_hero#contact" class="btn btn--dark">Request a Similar Project</a>
+        </div>
       </div>
     </section>
 
@@ -143,10 +150,27 @@
     <!-- PORTFOLIO GRID -->
     <section class="pf-grid-section container">
       <div class="pf-request reveal">
-        <p>Like what you see? Request a free consultation.</p>
-        <a href="index.html?source=portfolio#contact" class="btn btn--dark" id="pf-request-style">Request This Style</a>
+        <p>See a layout you like? We will prefill the contact form with the style, service direction, and project reference so you can move faster.</p>
+        <a href="index.html?source=portfolio#contact" class="btn btn--dark" id="pf-request-style">Request a Similar Project</a>
       </div>
+      <article class="pf-story reveal">
+        <figure class="pf-story__media">
+          <img src="img/projects/fireplace.jpg" alt="Featured Paradise Valley hardscape and fireplace project by Think Green" loading="lazy" width="1600" height="1066" />
+        </figure>
+        <div class="pf-story__body">
+          <p class="eyebrow">Project Story</p>
+          <h2>Real Projects Built Across Scottsdale &amp; Phoenix</h2>
+          <ul class="pf-story__list">
+            <li><strong>Location:</strong> Paradise Valley, AZ</li>
+            <li><strong>Scope:</strong> Pavers, seating wall, fireplace, lighting</li>
+            <li><strong>Timeline:</strong> 3 weeks</li>
+          </ul>
+          <p class="pf-story__text">Use this as a style reference if you want a structured entertaining zone with cleaner circulation and stronger evening use.</p>
+          <a href="index.html?source=portfolio_story&service=hardscaping&selected_style=hardscaping&selected_image=fireplace.jpg&selected_project_label=Architectural%20Grounds&prefill_message=Interested%20in%20a%20project%20similar%20to%20the%20Featured%20Project.#contact" class="btn btn--solid">Request This Style</a>
+        </div>
+      </article>
       <header class="pf-grid__header reveal reveal--left">
+        <p class="eyebrow">Real Projects Across Scottsdale &amp; Phoenix</p>
         <h2>Browse Project Styles</h2>
         <p>Filter by project type, then tap any image to open full-screen details and inspiration notes.</p>
       </header>
@@ -406,7 +430,8 @@
 
       </div>
       <div class="pf-grid__cta reveal">
-        <a href="index.html#contact" class="btn btn--solid">Get a Free Design Consultation</a>
+        <p class="pf-grid__cta-copy">Want this level of finish, detail, and material quality in your own yard?</p>
+        <a href="index.html#contact" class="btn btn--solid">Get Free Design Consultation</a>
       </div>
     </section>
 
@@ -416,10 +441,10 @@
         <div class="pf-cta__text reveal">
           <p class="eyebrow">Ready to Begin?</p>
           <h2>Let's Design Your Outdoor Space.</h2>
-          <p>Every project starts with a free, no-pressure consultation at your property. We listen, we plan, we build — and we stand behind every inch of our work.</p>
+          <p>Bring the portfolio ideas you like best. We will translate them into a design direction that fits your property, budget, and day-to-day lifestyle.</p>
         </div>
         <div class="pf-cta__actions reveal">
-          <a href="index.html#contact" class="btn btn--solid">Get a Free Design Consultation</a>
+          <a href="index.html#contact" class="btn btn--solid">Get Free Design Consultation</a>
           <a href="tel:4809229497" class="btn btn--dark" data-site-phone-link>
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="width:16px;height:16px"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
             <span data-site-phone-display>(480) 922-9497</span>
@@ -482,7 +507,7 @@
       <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
       Call Now
     </a>
-    <a href="index.html#contact" class="btn btn--outline-dark">Book</a>
+    <a href="index.html#contact" class="btn btn--outline-dark">Request Quote</a>
   </div>
 
   <div class="pf-lightbox" id="pf-lightbox" aria-hidden="true" role="dialog" aria-label="Project preview">
@@ -498,7 +523,7 @@
             <span class="pf-lightbox__chip pf-lightbox__chip--location" id="pf-lightbox-location">Scottsdale / Phoenix Area</span>
           </div>
           <p id="pf-lightbox-detail"></p>
-          <a href="index.html?source=portfolio#contact" class="btn btn--solid pf-lightbox__request" id="pf-lightbox-request">Request This Style</a>
+          <a href="index.html?source=portfolio#contact" class="btn btn--solid pf-lightbox__request" id="pf-lightbox-request">Request a Similar Project</a>
         </figcaption>
       </figure>
       <button type="button" class="pf-lightbox__nav pf-lightbox__nav--next" id="pf-lightbox-next" aria-label="Next project">&#10095;</button>

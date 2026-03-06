@@ -12,6 +12,7 @@
       metaDescription: 'Custom landscape design and build in Scottsdale and Phoenix with 3D planning, material coordination, and turnkey construction from one team.',
       heroHeadline: 'Landscape Design & Build in Scottsdale and Phoenix',
       heroSubtext: 'From concept sketches to final walkthrough, we design and build cohesive outdoor spaces that elevate curb appeal and day-to-day living.',
+      typicalRange: '$5k-$15k design planning',
       whatYouGet: [
         'On-site design consultation and project discovery',
         'Layout planning for circulation, shade, and entertaining',
@@ -110,6 +111,7 @@
       metaDescription: 'Premium hardscaping in Scottsdale and Phoenix, including patios, paver systems, retaining walls, seating walls, and drainage-aware layout planning.',
       heroHeadline: 'Hardscaping in Scottsdale and Phoenix',
       heroSubtext: 'We build pavers, patios, walkways, and structural stonework that look clean, perform in Arizona heat, and hold up for years.',
+      typicalRange: '$10k-$40k',
       whatYouGet: [
         'Paver patio and walkway installation',
         'Retaining walls and seating walls with clean detailing',
@@ -208,6 +210,7 @@
       metaDescription: 'Custom outdoor kitchens in Scottsdale and Phoenix with grilling stations, counters, utility planning, and durable finishes built for Arizona outdoor living.',
       heroHeadline: 'Outdoor Kitchens in Scottsdale and Phoenix',
       heroSubtext: 'Create an outdoor kitchen that is beautiful, functional, and built for real entertaining in Arizona conditions.',
+      typicalRange: '$20k-$60k',
       whatYouGet: [
         'Custom kitchen layout and appliance planning',
         'Countertop and cabinet finish coordination',
@@ -306,6 +309,7 @@
       metaDescription: 'Custom fire pits and outdoor fireplaces in Scottsdale and Phoenix designed for comfortable entertaining, clean integration, and durable long-term use.',
       heroHeadline: 'Fire Features in Scottsdale and Phoenix',
       heroSubtext: 'Add warmth, ambiance, and year-round gathering space with custom fire pits and fireplaces built into your outdoor layout.',
+      typicalRange: '$5k-$20k',
       whatYouGet: [
         'Custom fire pit and fireplace design options',
         'Safe placement with seating and circulation planning',
@@ -404,6 +408,7 @@
       metaDescription: 'Artificial turf installation in Scottsdale and Phoenix for clean curb appeal, lower water use, and low-maintenance outdoor living that looks finished year-round.',
       heroHeadline: 'Artificial Turf Installation in Scottsdale and Phoenix',
       heroSubtext: 'Upgrade to premium turf systems with natural appearance, clean edges, and drainage-aware installation for Arizona homes.',
+      typicalRange: '$5k-$15k',
       whatYouGet: [
         'Premium turf product recommendations for your use case',
         'Sub-base prep and grading for long-term performance',
@@ -502,6 +507,7 @@
       metaDescription: 'Smart irrigation design and upgrades in Scottsdale and Phoenix, including drip systems, zone planning, controller optimization, and water-efficient retrofits.',
       heroHeadline: 'Irrigation Systems in Scottsdale and Phoenix',
       heroSubtext: 'Keep your landscape healthy with efficient irrigation planning, modern controls, and climate-aware water management built for Arizona.',
+      typicalRange: '$2k-$10k',
       whatYouGet: [
         'Drip and spray zone planning by plant type',
         'Controller programming and optimization',
