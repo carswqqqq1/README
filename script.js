@@ -186,13 +186,13 @@
       title.textContent = item.title || 'Landscape Project';
 
       var description = document.createElement('p');
-      description.textContent = item.description || 'Tell us what you want to build and we will route your project request.';
+      description.textContent = item.description || 'Tell us what you want to build and we will help you map the next step.';
 
       var button = document.createElement('button');
       button.type = 'button';
       button.className = 'fit-card__action';
       button.setAttribute('data-service-choice', item.ctaService || item.title || 'Not sure yet');
-      button.textContent = 'Request This Service';
+      button.textContent = 'Get Free Design Consultation';
 
       article.appendChild(label);
       article.appendChild(title);
@@ -310,10 +310,20 @@
       });
     }
 
+    var licensePrompt = String(TRUST_ASSETS.licensePrompt || '').trim();
+    if (licensePrompt) {
+      setText('[data-license-verify-text]', licensePrompt);
+    }
+
     if (bondUrl) {
       document.querySelectorAll('[data-bond-verify-link]').forEach(function (link) {
         link.setAttribute('href', bondUrl);
       });
+    }
+
+    var bondPrompt = String(TRUST_ASSETS.bondPrompt || '').trim();
+    if (bondPrompt) {
+      setText('[data-bond-verify-text]', bondPrompt);
     }
 
     if (insuranceCopy) {
@@ -393,7 +403,7 @@
         '  <div class="recent-project__body">' +
         '    <h3>' + title + '</h3>' +
         '    <p>' + location + '</p>' +
-        '    <a href="index.html?' + requestQuery.toString() + '#contact" class="text-link">Request This Style &rarr;</a>' +
+        '    <a href="index.html?' + requestQuery.toString() + '#contact" class="text-link">Request a Similar Project &rarr;</a>' +
         '  </div>' +
         '</article>';
     }).join('');
@@ -1463,7 +1473,6 @@
 
       if (ownerProject) {
         ownerProject.value = [
-          ticketId ? 'Request ID: ' + ticketId : '',
           submittedLocalTime ? 'Submitted (Phoenix): ' + submittedLocalTime : '',
           [projectAddress, projectCity].filter(Boolean).length ? 'Project location: ' + [projectAddress, projectCity].filter(Boolean).join(', ') : '',
           consultationTier ? 'Consultation tier: ' + consultationTier : '',
@@ -1676,7 +1685,7 @@
       '<div class="exit-popup__backdrop"></div>' +
       '<div class="exit-popup__card">' +
       '<button class="exit-popup__close" aria-label="Close">&times;</button>' +
-      '<div class="exit-popup__icon" aria-hidden="true">🌿</div>' +
+      '<div class="exit-popup__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 18c7 0 10-4.5 10-10-5.5 0-10 3-10 10z"></path><path d="M7 18c-1.5-3.5-.8-7.2 2.1-10.4"></path></svg></div>' +
       '<p class="exit-popup__eyebrow">Wait — one moment</p>' +
       '<h2 class="exit-popup__title">Get a Free Landscape Consultation</h2>' +
       '<p class="exit-popup__sub">Before you go — let our team build you a complimentary design plan. No pressure, no obligation.</p>' +

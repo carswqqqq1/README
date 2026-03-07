@@ -139,7 +139,7 @@
         '  </ul>' +
         '  <div class="service-card__actions">' +
         '    <a class="btn btn--dark" href="' + service.path + '">Explore Service</a>' +
-        '    <a class="text-link" href="' + serviceConsultationHref(service) + '">Request Consultation &rarr;</a>' +
+        '    <a class="text-link" href="' + serviceConsultationHref(service) + '">Get Free Design Consultation &rarr;</a>' +
         '  </div>' +
         '</article>';
     }).join('');
@@ -204,6 +204,17 @@
           '  <p class="service-range__note">Final pricing depends on scope and site conditions.</p>' +
           '</div>';
         whatYouGet.insertAdjacentElement('afterend', rangeCard);
+        if (Array.isArray(service.proofBlurbs) && service.proofBlurbs.length) {
+          var proofStrip = document.createElement('div');
+          proofStrip.className = 'service-proof-blurbs reveal';
+          proofStrip.innerHTML = service.proofBlurbs.map(function (item) {
+            return '' +
+              '<article class="service-proof-blurbs__item">' +
+              '  <p>' + item + '</p>' +
+              '</article>';
+          }).join('');
+          rangeCard.insertAdjacentElement('afterend', proofStrip);
+        }
       }
     }
 

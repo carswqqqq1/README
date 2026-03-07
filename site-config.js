@@ -128,7 +128,10 @@
     trustAssets: {
       licenseVerifyUrl: 'https://roc.az.gov/contractor-search',
       bondVerifyUrl: 'https://roc.az.gov/contractor-search',
-      insuranceStatement: 'Arizona ROC search resources are linked below. Insurance and bonding documentation is shared during consultation.'
+      licenseNumbers: ['157201 CR-21', '304902 B-4'],
+      licensePrompt: 'Search the Arizona ROC contractor database for license records 157201 CR-21 and 304902 B-4.',
+      bondPrompt: 'Use the Arizona ROC contractor search to review the contractor record and related licensing details.',
+      insuranceStatement: 'Arizona contractor search resources are linked below. Insurance and bonding documentation is shared during consultation.'
     },
     financing: {
       enabled: true,

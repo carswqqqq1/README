@@ -13,6 +13,11 @@
       heroHeadline: 'Landscape Design & Build in Scottsdale and Phoenix',
       heroSubtext: 'From concept sketches to final walkthrough, we design and build cohesive outdoor spaces that elevate curb appeal and day-to-day living.',
       typicalRange: '$5k-$15k design planning',
+      proofBlurbs: [
+        'Design presentations are built around circulation, shade, and how the yard will actually be used.',
+        'Selections are coordinated with the home architecture so the finished build feels intentional, not pieced together.',
+        'Clients get one design-build team instead of separate design and construction handoffs.'
+      ],
       whatYouGet: [
         'On-site design consultation and project discovery',
         'Layout planning for circulation, shade, and entertaining',
@@ -112,6 +117,11 @@
       heroHeadline: 'Hardscaping in Scottsdale and Phoenix',
       heroSubtext: 'We build pavers, patios, walkways, and structural stonework that look clean, perform in Arizona heat, and hold up for years.',
       typicalRange: '$10k-$40k',
+      proofBlurbs: [
+        'Hardscape layouts are planned for drainage, circulation, and daily use before materials are finalized.',
+        'Patios and walkways are detailed to feel clean and architectural instead of oversized or disconnected.',
+        'Material choices are guided by heat performance, maintenance, and how they tie back to the home.'
+      ],
       whatYouGet: [
         'Paver patio and walkway installation',
         'Retaining walls and seating walls with clean detailing',
@@ -211,6 +221,11 @@
       heroHeadline: 'Outdoor Kitchens in Scottsdale and Phoenix',
       heroSubtext: 'Create an outdoor kitchen that is beautiful, functional, and built for real entertaining in Arizona conditions.',
       typicalRange: '$20k-$60k',
+      proofBlurbs: [
+        'Outdoor kitchens are laid out around prep flow, seating, and entertaining zones instead of appliance lists alone.',
+        'Utility planning is coordinated early so gas, power, and water do not create last-minute surprises.',
+        'Finish selections are chosen for Arizona heat, weather exposure, and easy long-term upkeep.'
+      ],
       whatYouGet: [
         'Custom kitchen layout and appliance planning',
         'Countertop and cabinet finish coordination',
@@ -310,6 +325,11 @@
       heroHeadline: 'Fire Features in Scottsdale and Phoenix',
       heroSubtext: 'Add warmth, ambiance, and year-round gathering space with custom fire pits and fireplaces built into your outdoor layout.',
       typicalRange: '$5k-$20k',
+      proofBlurbs: [
+        'Fire features are positioned to improve evening use and social flow, not just to fill an empty corner of the yard.',
+        'Scale, seating distance, and finish detailing are planned so the feature feels integrated with the patio.',
+        'Gas and safety considerations are addressed up front to keep the build clean and code-aware.'
+      ],
       whatYouGet: [
         'Custom fire pit and fireplace design options',
         'Safe placement with seating and circulation planning',
@@ -508,6 +528,11 @@
       heroHeadline: 'Irrigation Systems in Scottsdale and Phoenix',
       heroSubtext: 'Keep your landscape healthy with efficient irrigation planning, modern controls, and climate-aware water management built for Arizona.',
       typicalRange: '$2k-$10k',
+      proofBlurbs: [
+        'Irrigation upgrades focus on healthier plants and lower waste, not just swapping out controllers.',
+        'Zones are evaluated by plant type, exposure, and runoff so watering is more accurate across the property.',
+        'Retrofits are designed to support both existing landscapes and future design-build improvements.'
+      ],
       whatYouGet: [
         'Drip and spray zone planning by plant type',
         'Controller programming and optimization',
@@ -600,7 +625,7 @@
 
   window.SERVICE_PROOF_ITEMS = [
     { label: 'Licensed · Bonded · Insured', icon: 'shield' },
-    { label: '500+ Projects', icon: 'projects' },
+    { label: 'Premium Outdoor Living Focus', icon: 'projects' },
     { label: 'Design to Build', icon: 'plan' },
     { label: '24hr Response', icon: 'clock' }
   ];

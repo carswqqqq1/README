@@ -1478,7 +1478,7 @@ async function sendToGoogleSheets(normalized, meta = {}) {
     service_match: normalized.service_match,
     status: normalized.sheet_status || 'New',
     owner_summary: normalized.owner_summary,
-    page_url: safeText(meta.page_url, 'Not provided')
+    page_url: safeText(meta.page_url, '')
   };
 
   if (!GOOGLE_SHEETS_WEBHOOK_URL) {
@@ -1566,7 +1566,7 @@ async function fanOutCrmWebhooks(normalized, meta = {}) {
     ticket_id: normalized.ticket_id,
     submitted_local: normalized.submitted_local,
     submitted_at_iso: meta.created_at || new Date().toISOString(),
-    page_url: safeText(meta.page_url, 'Not provided'),
+    page_url: safeText(meta.page_url, ''),
     first_name: normalized.first_name,
     last_name: normalized.last_name,
     full_name: normalized.full_name,
