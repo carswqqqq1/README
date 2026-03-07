@@ -307,6 +307,14 @@
     if (licenseUrl) {
       document.querySelectorAll('[data-license-verify-link]').forEach(function (link) {
         link.setAttribute('href', licenseUrl);
+        link.removeAttribute('aria-disabled');
+        link.classList.remove('is-disabled');
+      });
+    } else {
+      document.querySelectorAll('[data-license-verify-link]').forEach(function (link) {
+        link.removeAttribute('href');
+        link.setAttribute('aria-disabled', 'true');
+        link.classList.add('is-disabled');
       });
     }
 
@@ -318,6 +326,14 @@
     if (bondUrl) {
       document.querySelectorAll('[data-bond-verify-link]').forEach(function (link) {
         link.setAttribute('href', bondUrl);
+        link.removeAttribute('aria-disabled');
+        link.classList.remove('is-disabled');
+      });
+    } else {
+      document.querySelectorAll('[data-bond-verify-link]').forEach(function (link) {
+        link.removeAttribute('href');
+        link.setAttribute('aria-disabled', 'true');
+        link.classList.add('is-disabled');
       });
     }
 
@@ -370,7 +386,7 @@
   }
 
   function renderRecentProjects() {
-    var list = Array.isArray(window.RECENT_PROJECTS) ? window.RECENT_PROJECTS : [];
+    var list = Array.isArray(window.RECENT_PROJECTS) ? window.RECENT_PROJECTS.slice(0, 3) : [];
     var grid = document.getElementById('recent-projects-grid');
     if (!grid || !list.length) return;
 
@@ -403,7 +419,7 @@
         '  <div class="recent-project__body">' +
         '    <h3>' + title + '</h3>' +
         '    <p>' + location + '</p>' +
-        '    <a href="index.html?' + requestQuery.toString() + '#contact" class="text-link">Request a Similar Project &rarr;</a>' +
+        '    <a href="index.html?' + requestQuery.toString() + '#contact" class="recent-project__cta">Request a Similar Project</a>' +
         '  </div>' +
         '</article>';
     }).join('');
@@ -556,9 +572,12 @@
 
   /* ---- NAV SCROLL STATE ---- */
   var nav = document.getElementById('nav');
+  var normalizedPath = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+  var isHomePath = normalizedPath === '/' || normalizedPath === '/index.html';
+  var forceScrolledShell = !isHomePath;
   function updateNav() {
     if (!nav) return;
-    nav.classList.toggle('is-scrolled', window.scrollY > 60);
+    nav.classList.toggle('is-scrolled', forceScrolledShell || window.scrollY > 60);
   }
   window.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
@@ -1576,27 +1595,6 @@
 })();
 
 /* ============================================================
-   Scroll-to-top button
-   ============================================================ */
-(function () {
-  var btn = document.createElement('button');
-  btn.className = 'scroll-top';
-  btn.setAttribute('aria-label', 'Scroll to top');
-  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"></polyline></svg>';
-  document.body.appendChild(btn);
-
-  function onScroll() {
-    btn.classList.toggle('is-visible', window.scrollY > 400);
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  btn.addEventListener('click', function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-})();
-
-/* ============================================================
    Loading skeletons for dynamic grids
    ============================================================ */
 (function () {
@@ -1676,6 +1674,10 @@
     shown = true;
     localStorage.setItem(POPUP_KEY, '1');
 
+    var popupConfig = window.SITE_CONFIG || {};
+    var popupBrand = popupConfig.brand || {};
+    var popupLogoPath = String(popupBrand.logoPath || 'img/logo.png').trim();
+    var popupLogo = popupLogoPath.charAt(0) === '/' ? popupLogoPath : '/' + popupLogoPath.replace(/^\.?\//, '');
     var popup = document.createElement('div');
     popup.className = 'exit-popup';
     popup.setAttribute('role', 'dialog');
@@ -1685,13 +1687,13 @@
       '<div class="exit-popup__backdrop"></div>' +
       '<div class="exit-popup__card">' +
       '<button class="exit-popup__close" aria-label="Close">&times;</button>' +
-      '<div class="exit-popup__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 18c7 0 10-4.5 10-10-5.5 0-10 3-10 10z"></path><path d="M7 18c-1.5-3.5-.8-7.2 2.1-10.4"></path></svg></div>' +
-      '<p class="exit-popup__eyebrow">Wait — one moment</p>' +
-      '<h2 class="exit-popup__title">Get a Free Landscape Consultation</h2>' +
-      '<p class="exit-popup__sub">Before you go — let our team build you a complimentary design plan. No pressure, no obligation.</p>' +
+      '<div class="exit-popup__icon" aria-hidden="true"><img src="' + popupLogo + '" alt="" loading="lazy" decoding="async" width="68" height="68"></div>' +
+      '<p class="exit-popup__eyebrow">Before You Leave</p>' +
+      '<h2 class="exit-popup__title">Get Free Design Consultation</h2>' +
+      '<p class="exit-popup__sub">Share your project goals and we will follow up with a clear next-step plan.</p>' +
       '<div class="exit-popup__actions">' +
-      '<a href="/#contact" class="btn btn--primary exit-popup__cta">Book My Free Consultation</a>' +
-      '<button class="exit-popup__dismiss" type="button">No thanks, I\'ll pass</button>' +
+      '<a href="/#contact" class="btn btn--solid exit-popup__cta">Get Free Design Consultation</a>' +
+      '<button class="exit-popup__dismiss" type="button">Continue browsing</button>' +
       '</div>' +
       '</div>';
     document.body.appendChild(popup);

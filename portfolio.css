@@ -8,6 +8,9 @@
 .portfolio-page .nav__link {
   color: var(--ink-light);
 }
+.portfolio-page .nav.is-scrolled .nav__link {
+  color: var(--ink-light);
+}
 .portfolio-page .nav__link:hover {
   color: var(--ink);
   background: var(--paper);
@@ -273,7 +276,8 @@
 .pf-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  gap: 1.1rem;
+  align-items: start;
 }
 
 /* ITEMS */
@@ -284,6 +288,8 @@
   overflow: hidden;
   background: var(--paper-alt);
   cursor: pointer;
+  border: 1px solid #e4dccf;
+  transition: transform .24s var(--ease), box-shadow .24s var(--ease), border-color .24s var(--ease);
 }
 .pf-item.is-hidden {
   display: none;
@@ -292,6 +298,7 @@
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
+  background: #ece4d8;
 }
 .pf-item__img-wrap img {
   width: 100%;
@@ -303,6 +310,11 @@
 .pf-item:hover .pf-item__img-wrap img {
   transform: scale(1.06);
   filter: brightness(1);
+}
+.pf-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 22px rgba(22, 35, 27, .14);
+  border-color: #d7ccbb;
 }
 .pf-item__chip {
   position: absolute;
@@ -534,6 +546,16 @@
   border-color: #ffffff;
   color: var(--ink);
 }
+.pf-cta .btn--solid {
+  background: #f7f2e8;
+  border-color: #f7f2e8;
+  color: var(--ink);
+}
+.pf-cta .btn--solid:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: var(--ink);
+}
 
 /* Responsive */
 @media (max-width: 900px) {
@@ -567,26 +589,30 @@
     overflow: hidden;
   }
   .pf-filters__inner {
-    gap: .5rem;
+    display: flex;
+    gap: .55rem;
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: .2rem;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    scroll-snap-type: x proximity;
   }
-  .pf-filters__inner::-webkit-scrollbar { display: none; }
+  .pf-filters__inner::-webkit-scrollbar {
+    display: none;
+  }
   .pf-filter {
-    flex: 0 0 auto;
+    width: auto;
+    min-width: max-content;
+    justify-content: flex-start;
     font-size: .76rem;
-    padding: .42rem .82rem;
-    scroll-snap-align: start;
+    padding: .48rem .72rem;
+    border-radius: 10px;
+    border: 1px solid #dfd7ca;
+    background: #f7f3ec;
   }
   .pf-filter__count {
-    min-width: 1.05rem;
-    height: 1.05rem;
-    font-size: .6rem;
+    display: inline-flex;
   }
   .pf-request {
     flex-direction: column;
@@ -636,5 +662,8 @@
   .pf-lightbox__nav--next { right: .5rem; }
   .pf-lightbox__figure img {
     max-height: 62vh;
+  }
+  .portfolio-page .scroll-top {
+    display: none;
   }
 }

@@ -11,6 +11,34 @@
   filter: none;
 }
 
+.simple-page .nav__link {
+  color: var(--ink-light);
+}
+
+.simple-page .nav__link:hover {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.simple-page .nav__link--active {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.simple-page .nav__call {
+  border-color: rgba(20, 20, 20, .18);
+  color: var(--ink);
+}
+
+.simple-page .nav__call:hover {
+  border-color: rgba(20, 20, 20, .35);
+  background: var(--paper);
+}
+
+.simple-page .nav__burger span {
+  background: var(--ink);
+}
+
 .page-hero {
   position: relative;
   padding-top: 114px;

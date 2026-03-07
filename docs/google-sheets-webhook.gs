@@ -19,41 +19,32 @@ const DEDUPE_WINDOW_DAYS = 7;
 
 const HEADERS = [
   'timestamp',
-  'ticket_id',
+  'status',
   'name',
-  'first_name',
-  'last_name',
-  'email',
   'phone',
-  'project_location',
-  'project_address',
+  'email',
   'city',
   'service',
-  'selected_service',
-  'consultation_tier',
   'budget_range',
   'start_timeline',
-  'estimated_timeline',
-  'contact_method',
+  'lead_quality',
+  'estimated_project_value',
+  'next_action',
+  'follow_up_due',
+  'notes',
+  'ticket_id',
+  'lead_tags',
   'lead_source',
+  'project_reference',
+  'style_reference',
+  'project_location',
+  'contact_method',
+  'submitted_local',
+  'last_touched',
+  'page_url',
   'utm_source',
   'utm_medium',
-  'utm_campaign',
-  'utm_content',
-  'referrer',
-  'landing_path',
-  'page_url',
-  'lead_score',
-  'lead_tier',
-  'lead_tags',
-  'status',
-  'follow_up_due',
-  'last_touched',
-  'next_action',
-  'assigned_to',
-  'notes',
-  'owner_priority',
-  'owner_summary'
+  'utm_campaign'
 ];
 
 function setup() {
@@ -82,6 +73,7 @@ function doPost(e) {
 
     const row = body.row || {};
     const meta = getOrCreateSheet_();
+    applyOwnerDashboardLayout_(meta.sheet);
     const now = new Date();
     const normalizedEmail = normalizeEmail_(row.email || '');
     const normalizedPhone = normalizePhone_(row.phone || '');
@@ -95,42 +87,33 @@ function doPost(e) {
     if (duplicate && tags.indexOf('duplicate') === -1) tags.push('duplicate');
 
     const values = {
-      timestamp: row.timestamp || now.toISOString(),
-      ticket_id: row.ticket_id || '',
-      name: row.name || [row.first_name || '', row.last_name || ''].join(' ').trim(),
-      first_name: row.first_name || '',
-      last_name: row.last_name || '',
-      email: row.email || '',
-      phone: row.phone || '',
-      project_location: row.project_location || '',
-      project_address: row.project_address || '',
-      city: row.city || '',
-      service: row.service || '',
-      selected_service: row.selected_service || '',
-      consultation_tier: row.consultation_tier || row.lead_tier || '',
-      budget_range: row.budget_range || '',
-      start_timeline: row.start_timeline || row.timeline || '',
-      estimated_timeline: row.estimated_timeline || '',
-      contact_method: row.contact_method || row.preferred_contact_method || '',
-      lead_source: row.lead_source || '',
-      utm_source: row.utm_source || '',
-      utm_medium: row.utm_medium || '',
-      utm_campaign: row.utm_campaign || '',
-      utm_content: row.utm_content || '',
-      referrer: row.referrer || '',
-      landing_path: row.landing_path || '',
-      page_url: row.page_url || '',
-      lead_score: row.lead_score || row.owner_lead_score || '',
-      lead_tier: row.lead_tier || row.owner_lead_tier || '',
-      lead_tags: tags.join(', '),
+      timestamp: sanitizeField_(row.timestamp || now.toISOString()),
       status: status,
+      name: sanitizeField_(row.name || [row.first_name || '', row.last_name || ''].join(' ').trim()),
+      phone: sanitizeField_(row.phone),
+      email: sanitizeField_(row.email),
+      city: sanitizeField_(row.city),
+      service: sanitizeField_(row.service || row.selected_service),
+      budget_range: sanitizeField_(row.budget_range),
+      start_timeline: sanitizeField_(row.start_timeline || row.timeline || row.estimated_timeline),
+      lead_quality: sanitizeField_(row.lead_quality),
+      estimated_project_value: sanitizeField_(row.estimated_project_value || 'Varies by scope'),
+      next_action: sanitizeField_(row.next_action || nextAction),
       follow_up_due: followUpDue,
+      notes: sanitizeField_(row.notes),
+      ticket_id: sanitizeField_(row.ticket_id),
+      lead_tags: tags.join(', '),
+      lead_source: sanitizeField_(row.lead_source),
+      project_reference: sanitizeField_(row.selected_project_label || row.project_reference),
+      style_reference: sanitizeField_(row.selected_style || row.style_reference),
+      project_location: sanitizeField_(row.project_location || row.project_address),
+      contact_method: sanitizeField_(row.contact_method || row.preferred_contact_method),
+      submitted_local: sanitizeField_(row.submitted_local),
       last_touched: now,
-      next_action: row.next_action || nextAction,
-      assigned_to: row.assigned_to || '',
-      notes: row.notes || '',
-      owner_priority: row.owner_priority || '',
-      owner_summary: row.owner_summary || ''
+      page_url: sanitizeField_(row.page_url),
+      utm_source: sanitizeField_(row.utm_source),
+      utm_medium: sanitizeField_(row.utm_medium),
+      utm_campaign: sanitizeField_(row.utm_campaign)
     };
 
     meta.sheet.appendRow(HEADERS.map(function (key) { return values[key]; }));
@@ -219,6 +202,26 @@ function normalizeTags_(value) {
     .filter(Boolean);
 }
 
+function sanitizeField_(value) {
+  var text = String(value || '').trim();
+  if (!text) return '';
+  var normalized = text.toLowerCase().replace(/[_-]+/g, ' ').replace(/\s+/g, ' ').trim();
+  if (
+    normalized === 'not provided' ||
+    normalized === 'not selected' ||
+    normalized === 'not specified' ||
+    normalized === 'not set' ||
+    normalized === 'undefined' ||
+    normalized === 'null' ||
+    normalized === 'n/a' ||
+    normalized === 'na' ||
+    normalized === 'none'
+  ) {
+    return '';
+  }
+  return text;
+}
+
 function buildRowUrl_(spreadsheet, sheet, row) {
   return spreadsheet.getUrl() + '#gid=' + sheet.getSheetId() + '&range=A' + row;
 }
@@ -242,13 +245,75 @@ function getOrCreateSheet_() {
   }
 
   ensureHeader_(sheet);
+  applyOwnerDashboardLayout_(sheet);
 
   return { spreadsheet, sheet };
 }
 
 function ensureHeader_(sheet) {
-  if (sheet.getLastRow() > 0) return;
-  sheet.appendRow(HEADERS);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEADERS);
+    return;
+  }
+  var current = sheet.getRange(1, 1, 1, HEADERS.length).getValues()[0];
+  var mismatch = false;
+  for (var i = 0; i < HEADERS.length; i += 1) {
+    if (String(current[i] || '').trim() !== HEADERS[i]) {
+      mismatch = true;
+      break;
+    }
+  }
+  if (mismatch) {
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+  }
+}
+
+function applyOwnerDashboardLayout_(sheet) {
+  if (!sheet) return;
+  var requiredColumns = HEADERS.length;
+  var maxColumns = sheet.getMaxColumns();
+  if (maxColumns < requiredColumns) {
+    sheet.insertColumnsAfter(maxColumns, requiredColumns - maxColumns);
+    maxColumns = sheet.getMaxColumns();
+  }
+
+  sheet.setFrozenRows(1);
+  sheet.setFrozenColumns(0);
+  sheet.showColumns(1, maxColumns);
+
+  var widths = [
+    188, // timestamp
+    116, // status
+    190, // name
+    140, // phone
+    230, // email
+    130, // city
+    170, // service
+    160, // budget_range
+    140, // start_timeline
+    120, // lead_quality
+    170, // estimated_project_value
+    140, // next_action
+    150, // follow_up_due
+    240, // notes
+    170, // ticket_id
+    220, // lead_tags
+    130, // lead_source
+    180, // project_reference
+    170, // style_reference
+    220, // project_location
+    140, // contact_method
+    180, // submitted_local
+    170, // last_touched
+    280, // page_url
+    130, // utm_source
+    130, // utm_medium
+    150  // utm_campaign
+  ];
+
+  for (var i = 0; i < widths.length; i += 1) {
+    sheet.setColumnWidth(i + 1, widths[i]);
+  }
 }
 
 function json_(payload) {

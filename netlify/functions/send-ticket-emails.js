@@ -273,21 +273,57 @@ function isRateLimited(ip) {
 }
 
 function isPlaceholderValue(value) {
-  const text = String(value || '').trim().toLowerCase();
+  const text = String(value || '')
+    .replace(/\u00a0/g, ' ')
+    .trim()
+    .toLowerCase();
+  if (!text) return true;
+  const normalized = text
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/[.,;:!?]+$/g, '')
+    .trim();
+  if (/^(not set|not provided|not selected|not specified|not discussed yet|to be discussed|to be discussed during consultation|unknown|none|null|undefined|n\/a|na)$/i.test(normalized)) {
+    return true;
+  }
+  if (
+    normalized.includes('not selected') ||
+    normalized.includes('not provided') ||
+    normalized.includes('to be discussed')
+  ) {
+    return true;
+  }
   return (
-    !text ||
-    text === 'not_set' ||
-    text === 'not set' ||
-    text === 'not provided' ||
-    text === 'not selected' ||
-    text === 'not discussed yet' ||
-    text === 'to be discussed' ||
-    text === 'to be discussed during consultation'
+    false
   );
 }
 
 function isMeaningfulValue(value) {
   return !isPlaceholderValue(value);
+}
+
+function normalizeOptionalField(value, fallback = '') {
+  const cleaned = normalizeWhitespace(value);
+  if (!cleaned || isPlaceholderValue(cleaned)) return fallback;
+  return cleaned;
+}
+
+function isInternalVisionContent(value) {
+  const text = normalizeWhitespace(value).toLowerCase();
+  if (!text) return false;
+  const internalPatterns = [
+    'qa',
+    'test',
+    'verification',
+    'pipeline',
+    'assistant',
+    'codex',
+    'browser path',
+    'manual owner',
+    'owner/client delivery',
+    'final production verification'
+  ];
+  return internalPatterns.some((pattern) => text.includes(pattern));
 }
 
 
@@ -310,12 +346,12 @@ function splitFullName(fullName = '') {
 
 function buildFullName(firstName, lastName) {
   const parts = [safeText(firstName, ''), safeText(lastName, '')].filter((part) => !isPlaceholderValue(part));
-  return parts.length ? parts.join(' ') : 'Not provided';
+  return parts.length ? parts.join(' ') : '';
 }
 
 function buildProjectLocation(projectAddress, city) {
   const parts = [safeText(projectAddress, ''), safeText(city, '')].filter((part) => !isPlaceholderValue(part));
-  return parts.length ? parts.join(', ') : 'Not provided';
+  return parts.length ? parts.join(', ') : '';
 }
 
 function cleanBudgetLabel(value) {
@@ -455,61 +491,62 @@ function getSmtpTransporter() {
 function buildNormalizedData(rawData = {}, meta = {}) {
   const normalized = { ...rawData };
   const splitName = splitFullName(rawData.full_name || '');
-  const fallbackFirst = safeText(splitName.first, 'Not provided');
+  const fallbackFirst = safeText(splitName.first, '');
   const fallbackLast = safeText(splitName.last, '');
 
-  normalized.first_name = safeText(rawData.first_name, fallbackFirst);
+  normalized.first_name = normalizeOptionalField(rawData.first_name, fallbackFirst || 'there');
   normalized.last_name = safeText(rawData.last_name, fallbackLast);
-  if (normalized.last_name === 'Not provided') normalized.last_name = '';
+  if (isPlaceholderValue(normalized.last_name)) normalized.last_name = '';
   normalized.full_name = buildFullName(normalized.first_name, normalized.last_name);
+  if (!normalized.full_name) normalized.full_name = 'Website Lead';
 
-  normalized.email = safeText(rawData.email || rawData.email_visible);
-  normalized.phone = safeText(rawData.phone);
-  normalized.project_address = safeText(rawData.project_address || rawData.property_address || rawData.address);
-  normalized.city = safeText(rawData.city || rawData.project_city);
+  normalized.email = normalizeOptionalField(rawData.email || rawData.email_visible, '');
+  normalized.phone = normalizeOptionalField(rawData.phone, '');
+  normalized.project_address = normalizeOptionalField(rawData.project_address || rawData.property_address || rawData.address, '');
+  normalized.city = normalizeOptionalField(rawData.city || rawData.project_city, '');
   normalized.project_location = buildProjectLocation(normalized.project_address, normalized.city);
-  normalized.service = safeText(rawData.service || rawData.project_type || rawData.selected_service);
-  normalized.selected_service = safeText(rawData.selected_service || normalized.service);
-  normalized.consultation_tier = safeText(rawData.consultation_tier || rawData.lead_tier, '');
+  normalized.service = normalizeOptionalField(rawData.service || rawData.project_type || rawData.selected_service, 'Landscape Design & Build');
+  normalized.selected_service = normalizeOptionalField(rawData.selected_service || normalized.service, normalized.service);
+  normalized.consultation_tier = normalizeOptionalField(rawData.consultation_tier || rawData.lead_tier, '');
   normalized.lead_tier = normalized.consultation_tier;
-  normalized.selected_style = safeText(rawData.selected_style || rawData.project_style, '');
-  normalized.selected_image = safeText(rawData.selected_image || rawData.project_image, '');
-  normalized.selected_project_label = safeText(rawData.selected_project_label || rawData.project_reference, '');
-  normalized.lead_source = safeText(rawData.lead_source || rawData.source || rawData.utm_source, 'website');
-  normalized.utm_source = safeText(rawData.utm_source, '');
-  normalized.utm_medium = safeText(rawData.utm_medium, '');
-  normalized.utm_campaign = safeText(rawData.utm_campaign, '');
-  normalized.utm_content = safeText(rawData.utm_content, '');
-  normalized.referrer = safeText(rawData.referrer, 'direct');
-  normalized.landing_path = safeText(rawData.landing_path, '/');
-  normalized.page_url = safeText(rawData.page_url || meta.page_url, '');
+  normalized.selected_style = normalizeOptionalField(rawData.selected_style || rawData.project_style, '');
+  normalized.selected_image = normalizeOptionalField(rawData.selected_image || rawData.project_image, '');
+  normalized.selected_project_label = normalizeOptionalField(rawData.selected_project_label || rawData.project_reference, '');
+  normalized.lead_source = normalizeOptionalField(rawData.lead_source || rawData.source || rawData.utm_source, 'website');
+  normalized.utm_source = normalizeOptionalField(rawData.utm_source, '');
+  normalized.utm_medium = normalizeOptionalField(rawData.utm_medium, '');
+  normalized.utm_campaign = normalizeOptionalField(rawData.utm_campaign, '');
+  normalized.utm_content = normalizeOptionalField(rawData.utm_content, '');
+  normalized.referrer = normalizeOptionalField(rawData.referrer, 'direct');
+  normalized.landing_path = normalizeOptionalField(rawData.landing_path, '/');
+  normalized.page_url = normalizeOptionalField(rawData.page_url || meta.page_url, '');
 
   normalized.budget = normalizeBudgetRange(rawData);
   normalized.budget_range = normalized.budget;
-  normalized.estimated_timeline = safeText(rawData.estimated_timeline || rawData.timeline || rawData.start_timeline || rawData.start_window, '');
-  normalized.start_timeline = safeText(rawData.start_timeline || rawData.timeline || rawData.estimated_timeline || rawData.start_window, '');
-  normalized.contact_method = safeText(rawData.contact_method || rawData.preferred_contact_method || rawData.preferred_contact, 'Phone call');
+  normalized.estimated_timeline = normalizeOptionalField(rawData.estimated_timeline || rawData.timeline || rawData.start_timeline || rawData.start_window, '');
+  normalized.start_timeline = normalizeOptionalField(rawData.start_timeline || rawData.timeline || rawData.estimated_timeline || rawData.start_window, '');
+  normalized.contact_method = normalizeOptionalField(rawData.contact_method || rawData.preferred_contact_method || rawData.preferred_contact, 'Phone call');
   normalized.preferred_contact = normalized.contact_method;
-  normalized.vision = safeText(rawData.vision || rawData.message || rawData.details || rawData.project_details, '');
+  normalized.vision = normalizeOptionalField(rawData.vision || rawData.message || rawData.details || rawData.project_details, '');
 
   normalized.timeline = normalized.start_timeline;
   normalized.preferred_contact_method = normalized.contact_method;
   normalized.message = normalized.vision;
 
   normalized.ticket_id = resolveTicketId(rawData, meta.ticket_id);
-  normalized.submitted_local = safeText(rawData.submitted_local, meta.submitted_local);
-  normalized.owner_summary = safeText(rawData.owner_summary, meta.owner_summary);
-  normalized.owner_priority = safeText(rawData.owner_priority, meta.owner_priority);
+  normalized.submitted_local = safeText(rawData.submitted_local, meta.submitted_local || formatPhoenixDate());
+  normalized.owner_summary = normalizeOptionalField(rawData.owner_summary, meta.owner_summary);
+  normalized.owner_priority = normalizeOptionalField(rawData.owner_priority, meta.owner_priority);
   normalized.owner_priority_class = getPriorityClass(normalized.owner_priority);
-  normalized.owner_lead_score = safeText(rawData.owner_lead_score, meta.owner_lead_score);
-  normalized.owner_lead_tier = safeText(rawData.owner_lead_tier, meta.owner_lead_tier);
-  normalized.owner_lead_tags = safeText(rawData.owner_lead_tags, meta.owner_lead_tags);
-  normalized.lead_quality = safeText(rawData.lead_quality, meta.lead_quality);
-  normalized.estimated_project_value = safeText(rawData.estimated_project_value, meta.estimated_project_value);
-  normalized.sheet_status = safeText(meta.sheet_status || rawData.sheet_status, 'New');
-  normalized.sheet_row_id = safeText(meta.sheet_row_id || rawData.sheet_row_id, '');
-  normalized.sheet_row_url = safeText(meta.sheet_row_url || rawData.sheet_row_url, '');
-  normalized.sheet_url = safeText(meta.sheet_url || GOOGLE_SHEET_URL, '');
+  normalized.owner_lead_score = normalizeOptionalField(rawData.owner_lead_score, meta.owner_lead_score);
+  normalized.owner_lead_tier = normalizeOptionalField(rawData.owner_lead_tier, meta.owner_lead_tier);
+  normalized.owner_lead_tags = normalizeOptionalField(rawData.owner_lead_tags, meta.owner_lead_tags);
+  normalized.lead_quality = normalizeOptionalField(rawData.lead_quality, meta.lead_quality);
+  normalized.estimated_project_value = normalizeOptionalField(rawData.estimated_project_value, meta.estimated_project_value);
+  normalized.sheet_status = normalizeOptionalField(meta.sheet_status || rawData.sheet_status, 'New');
+  normalized.sheet_row_id = normalizeOptionalField(meta.sheet_row_id || rawData.sheet_row_id, '');
+  normalized.sheet_row_url = normalizeOptionalField(meta.sheet_row_url || rawData.sheet_row_url, '');
+  normalized.sheet_url = normalizeOptionalField(meta.sheet_url || GOOGLE_SHEET_URL, '');
 
   return normalized;
 }
@@ -517,9 +554,9 @@ function buildNormalizedData(rawData = {}, meta = {}) {
 function buildOwnerSummary(data) {
   const pieces = [];
   if (isMeaningfulValue(data.service)) pieces.push(`Service: ${safeText(data.service)}`);
-  if (isMeaningfulValue(data.lead_quality)) pieces.push(`Lead Quality: ${safeText(data.lead_quality, 'Not provided')}`);
+  if (isMeaningfulValue(data.lead_quality)) pieces.push(`Lead Quality: ${safeText(data.lead_quality, '')}`);
   if (isMeaningfulValue(data.estimated_project_value)) pieces.push(`Estimated Value: ${safeText(data.estimated_project_value, 'Varies by scope')}`);
-  if (isMeaningfulValue(data.consultation_tier || data.lead_tier)) pieces.push(`Budget Tier: ${safeText(data.consultation_tier || data.lead_tier, 'Not selected')}`);
+  if (isMeaningfulValue(data.consultation_tier || data.lead_tier)) pieces.push(`Budget Tier: ${safeText(data.consultation_tier || data.lead_tier, '')}`);
   if (isMeaningfulValue(data.budget_range || data.budget)) pieces.push(`Budget: ${safeText(data.budget_range || data.budget)}`);
   if (isMeaningfulValue(data.start_timeline || data.timeline || data.estimated_timeline)) pieces.push(`Timeline: ${safeText(data.start_timeline || data.timeline || data.estimated_timeline)}`);
   if (isMeaningfulValue(data.contact_method || data.preferred_contact || data.preferred_contact_method)) pieces.push(`Contact: ${safeText(data.contact_method || data.preferred_contact || data.preferred_contact_method)}`);
@@ -568,6 +605,7 @@ function estimateProjectValue(serviceValue, budgetRangeValue) {
 }
 
 function determineLeadQuality(data) {
+  const score = determineLeadScore(data);
   const budgetLabel = cleanBudgetLabel(data.budget || data.budget_range || normalizeBudgetRange(data));
   const budgetValues = extractBudgetNumbers(budgetLabel);
   const budgetMin = budgetValues.length ? Math.min(...budgetValues) : 0;
@@ -576,24 +614,35 @@ function determineLeadQuality(data) {
   const hasLocation = !isPlaceholderValue(data.project_location) ||
     !isPlaceholderValue(data.project_address) ||
     !isPlaceholderValue(data.city);
-  const visionText = safeText(data.vision || data.message || '', '').toLowerCase();
+  const visionText = safeText(data.vision || data.message || '', '');
+  const normalizedVision = visionText.toLowerCase();
   const vagueVision = !visionText || visionText.length < 20 ||
-    visionText.includes('not sure') ||
-    visionText.includes('to be discussed');
+    normalizedVision.includes('not sure') ||
+    normalizedVision.includes('to be discussed');
+  const internalVision = isInternalVisionContent(visionText);
 
-  if (!phoneValid || !hasLocation || vagueVision) {
+  if (!phoneValid || !hasLocation || vagueVision || internalVision) {
     return 'Low';
   }
 
-  if (budgetMin >= 25000 && months !== null && months <= 3) {
+  if (score >= 78 && budgetMin >= 25000 && months !== null && months <= 3) {
     return 'High';
   }
 
-  if (budgetMin >= 5000 && budgetMin < 25000 && months !== null && months <= 6) {
+  if (score >= 58 && (budgetMin >= 5000 || (months !== null && months <= 6))) {
     return 'Medium';
   }
 
   return 'Low';
+}
+
+function reconcileLeadQuality(quality, score) {
+  const normalized = String(quality || '').trim();
+  if (score >= 90) return 'High';
+  if (score <= 40) return 'Low';
+  if (score >= 70 && normalized.toLowerCase() === 'low') return 'Medium';
+  if (score >= 55 && !normalized) return 'Medium';
+  return normalized || 'Low';
 }
 
 function determineLeadScore(data) {
@@ -606,6 +655,12 @@ function determineLeadScore(data) {
   const hasLocation = !isPlaceholderValue(data.project_location) ||
     !isPlaceholderValue(data.project_address) ||
     !isPlaceholderValue(data.city);
+  const visionText = safeText(data.vision || data.message || '', '');
+  const normalizedVision = visionText.toLowerCase();
+  const vagueVision = !visionText || visionText.length < 20 ||
+    normalizedVision.includes('not sure') ||
+    normalizedVision.includes('to be discussed');
+  const internalVision = isInternalVisionContent(visionText);
   const serviceMatched = service.includes('design & build') ||
     service.includes('hardscaping') ||
     service.includes('outdoor kitchen');
@@ -615,6 +670,9 @@ function determineLeadScore(data) {
   if (timeline.includes('asap') || timeline.includes('within 30') || timeline.includes('1-3')) score += 15;
   if (phoneValid) score += 10;
   if (serviceMatched) score += 10;
+  if (!phoneValid) score -= 10;
+  if (!hasLocation) score -= 10;
+  if (vagueVision || internalVision) score -= 25;
   if (!phoneValid && !hasLocation) score -= 20;
 
   return Math.max(0, Math.min(100, score));
@@ -678,7 +736,7 @@ function fillTemplate(template, context) {
     if (token.endsWith('_html')) {
       return String(current || '');
     }
-    return escapeHtml(safeText(current, 'Not provided'));
+    return escapeHtml(safeText(current, ''));
   });
 }
 
@@ -719,7 +777,7 @@ function buildClientSummaryTables(data) {
     client_request_section_html: '<tr class="summary-group"><td colspan="2">Request Details</td></tr><tr><th>Expected Response</th><td>Within 1-2 business days</td></tr>',
     client_contact_section_html: contactRows ? `<tr class="summary-group"><td colspan="2">Contact Details</td></tr>${contactRows}` : '',
     client_project_section_html: projectRows ? `<tr class="summary-group"><td colspan="2">Project Details</td></tr>${projectRows}` : '',
-    client_vision_html: isMeaningfulValue(data.vision)
+    client_vision_html: isMeaningfulValue(data.vision) && !isInternalVisionContent(data.vision)
       ? `<div class="vision"><div class="vision-label">Your Vision</div><div class="vision-quote">"${escapeHtml(data.vision)}"</div></div>`
       : ''
   };
@@ -760,7 +818,7 @@ function buildOwnerTables(data) {
   return {
     owner_detail_rows_html: detailRows,
     owner_intel_rows_html: intelRows,
-    owner_vision_html: isMeaningfulValue(data.vision)
+    owner_vision_html: isMeaningfulValue(data.vision) && !isInternalVisionContent(data.vision)
       ? `<div class="section vision"><div class="section-head">Client Vision</div><div class="vision-quote">"${escapeHtml(data.vision)}"</div></div>`
       : ''
   };
@@ -1056,7 +1114,7 @@ async function ensureGoogleSheetDashboardFormatting(
           sheetId,
           gridProperties: {
             frozenRowCount: 1,
-            frozenColumnCount: 6
+            frozenColumnCount: 0
           }
         },
         fields: 'gridProperties.frozenRowCount,gridProperties.frozenColumnCount'
@@ -1211,22 +1269,20 @@ async function ensureGoogleSheetDashboardFormatting(
     });
   });
 
-  if (sheetColumnCount > totalColumns) {
-    requests.push({
-      updateDimensionProperties: {
-        range: {
-          sheetId,
-          dimension: 'COLUMNS',
-          startIndex: totalColumns,
-          endIndex: sheetColumnCount
-        },
-        properties: {
-          hiddenByUser: true
-        },
-        fields: 'hiddenByUser'
-      }
-    });
-  }
+  requests.push({
+    updateDimensionProperties: {
+      range: {
+        sheetId,
+        dimension: 'COLUMNS',
+        startIndex: 0,
+        endIndex: Math.max(sheetColumnCount, totalColumns)
+      },
+      properties: {
+        hiddenByUser: false
+      },
+      fields: 'hiddenByUser'
+    }
+  });
 
   const statusRules = [
     ['New', colorValue(0.87, 0.95, 0.89), colorValue(0.11, 0.35, 0.16)],
@@ -1436,54 +1492,55 @@ async function sendToGoogleSheetsDirect(row) {
 }
 
 async function sendToGoogleSheets(normalized, meta = {}) {
+  const sheetValue = (value, fallback = '') => ownerSheetValue(value, fallback);
   const row = {
     timestamp: meta.created_at || new Date().toISOString(),
-    ticket_id: normalized.ticket_id,
-    submitted_local: normalized.submitted_local,
+    ticket_id: sheetValue(normalized.ticket_id),
+    submitted_local: sheetValue(normalized.submitted_local),
     submitted_at_iso: meta.created_at || new Date().toISOString(),
-    name: normalized.full_name,
-    first_name: normalized.first_name,
-    last_name: normalized.last_name,
-    email: normalized.email,
-    phone: normalized.phone,
-    project_location: normalized.project_location,
-    project_address: normalized.project_address,
-    city: normalized.city,
-    service: normalized.service,
-    selected_service: normalized.selected_service,
-    consultation_tier: normalized.consultation_tier,
-    lead_quality: normalized.lead_quality,
-    estimated_project_value: normalized.estimated_project_value,
-    selected_style: normalized.selected_style,
-    selected_image: normalized.selected_image,
-    selected_project_label: normalized.selected_project_label,
-    lead_source: normalized.lead_source,
-    lead_tier: normalized.consultation_tier,
-    budget_range: normalized.budget_range,
-    start_timeline: normalized.start_timeline,
-    timeline: normalized.start_timeline,
-    estimated_timeline: normalized.estimated_timeline,
-    contact_method: normalized.contact_method,
-    preferred_contact_method: normalized.contact_method,
-    utm_source: normalized.utm_source,
-    utm_medium: normalized.utm_medium,
-    utm_campaign: normalized.utm_campaign,
-    utm_content: normalized.utm_content,
-    referrer: normalized.referrer,
-    landing_path: normalized.landing_path,
-    message: normalized.vision,
-    owner_priority: normalized.owner_priority,
-    lead_score: normalized.owner_lead_score,
-    owner_lead_score: normalized.owner_lead_score,
-    owner_lead_tier: normalized.owner_lead_tier,
-    lead_tags: normalized.owner_lead_tags,
-    owner_lead_tags: normalized.owner_lead_tags,
-    high_intent: normalized.high_intent,
-    budget_fit: normalized.budget_fit,
-    service_match: normalized.service_match,
-    status: normalized.sheet_status || 'New',
-    owner_summary: normalized.owner_summary,
-    page_url: safeText(meta.page_url, '')
+    name: sheetValue(normalized.full_name),
+    first_name: sheetValue(normalized.first_name),
+    last_name: sheetValue(normalized.last_name),
+    email: sheetValue(normalized.email),
+    phone: sheetValue(normalized.phone),
+    project_location: sheetValue(normalized.project_location),
+    project_address: sheetValue(normalized.project_address),
+    city: sheetValue(normalized.city),
+    service: sheetValue(normalized.service),
+    selected_service: sheetValue(normalized.selected_service),
+    consultation_tier: sheetValue(normalized.consultation_tier),
+    lead_quality: sheetValue(normalized.lead_quality),
+    estimated_project_value: sheetValue(normalized.estimated_project_value, 'Varies by scope'),
+    selected_style: sheetValue(normalized.selected_style),
+    selected_image: sheetValue(normalized.selected_image),
+    selected_project_label: sheetValue(normalized.selected_project_label),
+    lead_source: sheetValue(normalized.lead_source, 'website'),
+    lead_tier: sheetValue(normalized.consultation_tier),
+    budget_range: sheetValue(normalized.budget_range),
+    start_timeline: sheetValue(normalized.start_timeline),
+    timeline: sheetValue(normalized.start_timeline),
+    estimated_timeline: sheetValue(normalized.estimated_timeline),
+    contact_method: sheetValue(normalized.contact_method),
+    preferred_contact_method: sheetValue(normalized.contact_method),
+    utm_source: sheetValue(normalized.utm_source),
+    utm_medium: sheetValue(normalized.utm_medium),
+    utm_campaign: sheetValue(normalized.utm_campaign),
+    utm_content: sheetValue(normalized.utm_content),
+    referrer: sheetValue(normalized.referrer),
+    landing_path: sheetValue(normalized.landing_path),
+    message: sheetValue(normalized.vision),
+    owner_priority: sheetValue(normalized.owner_priority),
+    lead_score: sheetValue(normalized.owner_lead_score),
+    owner_lead_score: sheetValue(normalized.owner_lead_score),
+    owner_lead_tier: sheetValue(normalized.owner_lead_tier),
+    lead_tags: sheetValue(normalized.owner_lead_tags),
+    owner_lead_tags: sheetValue(normalized.owner_lead_tags),
+    high_intent: sheetValue(normalized.high_intent),
+    budget_fit: sheetValue(normalized.budget_fit),
+    service_match: sheetValue(normalized.service_match),
+    status: sheetValue(normalized.sheet_status, 'New'),
+    owner_summary: sheetValue(normalized.owner_summary),
+    page_url: sheetValue(meta.page_url)
   };
 
   if (!GOOGLE_SHEETS_WEBHOOK_URL) {
@@ -1772,7 +1829,7 @@ exports.handler = async (event) => {
     normalized.owner_lead_score = String(leadScore);
     normalized.owner_lead_tier = leadTier;
     normalized.owner_lead_tags = leadTagData.tags.join(', ');
-    normalized.lead_quality = determineLeadQuality(normalized);
+    normalized.lead_quality = reconcileLeadQuality(determineLeadQuality(normalized), leadScore);
     normalized.estimated_project_value = estimateProjectValue(normalized.service, normalized.budget_range);
     normalized.high_intent = leadTagData.high_intent;
     normalized.budget_fit = leadTagData.budget_fit;
@@ -1802,7 +1859,7 @@ exports.handler = async (event) => {
       normalized.high_intent = leadTagData.high_intent;
       normalized.budget_fit = leadTagData.budget_fit;
       normalized.service_match = leadTagData.service_match;
-      normalized.lead_quality = determineLeadQuality(normalized);
+      normalized.lead_quality = reconcileLeadQuality(determineLeadQuality(normalized), leadScore);
       normalized.estimated_project_value = estimateProjectValue(normalized.service, normalized.budget_range);
       normalized.owner_summary = `${buildOwnerSummary(normalized)} · Lead Score: ${leadScore}/100 (${leadTier}) · Tags: ${leadTagData.tags.join(', ')}`;
     }
@@ -1833,12 +1890,12 @@ exports.handler = async (event) => {
         to: OWNER_EMAIL,
         subject: ownerSubject,
         html: ownerHtml,
-        replyTo: normalized.email !== 'Not provided' ? normalized.email : undefined,
+        replyTo: isValidEmailAddress(normalized.email) ? normalized.email : undefined,
         preferredProvider: OWNER_EMAIL_PROVIDER
       })
     ];
 
-    if (normalized.email && normalized.email !== 'Not provided' && isValidEmailAddress(normalized.email)) {
+    if (normalized.email && isValidEmailAddress(normalized.email)) {
       emailTasks.push(
         sendEmail({
           to: normalized.email,

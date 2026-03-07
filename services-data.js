@@ -443,6 +443,11 @@
         'Base prep, install, and seam finishing',
         'Cleanup and maintenance walkthrough'
       ],
+      proofBlurbs: [
+        'North Scottsdale install: turf plus paver border completed with clean seam lines and drainage correction.',
+        'Arcadia backyard upgrade: low-maintenance turf layout designed to stay usable through summer heat.',
+        'Phoenix front-yard refresh: premium turf paired with drought-tolerant planting for curb appeal.'
+      ],
       serviceAreaText: 'Think Green installs artificial turf across Scottsdale, Paradise Valley, Phoenix, and nearby Valley neighborhoods for both front-yard and backyard projects.',
       faqs: [
         {

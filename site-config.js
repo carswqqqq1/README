@@ -126,12 +126,12 @@
       snapshotDate: ''
     },
     trustAssets: {
-      licenseVerifyUrl: 'https://roc.az.gov/contractor-search',
-      bondVerifyUrl: 'https://roc.az.gov/contractor-search',
+      licenseVerifyUrl: '',
+      bondVerifyUrl: '',
       licenseNumbers: ['157201 CR-21', '304902 B-4'],
-      licensePrompt: 'Use the Arizona ROC contractor search to review the current license record for this business before launch or client handoff.',
-      bondPrompt: 'Use the Arizona ROC contractor search to review current licensing and related bond details for this business before launch or client handoff.',
-      insuranceStatement: 'Arizona contractor search resources are linked below. Insurance and bonding documentation is shared during consultation.'
+      licensePrompt: 'Homeowners can verify active licensing through the Arizona Registrar of Contractors.',
+      bondPrompt: 'Bond and insurance documentation is provided during consultation so you can review current coverage before project start.',
+      insuranceStatement: 'Current insurance and bonding documentation is available during consultation for full transparency.'
     },
     financing: {
       enabled: true,

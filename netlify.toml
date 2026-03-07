@@ -81,6 +81,16 @@
   status = 200
 
 [[redirects]]
+  from = "/portfolio"
+  to = "/portfolio.html"
+  status = 200
+
+[[redirects]]
+  from = "/portfolio/"
+  to = "/portfolio.html"
+  status = 200
+
+[[redirects]]
   from = "/services/"
   to = "/services.html"
   status = 200
