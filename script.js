@@ -250,11 +250,11 @@
       meta.className = 'review-card__meta';
 
       var author = document.createElement('strong');
-      author.textContent = review.author || 'Google Review';
+      author.textContent = review.author || 'Homeowner Review';
 
       var location = document.createElement('span');
       var baseLocation = review.location || (SITE_CITY + ', ' + SITE_STATE);
-      location.textContent = baseLocation + ' · Google Review';
+      location.textContent = baseLocation + ' · Homeowner review';
 
       meta.appendChild(author);
       meta.appendChild(location);
@@ -269,15 +269,15 @@
   function applyGoogleReviewSnapshot() {
     var rating = String(GOOGLE_REVIEWS.rating || '').trim();
     var count = String(GOOGLE_REVIEWS.count || '').trim();
-    var platform = String(GOOGLE_REVIEWS.platform || 'Google Reviews').trim();
+    var platform = String(GOOGLE_REVIEWS.platform || 'Homeowner review profile').trim();
     var summary = '';
 
     if (rating && count) {
-      summary = 'Google review profile: ' + rating + ' rating across ' + count + ' reviews';
+      summary = platform + ': ' + rating + ' rating across ' + count + ' reviews';
     } else if (rating) {
-      summary = 'Google review profile: ' + rating + ' rating';
+      summary = platform + ': ' + rating + ' rating';
     } else if (count) {
-      summary = 'Google review profile: ' + count + ' reviews';
+      summary = platform + ': ' + count + ' reviews';
     } else {
       summary = 'Read recent homeowner feedback on our review profile';
     }

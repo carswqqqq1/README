@@ -121,7 +121,7 @@
     googleReviews: {
       rating: '',
       count: '',
-      platform: 'Google Reviews',
+      platform: 'Homeowner review profile',
       profileUrl: 'https://reviews.birdeye.com/think-green-design-build-landscape-156221164342730',
       snapshotDate: ''
     },
@@ -129,8 +129,8 @@
       licenseVerifyUrl: 'https://roc.az.gov/contractor-search',
       bondVerifyUrl: 'https://roc.az.gov/contractor-search',
       licenseNumbers: ['157201 CR-21', '304902 B-4'],
-      licensePrompt: 'Search the Arizona ROC contractor database for license records 157201 CR-21 and 304902 B-4.',
-      bondPrompt: 'Use the Arizona ROC contractor search to review the contractor record and related licensing details.',
+      licensePrompt: 'Use the Arizona ROC contractor search to review the current license record for this business before launch or client handoff.',
+      bondPrompt: 'Use the Arizona ROC contractor search to review current licensing and related bond details for this business before launch or client handoff.',
       insuranceStatement: 'Arizona contractor search resources are linked below. Insurance and bonding documentation is shared during consultation.'
     },
     financing: {

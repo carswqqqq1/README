@@ -102,12 +102,12 @@
 
     var rating = String(reviewConfig.rating || '').trim();
     var count = String(reviewConfig.count || '').trim();
-    var platform = String(reviewConfig.platform || 'Google Reviews').trim();
+    var platform = String(reviewConfig.platform || 'Homeowner review profile').trim();
     var link = String(reviewConfig.profileUrl || '').trim();
     if (!rating && !count) return;
 
     var text = rating + ' rating';
-    if (count) text += ' from ' + count + ' ' + platform;
+    if (count) text += ' from ' + count + ' on the ' + platform;
 
     target.innerHTML = link
       ? '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' + text + '</a>'
@@ -138,8 +138,8 @@
         }).join('') +
         '  </ul>' +
         '  <div class="service-card__actions">' +
-        '    <a class="btn btn--dark" href="' + service.path + '">Explore Service</a>' +
-        '    <a class="text-link" href="' + serviceConsultationHref(service) + '">Get Free Design Consultation &rarr;</a>' +
+        '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">Get Free Design Consultation</a>' +
+        '    <a class="text-link" href="' + service.path + '">View Service Details &rarr;</a>' +
         '  </div>' +
         '</article>';
     }).join('');

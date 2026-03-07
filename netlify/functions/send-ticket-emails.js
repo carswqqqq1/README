@@ -276,6 +276,8 @@ function isPlaceholderValue(value) {
   const text = String(value || '').trim().toLowerCase();
   return (
     !text ||
+    text === 'not_set' ||
+    text === 'not set' ||
     text === 'not provided' ||
     text === 'not selected' ||
     text === 'not discussed yet' ||
@@ -714,6 +716,9 @@ function buildClientSummaryTables(data) {
   return {
     client_contact_rows_html: contactRows,
     client_project_rows_html: projectRows,
+    client_request_section_html: '<tr class="summary-group"><td colspan="2">Request Details</td></tr><tr><th>Expected Response</th><td>Within 1-2 business days</td></tr>',
+    client_contact_section_html: contactRows ? `<tr class="summary-group"><td colspan="2">Contact Details</td></tr>${contactRows}` : '',
+    client_project_section_html: projectRows ? `<tr class="summary-group"><td colspan="2">Project Details</td></tr>${projectRows}` : '',
     client_vision_html: isMeaningfulValue(data.vision)
       ? `<div class="vision"><div class="vision-label">Your Vision</div><div class="vision-quote">"${escapeHtml(data.vision)}"</div></div>`
       : ''

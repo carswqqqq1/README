@@ -1624,7 +1624,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   position: relative;
 }
 .review-card::before {
-  content: "Google Review";
+  content: "Homeowner review";
   position: absolute;
   top: .8rem;
   right: .85rem;
