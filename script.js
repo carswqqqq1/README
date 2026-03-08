@@ -10,6 +10,7 @@
   var PHONE = SITE_CONFIG.phone || {};
   var PHONE_TRACKING = SITE_CONFIG.phoneTracking || {};
   var GOOGLE_REVIEWS = SITE_CONFIG.googleReviews || {};
+  var SERVICE_AREAS = Array.isArray(SITE_CONFIG.serviceAreas) ? SITE_CONFIG.serviceAreas : [];
   var TRUST_ASSETS = SITE_CONFIG.trustAssets || {};
   var FINANCING = SITE_CONFIG.financing || {};
   var ANALYTICS = SITE_CONFIG.analytics || {};
@@ -24,6 +25,11 @@
   var SITE_CITY = ADDRESS.city || 'Scottsdale';
   var SITE_STATE = ADDRESS.state || 'AZ';
   var SITE_ZIP = ADDRESS.zip || '85260';
+  var REVIEW_RATING = String(SITE_CONFIG.reviewRating || GOOGLE_REVIEWS.rating || '').trim();
+  var REVIEW_COUNT = String(SITE_CONFIG.reviewCount || GOOGLE_REVIEWS.count || '').trim();
+  var REVIEW_SOURCE = String(SITE_CONFIG.reviewSource || GOOGLE_REVIEWS.platform || 'Birdeye').trim();
+  var REVIEW_SOURCE_URL = String(SITE_CONFIG.reviewSourceUrl || GOOGLE_REVIEWS.profileUrl || '').trim();
+  var REVIEW_SNAPSHOT_DATE = String(SITE_CONFIG.reviewSnapshotDate || GOOGLE_REVIEWS.snapshotDate || '').trim();
 
   function setText(selector, value) {
     document.querySelectorAll(selector).forEach(function (el) {
@@ -137,25 +143,15 @@
     }
   }
 
-  function applyDemoLabel() {
-    document.querySelectorAll('.footer__brand').forEach(function (brand) {
-      if (!brand || brand.querySelector('.footer__demo-label')) return;
-      var label = document.createElement('p');
-      label.className = 'footer__demo-label';
-      label.textContent = 'Example Landscaping Company Website';
-      brand.appendChild(label);
-    });
-  }
-
   function ensureFooterServiceLinks() {
     var inNestedServicePage = String(window.location.pathname || '').indexOf('/services/') >= 0;
-    var desertHref = inNestedServicePage ? '../services/desert-landscaping.html' : 'services/desert-landscaping.html';
+    var desertHref = inNestedServicePage ? '/services/desert-landscaping' : '/services/desert-landscaping';
     document.querySelectorAll('.footer__col').forEach(function (column) {
       var heading = column.querySelector('h4');
       var list = column.querySelector('ul');
       if (!heading || !list) return;
       if (String(heading.textContent || '').trim().toLowerCase() !== 'services') return;
-      if (list.querySelector('a[href*="desert-landscaping.html"]')) return;
+      if (list.querySelector('a[href*="desert-landscaping"]')) return;
 
       var item = document.createElement('li');
       var link = document.createElement('a');
@@ -163,7 +159,7 @@
       link.textContent = 'Desert Landscaping';
       item.appendChild(link);
 
-      var referenceItem = list.querySelector('a[href*="artificial-turf.html"]');
+      var referenceItem = list.querySelector('a[href*="artificial-turf"]');
       if (referenceItem && referenceItem.parentElement) {
         referenceItem.parentElement.insertAdjacentElement('beforebegin', item);
       } else {
@@ -289,8 +285,12 @@
       author.textContent = review.author || 'Homeowner Review';
 
       var location = document.createElement('span');
-      var baseLocation = review.location || (SITE_CITY + ', ' + SITE_STATE);
-      location.textContent = baseLocation + ' · Homeowner review';
+      var metaParts = [
+        review.location || (SITE_CITY + ', ' + SITE_STATE),
+        review.projectType || 'Landscape project',
+        review.reviewDate || 'Recent review'
+      ].filter(Boolean);
+      location.textContent = metaParts.join(' · ');
 
       meta.appendChild(author);
       meta.appendChild(location);
@@ -303,31 +303,31 @@
   }
 
   function applyGoogleReviewSnapshot() {
-    var rating = String(GOOGLE_REVIEWS.rating || '').trim();
-    var count = String(GOOGLE_REVIEWS.count || '').trim();
-    var platform = String(GOOGLE_REVIEWS.platform || 'Homeowner review profile').trim();
+    var rating = REVIEW_RATING;
+    var count = REVIEW_COUNT;
+    var platform = REVIEW_SOURCE || 'Birdeye';
     var summary = '';
 
     if (rating && count) {
-      summary = platform + ': ' + rating + ' rating across ' + count + ' reviews';
+      summary = rating + '-star ' + platform + ' rating across ' + count + ' reviews';
     } else if (rating) {
-      summary = platform + ': ' + rating + ' rating';
+      summary = rating + '-star ' + platform + ' rating';
     } else if (count) {
-      summary = platform + ': ' + count + ' reviews';
+      summary = count + ' verified reviews on ' + platform;
     } else {
-      summary = 'Read recent homeowner feedback on our review profile';
+      summary = 'Read recent homeowner feedback on ' + platform;
     }
 
     if (summary) {
       setText('[data-google-reviews-summary]', summary);
     }
 
-    var dateText = String(GOOGLE_REVIEWS.snapshotDate || '').trim();
+    var dateText = REVIEW_SNAPSHOT_DATE;
     if (dateText) {
       setText('[data-google-reviews-date]', dateText);
     }
 
-    var profileUrl = String(GOOGLE_REVIEWS.profileUrl || '').trim();
+    var profileUrl = REVIEW_SOURCE_URL;
     if (profileUrl) {
       document.querySelectorAll('[data-google-reviews-link]').forEach(function (link) {
         link.setAttribute('href', profileUrl);
@@ -465,7 +465,7 @@
         '  <div class="recent-project__body">' +
         '    <h3>' + title + '</h3>' +
         '    <p>' + location + '</p>' +
-        '    <a href="index.html?' + requestQuery.toString() + '#contact" class="recent-project__cta">Request a Similar Project</a>' +
+        '    <a href="/?' + requestQuery.toString() + '#contact" class="recent-project__cta">Request a Similar Project</a>' +
         '  </div>' +
         '</article>';
     }).join('');
@@ -594,7 +594,7 @@
       }
     });
 
-    if (window.location.pathname.indexOf('thank-you.html') !== -1) {
+    if (window.location.pathname.indexOf('thank-you') !== -1) {
       window.trackLeadEvent('thank_you_view', {
         page_location: window.location.href,
         source: String(URL_PARAMS.get('source') || DETECTED_LEAD_SOURCE || 'website')
@@ -604,7 +604,6 @@
 
   applyTrackedPhone();
   applySiteBranding();
-  applyDemoLabel();
   ensureFooterServiceLinks();
   applyContactFormServices();
   applyProjectFitCards();
@@ -685,7 +684,6 @@
   var overlay = document.getElementById('nav-overlay');
   var close = document.getElementById('nav-close');
   var stickyBar = document.getElementById('sticky-bar');
-  var contactSection = document.getElementById('contact');
   var isContactInView = false;
   var scrollTopButton = document.createElement('button');
   var menuFocusTrap = null;
@@ -703,6 +701,212 @@
     var drawerOpen = document.body.classList.contains('has-consult-drawer-open');
     var shouldShow = isMobile && passedHero && !menuOpen && !drawerOpen && !isContactInView;
     stickyBar.classList.toggle('is-visible', shouldShow);
+  }
+
+  function getPageSecondaryAction() {
+    var pathname = normalizedPath;
+    var bodyServiceSlug = document.body && document.body.dataset ? document.body.dataset.serviceSlug : '';
+
+    if (pathname === '/' || pathname === '/index.html') {
+      return { href: '/services', label: 'View Services' };
+    }
+    if (pathname === '/services') {
+      return { href: '/portfolio', label: 'View Portfolio' };
+    }
+    if (pathname.indexOf('/services/') === 0 && bodyServiceSlug) {
+      return {
+        href: '/portfolio?service=' + encodeURIComponent(bodyServiceSlug),
+        label: 'View Similar Projects'
+      };
+    }
+    if (pathname.indexOf('/portfolio') === 0) {
+      return { href: '#portfolio-consultation', label: 'Request Similar Project' };
+    }
+    if (
+      pathname.indexOf('scottsdale-landscaping') >= 0 ||
+      pathname.indexOf('phoenix-landscaping') >= 0 ||
+      pathname.indexOf('paradise-valley-landscaping') >= 0 ||
+      pathname.indexOf('arcadia-landscaping') >= 0 ||
+      pathname.indexOf('mesa-landscaping') >= 0 ||
+      pathname.indexOf('chandler-landscaping') >= 0
+    ) {
+      return { href: '/portfolio', label: 'View Local Projects' };
+    }
+    if (pathname.indexOf('/resources') === 0) {
+      return { href: '/services', label: 'Explore Services' };
+    }
+    if (pathname.indexOf('project-planning-checklist') >= 0) {
+      return { href: 'downloads/project-planning-checklist.txt', label: 'Download Checklist' };
+    }
+    if (pathname.indexOf('landscaping-cost-scottsdale') >= 0) {
+      return { href: '/scottsdale-landscaping', label: 'View Scottsdale Page' };
+    }
+    if (pathname.indexOf('xeriscape-vs-turf-arizona') >= 0) {
+      return { href: '/services/desert-landscaping', label: 'Compare Services' };
+    }
+    if (pathname.indexOf('pavers-vs-concrete-arizona') >= 0) {
+      return { href: '/services/hardscaping', label: 'Compare Services' };
+    }
+    if (pathname.indexOf('outdoor-kitchen-planning-arizona') >= 0) {
+      return { href: '/services/outdoor-kitchens', label: 'Compare Services' };
+    }
+    if (pathname.indexOf('best-landscaper') >= 0) {
+      return { href: '/services', label: 'Compare Services' };
+    }
+    return { href: '#contact', label: 'Start Consultation' };
+  }
+
+  function getOverlayConsultHref() {
+    if (normalizedPath === '/services') return '#services-consultation';
+    if (normalizedPath.indexOf('/services/') === 0) return '#service-consultation';
+    if (normalizedPath.indexOf('/portfolio') === 0) return '#portfolio-consultation';
+    if (normalizedPath.indexOf('/resources') === 0) return '#resources-consultation';
+    if (normalizedPath.indexOf('scottsdale-landscaping') >= 0) return '#scottsdale-consultation';
+    if (normalizedPath.indexOf('phoenix-landscaping') >= 0) return '#phoenix-consultation';
+    if (normalizedPath.indexOf('paradise-valley-landscaping') >= 0) return '#paradise-valley-consultation';
+    if (normalizedPath.indexOf('arcadia-landscaping') >= 0) return '#arcadia-consultation';
+    if (normalizedPath.indexOf('mesa-landscaping') >= 0) return '#mesa-consultation';
+    if (normalizedPath.indexOf('chandler-landscaping') >= 0) return '#chandler-consultation';
+    if (normalizedPath.indexOf('best-landscaper') >= 0) return '#comparison-consultation';
+    if (normalizedPath.indexOf('project-planning-checklist') >= 0) return '#checklist-consultation';
+    if (normalizedPath.indexOf('landscaping-cost-scottsdale') >= 0) return '#cost-guide-consultation';
+    if (normalizedPath.indexOf('xeriscape-vs-turf-arizona') >= 0) return '#yard-choice-consultation';
+    if (normalizedPath.indexOf('pavers-vs-concrete-arizona') >= 0) return '#hardscape-choice-consultation';
+    if (normalizedPath.indexOf('outdoor-kitchen-planning-arizona') >= 0) return '#kitchen-guide-consultation';
+    return '#contact';
+  }
+
+  function getGlobalConsultFallbackHref() {
+    if (normalizedPath === '/services') return '#services-consultation';
+    if (normalizedPath.indexOf('/services/') === 0) return '#service-consultation';
+    if (normalizedPath.indexOf('/portfolio') === 0) return '#portfolio-consultation';
+    if (normalizedPath.indexOf('/resources') === 0) return '#resources-consultation';
+    if (normalizedPath.indexOf('scottsdale-landscaping') >= 0) return '#scottsdale-consultation';
+    if (normalizedPath.indexOf('phoenix-landscaping') >= 0) return '#phoenix-consultation';
+    if (normalizedPath.indexOf('paradise-valley-landscaping') >= 0) return '#paradise-valley-consultation';
+    if (normalizedPath.indexOf('arcadia-landscaping') >= 0) return '#arcadia-consultation';
+    if (normalizedPath.indexOf('mesa-landscaping') >= 0) return '#mesa-consultation';
+    if (normalizedPath.indexOf('chandler-landscaping') >= 0) return '#chandler-consultation';
+    if (normalizedPath.indexOf('best-landscaper') >= 0) return '#comparison-consultation';
+    if (normalizedPath.indexOf('project-planning-checklist') >= 0) return '#checklist-consultation';
+    if (normalizedPath.indexOf('landscaping-cost-scottsdale') >= 0) return '#cost-guide-consultation';
+    if (normalizedPath.indexOf('xeriscape-vs-turf-arizona') >= 0) return '#yard-choice-consultation';
+    if (normalizedPath.indexOf('pavers-vs-concrete-arizona') >= 0) return '#hardscape-choice-consultation';
+    if (normalizedPath.indexOf('outdoor-kitchen-planning-arizona') >= 0) return '#kitchen-guide-consultation';
+    return '/#contact';
+  }
+
+  function getOverlayIntroContent() {
+    if (normalizedPath === '/' || normalizedPath === '/index.html') {
+      return {
+        kicker: 'Scottsdale Design-Build',
+        title: 'Plan Your Outdoor Space',
+        sub: 'Jump into services, project inspiration, reviews, or start a consultation without hunting through the page.'
+      };
+    }
+    if (normalizedPath === '/services' || normalizedPath.indexOf('/services/') === 0) {
+      return {
+        kicker: 'Service Navigation',
+        title: 'Choose Your Next Step',
+        sub: 'Review services first, then use the action row for a call or a page-native consultation request.'
+      };
+    }
+    if (normalizedPath.indexOf('/portfolio') === 0) {
+      return {
+        kicker: 'Project Inspiration',
+        title: 'Browse Then Request',
+        sub: 'Compare project styles, save what fits your yard, and use the consultation path when you are ready.'
+      };
+    }
+    return {
+      kicker: 'Quick Navigation',
+      title: 'Move Through the Site Fast',
+      sub: 'Use the menu for navigation and the action row for the fastest way to call or start your request.'
+    };
+  }
+
+  function ensureOverlayActions() {
+    if (!overlay) return null;
+    var navPanel = overlay.querySelector('nav');
+    if (!navPanel) return null;
+
+    var intro = navPanel.querySelector('.nav__overlay-intro');
+    var introContent = getOverlayIntroContent();
+    if (!intro) {
+      intro = document.createElement('div');
+      intro.className = 'nav__overlay-intro';
+      intro.innerHTML =
+        '<span class="nav__overlay-kicker"></span>' +
+        '<h2 class="nav__overlay-title"></h2>' +
+        '<p class="nav__overlay-sub"></p>';
+      navPanel.insertBefore(intro, navPanel.firstChild);
+    }
+    var kicker = intro.querySelector('.nav__overlay-kicker');
+    var title = intro.querySelector('.nav__overlay-title');
+    var sub = intro.querySelector('.nav__overlay-sub');
+    if (kicker) kicker.textContent = introContent.kicker;
+    if (title) title.textContent = introContent.title;
+    if (sub) sub.textContent = introContent.sub;
+
+    var duplicateContact = Array.prototype.find.call(
+      navPanel.querySelectorAll('.nav__overlay-link'),
+      function (link) {
+        return !link.classList.contains('nav__overlay-cta') &&
+          String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() === 'contact';
+      }
+    );
+    if (duplicateContact) duplicateContact.remove();
+
+    var legacyCta = navPanel.querySelector('.nav__overlay-cta');
+    if (legacyCta) legacyCta.remove();
+
+    var actions = overlay.querySelector('.nav__overlay-actions');
+    if (!actions) {
+      actions = document.createElement('div');
+      actions.className = 'nav__overlay-actions';
+      actions.innerHTML =
+        '<a class="nav__overlay-action nav__overlay-action--ghost" data-overlay-call href="#">Call Now</a>' +
+        '<a class="nav__overlay-action nav__overlay-action--solid" data-overlay-consult href="#">Start Consultation</a>';
+      navPanel.insertAdjacentElement('afterend', actions);
+    }
+
+    var callAction = actions.querySelector('[data-overlay-call]');
+    var consultAction = actions.querySelector('[data-overlay-consult]');
+    if (callAction) {
+      callAction.setAttribute('href', 'tel:' + SITE_PHONE_RAW);
+      callAction.textContent = 'Call Now';
+      callAction.setAttribute('data-site-phone-link', '');
+    }
+    if (consultAction) {
+      consultAction.setAttribute('href', getOverlayConsultHref());
+      consultAction.textContent = 'Start Consultation';
+    }
+
+    actions.querySelectorAll('a').forEach(function (link) {
+      if (link.dataset.overlayBound === 'true') return;
+      link.dataset.overlayBound = 'true';
+      link.addEventListener('click', function () {
+        closeMenu(false);
+      });
+    });
+
+    return actions;
+  }
+
+  function configureMobileQuickActions() {
+    var secondary = stickyBar ? stickyBar.querySelector('.btn--outline-dark') : null;
+    var stickyAction = getPageSecondaryAction();
+    if (secondary && stickyAction) {
+      secondary.setAttribute('href', stickyAction.href);
+      secondary.textContent = stickyAction.label;
+      if (stickyAction.href.indexOf('downloads/') === 0) {
+        secondary.setAttribute('download', '');
+      } else {
+        secondary.removeAttribute('download');
+      }
+    }
+
+    ensureOverlayActions();
   }
 
   function updateScrollTop() {
@@ -762,20 +966,27 @@
     });
   }
 
-  if ('IntersectionObserver' in window && contactSection) {
-    var contactObs = new IntersectionObserver(function (entries) {
-      isContactInView = entries.some(function (entry) {
-        return entry.isIntersecting;
-      });
-      updateStickyBar();
-    }, { threshold: 0.2 });
-    contactObs.observe(contactSection);
+  if ('IntersectionObserver' in window) {
+    var leadSectionSelector = getOverlayConsultHref();
+    var leadSection = leadSectionSelector && leadSectionSelector.charAt(0) === '#'
+      ? document.querySelector(leadSectionSelector)
+      : document.getElementById('contact');
+    if (leadSection) {
+      var contactObs = new IntersectionObserver(function (entries) {
+        isContactInView = entries.some(function (entry) {
+          return entry.isIntersecting;
+        });
+        updateStickyBar();
+      }, { threshold: 0.2 });
+      contactObs.observe(leadSection);
+    }
   }
 
   window.addEventListener('scroll', updateStickyBar, { passive: true });
   window.addEventListener('resize', updateStickyBar);
   window.addEventListener('scroll', updateScrollTop, { passive: true });
   window.addEventListener('resize', updateScrollTop);
+  configureMobileQuickActions();
   updateStickyBar();
   updateScrollTop();
 
@@ -1201,7 +1412,7 @@
             selected_style: selectedStyle,
             selected_project_label: selectedProjectLabel
           });
-          window.location.href = '/thank-you.html?' + thankYouParams.toString();
+          window.location.href = '/thank-you?' + thankYouParams.toString();
         }, 350);
       } catch (error) {
         consultDrawerState.submit.disabled = false;
@@ -2275,7 +2486,7 @@
           selected_style: selectedStyle,
           selected_project_label: selectedProjectLabel
         });
-        window.location.href = 'thank-you.html?' + thankYouParams.toString();
+        window.location.href = '/thank-you?' + thankYouParams.toString();
       } catch (error) {
         if (errorMessage) {
           errorMessage.textContent = 'We could not submit your request right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
@@ -2395,7 +2606,7 @@
       '<h2 class="exit-popup__title">Get Free Design Consultation</h2>' +
       '<p class="exit-popup__sub">Share your project goals and we will follow up with a clear next-step plan.</p>' +
       '<div class="exit-popup__actions">' +
-      '<a href="/#contact" class="btn btn--solid exit-popup__cta">Get Free Design Consultation</a>' +
+      '<a href="' + getGlobalConsultFallbackHref() + '" class="btn btn--solid exit-popup__cta">Get Free Design Consultation</a>' +
       '<button class="exit-popup__dismiss" type="button">Continue browsing</button>' +
       '</div>' +
       '</div>';

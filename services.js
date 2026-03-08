@@ -31,11 +31,12 @@
   }
 
   function serviceConsultationHref(service) {
-    return withBase('index.html?service=' + encodeURIComponent(service.slug) + '&source=service_page#contact');
+    if (isNestedServicePage) return '#service-consultation';
+    return '#services-consultation';
   }
 
   function servicePortfolioHref(service) {
-    return withBase('portfolio.html?service=' + encodeURIComponent(service.slug));
+    return withBase('portfolio?service=' + encodeURIComponent(service.slug));
   }
 
   function normalizePath(path) {
@@ -94,20 +95,20 @@
   }
 
   function applyReviewSnapshot(selector) {
-    var reviewConfig = window.SITE_CONFIG && window.SITE_CONFIG.googleReviews
-      ? window.SITE_CONFIG.googleReviews
-      : {};
+    var reviewConfig = window.SITE_CONFIG || {};
     var target = selector ? document.querySelector(selector) : null;
     if (!target) return;
 
-    var rating = String(reviewConfig.rating || '').trim();
-    var count = String(reviewConfig.count || '').trim();
-    var platform = String(reviewConfig.platform || 'Homeowner review profile').trim();
-    var link = String(reviewConfig.profileUrl || '').trim();
+    var rating = String(reviewConfig.reviewRating || (reviewConfig.googleReviews && reviewConfig.googleReviews.rating) || '').trim();
+    var count = String(reviewConfig.reviewCount || (reviewConfig.googleReviews && reviewConfig.googleReviews.count) || '').trim();
+    var platform = String(reviewConfig.reviewSource || (reviewConfig.googleReviews && reviewConfig.googleReviews.platform) || 'Birdeye').trim();
+    var link = String(reviewConfig.reviewSourceUrl || (reviewConfig.googleReviews && reviewConfig.googleReviews.profileUrl) || '').trim();
+    var snapshotDate = String(reviewConfig.reviewSnapshotDate || (reviewConfig.googleReviews && reviewConfig.googleReviews.snapshotDate) || '').trim();
     if (!rating && !count) return;
 
-    var text = rating + ' rating';
-    if (count) text += ' from ' + count + ' on the ' + platform;
+    var text = rating + '-star ' + platform + ' rating';
+    if (count) text += ' across ' + count + ' reviews';
+    if (snapshotDate) text += ' · ' + snapshotDate;
 
     target.innerHTML = link
       ? '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' + text + '</a>'
@@ -127,11 +128,15 @@
     }
 
     hubGrid.innerHTML = services.map(function (service) {
+      var planningRange = service.typicalRange
+        ? '<p class="service-card__range"><span>Typical range</span><strong>' + service.typicalRange + '</strong></p>'
+        : '';
       return '' +
         '<article class="service-card reveal reveal--scale">' +
         '  <p class="service-card__eyebrow">Scottsdale &amp; Phoenix</p>' +
         '  <h3>' + service.title + '</h3>' +
         '  <p>' + service.heroSubtext + '</p>' +
+        planningRange +
         '  <ul class="service-card__list">' +
         service.whatYouGet.slice(0, 3).map(function (item) {
           return '<li>' + item + '</li>';
@@ -156,6 +161,8 @@
     var subtext = byId('service-subtext');
     var breadcrumbCurrent = byId('service-breadcrumb-current');
     var ctaPrimaryAll = document.querySelectorAll('[data-service-consultation-link]');
+    var ctaHeading = document.querySelector('.service-cta .section-title');
+    var ctaCopy = document.querySelector('.service-cta__copy p:not(.eyebrow)');
     var proof = byId('service-proof');
     var whatYouGet = byId('service-what-you-get');
     var process = byId('service-process');
@@ -175,9 +182,18 @@
       heroBackground.style.backgroundImage = 'url(\"../' + service.gallery[0].src + '\")';
     }
 
+    var ctaLabel = service.ctaLabel || ('Request ' + service.title + ' Consultation');
     ctaPrimaryAll.forEach(function (link) {
       link.setAttribute('href', serviceConsultationHref(service));
+      link.textContent = ctaLabel;
     });
+
+    if (ctaHeading) {
+      ctaHeading.textContent = ctaLabel;
+    }
+    if (ctaCopy) {
+      ctaCopy.textContent = 'Share your city, project goals, and target timeline so we can map the right next step for your ' + service.title.toLowerCase() + ' project.';
+    }
 
     if (proof) {
       proof.innerHTML = buildProofMarkup();

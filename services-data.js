@@ -4,7 +4,7 @@
   window.SERVICES_DATA = [
     {
       slug: 'landscape-design',
-      path: 'services/landscape-design.html',
+      path: '/services/landscape-design',
       navLabel: 'Landscape Design',
       title: 'Landscape Design & Build',
       formValue: 'Landscape Design & Build',
@@ -108,7 +108,7 @@
     },
     {
       slug: 'hardscaping',
-      path: 'services/hardscaping.html',
+      path: '/services/hardscaping',
       navLabel: 'Hardscaping',
       title: 'Hardscaping',
       formValue: 'Hardscaping',
@@ -212,7 +212,7 @@
     },
     {
       slug: 'outdoor-kitchens',
-      path: 'services/outdoor-kitchens.html',
+      path: '/services/outdoor-kitchens',
       navLabel: 'Outdoor Kitchens',
       title: 'Outdoor Kitchens',
       formValue: 'Fire Feature / Outdoor Kitchen',
@@ -316,7 +316,7 @@
     },
     {
       slug: 'fire-features',
-      path: 'services/fire-features.html',
+      path: '/services/fire-features',
       navLabel: 'Fire Features',
       title: 'Fire Features',
       formValue: 'Fire Feature / Outdoor Kitchen',
@@ -420,7 +420,7 @@
     },
     {
       slug: 'desert-landscaping',
-      path: 'services/desert-landscaping.html',
+      path: '/services/desert-landscaping',
       navLabel: 'Desert Landscaping',
       title: 'Desert Landscaping',
       formValue: 'Desert / Drought-Tolerant Design',
@@ -524,7 +524,7 @@
     },
     {
       slug: 'artificial-turf',
-      path: 'services/artificial-turf.html',
+      path: '/services/artificial-turf',
       navLabel: 'Artificial Turf',
       title: 'Artificial Turf',
       formValue: 'Artificial Turf',
@@ -628,7 +628,7 @@
     },
     {
       slug: 'irrigation',
-      path: 'services/irrigation.html',
+      path: '/services/irrigation',
       navLabel: 'Irrigation',
       title: 'Irrigation Systems',
       formValue: 'Irrigation',

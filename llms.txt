@@ -15,11 +15,15 @@
 
 ## Key Pages
 - [Home](https://thinkgreen-az.netlify.app/): Primary service overview, process, FAQs, and quote request form
-- [Portfolio](https://thinkgreen-az.netlify.app/portfolio.html): Real project gallery and design inspiration
-- [Services Hub](https://thinkgreen-az.netlify.app/services.html): Service overview and consultation paths
-- [Scottsdale Landscaping](https://thinkgreen-az.netlify.app/scottsdale-landscaping.html): Local project proof and Scottsdale FAQ
-- [Phoenix Landscaping](https://thinkgreen-az.netlify.app/phoenix-landscaping.html): Local project proof and Phoenix FAQ
-- [Search Topics](https://thinkgreen-az.netlify.app/search.html): Long-tail topic navigation for project intent
+- [Portfolio](https://thinkgreen-az.netlify.app/portfolio): Real project gallery and design inspiration
+- [Services Hub](https://thinkgreen-az.netlify.app/services): Service overview and consultation paths
+- [Resources](https://thinkgreen-az.netlify.app/resources): Planning guides and article-style homeowner answers
+- [Scottsdale Landscaping](https://thinkgreen-az.netlify.app/scottsdale-landscaping): Local project proof and Scottsdale FAQ
+- [Phoenix Landscaping](https://thinkgreen-az.netlify.app/phoenix-landscaping): Local project proof and Phoenix FAQ
+- [Paradise Valley Landscaping](https://thinkgreen-az.netlify.app/paradise-valley-landscaping): Premium local service area page
+- [Arcadia Landscaping](https://thinkgreen-az.netlify.app/arcadia-landscaping): Arcadia-focused outdoor living page
+- [Mesa Landscaping](https://thinkgreen-az.netlify.app/mesa-landscaping): East Valley family-yard service page
+- [Chandler Landscaping](https://thinkgreen-az.netlify.app/chandler-landscaping): Chandler outdoor living page
 
 ## Primary Services
 - Landscape design and build

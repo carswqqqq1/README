@@ -3,7 +3,15 @@ const path = require('path');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
-const OWNER_EMAIL = process.env.OWNER_EMAIL || 'carsonweso@icloud.com';
+let SITE_CONFIG = {};
+
+try {
+  SITE_CONFIG = require(path.join(process.cwd(), 'site-config.js'));
+} catch (error) {
+  SITE_CONFIG = {};
+}
+
+const OWNER_EMAIL = process.env.OWNER_EMAIL || SITE_CONFIG.ownerEmail || SITE_CONFIG.email || '';
 const FROM_EMAIL = process.env.FROM_EMAIL || '';
 const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || '';
 const EMAIL_PROVIDER = String(process.env.EMAIL_PROVIDER || 'resend').toLowerCase();

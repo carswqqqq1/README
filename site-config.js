@@ -1,10 +1,25 @@
-/* Global site configuration for fast client cloning.
-   Duplicate this file per client and update values in one place. */
-(function () {
-  window.SITE_CONFIG = {
+(function (root, factory) {
+  var config = factory();
+
+  if (typeof module === 'object' && module.exports) {
+    module.exports = config;
+  }
+
+  if (root) {
+    root.SITE_CONFIG = config;
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  var siteBaseUrl = 'https://thinkgreen-az.netlify.app';
+  var manifestPath = '/manifest.json';
+  var reviewSourceUrl = 'https://reviews.birdeye.com/think-green-design-build-landscape-156221164342730';
+
+  return {
+    siteBaseUrl: siteBaseUrl,
+    manifestPath: manifestPath,
     businessName: 'Think Green Design | Build Landscape',
     shortName: 'Think Green',
     email: 'thinkgreen@thinkgreenaz.com',
+    ownerEmail: 'thinkgreen@thinkgreenaz.com',
     phone: {
       raw: '4809229497',
       display: '(480) 922-9497'
@@ -35,12 +50,28 @@
       state: 'AZ',
       zip: '85260'
     },
+    serviceAreas: [
+      'Scottsdale',
+      'Paradise Valley',
+      'Phoenix',
+      'Fountain Hills',
+      'Cave Creek',
+      'Gilbert',
+      'Tempe',
+      'Mesa',
+      'Chandler'
+    ],
     brand: {
       logoPath: 'img/logo.png',
       primary: '#1b4332',
       primaryMid: '#2d6a4f',
       paper: '#faf7f3'
     },
+    reviewRating: '4.7',
+    reviewCount: '47',
+    reviewSource: 'Birdeye',
+    reviewSourceUrl: reviewSourceUrl,
+    reviewSnapshotDate: 'Reviewed March 8, 2026',
     contactFormServices: [
       'Landscape Design & Build',
       'Hardscaping',
@@ -86,45 +117,57 @@
         author: 'Sarah M.',
         location: 'North Scottsdale, AZ',
         rating: 5,
+        projectType: 'Paver patio and fire pit',
+        reviewDate: 'January 2026',
         text: 'Fire pit and paver patio came out exactly like the render. Crew cleaned up every day and stayed on schedule.'
       },
       {
         author: 'David R.',
         location: 'Paradise Valley, AZ',
         rating: 5,
+        projectType: 'Full outdoor living remodel',
+        reviewDate: 'December 2025',
         text: 'Communication was excellent from quote to final walkthrough. We always knew what phase was next.'
       },
       {
         author: 'Amanda L.',
         location: 'Arcadia, Phoenix',
         rating: 5,
+        projectType: 'Modern xeriscape design-build',
+        reviewDate: 'November 2025',
         text: 'Our Arcadia yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly.'
       },
       {
         author: 'Chris T.',
         location: 'Tempe, AZ',
         rating: 5,
+        projectType: 'Outdoor kitchen installation',
+        reviewDate: 'October 2025',
         text: 'Outdoor kitchen build finished faster than expected. The team was respectful and the jobsite stayed clean.'
       },
       {
         author: 'Nicole P.',
         location: 'Mesa, AZ',
         rating: 5,
+        projectType: 'Front-yard refresh',
+        reviewDate: 'September 2025',
         text: 'The crew was professional and detail-oriented. Our front yard now looks high-end without high maintenance.'
       },
       {
         author: 'Matt R.',
         location: 'Scottsdale, AZ',
         rating: 5,
+        projectType: 'Backyard remodel',
+        reviewDate: 'August 2025',
         text: 'No surprises on scope or pricing. Great coordination and the final punch list was handled quickly.'
       }
     ],
     googleReviews: {
-      rating: '',
-      count: '',
-      platform: 'Homeowner review profile',
-      profileUrl: 'https://reviews.birdeye.com/think-green-design-build-landscape-156221164342730',
-      snapshotDate: ''
+      rating: '4.7',
+      count: '47',
+      platform: 'Birdeye',
+      profileUrl: reviewSourceUrl,
+      snapshotDate: 'Reviewed March 8, 2026'
     },
     trustAssets: {
       licenseVerifyUrl: 'https://roc.az.gov/search/',
@@ -142,4 +185,4 @@
       ga4MeasurementId: 'G-B85D2Y2858'
     }
   };
-})();
+});

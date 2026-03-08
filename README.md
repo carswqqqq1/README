@@ -15,8 +15,8 @@ If production and branch ever drift, fix that before making visual or funnel edi
 Core template files:
 
 - `index.html`
-- `services.html`
-- `portfolio.html`
+- `services`
+- `portfolio`
 - `scottsdale-landscaping.html`
 - `phoenix-landscaping.html`
 - `styles.css`
@@ -174,3 +174,6 @@ npx netlify deploy --prod --dir . --site=afa9fd9e-aa69-4368-a08f-d93aa497b0a8
 - `docs/config-system.md`
 - `docs/google-sheet-setup.md`
 - `docs/crm-webhook-setup.md`
+- `docs/client-questionnaire-template.md`
+- `docs/client-answer-paste-template.md`
+- `docs/client-build-prompt-template.md`

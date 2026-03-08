@@ -10,7 +10,7 @@
   <meta property="og:title" content="Scottsdale &amp; Phoenix Landscape Portfolio | Think Green" />
   <meta property="og:description" content="Browse real Think Green landscape design-build projects in Scottsdale and Phoenix." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://thinkgreen-az.netlify.app/portfolio.html" />
+  <meta property="og:url" content="https://thinkgreen-az.netlify.app/portfolio" />
   <meta property="og:image" content="https://thinkgreen-az.netlify.app/img/projects/slide6.webp" />
   <meta property="og:image:alt" content="Think Green portfolio project in Scottsdale Arizona" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -23,30 +23,27 @@
   <link rel="icon" type="image/jpeg" href="img/favicon-32.jpg" sizes="32x32" />
   <link rel="icon" type="image/jpeg" href="img/favicon-192.jpg" sizes="192x192" />
   <link rel="apple-touch-icon" href="img/apple-touch-icon.jpg" />
-  <link rel="manifest" href="site.webmanifest" />
-  <link rel="canonical" href="https://thinkgreen-az.netlify.app/portfolio.html" />
-  <link rel="alternate" hreflang="en-us" href="https://thinkgreen-az.netlify.app/portfolio.html" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="canonical" href="https://thinkgreen-az.netlify.app/portfolio" />
+  <link rel="alternate" hreflang="en-us" href="https://thinkgreen-az.netlify.app/portfolio" />
   <link rel="preload" as="image" href="img/projects/slide6.webp" fetchpriority="high" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="portfolio.css" />
+  <link rel="stylesheet" href="/fonts.min.css" />
+  <link rel="stylesheet" href="/styles.min.css" />
+  <link rel="stylesheet" href="/portfolio.min.css" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "CollectionPage",
-          "@id": "https://thinkgreen-az.netlify.app/portfolio.html#collection",
-          "url": "https://thinkgreen-az.netlify.app/portfolio.html",
+          "@id": "https://thinkgreen-az.netlify.app/portfolio#collection",
+          "url": "https://thinkgreen-az.netlify.app/portfolio",
           "name": "Think Green Landscape Portfolio",
           "description": "Real project inspiration from Think Green landscape design and build work in Scottsdale and Phoenix."
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://thinkgreen-az.netlify.app/portfolio.html#breadcrumb",
+          "@id": "https://thinkgreen-az.netlify.app/portfolio#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -58,14 +55,13 @@
               "@type": "ListItem",
               "position": 2,
               "name": "Portfolio",
-              "item": "https://thinkgreen-az.netlify.app/portfolio.html"
+              "item": "https://thinkgreen-az.netlify.app/portfolio"
             }
           ]
         }
       ]
     }
   </script>
-  <link rel="manifest" href="/manifest.json" />
 </head>
 <body class="portfolio-page">
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -73,26 +69,26 @@
   <!-- NAV (same as main site) -->
   <header class="nav is-scrolled" id="nav">
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo" aria-label="Think Green Design Build Landscape — home">
+      <a href="/" class="nav__logo" aria-label="Think Green Design Build Landscape — home">
         <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img" data-site-logo width="106" height="96" />
       </a>
       <button class="nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="nav__links" id="nav-links" aria-label="Primary navigation">
-        <a href="index.html" class="nav__link">Home</a>
-        <a href="services.html" class="nav__link">Services</a>
-        <a href="portfolio.html" class="nav__link nav__link--active">Portfolio</a>
-        <a href="index.html#process" class="nav__link">Process</a>
-        <a href="index.html#reviews" class="nav__link">Reviews</a>
-        <a href="index.html#contact" class="nav__link">Contact</a>
+        <a href="/" class="nav__link">Home</a>
+        <a href="/services" class="nav__link">Services</a>
+        <a href="/portfolio" class="nav__link nav__link--active" aria-current="page">Portfolio</a>
+        <a href="/#process" class="nav__link">Process</a>
+        <a href="/#reviews" class="nav__link">Reviews</a>
+        <a href="#portfolio-consultation" class="nav__link">Contact</a>
       </nav>
       <div class="nav__actions">
         <a href="tel:4809229497" class="nav__call" data-site-phone-link>
           <span class="nav__call-number" data-site-phone-display>(480) 922-9497</span>
           <span class="nav__call-label">Call Now</span>
         </a>
-        <a href="index.html#contact" class="nav__cta">Get Free Design Consultation</a>
+        <a href="#portfolio-consultation" class="nav__cta">Get Free Design Consultation</a>
       </div>
     </div>
   </header>
@@ -101,13 +97,13 @@
   <div class="nav__overlay" id="nav-overlay" aria-hidden="true">
     <button class="nav__overlay-close" id="nav-close" aria-label="Close menu">&#x2715;</button>
     <nav aria-label="Mobile navigation">
-      <a href="index.html" class="nav__overlay-link">Home</a>
-      <a href="services.html" class="nav__overlay-link">Services</a>
-      <a href="portfolio.html" class="nav__overlay-link">Portfolio</a>
-      <a href="index.html#process" class="nav__overlay-link">Process</a>
-      <a href="index.html#reviews" class="nav__overlay-link">Reviews</a>
-      <a href="index.html#contact" class="nav__overlay-link">Contact</a>
-      <a href="index.html#contact" class="nav__overlay-link nav__overlay-cta">Get Free Design Consultation</a>
+      <a href="/" class="nav__overlay-link">Home</a>
+      <a href="/services" class="nav__overlay-link">Services</a>
+      <a href="/portfolio" class="nav__overlay-link">Portfolio</a>
+      <a href="/#process" class="nav__overlay-link">Process</a>
+      <a href="/#reviews" class="nav__overlay-link">Reviews</a>
+      <a href="#portfolio-consultation" class="nav__overlay-link">Contact</a>
+      <a href="#portfolio-consultation" class="nav__overlay-link nav__overlay-cta">Get Free Design Consultation</a>
     </nav>
     <div class="nav__overlay-contact">
       <a href="tel:4809229497" data-site-phone-link data-site-phone-display>(480) 922-9497</a>
@@ -130,8 +126,8 @@
           <li>Best for consultations, scope, and style direction</li>
         </ul>
         <div class="pf-hero__actions">
-          <a href="index.html?source=portfolio_hero#contact" class="btn btn--solid">Get Free Design Consultation</a>
-          <a href="index.html?source=portfolio_hero#contact" class="btn btn--dark">Request a Similar Project</a>
+          <a href="#portfolio-consultation" class="btn btn--solid">Get Free Design Consultation</a>
+          <a href="#portfolio-consultation" class="btn btn--dark">Request a Similar Project</a>
         </div>
       </div>
     </section>
@@ -153,7 +149,7 @@
     <section class="pf-grid-section container">
       <div class="pf-request reveal">
         <p>See a layout you like? We will prefill the contact form with the style, service direction, and project reference so you can move faster.</p>
-        <a href="index.html?source=portfolio#contact" class="btn btn--dark" id="pf-request-style">Request a Similar Project</a>
+        <a href="/?source=portfolio#contact" class="btn btn--dark" id="pf-request-style">Request a Similar Project</a>
       </div>
       <article class="pf-story reveal">
         <figure class="pf-story__media">
@@ -168,7 +164,7 @@
             <li><strong>Timeline:</strong> 3 weeks</li>
           </ul>
           <p class="pf-story__text">This project is a strong reference if you want an entertaining-focused layout with warmer night use, cleaner circulation, and materials that feel tailored to the home.</p>
-          <a href="index.html?source=portfolio_story&service=hardscaping&selected_style=hardscaping&selected_image=fireplace.jpg&selected_project_label=Architectural%20Grounds&prefill_message=Interested%20in%20a%20project%20similar%20to%20the%20Featured%20Project.#contact" class="btn btn--solid">Request a Similar Project</a>
+          <a href="/?source=portfolio_story&service=hardscaping&selected_style=hardscaping&selected_image=fireplace.jpg&selected_project_label=Architectural%20Grounds&prefill_message=Interested%20in%20a%20project%20similar%20to%20the%20Featured%20Project.#contact" class="btn btn--solid">Request a Similar Project</a>
         </div>
       </article>
       <header class="pf-grid__header reveal reveal--left">
@@ -433,12 +429,12 @@
       </div>
       <div class="pf-grid__cta reveal">
         <p class="pf-grid__cta-copy">Want this level of finish, detail, and material quality in your own yard?</p>
-        <a href="index.html#contact" class="btn btn--solid">Get Free Design Consultation</a>
+        <a href="#portfolio-consultation" class="btn btn--solid">Get Free Design Consultation</a>
       </div>
     </section>
 
     <!-- CTA STRIP -->
-    <section class="pf-cta">
+    <section class="pf-cta" id="portfolio-consultation">
       <div class="pf-cta__inner container">
         <div class="pf-cta__text reveal">
           <p class="eyebrow">Ready to Begin?</p>
@@ -446,7 +442,7 @@
           <p>Bring the portfolio ideas you like best. We will translate them into a design direction that fits your property, budget, and day-to-day lifestyle.</p>
         </div>
         <div class="pf-cta__actions reveal">
-          <a href="index.html#contact" class="btn btn--solid">Get Free Design Consultation</a>
+          <a href="#portfolio-consultation" class="btn btn--solid">Get Free Design Consultation</a>
           <a href="tel:4809229497" class="btn btn--dark" data-site-phone-link>
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="width:16px;height:16px"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
             <span data-site-phone-display>(480) 922-9497</span>
@@ -461,7 +457,7 @@
   <footer class="footer">
     <div class="footer__top container">
       <div class="footer__brand">
-        <a href="index.html" class="nav__logo nav__logo--footer" aria-label="Think Green Design Build Landscape">
+        <a href="/" class="nav__logo nav__logo--footer" aria-label="Think Green Design Build Landscape">
           <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img nav__logo-img--footer" data-site-logo width="132" height="118" />
         </a>
         <p>Premium landscape design and construction serving Scottsdale, Phoenix, and nearby Valley communities.</p>
@@ -470,22 +466,31 @@
       <div class="footer__col">
         <h4>Services</h4>
         <ul>
-          <li><a href="services/landscape-design.html">Landscape Design &amp; Build</a></li>
-          <li><a href="services/hardscaping.html">Hardscaping</a></li>
-          <li><a href="services/outdoor-kitchens.html">Outdoor Kitchens</a></li>
-          <li><a href="services/fire-features.html">Fire Features</a></li>
-          <li><a href="services/artificial-turf.html">Artificial Turf</a></li>
-          <li><a href="services/irrigation.html">Irrigation</a></li>
+          <li><a href="/services/landscape-design">Landscape Design &amp; Build</a></li>
+          <li><a href="/services/hardscaping">Hardscaping</a></li>
+          <li><a href="/services/outdoor-kitchens">Outdoor Kitchens</a></li>
+          <li><a href="/services/fire-features">Fire Features</a></li>
+          <li><a href="/services/artificial-turf">Artificial Turf</a></li>
+          <li><a href="/services/irrigation">Irrigation</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4>Studio</h4>
         <ul>
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#process">Our Process</a></li>
-          <li><a href="portfolio.html">Portfolio</a></li>
-          <li><a href="index.html#project-fit">Project Fit</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#process">Our Process</a></li>
+          <li><a href="/portfolio">Portfolio</a></li>
+          <li><a href="/#project-fit">Project Fit</a></li>
+          <li><a href="#portfolio-consultation">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="/resources">All Resources</a></li>
+          <li><a href="/best-landscaper-scottsdale">Compare Landscapers</a></li>
+          <li><a href="/project-planning-checklist">Planning Checklist</a></li>
+          <li><a href="/landscaping-cost-scottsdale">Cost Guide</a></li>
         </ul>
       </div>
       <div class="footer__col">
@@ -509,7 +514,7 @@
       <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
       Call Now
     </a>
-    <a href="index.html#contact" class="btn btn--outline-dark">Get Free Design Consultation</a>
+    <a href="#portfolio-consultation" class="btn btn--outline-dark">Get Free Design Consultation</a>
   </div>
 
   <div class="pf-lightbox" id="pf-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Project preview">
@@ -525,15 +530,15 @@
             <span class="pf-lightbox__chip pf-lightbox__chip--location" id="pf-lightbox-location">Scottsdale / Phoenix Area</span>
           </div>
           <p id="pf-lightbox-detail"></p>
-          <a href="index.html?source=portfolio#contact" class="btn btn--solid pf-lightbox__request" id="pf-lightbox-request">Request a Similar Project</a>
+          <a href="/?source=portfolio#contact" class="btn btn--solid pf-lightbox__request" id="pf-lightbox-request">Request a Similar Project</a>
         </figcaption>
       </figure>
       <button type="button" class="pf-lightbox__nav pf-lightbox__nav--next" id="pf-lightbox-next" aria-label="Next project">&#10095;</button>
     </div>
   </div>
 
-  <script src="site-config.js"></script>
-  <script src="script.js"></script>
-  <script src="portfolio.js"></script>
+  <script src="/site-config.js"></script>
+  <script src="/script.min.js"></script>
+  <script src="/portfolio.min.js"></script>
 </body>
 </html>
