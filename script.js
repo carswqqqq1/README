@@ -459,6 +459,34 @@
     });
   }
 
+  function dedupeConsultNavigationLinks() {
+    var primaryNav = document.querySelector('.nav__links');
+    var primaryCta = document.querySelector('.nav__actions .nav__cta');
+
+    if (primaryNav && primaryCta) {
+      var ctaHref = String(primaryCta.getAttribute('href') || '').trim();
+      Array.prototype.slice.call(primaryNav.querySelectorAll('.nav__link')).forEach(function (link) {
+        var label = String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+        var href = String(link.getAttribute('href') || '').trim();
+        if (label === 'contact' && href === ctaHref) {
+          link.remove();
+        }
+      });
+    }
+
+    if (overlay) {
+      var overlayCta = overlay.querySelector('.nav__overlay-cta');
+      var overlayCtaHref = overlayCta ? String(overlayCta.getAttribute('href') || '').trim() : '';
+      Array.prototype.slice.call(overlay.querySelectorAll('.nav__overlay-link')).forEach(function (link) {
+        var label = String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+        var href = String(link.getAttribute('href') || '').trim();
+        if (!link.classList.contains('nav__overlay-cta') && label === 'contact' && href === overlayCtaHref) {
+          link.remove();
+        }
+      });
+    }
+  }
+
   function applyFinancingNote() {
     var financingNote = document.getElementById('financing-note');
     if (!financingNote) return;
@@ -744,6 +772,7 @@
   }
   window.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
+  dedupeConsultNavigationLinks();
   applyActiveNavigationState();
 
   /* ---- MOBILE MENU ---- */
