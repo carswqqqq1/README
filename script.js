@@ -127,6 +127,18 @@
     });
     setText('[data-site-phone-display]', SITE_PHONE_DISPLAY);
 
+    document.querySelectorAll('.nav__call[data-site-phone-link]').forEach(function (el) {
+      el.innerHTML =
+        '<span class="nav__call-number" data-site-phone-display>' + SITE_PHONE_DISPLAY + '</span>' +
+        '<span class="nav__call-label">Call Now</span>';
+    });
+
+    document.querySelectorAll('.sticky-bar .btn[data-site-phone-link]').forEach(function (el) {
+      el.innerHTML =
+        '<span class="sticky-bar__phone-number" data-site-phone-display>' + SITE_PHONE_DISPLAY + '</span>' +
+        '<span class="sticky-bar__phone-label">Call Now</span>';
+    });
+
     document.querySelectorAll('[data-site-email-link]').forEach(function (el) {
       el.setAttribute('href', 'mailto:' + SITE_EMAIL);
     });
