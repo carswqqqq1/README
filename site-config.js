@@ -69,7 +69,7 @@
       paper: '#faf7f3'
     },
     reviewRating: '4.7',
-    reviewCount: '47',
+    reviewCount: '43',
     reviewSource: 'Birdeye',
     reviewSourceUrl: reviewSourceUrl,
     reviewSnapshotDate: 'Reviewed March 8, 2026',
@@ -108,9 +108,9 @@
     ],
     beforeAfter: {
       beforeImage: 'img/projects/before-29.jpg',
-      beforeAlt: 'Original yard before renovation',
+      beforeAlt: 'Scottsdale backyard before renovation with worn grass, dated concrete, and limited shade',
       afterImage: 'img/projects/after-29.jpg',
-      afterAlt: 'Completed landscape after renovation',
+      afterAlt: 'Scottsdale backyard after renovation with pavers, fire feature, lighting, and low-water planting',
       note: 'Drag the slider to compare a real project before and after completion.'
     },
     reviews: [
@@ -165,14 +165,14 @@
     ],
     googleReviews: {
       rating: '4.7',
-      count: '47',
+      count: '43',
       platform: 'Birdeye',
       profileUrl: reviewSourceUrl,
       snapshotDate: 'Reviewed March 8, 2026'
     },
     trustAssets: {
       licenseVerifyUrl: 'https://roc.az.gov/search/',
-      bondVerifyUrl: '',
+      bondVerifyUrl: 'https://roc.az.gov/search/',
       licenseNumbers: ['157201 CR-21', '304902 B-4'],
       licensePrompt: 'Verify current Arizona ROC licensing using the official contractor search and the license numbers shown below.',
       bondPrompt: 'Bond and insurance documentation is provided during consultation so you can review current coverage before project start.',

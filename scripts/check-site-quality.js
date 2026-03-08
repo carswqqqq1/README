@@ -41,6 +41,12 @@ htmlFiles.forEach((file) => {
   if (/href="\/#contact"/i.test(html) && file !== 'index.html') {
     failures.push(`${file}: homepage contact fallback still present`);
   }
+  if (file === 'index.html' && /<script src="\/site-config\.js"(?![^>]*defer)/i.test(html)) {
+    failures.push(`${file}: site-config.js is not deferred`);
+  }
+  if (file === 'index.html' && /<script src="\/script\.min\.js"(?![^>]*defer)/i.test(html)) {
+    failures.push(`${file}: script.min.js is not deferred`);
+  }
 });
 
 mainIndexedPages.forEach((file) => {

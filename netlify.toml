@@ -18,7 +18,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(self), payment=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com; frame-src 'none'; object-src 'none'; base-uri 'self';"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com https://region1.analytics.google.com; frame-src 'none'; object-src 'none'; base-uri 'self';"
 
 [[headers]]
   for = "/"
@@ -151,6 +151,31 @@
   status = 200
 
 [[redirects]]
+  from = "/resources"
+  to = "/resources.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/process"
+  to = "/process.html"
+  status = 200
+
+[[redirects]]
+  from = "/reviews"
+  to = "/reviews.html"
+  status = 200
+
+[[redirects]]
+  from = "/free-consultation"
+  to = "/free-consultation.html"
+  status = 200
+
+[[redirects]]
   from = "/best-landscaper-scottsdale"
   to = "/best-landscaper-scottsdale.html"
   status = 200
@@ -163,6 +188,76 @@
 [[redirects]]
   from = "/thank-you"
   to = "/thank-you.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/outdoor-lighting"
+  to = "/services/outdoor-lighting.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/pergola-shade"
+  to = "/services/pergola-shade.html"
+  status = 200
+
+[[redirects]]
+  from = "/arcadia-landscaping"
+  to = "/arcadia-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/mesa-landscaping"
+  to = "/mesa-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/chandler-landscaping"
+  to = "/chandler-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/paradise-valley-landscaping"
+  to = "/paradise-valley-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/tempe-landscaping"
+  to = "/tempe-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/gilbert-landscaping"
+  to = "/gilbert-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/fountain-hills-landscaping"
+  to = "/fountain-hills-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/cave-creek-landscaping"
+  to = "/cave-creek-landscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/landscaping-cost-scottsdale"
+  to = "/landscaping-cost-scottsdale.html"
+  status = 200
+
+[[redirects]]
+  from = "/xeriscape-vs-turf-arizona"
+  to = "/xeriscape-vs-turf-arizona.html"
+  status = 200
+
+[[redirects]]
+  from = "/pavers-vs-concrete-arizona"
+  to = "/pavers-vs-concrete-arizona.html"
+  status = 200
+
+[[redirects]]
+  from = "/outdoor-kitchen-planning-arizona"
+  to = "/outdoor-kitchen-planning-arizona.html"
   status = 200
 
 [[redirects]]

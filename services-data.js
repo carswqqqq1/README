@@ -23,6 +23,7 @@
         'Layout planning for circulation, shade, and entertaining',
         'Material and finish selections that match your architecture',
         '3D visual planning before construction begins',
+        'Outdoor lighting, water feature, and specialty upgrade planning when needed',
         'Integrated build execution with one accountable team',
         'Final walkthrough with punch-list and warranty review'
       ],
@@ -330,6 +331,192 @@
       ]
     },
     {
+      slug: 'outdoor-lighting',
+      path: '/services/outdoor-lighting',
+      navLabel: 'Outdoor Lighting',
+      title: 'Outdoor Lighting',
+      formValue: 'Outdoor Lighting',
+      metaTitle: 'Outdoor Lighting in Scottsdale & Phoenix | Think Green',
+      metaDescription: 'Outdoor lighting design and installation in Scottsdale and Phoenix for pathway safety, curb appeal, highlighting, and evening outdoor living.',
+      heroHeadline: 'Outdoor Lighting in Scottsdale and Phoenix',
+      heroSubtext: 'Layered landscape lighting improves safety, curb appeal, and evening usability without making the yard feel overlit or generic.',
+      typicalRange: '$3k-$18k',
+      proofBlurbs: [
+        'Lighting plans are built around pathways, focal points, and entertaining zones instead of random fixture placement.',
+        'Fixture choices are matched to the home style so the yard feels refined at night, not overdone.',
+        'Low-voltage systems are planned for durability, serviceability, and clean long-term maintenance.'
+      ],
+      whatYouGet: [
+        'Pathway and safety-lighting planning',
+        'Accent lighting for planting, architecture, and focal features',
+        'Low-voltage fixture and transformer selection',
+        'Lighting layout coordinated with hardscape and planting',
+        'Evening entertaining-zone illumination strategy',
+        'Final aiming, testing, and owner walkthrough'
+      ],
+      process: [
+        'Lighting goals and property walkthrough',
+        'Fixture and layout planning',
+        'Low-voltage installation and wiring coordination',
+        'Nighttime aiming, testing, and final walkthrough'
+      ],
+      serviceAreaText: 'Think Green designs and installs outdoor lighting across Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities for curb appeal, safety, and outdoor living use.',
+      resources: [
+        { title: 'Scottsdale service area page', path: '/scottsdale-landscaping' },
+        { title: 'Resources hub', path: '/resources' },
+        { title: 'Free consultation page', path: '/free-consultation' }
+      ],
+      faqs: [
+        {
+          q: 'How much does outdoor lighting cost in Scottsdale?',
+          a: 'Pricing depends on fixture count, transformer needs, wiring complexity, and whether lighting is being added to an existing yard or integrated into a larger project.'
+        },
+        {
+          q: 'Can outdoor lighting be added to an existing landscape?',
+          a: 'Yes. We can retrofit lighting into existing planting, hardscape, and entry areas or coordinate it with a larger redesign.'
+        },
+        {
+          q: 'What areas should be lit first?',
+          a: 'Most homeowners start with pathways, entry points, seating areas, focal planting, and architectural highlights.'
+        },
+        {
+          q: 'Do you install smart or timer-based controls?',
+          a: 'Yes. We can configure scheduling and controls so lighting is easier to manage and more efficient.'
+        },
+        {
+          q: 'Can lighting be combined with patios, fire features, or kitchens?',
+          a: 'Absolutely. Lighting is strongest when it is planned alongside the rest of the outdoor living layout.'
+        }
+      ],
+      gallery: [
+        {
+          src: 'img/projects/slide10.webp',
+          alt: 'Landscape lighting and curb appeal upgrade in Scottsdale Arizona',
+          width: 1630,
+          height: 860,
+          chip: 'Lighting',
+          label: 'Front Entry Highlighting'
+        },
+        {
+          src: 'img/projects/firepit.jpg',
+          alt: 'Outdoor lighting around patio and fire feature in Scottsdale Arizona',
+          width: 1600,
+          height: 900,
+          chip: 'Outdoor Living',
+          label: 'Patio + Fire Glow'
+        },
+        {
+          src: 'img/projects/shade-structure.jpg',
+          alt: 'Lighting around covered patio in Phoenix Arizona',
+          width: 1000,
+          height: 668,
+          chip: 'Evening Use',
+          label: 'Entertaining Zone'
+        },
+        {
+          src: 'img/projects/fireplace.jpg',
+          alt: 'Landscape lighting and fireplace integration in Paradise Valley Arizona',
+          width: 1600,
+          height: 1066,
+          chip: 'Feature Lighting',
+          label: 'Architectural Accent'
+        }
+      ]
+    },
+    {
+      slug: 'pergola-shade',
+      path: '/services/pergola-shade',
+      navLabel: 'Pergola & Shade',
+      title: 'Pergola & Shade Structures',
+      formValue: 'Pergola / Shade Structure',
+      metaTitle: 'Pergolas and Shade Structures in Scottsdale & Phoenix | Think Green',
+      metaDescription: 'Pergolas and shade structures in Scottsdale and Phoenix for outdoor kitchens, patios, pool zones, and backyard lounge areas that stay usable through Arizona heat.',
+      heroHeadline: 'Pergolas and Shade Structures in Scottsdale and Phoenix',
+      heroSubtext: 'Shade structures help patios, kitchens, and lounge zones work harder through Arizona heat while giving the yard stronger architectural definition.',
+      typicalRange: '$8k-$45k',
+      proofBlurbs: [
+        'Shade structures are sized around the way you actually use the patio, not just dropped in as an afterthought.',
+        'Post placement, traffic flow, and roof orientation are coordinated with outdoor kitchens, fire features, and planting beds.',
+        'Material and finish choices are matched to the home so the structure feels built-in instead of bolted on.'
+      ],
+      whatYouGet: [
+        'Pergola and shade-structure planning around lounge and dining zones',
+        'Layout coordination with kitchens, patios, fire features, and circulation',
+        'Material, finish, and roof-style recommendations',
+        'Sun-angle and comfort planning for hotter afternoon use',
+        'Integrated lighting and utility coordination where needed',
+        'Build-ready structure strategy for long-term outdoor living use'
+      ],
+      process: [
+        'Site walkthrough and shade-comfort planning',
+        'Structure sizing, placement, and finish direction',
+        'Integration with hardscape, utilities, and surrounding features',
+        'Construction coordination and final walkthrough'
+      ],
+      serviceAreaText: 'Think Green plans pergolas and shade structures across Scottsdale, Paradise Valley, Phoenix, Chandler, Mesa, and nearby Valley communities.',
+      resources: [
+        { title: 'Outdoor kitchen planning guide', path: '/outdoor-kitchen-planning-arizona' },
+        { title: 'Portfolio outdoor living projects', path: '/portfolio?service=pergola-shade' },
+        { title: 'Free consultation page', path: '/free-consultation' }
+      ],
+      faqs: [
+        {
+          q: 'Do pergolas make sense in Arizona heat?',
+          a: 'Yes, when they are positioned correctly. Shade structures are most effective when orientation, roof style, and adjacent uses are planned around real afternoon sun exposure.'
+        },
+        {
+          q: 'Can a pergola be integrated with an outdoor kitchen or fire feature?',
+          a: 'Absolutely. Many of the strongest backyard layouts combine structure, cooking, seating, and lighting so each element works together instead of competing for space.'
+        },
+        {
+          q: 'What is the typical cost range for a pergola or shade structure?',
+          a: 'It depends on size, materials, electrical scope, finish level, and whether the structure is tied into a larger patio or outdoor living renovation.'
+        },
+        {
+          q: 'Can you help if we are not sure between a pergola, ramada, or covered patio idea?',
+          a: 'Yes. We can compare shade options during consultation and recommend the structure type that best fits your budget, style, and comfort goals.'
+        },
+        {
+          q: 'Do shade structures work as part of a phased project?',
+          a: 'Yes. We can plan the pergola or shade structure as a first phase or integrate it into a broader design-build master plan.'
+        }
+      ],
+      gallery: [
+        {
+          src: 'img/projects/shade-structure.jpg',
+          alt: 'Custom pergola and shade structure for a Phoenix outdoor lounge',
+          width: 1000,
+          height: 668,
+          chip: 'Shade Structure',
+          label: 'Covered Lounge Zone'
+        },
+        {
+          src: 'img/projects/firepit.jpg',
+          alt: 'Pergola and fire feature layout in Scottsdale Arizona',
+          width: 1600,
+          height: 900,
+          chip: 'Outdoor Living',
+          label: 'Shade + Fire'
+        },
+        {
+          src: 'img/projects/after-29.jpg',
+          alt: 'Pergola and dining patio design in Chandler Arizona',
+          width: 880,
+          height: 670,
+          chip: 'Dining Patio',
+          label: 'Hosting Upgrade'
+        },
+        {
+          src: 'img/projects/slide7.webp',
+          alt: 'Modern backyard shade structure in Paradise Valley Arizona',
+          width: 1630,
+          height: 860,
+          chip: 'Architectural Shade',
+          label: 'Backyard Retreat'
+        }
+      ]
+    },
+    {
       slug: 'fire-features',
       path: '/services/fire-features',
       navLabel: 'Fire Features',
@@ -564,6 +751,7 @@
         'Drainage and edge-detail planning',
         'Seam management for clean visual flow',
         'Integration with pavers, planters, and landscape beds',
+        'Optional putting green layout planning for premium backyard use',
         'Low-maintenance care guidance after install'
       ],
       process: [
@@ -599,6 +787,10 @@
         {
           q: 'Can turf be combined with pavers and planting beds?',
           a: 'Absolutely. Most projects blend turf with hardscape and planting for a balanced, finished outdoor design.'
+        },
+        {
+          q: 'Do you build backyard putting green areas too?',
+          a: 'Yes. Putting greens can be integrated into larger turf layouts when the yard has the right space, slope, and use case.'
         },
         {
           q: 'How soon can installation be scheduled?',

@@ -147,25 +147,62 @@
   function ensureFooterServiceLinks() {
     var inNestedServicePage = String(window.location.pathname || '').indexOf('/services/') >= 0;
     var desertHref = inNestedServicePage ? '/services/desert-landscaping' : '/services/desert-landscaping';
+    var lightingHref = inNestedServicePage ? '/services/outdoor-lighting' : '/services/outdoor-lighting';
     document.querySelectorAll('.footer__col').forEach(function (column) {
       var heading = column.querySelector('h4');
       var list = column.querySelector('ul');
       if (!heading || !list) return;
       if (String(heading.textContent || '').trim().toLowerCase() !== 'services') return;
-      if (list.querySelector('a[href*="desert-landscaping"]')) return;
 
-      var item = document.createElement('li');
-      var link = document.createElement('a');
-      link.href = desertHref;
-      link.textContent = 'Desert Landscaping';
-      item.appendChild(link);
+      if (!list.querySelector('a[href*="desert-landscaping"]')) {
+        var desertItem = document.createElement('li');
+        var desertLink = document.createElement('a');
+        desertLink.href = desertHref;
+        desertLink.textContent = 'Desert Landscaping';
+        desertItem.appendChild(desertLink);
 
-      var referenceItem = list.querySelector('a[href*="artificial-turf"]');
-      if (referenceItem && referenceItem.parentElement) {
-        referenceItem.parentElement.insertAdjacentElement('beforebegin', item);
-      } else {
-        list.appendChild(item);
+        var referenceItem = list.querySelector('a[href*="artificial-turf"]');
+        if (referenceItem && referenceItem.parentElement) {
+          referenceItem.parentElement.insertAdjacentElement('beforebegin', desertItem);
+        } else {
+          list.appendChild(desertItem);
+        }
       }
+
+      if (!list.querySelector('a[href*="outdoor-lighting"]')) {
+        var lightingItem = document.createElement('li');
+        var lightingLink = document.createElement('a');
+        lightingLink.href = lightingHref;
+        lightingLink.textContent = 'Outdoor Lighting';
+        lightingItem.appendChild(lightingLink);
+        list.appendChild(lightingItem);
+      }
+    });
+  }
+
+  function ensureFooterStudioLinks() {
+    document.querySelectorAll('.footer__col').forEach(function (column) {
+      var heading = column.querySelector('h4');
+      var list = column.querySelector('ul');
+      if (!heading || !list) return;
+      if (String(heading.textContent || '').trim().toLowerCase() !== 'studio') return;
+
+      var desiredLinks = [
+        { href: '/about', label: 'About' },
+        { href: '/process', label: 'Process' },
+        { href: '/reviews', label: 'Reviews' },
+        { href: '/free-consultation', label: 'Free Consultation' }
+      ];
+
+      desiredLinks.forEach(function (entry) {
+        if (list.querySelector('a[href="' + entry.href + '"]')) return;
+        var item = document.createElement('li');
+        var link = document.createElement('a');
+        link.href = entry.href;
+        link.textContent = entry.label;
+        item.appendChild(link);
+        list.appendChild(item);
+      });
     });
   }
 
@@ -415,6 +452,51 @@
         return '<li>' + item + '</li>';
       }).join(''));
     }
+  }
+
+  function injectLocationBusinessSchema() {
+    var pathname = normalizedPath || '/';
+    var locationMap = {
+      '/scottsdale-landscaping': { city: 'Scottsdale', name: 'Scottsdale Landscaping' },
+      '/phoenix-landscaping': { city: 'Phoenix', name: 'Phoenix Landscaping' },
+      '/paradise-valley-landscaping': { city: 'Paradise Valley', name: 'Paradise Valley Landscaping' },
+      '/arcadia-landscaping': { city: 'Arcadia', name: 'Arcadia Landscaping' },
+      '/mesa-landscaping': { city: 'Mesa', name: 'Mesa Landscaping' },
+      '/chandler-landscaping': { city: 'Chandler', name: 'Chandler Landscaping' },
+      '/tempe-landscaping': { city: 'Tempe', name: 'Tempe Landscaping' },
+      '/gilbert-landscaping': { city: 'Gilbert', name: 'Gilbert Landscaping' },
+      '/fountain-hills-landscaping': { city: 'Fountain Hills', name: 'Fountain Hills Landscaping' },
+      '/cave-creek-landscaping': { city: 'Cave Creek', name: 'Cave Creek Landscaping' }
+    };
+
+    var locationData = locationMap[pathname];
+    if (!locationData) return;
+
+    var schema = {
+      '@context': 'https://schema.org',
+      '@type': 'HomeAndConstructionBusiness',
+      '@id': (SITE_CONFIG.siteBaseUrl || window.location.origin) + pathname + '#local-business',
+      name: SITE_NAME + ' - ' + locationData.name,
+      url: (SITE_CONFIG.siteBaseUrl || window.location.origin) + pathname,
+      telephone: '+1-' + SITE_PHONE_RAW,
+      areaServed: locationData.city,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: SITE_ADDRESS_LINE1,
+        addressLocality: SITE_CITY,
+        addressRegion: SITE_STATE,
+        postalCode: SITE_ZIP,
+        addressCountry: 'US'
+      }
+    };
+
+    var existing = document.getElementById('location-business-schema');
+    if (existing) existing.remove();
+    var script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'location-business-schema';
+    script.text = JSON.stringify(schema);
+    document.head.appendChild(script);
   }
 
   function toPathname(href) {
@@ -699,12 +781,14 @@
   applyTrackedPhone();
   applySiteBranding();
   ensureFooterServiceLinks();
+  ensureFooterStudioLinks();
   applyContactFormServices();
   applyProjectFitCards();
   applyBeforeAfterContent();
   renderReviewCards();
   applyGoogleReviewSnapshot();
   applyTrustAssets();
+  injectLocationBusinessSchema();
   applyFinancingNote();
   renderRecentProjects();
   applyImageTitleFallbacks();
@@ -832,7 +916,19 @@
       return { href: '/services', label: 'Explore Services' };
     }
     if (pathname.indexOf('project-planning-checklist') >= 0) {
-      return { href: 'downloads/project-planning-checklist.txt', label: 'Download Checklist' };
+      return { href: '#checklist-gate', label: 'Download Checklist' };
+    }
+    if (pathname.indexOf('/about') === 0) {
+      return { href: '/reviews', label: 'Read Reviews' };
+    }
+    if (pathname.indexOf('/process') === 0) {
+      return { href: '/about', label: 'About The Team' };
+    }
+    if (pathname.indexOf('/reviews') === 0) {
+      return { href: '/portfolio', label: 'View Portfolio' };
+    }
+    if (pathname.indexOf('/free-consultation') === 0) {
+      return { href: '/services', label: 'Explore Services' };
     }
     if (pathname.indexOf('landscaping-cost-scottsdale') >= 0) {
       return { href: '/scottsdale-landscaping', label: 'View Scottsdale Page' };
@@ -863,6 +959,14 @@
     if (normalizedPath.indexOf('arcadia-landscaping') >= 0) return '#arcadia-consultation';
     if (normalizedPath.indexOf('mesa-landscaping') >= 0) return '#mesa-consultation';
     if (normalizedPath.indexOf('chandler-landscaping') >= 0) return '#chandler-consultation';
+    if (normalizedPath.indexOf('tempe-landscaping') >= 0) return '#tempe-consultation';
+    if (normalizedPath.indexOf('gilbert-landscaping') >= 0) return '#gilbert-consultation';
+    if (normalizedPath.indexOf('fountain-hills-landscaping') >= 0) return '#fountain-hills-consultation';
+    if (normalizedPath.indexOf('cave-creek-landscaping') >= 0) return '#cave-creek-consultation';
+    if (normalizedPath.indexOf('/about') === 0) return '/free-consultation';
+    if (normalizedPath.indexOf('/process') === 0) return '/free-consultation';
+    if (normalizedPath.indexOf('/reviews') === 0) return '/free-consultation';
+    if (normalizedPath.indexOf('/free-consultation') === 0) return '#consultation-request';
     if (normalizedPath.indexOf('best-landscaper') >= 0) return '#comparison-consultation';
     if (normalizedPath.indexOf('project-planning-checklist') >= 0) return '#checklist-consultation';
     if (normalizedPath.indexOf('landscaping-cost-scottsdale') >= 0) return '#cost-guide-consultation';
@@ -883,6 +987,14 @@
     if (normalizedPath.indexOf('arcadia-landscaping') >= 0) return '#arcadia-consultation';
     if (normalizedPath.indexOf('mesa-landscaping') >= 0) return '#mesa-consultation';
     if (normalizedPath.indexOf('chandler-landscaping') >= 0) return '#chandler-consultation';
+    if (normalizedPath.indexOf('tempe-landscaping') >= 0) return '#tempe-consultation';
+    if (normalizedPath.indexOf('gilbert-landscaping') >= 0) return '#gilbert-consultation';
+    if (normalizedPath.indexOf('fountain-hills-landscaping') >= 0) return '#fountain-hills-consultation';
+    if (normalizedPath.indexOf('cave-creek-landscaping') >= 0) return '#cave-creek-consultation';
+    if (normalizedPath.indexOf('/about') === 0) return '/free-consultation';
+    if (normalizedPath.indexOf('/process') === 0) return '/free-consultation';
+    if (normalizedPath.indexOf('/reviews') === 0) return '/free-consultation';
+    if (normalizedPath.indexOf('/free-consultation') === 0) return '#consultation-request';
     if (normalizedPath.indexOf('best-landscaper') >= 0) return '#comparison-consultation';
     if (normalizedPath.indexOf('project-planning-checklist') >= 0) return '#checklist-consultation';
     if (normalizedPath.indexOf('landscaping-cost-scottsdale') >= 0) return '#cost-guide-consultation';
@@ -2212,6 +2324,98 @@
   }
 
   bindFormPrefillTriggers();
+
+  function bindResourceGateForms() {
+    var gateForms = document.querySelectorAll('[data-resource-gate-form]');
+    if (!gateForms.length) return;
+
+    gateForms.forEach(function (gateForm) {
+      var downloadTargetId = gateForm.getAttribute('data-download-target') || '';
+      var downloadTarget = downloadTargetId ? document.getElementById(downloadTargetId) : null;
+      var error = gateForm.querySelector('[data-resource-gate-error]');
+      var submit = gateForm.querySelector('[type="submit"]');
+      var requiredEmail = gateForm.querySelector('input[name="email_visible"]');
+      var hiddenTicket = gateForm.querySelector('input[name="ticket_id"]');
+      var hiddenSubmitted = gateForm.querySelector('input[name="submitted_local"]');
+      var hiddenPageUrl = gateForm.querySelector('input[name="page_url"]');
+      var hiddenReferrer = gateForm.querySelector('input[name="referrer"]');
+      var hiddenLandingPath = gateForm.querySelector('input[name="landing_path"]');
+      var hiddenLeadSource = gateForm.querySelector('input[name="lead_source"]');
+
+      gateForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        if (error) error.textContent = '';
+
+        var emailValue = String(requiredEmail && requiredEmail.value || '').trim();
+        if (!emailValue) {
+          if (error) error.textContent = 'Enter an email to unlock the checklist download.';
+          if (requiredEmail) requiredEmail.focus();
+          return;
+        }
+
+        var ticketId = createTicketId();
+        if (hiddenTicket) hiddenTicket.value = ticketId;
+        if (hiddenSubmitted) hiddenSubmitted.value = formatPhoenixDateTime(new Date());
+        if (hiddenPageUrl) hiddenPageUrl.value = String(window.location.href || '');
+        if (hiddenReferrer) hiddenReferrer.value = String(document.referrer || 'direct');
+        if (hiddenLandingPath) hiddenLandingPath.value = String(window.location.pathname || '/');
+        if (hiddenLeadSource) hiddenLeadSource.value = 'checklist_download';
+
+        var payload = {};
+        new FormData(gateForm).forEach(function (value, key) {
+          payload[key] = String(value);
+        });
+
+        var defaultText = submit ? submit.textContent : '';
+        if (submit) {
+          submit.disabled = true;
+          submit.textContent = 'Unlocking...';
+        }
+
+        try {
+          var response = await fetch('/.netlify/functions/send-ticket-emails', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: encodeFormData(payload)
+          });
+
+          if (!response.ok) {
+            var responseBody = {};
+            try {
+              responseBody = await response.json();
+            } catch (jsonError) {}
+            throw new Error(responseBody.error || 'Submission failed');
+          }
+
+          gateForm.setAttribute('hidden', 'hidden');
+          if (downloadTarget) {
+            downloadTarget.hidden = false;
+            downloadTarget.classList.add('is-visible');
+          }
+
+          if (typeof window.trackLeadEvent === 'function') {
+            window.trackLeadEvent('resource_gate_submit', {
+              resource: gateForm.getAttribute('data-resource-name') || 'resource',
+              ticket_id: ticketId,
+              page_location: window.location.href
+            });
+          }
+        } catch (gateError) {
+          if (submit) {
+            submit.disabled = false;
+            submit.textContent = defaultText;
+          }
+          if (error) {
+            error.textContent = gateError && gateError.message
+              ? gateError.message
+              : 'We could not unlock the checklist right now. Please try again or call us.';
+          }
+        }
+      });
+    });
+  }
+
+  bindResourceGateForms();
 
   if (form) {
     var params = URL_PARAMS;

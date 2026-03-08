@@ -24,12 +24,22 @@
 - [Arcadia Landscaping](https://thinkgreen-az.netlify.app/arcadia-landscaping): Arcadia-focused outdoor living page
 - [Mesa Landscaping](https://thinkgreen-az.netlify.app/mesa-landscaping): East Valley family-yard service page
 - [Chandler Landscaping](https://thinkgreen-az.netlify.app/chandler-landscaping): Chandler outdoor living page
+- [Tempe Landscaping](https://thinkgreen-az.netlify.app/tempe-landscaping): Tempe outdoor living page
+- [Gilbert Landscaping](https://thinkgreen-az.netlify.app/gilbert-landscaping): Gilbert family-yard service page
+- [Fountain Hills Landscaping](https://thinkgreen-az.netlify.app/fountain-hills-landscaping): Fountain Hills desert-modern page
+- [Cave Creek Landscaping](https://thinkgreen-az.netlify.app/cave-creek-landscaping): Cave Creek outdoor living page
+- [About](https://thinkgreen-az.netlify.app/about): Brand/process positioning page
+- [Process](https://thinkgreen-az.netlify.app/process): Consultation-to-build process page
+- [Reviews](https://thinkgreen-az.netlify.app/reviews): Review proof page
+- [Free Consultation](https://thinkgreen-az.netlify.app/free-consultation): Dedicated lead page
 
 ## Primary Services
 - Landscape design and build
 - Hardscaping and stonework
 - Outdoor kitchens
 - Fire features
+- Outdoor lighting
+- Pergolas and shade structures
 - Artificial turf and desert-friendly modernization
 - Irrigation systems
 
