@@ -3065,20 +3065,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .nav__links { display: none; }
   .nav__actions { display: none; }
   .nav__burger { display: flex; }
-  .nav__mobile-call { display: inline-flex; }
-  .nav__mobile-call {
-    order: 2;
-    margin-left: 0;
-  }
+  .nav__mobile-call { display: none; }
   .nav__burger {
-    order: 3;
-    margin-left: 0;
+    order: 2;
+    margin-left: auto;
     flex-shrink: 0;
-  }
-  .nav.is-scrolled .nav__mobile-call {
-    border-color: rgba(20,20,20,.2);
-    color: var(--ink);
-    background: rgba(255,255,255,.92);
   }
   .recent-projects__grid {
     grid-template-columns: 1fr 1fr;
@@ -3125,19 +3116,20 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.60) 100%); }
   .featured,
   .services,
-  .about,
   .process,
-  .featured-project,
   .portfolio,
   .reviews,
+  .project-fit,
+  .faq,
+  .contact { padding-block: 3.25rem; }
+  .featured,
+  .about,
+  .featured-project,
   .areas,
   .search-intent,
   .lead-tier,
-  .project-fit,
-  .faq,
   .cost-expectations,
-  .why-choose,
-  .contact { padding-block: 3.25rem; }
+  .why-choose { padding-block: 2.2rem; }
   .portfolio { padding-bottom: 0; }
   .statement {
     display: none;
@@ -3354,21 +3346,30 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     width: 46px;
     height: 46px;
   }
+  .featured,
+  .about,
+  .featured-project,
+  .areas,
   .trust-assets,
   .search-intent,
   .lead-tier,
-  .recent-projects {
+  .recent-projects,
+  .why-choose {
     display: none;
   }
-  .recent-projects__grid,
-  .areas__list {
-    grid-template-columns: 1fr;
+  .project-fit,
+  .cost-expectations,
+  .faq,
+  .contact {
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
   }
-  .areas {
-    padding-top: 2.8rem;
-  }
-  .cost-expectations {
-    padding-top: 2.8rem;
+  .services,
+  .portfolio,
+  .reviews,
+  .process {
+    padding-top: 2.9rem;
+    padding-bottom: 2.9rem;
   }
   .reviews__grid .review-card:nth-child(n+5) {
     display: none;
@@ -3377,14 +3378,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 
 @media (max-width: 640px) {
   .nav__inner {
-    gap: .42rem;
+    gap: .3rem;
     padding-inline: .9rem;
   }
-  .nav__mobile-call {
-    padding: .48rem .62rem;
-  }
-  .nav__mobile-call-text {
-    font-size: .68rem;
+  .nav__logo-img {
+    height: 74px;
   }
 }
 
@@ -3444,6 +3442,17 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .about__badge { bottom: 1rem; left: 1rem; padding: 1rem; }
   .about__badge strong { font-size: 1.75rem; }
   .contact__form-wrap { padding: 2.2rem 1.25rem; }
+  .services,
+  .portfolio,
+  .reviews,
+  .process,
+  .project-fit,
+  .cost-expectations,
+  .faq,
+  .contact {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
 }
 
 /* ---- CTA pulse ring ---- */
