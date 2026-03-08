@@ -44,6 +44,13 @@
     return path.replace(/^\.\//, '').replace(/^\//, '');
   }
 
+  function normalizeDisplayPath(path) {
+    var value = String(path || '').trim();
+    if (!value) return value;
+    if (/^(https?:)?\/\//i.test(value) || value.charAt(0) === '#') return value;
+    return withBase(value);
+  }
+
   function buildProofMarkup() {
     var items = Array.isArray(window.SERVICE_PROOF_ITEMS) ? window.SERVICE_PROOF_ITEMS : [];
     return items.map(function (item) {
@@ -171,6 +178,7 @@
     var faq = byId('service-faq');
     var related = byId('related-services-list');
     var reviewProof = byId('service-review-proof');
+    var relatedSection = related ? related.closest('.service-related') : null;
     var faqHeading = faq && faq.closest('.service-block')
       ? faq.closest('.service-block').querySelector('.section-title')
       : null;
@@ -295,6 +303,23 @@
 
     if (reviewProof) {
       applyReviewSnapshot('#service-review-proof');
+    }
+
+    if (relatedSection) {
+      var existingResourceBlock = relatedSection.querySelector('.service-related__resources');
+      if (existingResourceBlock) existingResourceBlock.remove();
+      if (Array.isArray(service.resources) && service.resources.length) {
+        var resourceBlock = document.createElement('div');
+        resourceBlock.className = 'service-related__resources reveal';
+        resourceBlock.innerHTML =
+          '<p class="service-related__eyebrow">Related Guides</p>' +
+          '<ul class="service-related__resource-list">' +
+          service.resources.map(function (item) {
+            return '<li><a href="' + normalizeDisplayPath(item.path) + '">' + item.title + '</a></li>';
+          }).join('') +
+          '</ul>';
+        relatedSection.querySelector('.container').appendChild(resourceBlock);
+      }
     }
 
     injectFaqSchema(service);

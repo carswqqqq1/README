@@ -30,6 +30,7 @@
   var REVIEW_SOURCE = String(SITE_CONFIG.reviewSource || GOOGLE_REVIEWS.platform || 'Birdeye').trim();
   var REVIEW_SOURCE_URL = String(SITE_CONFIG.reviewSourceUrl || GOOGLE_REVIEWS.profileUrl || '').trim();
   var REVIEW_SNAPSHOT_DATE = String(SITE_CONFIG.reviewSnapshotDate || GOOGLE_REVIEWS.snapshotDate || '').trim();
+  var BUSINESS_YEARS = String(SITE_CONFIG.businessYears || '').trim();
 
   function setText(selector, value) {
     document.querySelectorAll(selector).forEach(function (el) {
@@ -391,6 +392,71 @@
     if (insuranceCopy) {
       setText('[data-insurance-statement]', insuranceCopy);
     }
+
+    var responsePromise = String(TRUST_ASSETS.responsePromise || '').trim();
+    if (responsePromise) {
+      setText('[data-response-promise-copy]', responsePromise);
+    }
+
+    var warrantyCopy = String(TRUST_ASSETS.workmanshipWarranty || '').trim();
+    if (warrantyCopy) {
+      setText('[data-workmanship-warranty]', warrantyCopy);
+    }
+
+    if (BUSINESS_YEARS) {
+      setText('[data-business-years]', BUSINESS_YEARS);
+    }
+
+    var trustHighlights = Array.isArray(TRUST_ASSETS.trustHighlights)
+      ? TRUST_ASSETS.trustHighlights.map(function (item) { return String(item || '').trim(); }).filter(Boolean)
+      : [];
+    if (trustHighlights.length) {
+      setHtml('[data-trust-highlights]', trustHighlights.map(function (item) {
+        return '<li>' + item + '</li>';
+      }).join(''));
+    }
+  }
+
+  function toPathname(href) {
+    if (!href) return '';
+    if (href.charAt(0) === '#') return normalizedPath === '/' ? href : '';
+    try {
+      var url = new URL(href, window.location.origin);
+      var path = url.pathname.replace(/\/index\.html$/i, '/').replace(/\/$/, '') || '/';
+      if (url.hash && path === '/' && /^(#hero|#portfolio|#process|#reviews|#contact)$/.test(url.hash)) {
+        return url.hash;
+      }
+      return path;
+    } catch (error) {
+      return '';
+    }
+  }
+
+  function applyActiveNavigationState() {
+    var current = normalizedPath.replace(/\/$/, '') || '/';
+    var currentHash = window.location.hash || (current === '/' ? '#hero' : '');
+
+    document.querySelectorAll('.nav__link, .nav__overlay-link').forEach(function (link) {
+      var href = String(link.getAttribute('href') || '').trim();
+      var linkTarget = toPathname(href);
+      var isActive = false;
+
+      if (!linkTarget) {
+        isActive = false;
+      } else if (linkTarget.charAt(0) === '#') {
+        isActive = current === '/' && linkTarget === currentHash;
+      } else {
+        isActive = linkTarget === current;
+      }
+
+      if (isActive) {
+        link.setAttribute('aria-current', 'page');
+        link.classList.add('nav__link--active');
+      } else {
+        link.removeAttribute('aria-current');
+        link.classList.remove('nav__link--active');
+      }
+    });
   }
 
   function applyFinancingNote() {
@@ -678,6 +744,7 @@
   }
   window.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
+  applyActiveNavigationState();
 
   /* ---- MOBILE MENU ---- */
   var burger = document.getElementById('nav-burger');

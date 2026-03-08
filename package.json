@@ -5,6 +5,7 @@
   "scripts": {
     "check:js": "node --check script.js && node --check services.js && node --check portfolio.js && node --check netlify/functions/send-ticket-emails.js",
     "check:speed": "node scripts/check-speed-budget.js",
+    "check:site": "node scripts/check-site-quality.js",
     "build:css": "npx cleancss -O2 -o styles.min.css styles.css && npx cleancss -O2 -o pages.min.css pages.css && npx cleancss -O2 -o services.min.css services.css && npx cleancss -O2 -o portfolio.min.css portfolio.css && npx cleancss -O2 -o fonts.min.css fonts.css",
     "build:js": "npx terser script.js -o script.min.js -c -m && npx terser services.js -o services.min.js -c -m && npx terser portfolio.js -o portfolio.min.js -c -m && npx terser services-data.js -o services-data.min.js -c -m && npx terser projects-data.js -o projects-data.min.js -c -m",
     "build:assets": "npm run build:css && npm run build:js",

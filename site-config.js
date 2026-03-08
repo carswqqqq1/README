@@ -61,6 +61,7 @@
       'Mesa',
       'Chandler'
     ],
+    businessYears: '15+ years of Arizona residential landscape experience',
     brand: {
       logoPath: 'img/logo.png',
       primary: '#1b4332',
@@ -175,7 +176,14 @@
       licenseNumbers: ['157201 CR-21', '304902 B-4'],
       licensePrompt: 'Verify current Arizona ROC licensing using the official contractor search and the license numbers shown below.',
       bondPrompt: 'Bond and insurance documentation is provided during consultation so you can review current coverage before project start.',
-      insuranceStatement: 'Current insurance and bonding documentation is available during consultation for full transparency.'
+      insuranceStatement: 'Current insurance and bonding documentation is available during consultation for full transparency.',
+      responsePromise: 'Most new project requests receive a response within one business day, often sooner.',
+      workmanshipWarranty: 'Workmanship warranty details are reviewed during handoff so scope, coverage, and maintenance expectations stay clear.',
+      trustHighlights: [
+        'Licensed, bonded, and insured for Arizona residential work',
+        'Verified Birdeye review snapshot shown directly on the site',
+        'Local project experience across Scottsdale, Paradise Valley, Phoenix, Mesa, and Chandler'
+      ]
     },
     financing: {
       enabled: true,

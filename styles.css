@@ -2813,6 +2813,17 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 .contact__trust p + p {
   margin-top: .5rem;
 }
+.contact__trust-list {
+  margin-top: .65rem;
+  display: grid;
+  gap: .38rem;
+  padding-left: 1rem;
+}
+.contact__trust-list li {
+  color: #5f574f;
+  font-size: .83rem;
+  line-height: 1.55;
+}
 .contact__trust a {
   color: var(--green);
   font-weight: 600;

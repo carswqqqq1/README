@@ -683,6 +683,47 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   color: var(--green-mid);
 }
 
+.service-related__resources {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ece2d4;
+}
+
+.service-related__eyebrow {
+  display: inline-flex;
+  margin-bottom: .55rem;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.service-related__resource-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .58rem;
+}
+
+.service-related__resource-list li a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  border-radius: 10px;
+  background: #f7f2ea;
+  border: 1px solid #e3d7c7;
+  color: var(--ink);
+  font-size: .82rem;
+  font-weight: 600;
+  padding: .55rem .85rem;
+}
+
+.service-related__resource-list li a:hover {
+  border-color: var(--green);
+  color: var(--green);
+  background: #fff;
+}
+
 @media (max-width: 1080px) {
   .service-proof-strip__inner {
     grid-template-columns: repeat(2, minmax(0, 1fr));

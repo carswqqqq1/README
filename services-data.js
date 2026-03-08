@@ -33,6 +33,11 @@
         'Build execution and final walkthrough'
       ],
       serviceAreaText: 'Think Green provides landscape design and design-build construction for homeowners in Scottsdale, Paradise Valley, Phoenix, and nearby communities across the Valley.',
+      resources: [
+        { title: 'Scottsdale project cost guide', path: '/landscaping-cost-scottsdale' },
+        { title: 'Paradise Valley service area page', path: '/paradise-valley-landscaping' },
+        { title: 'Project planning checklist', path: '/project-planning-checklist' }
+      ],
       faqs: [
         {
           q: 'How much does landscape design and build cost in Scottsdale?',
@@ -137,6 +142,11 @@
         'Jointing, cleanup, and final quality walkthrough'
       ],
       serviceAreaText: 'Our hardscaping team serves Scottsdale, Paradise Valley, Phoenix, and surrounding Valley neighborhoods with premium patio and stonework installations.',
+      resources: [
+        { title: 'Pavers vs. concrete guide', path: '/pavers-vs-concrete-arizona' },
+        { title: 'Scottsdale hardscape cost planning', path: '/landscaping-cost-scottsdale' },
+        { title: 'Phoenix service area page', path: '/phoenix-landscaping' }
+      ],
       faqs: [
         {
           q: 'How much does a paver patio cost in Scottsdale?',
@@ -241,6 +251,11 @@
         'Installation, detail finish, and final walkthrough'
       ],
       serviceAreaText: 'Think Green designs and builds outdoor kitchens for Scottsdale, Paradise Valley, Phoenix, and nearby Valley homes focused on entertaining and year-round use.',
+      resources: [
+        { title: 'Outdoor kitchen planning guide', path: '/outdoor-kitchen-planning-arizona' },
+        { title: 'Paradise Valley service area page', path: '/paradise-valley-landscaping' },
+        { title: 'Portfolio kitchen inspiration', path: '/portfolio?service=outdoor-kitchens' }
+      ],
       faqs: [
         {
           q: 'How much does an outdoor kitchen cost in Phoenix?',
@@ -345,6 +360,11 @@
         'Final testing and owner walkthrough'
       ],
       serviceAreaText: 'We build custom fire pits and fireplaces for homeowners in Scottsdale, Paradise Valley, Phoenix, and surrounding Valley locations.',
+      resources: [
+        { title: 'Arcadia outdoor living page', path: '/arcadia-landscaping' },
+        { title: 'Compare service fit on the resources hub', path: '/resources' },
+        { title: 'Portfolio fire feature inspiration', path: '/portfolio?service=fire-features' }
+      ],
       faqs: [
         {
           q: 'What is the cost range for a custom fire pit in Scottsdale?',
@@ -449,6 +469,11 @@
         'Installation coordination and final walkthrough'
       ],
       serviceAreaText: 'Think Green designs desert landscaping and xeriscape-focused projects for Scottsdale, Paradise Valley, Phoenix, Fountain Hills, and nearby Valley communities.',
+      resources: [
+        { title: 'Xeriscape vs. turf guide', path: '/xeriscape-vs-turf-arizona' },
+        { title: 'Arcadia service area page', path: '/arcadia-landscaping' },
+        { title: 'Phoenix service area page', path: '/phoenix-landscaping' }
+      ],
       faqs: [
         {
           q: 'What does desert landscaping usually cost in Scottsdale?',
@@ -553,6 +578,11 @@
         'Phoenix front-yard refresh: premium turf paired with drought-tolerant planting for curb appeal.'
       ],
       serviceAreaText: 'Think Green installs artificial turf across Scottsdale, Paradise Valley, Phoenix, and nearby Valley neighborhoods for both front-yard and backyard projects.',
+      resources: [
+        { title: 'Xeriscape vs. turf guide', path: '/xeriscape-vs-turf-arizona' },
+        { title: 'Mesa service area page', path: '/mesa-landscaping' },
+        { title: 'Resources hub', path: '/resources' }
+      ],
       faqs: [
         {
           q: 'How much does artificial turf cost in Scottsdale?',
@@ -657,6 +687,11 @@
         'Testing, calibration, and owner walkthrough'
       ],
       serviceAreaText: 'Think Green designs and upgrades irrigation systems across Scottsdale, Paradise Valley, Phoenix, and neighboring Valley communities.',
+      resources: [
+        { title: 'Mesa service area page', path: '/mesa-landscaping' },
+        { title: 'Chandler service area page', path: '/chandler-landscaping' },
+        { title: 'Project planning checklist', path: '/project-planning-checklist' }
+      ],
       faqs: [
         {
           q: 'How much does an irrigation upgrade cost in Phoenix?',
