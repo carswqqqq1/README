@@ -1025,7 +1025,7 @@
     if (pathname.indexOf('best-landscaper') >= 0) {
       return { href: '/services', label: 'Compare Services' };
     }
-    return { href: '#contact', label: 'Start Consultation' };
+    return { href: '#contact', label: 'Get Free Design Consultation' };
   }
 
   function getOverlayConsultHref() {
@@ -1154,7 +1154,7 @@
       actions.className = 'nav__overlay-actions';
       actions.innerHTML =
         '<a class="nav__overlay-action nav__overlay-action--ghost" data-overlay-call href="#">Call Now</a>' +
-        '<a class="nav__overlay-action nav__overlay-action--solid" data-overlay-consult href="#">Start Consultation</a>';
+        '<a class="nav__overlay-action nav__overlay-action--solid" data-overlay-consult href="#">Get Free Design Consultation</a>';
       navPanel.insertAdjacentElement('afterend', actions);
     }
 
@@ -1167,7 +1167,7 @@
     }
     if (consultAction) {
       consultAction.setAttribute('href', getOverlayConsultHref());
-      consultAction.textContent = 'Start Consultation';
+      consultAction.textContent = 'Get Free Design Consultation';
     }
 
     actions.querySelectorAll('a').forEach(function (link) {
