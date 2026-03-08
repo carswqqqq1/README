@@ -141,9 +141,19 @@
   status = 200
 
 [[redirects]]
+  from = "/scottsdale-landscaping/"
+  to = "/scottsdale-landscaping"
+  status = 301
+
+[[redirects]]
   from = "/phoenix-landscaping"
   to = "/phoenix-landscaping.html"
   status = 200
+
+[[redirects]]
+  from = "/phoenix-landscaping/"
+  to = "/phoenix-landscaping"
+  status = 301
 
 [[redirects]]
   from = "/search"
@@ -181,6 +191,11 @@
   status = 200
 
 [[redirects]]
+  from = "/best-landscaper-scottsdale/"
+  to = "/best-landscaper-scottsdale"
+  status = 301
+
+[[redirects]]
   from = "/project-planning-checklist"
   to = "/project-planning-checklist.html"
   status = 200
@@ -206,9 +221,19 @@
   status = 200
 
 [[redirects]]
+  from = "/arcadia-landscaping/"
+  to = "/arcadia-landscaping"
+  status = 301
+
+[[redirects]]
   from = "/mesa-landscaping"
   to = "/mesa-landscaping.html"
   status = 200
+
+[[redirects]]
+  from = "/mesa-landscaping/"
+  to = "/mesa-landscaping"
+  status = 301
 
 [[redirects]]
   from = "/chandler-landscaping"
@@ -216,9 +241,19 @@
   status = 200
 
 [[redirects]]
+  from = "/chandler-landscaping/"
+  to = "/chandler-landscaping"
+  status = 301
+
+[[redirects]]
   from = "/paradise-valley-landscaping"
   to = "/paradise-valley-landscaping.html"
   status = 200
+
+[[redirects]]
+  from = "/paradise-valley-landscaping/"
+  to = "/paradise-valley-landscaping"
+  status = 301
 
 [[redirects]]
   from = "/tempe-landscaping"
@@ -226,9 +261,19 @@
   status = 200
 
 [[redirects]]
+  from = "/tempe-landscaping/"
+  to = "/tempe-landscaping"
+  status = 301
+
+[[redirects]]
   from = "/gilbert-landscaping"
   to = "/gilbert-landscaping.html"
   status = 200
+
+[[redirects]]
+  from = "/gilbert-landscaping/"
+  to = "/gilbert-landscaping"
+  status = 301
 
 [[redirects]]
   from = "/fountain-hills-landscaping"
@@ -236,9 +281,19 @@
   status = 200
 
 [[redirects]]
+  from = "/fountain-hills-landscaping/"
+  to = "/fountain-hills-landscaping"
+  status = 301
+
+[[redirects]]
   from = "/cave-creek-landscaping"
   to = "/cave-creek-landscaping.html"
   status = 200
+
+[[redirects]]
+  from = "/cave-creek-landscaping/"
+  to = "/cave-creek-landscaping"
+  status = 301
 
 [[redirects]]
   from = "/landscaping-cost-scottsdale"
@@ -246,9 +301,19 @@
   status = 200
 
 [[redirects]]
+  from = "/landscaping-cost-scottsdale/"
+  to = "/landscaping-cost-scottsdale"
+  status = 301
+
+[[redirects]]
   from = "/xeriscape-vs-turf-arizona"
   to = "/xeriscape-vs-turf-arizona.html"
   status = 200
+
+[[redirects]]
+  from = "/xeriscape-vs-turf-arizona/"
+  to = "/xeriscape-vs-turf-arizona"
+  status = 301
 
 [[redirects]]
   from = "/pavers-vs-concrete-arizona"
@@ -256,9 +321,19 @@
   status = 200
 
 [[redirects]]
+  from = "/pavers-vs-concrete-arizona/"
+  to = "/pavers-vs-concrete-arizona"
+  status = 301
+
+[[redirects]]
   from = "/outdoor-kitchen-planning-arizona"
   to = "/outdoor-kitchen-planning-arizona.html"
   status = 200
+
+[[redirects]]
+  from = "/outdoor-kitchen-planning-arizona/"
+  to = "/outdoor-kitchen-planning-arizona"
+  status = 301
 
 [[redirects]]
   from = "/scottsdale-hardscaping"
@@ -266,9 +341,19 @@
   status = 200
 
 [[redirects]]
+  from = "/scottsdale-hardscaping/"
+  to = "/scottsdale-hardscaping"
+  status = 301
+
+[[redirects]]
   from = "/phoenix-outdoor-kitchens"
   to = "/phoenix-outdoor-kitchens.html"
   status = 200
+
+[[redirects]]
+  from = "/phoenix-outdoor-kitchens/"
+  to = "/phoenix-outdoor-kitchens"
+  status = 301
 
 [[redirects]]
   from = "/*"

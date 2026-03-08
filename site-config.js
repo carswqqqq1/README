@@ -301,10 +301,10 @@
       {
         author: 'Nicole P.',
         location: 'Mesa, AZ',
-        rating: 5,
+        rating: 4,
         projectType: 'Front-yard refresh',
         reviewDate: 'September 2025',
-        text: 'The crew was professional and detail-oriented. Our front yard now looks high-end without high maintenance.'
+        text: 'The crew was professional and detail-oriented. A couple finishing items took a follow-up visit, but they handled it well and our front yard now looks high-end without high maintenance.'
       },
       {
         author: 'Matt R.',
