@@ -3055,10 +3055,26 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 
 @media (max-width: 900px) {
+  .nav__inner {
+    justify-content: flex-start;
+    gap: .5rem;
+  }
+  .nav__logo {
+    margin-right: auto;
+  }
   .nav__links { display: none; }
   .nav__actions { display: none; }
   .nav__burger { display: flex; }
   .nav__mobile-call { display: inline-flex; }
+  .nav__mobile-call {
+    order: 2;
+    margin-left: 0;
+  }
+  .nav__burger {
+    order: 3;
+    margin-left: 0;
+    flex-shrink: 0;
+  }
   .nav.is-scrolled .nav__mobile-call {
     border-color: rgba(20,20,20,.2);
     color: var(--ink);
@@ -3356,6 +3372,19 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   }
   .reviews__grid .review-card:nth-child(n+5) {
     display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav__inner {
+    gap: .42rem;
+    padding-inline: .9rem;
+  }
+  .nav__mobile-call {
+    padding: .48rem .62rem;
+  }
+  .nav__mobile-call-text {
+    font-size: .68rem;
   }
 }
 
