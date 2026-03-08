@@ -177,3 +177,4 @@ npx netlify deploy --prod --dir . --site=afa9fd9e-aa69-4368-a08f-d93aa497b0a8
 - `docs/client-questionnaire-template.md`
 - `docs/client-answer-paste-template.md`
 - `docs/client-build-prompt-template.md`
+- `docs/white-label-handoff.md`

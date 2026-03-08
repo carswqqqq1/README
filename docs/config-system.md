@@ -8,8 +8,13 @@ Update these fields for each new client:
 - `businessName`, `shortName`
 - `phone.raw`, `phone.display`
 - `email`
+- `ownerEmail`
 - `address.line1`, `city`, `state`, `zip`
+- `serviceAreas`
 - `brand.logoPath`, `brand.primary`, `brand.primaryMid`, `brand.paper`
+- `reviewRating`, `reviewCount`, `reviewSource`, `reviewSourceUrl`, `reviewSnapshotDate`
+- `trustAssets`
+- `locationPages`
 - `contactFormServices`
 - `projectFit`
 - `beforeAfter`
@@ -36,3 +41,5 @@ Update these fields for each new client:
 2. Edit only `site-config.js`.
 3. Set Netlify env vars for email routing.
 4. Deploy.
+
+Use `docs/white-label-handoff.md` for the full release-safe clone checklist.
