@@ -4041,6 +4041,11 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   background: var(--green-dark, #14532d);
   box-shadow: 0 0 0 4px rgba(255,255,255,.24), 0 18px 36px rgba(15,36,26,.38);
 }
+.scroll-top:focus-visible {
+  outline: 3px solid rgba(255,255,255,.92);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(20,83,45,.3), 0 18px 36px rgba(15,36,26,.38);
+}
 .scroll-top svg { width: 18px; height: 18px; }
 /* Keep above sticky bar on mobile */
 @media (max-width: 640px) {

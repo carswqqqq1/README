@@ -23,6 +23,7 @@ const mainIndexedPages = [
 ];
 
 const failures = [];
+const envExamplePath = path.join(root, '.env.example');
 
 function read(file) {
   return fs.readFileSync(path.join(root, file), 'utf8');
@@ -37,6 +38,9 @@ htmlFiles.forEach((file) => {
   }
   if (/https:\/\/fonts\.googleapis\.com/i.test(html)) {
     failures.push(`${file}: external Google Fonts reference found`);
+  }
+  if (/href="\/#reviews"/i.test(html)) {
+    failures.push(`${file}: homepage reviews anchor fallback still present`);
   }
   if (/href="\/#contact"/i.test(html) && file !== 'index.html') {
     failures.push(`${file}: homepage contact fallback still present`);
@@ -58,6 +62,13 @@ mainIndexedPages.forEach((file) => {
     failures.push(`${file}: missing JSON-LD schema`);
   }
 });
+
+if (fs.existsSync(envExamplePath)) {
+  const envExample = fs.readFileSync(envExamplePath, 'utf8');
+  if (/carsonweso@icloud\.com|carson\.elevatemarketing@gmail\.com/i.test(envExample)) {
+    failures.push('.env.example: personal email fallback found');
+  }
+}
 
 if (failures.length) {
   console.error('Site quality check failed:');

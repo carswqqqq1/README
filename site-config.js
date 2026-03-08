@@ -61,6 +61,158 @@
       'Mesa',
       'Chandler'
     ],
+    locationPages: {
+      '/scottsdale-landscaping': {
+        city: 'Scottsdale',
+        nearbyAreas: 'North Scottsdale, DC Ranch, McCormick Ranch, and surrounding communities',
+        trustBullets: [
+          'Most Scottsdale requests center on full backyard transformations, pavers, fire features, and premium lighting.',
+          'Project planning usually needs HOA-aware finish coordination, clear phasing, and stronger shade strategy.',
+          'Consultations focus on layout flow, finish level, and the highest-value first phase before construction starts.'
+        ],
+        featuredReview: {
+          author: 'Sarah M.',
+          projectType: 'Paver patio and fire pit',
+          reviewDate: 'January 2026',
+          quote: 'Fire pit and paver patio came out exactly like the render. Crew cleaned up every day and stayed on schedule.'
+        }
+      },
+      '/phoenix-landscaping': {
+        city: 'Phoenix',
+        nearbyAreas: 'Arcadia, Biltmore, North Phoenix, and nearby neighborhoods',
+        trustBullets: [
+          'Phoenix homeowners usually need stronger outdoor living flow, water-wise planting, and heat-aware material planning.',
+          'Design choices are shaped around daily usability, not just curb appeal photos.',
+          'The first consultation is used to narrow scope, city fit, and the most efficient project phase.'
+        ],
+        featuredReview: {
+          author: 'Amanda L.',
+          projectType: 'Modern xeriscape design-build',
+          reviewDate: 'November 2025',
+          quote: 'Our Arcadia yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly.'
+        }
+      },
+      '/paradise-valley-landscaping': {
+        city: 'Paradise Valley',
+        nearbyAreas: 'Camelback-adjacent enclaves, hillside properties, and nearby luxury neighborhoods',
+        trustBullets: [
+          'Paradise Valley projects usually demand stronger material coordination, privacy planning, and entertaining layout clarity.',
+          'Luxury scopes benefit from one design-build team instead of fragmented trades and handoffs.',
+          'Consultations focus on circulation, shade, finish hierarchy, and what the property needs first.'
+        ],
+        featuredReview: {
+          author: 'David R.',
+          projectType: 'Full outdoor living remodel',
+          reviewDate: 'December 2025',
+          quote: 'Communication was excellent from quote to final walkthrough. We always knew what phase was next.'
+        }
+      },
+      '/arcadia-landscaping': {
+        city: 'Arcadia',
+        nearbyAreas: 'Arcadia Proper, Lower Arcadia, and neighboring Phoenix pockets',
+        trustBullets: [
+          'Arcadia work usually centers on modernizing older yards without losing character or mature-tree value.',
+          'Scope planning often combines shade, entertaining flow, irrigation cleanup, and architectural hardscape detailing.',
+          'The goal is a cleaner design direction before money gets spent on disconnected upgrades.'
+        ],
+        featuredReview: {
+          author: 'Amanda L.',
+          projectType: 'Modern xeriscape design-build',
+          reviewDate: 'November 2025',
+          quote: 'Our Arcadia yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly.'
+        }
+      },
+      '/mesa-landscaping': {
+        city: 'Mesa',
+        nearbyAreas: 'Eastmark-adjacent communities, Red Mountain areas, and nearby East Valley neighborhoods',
+        trustBullets: [
+          'Mesa homeowners often want lower-maintenance backyards that still feel finished and usable for families.',
+          'Popular requests combine turf strategy, hardscape cleanup, irrigation tuning, and easier circulation.',
+          'Consultations help separate must-have function upgrades from later-phase visual improvements.'
+        ],
+        featuredReview: {
+          author: 'Nicole P.',
+          projectType: 'Front-yard refresh',
+          reviewDate: 'September 2025',
+          quote: 'The crew was professional and detail-oriented. Our front yard now looks high-end without high maintenance.'
+        }
+      },
+      '/chandler-landscaping': {
+        city: 'Chandler',
+        nearbyAreas: 'Ocotillo, South Chandler, and nearby East Valley communities',
+        trustBullets: [
+          'Chandler projects usually focus on outdoor kitchens, patio upgrades, and cleaner entertaining zones.',
+          'A strong first plan avoids mismatched appliance, patio, and shade decisions later in the build.',
+          'We use consultations to map how the yard is used today and what should be phased first.'
+        ],
+        featuredReview: {
+          author: 'Chris T.',
+          projectType: 'Outdoor kitchen installation',
+          reviewDate: 'October 2025',
+          quote: 'Outdoor kitchen build finished faster than expected. The team was respectful and the jobsite stayed clean.'
+        }
+      },
+      '/tempe-landscaping': {
+        city: 'Tempe',
+        nearbyAreas: 'South Tempe, Papago-adjacent neighborhoods, and nearby university-area communities',
+        trustBullets: [
+          'Tempe projects usually need shade, patio usability, and lower-maintenance planning without losing entertainment value.',
+          'Family use, guest flow, and long-term upkeep typically matter more than one oversized feature.',
+          'Consultations help narrow the best first zone so the yard improves quickly without wasted scope.'
+        ],
+        featuredReview: {
+          author: 'Chris T.',
+          projectType: 'Outdoor kitchen installation',
+          reviewDate: 'October 2025',
+          quote: 'Outdoor kitchen build finished faster than expected. The team was respectful and the jobsite stayed clean.'
+        }
+      },
+      '/gilbert-landscaping': {
+        city: 'Gilbert',
+        nearbyAreas: 'Agritopia-adjacent neighborhoods, Val Vista areas, and nearby East Valley communities',
+        trustBullets: [
+          'Gilbert requests usually blend family-friendly function, irrigation efficiency, and lower-maintenance layout improvements.',
+          'Backyard lighting, turf strategy, and patio flow are often more valuable than starting with decorative features alone.',
+          'The first consultation helps define the strongest initial phase and the right long-term plan.'
+        ],
+        featuredReview: {
+          author: 'Nicole P.',
+          projectType: 'Front-yard refresh',
+          reviewDate: 'September 2025',
+          quote: 'The crew was professional and detail-oriented. Our front yard now looks high-end without high maintenance.'
+        }
+      },
+      '/fountain-hills-landscaping': {
+        city: 'Fountain Hills',
+        nearbyAreas: 'Hillside-view properties and nearby northeast Valley communities',
+        trustBullets: [
+          'Fountain Hills work usually needs stronger grade awareness, view preservation, and nighttime usability planning.',
+          'Hardscape, lighting, and drought-smart planting need to be planned together to avoid a sparse or disjointed result.',
+          'Consultations focus on slope, access, and the most important living zones first.'
+        ],
+        featuredReview: {
+          author: 'Matt R.',
+          projectType: 'Backyard remodel',
+          reviewDate: 'August 2025',
+          quote: 'No surprises on scope or pricing. Great coordination and the final punch list was handled quickly.'
+        }
+      },
+      '/cave-creek-landscaping': {
+        city: 'Cave Creek',
+        nearbyAreas: 'Desert-lot properties and nearby north Valley communities',
+        trustBullets: [
+          'Cave Creek homeowners usually need shade, desert planting structure, and materials that feel intentional at larger scales.',
+          'The best projects coordinate hardscape, lighting, and planting early instead of treating them as separate add-ons.',
+          'Consultations help define what creates the biggest day-to-day comfort and property impact first.'
+        ],
+        featuredReview: {
+          author: 'Matt R.',
+          projectType: 'Backyard remodel',
+          reviewDate: 'August 2025',
+          quote: 'No surprises on scope or pricing. Great coordination and the final punch list was handled quickly.'
+        }
+      }
+    },
     businessYears: '15+ years of Arizona residential landscape experience',
     brand: {
       logoPath: 'img/logo.png',

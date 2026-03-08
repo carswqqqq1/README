@@ -146,6 +146,7 @@
       resources: [
         { title: 'Pavers vs. concrete guide', path: '/pavers-vs-concrete-arizona' },
         { title: 'Scottsdale hardscape cost planning', path: '/landscaping-cost-scottsdale' },
+        { title: 'Scottsdale hardscaping page', path: '/scottsdale-hardscaping' },
         { title: 'Phoenix service area page', path: '/phoenix-landscaping' }
       ],
       faqs: [
@@ -254,6 +255,7 @@
       serviceAreaText: 'Think Green designs and builds outdoor kitchens for Scottsdale, Paradise Valley, Phoenix, and nearby Valley homes focused on entertaining and year-round use.',
       resources: [
         { title: 'Outdoor kitchen planning guide', path: '/outdoor-kitchen-planning-arizona' },
+        { title: 'Phoenix outdoor kitchen page', path: '/phoenix-outdoor-kitchens' },
         { title: 'Paradise Valley service area page', path: '/paradise-valley-landscaping' },
         { title: 'Portfolio kitchen inspiration', path: '/portfolio?service=outdoor-kitchens' }
       ],

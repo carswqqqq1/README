@@ -32,6 +32,8 @@
 - [Process](https://thinkgreen-az.netlify.app/process): Consultation-to-build process page
 - [Reviews](https://thinkgreen-az.netlify.app/reviews): Review proof page
 - [Free Consultation](https://thinkgreen-az.netlify.app/free-consultation): Dedicated lead page
+- [Scottsdale Hardscaping](https://thinkgreen-az.netlify.app/scottsdale-hardscaping): City-specific hardscape landing page
+- [Phoenix Outdoor Kitchens](https://thinkgreen-az.netlify.app/phoenix-outdoor-kitchens): City-specific outdoor kitchen landing page
 
 ## Primary Services
 - Landscape design and build

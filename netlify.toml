@@ -261,6 +261,16 @@
   status = 200
 
 [[redirects]]
+  from = "/scottsdale-hardscaping"
+  to = "/scottsdale-hardscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/phoenix-outdoor-kitchens"
+  to = "/phoenix-outdoor-kitchens.html"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/404.html"
   status = 404

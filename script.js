@@ -12,6 +12,7 @@
   var GOOGLE_REVIEWS = SITE_CONFIG.googleReviews || {};
   var SERVICE_AREAS = Array.isArray(SITE_CONFIG.serviceAreas) ? SITE_CONFIG.serviceAreas : [];
   var TRUST_ASSETS = SITE_CONFIG.trustAssets || {};
+  var LOCATION_PAGES = SITE_CONFIG.locationPages || {};
   var FINANCING = SITE_CONFIG.financing || {};
   var ANALYTICS = SITE_CONFIG.analytics || {};
   var URL_PARAMS = new URLSearchParams(window.location.search);
@@ -499,6 +500,71 @@
     document.head.appendChild(script);
   }
 
+  function enhanceAccessibilityAndMedia() {
+    var notices = document.querySelectorAll('#form-success, #form-error, [data-resource-gate-success], [data-resource-gate-error]');
+    notices.forEach(function (notice) {
+      notice.setAttribute('aria-live', 'polite');
+      notice.setAttribute('role', notice.id && notice.id.indexOf('error') >= 0 ? 'alert' : 'status');
+      if (!notice.hasAttribute('tabindex')) {
+        notice.setAttribute('tabindex', '-1');
+      }
+    });
+
+    document.querySelectorAll('main img, .footer img').forEach(function (img) {
+      if (!img.hasAttribute('decoding')) {
+        img.setAttribute('decoding', 'async');
+      }
+      if (!img.hasAttribute('loading') && !img.closest('.nav__logo') && !img.classList.contains('nav__logo-img')) {
+        img.setAttribute('loading', 'lazy');
+      }
+    });
+  }
+
+  function injectLocationProofPanels() {
+    var locationData = LOCATION_PAGES[normalizedPath];
+    if (!locationData) return;
+
+    var targetSection = document.querySelector('.page-section--alt[id$="-consultation"]');
+    if (!targetSection || targetSection.querySelector('[data-location-proof-panel]')) return;
+
+    var review = locationData.featuredReview || {};
+    var trustBullets = Array.isArray(locationData.trustBullets) ? locationData.trustBullets : [];
+    var reviewSourceLabel = REVIEW_SOURCE || 'Birdeye';
+    var proofBlock = document.createElement('div');
+    proofBlock.className = 'local-proof reveal';
+    proofBlock.setAttribute('data-location-proof-panel', 'true');
+    proofBlock.innerHTML = '' +
+      '<div class="local-proof__intro">' +
+      '  <p class="eyebrow">Verified Local Proof</p>' +
+      '  <h3>Why ' + locationData.city + ' homeowners use Think Green</h3>' +
+      '  <p>Licensed Arizona landscape contractor support, visible review proof, and a consultation-first process for ' + locationData.nearbyAreas + '.</p>' +
+      '</div>' +
+      '<div class="local-proof__grid">' +
+      '  <article class="local-proof__card local-proof__card--review">' +
+      '    <p class="local-proof__label">' + REVIEW_RATING + '-star ' + reviewSourceLabel + ' rating across ' + REVIEW_COUNT + ' reviews</p>' +
+      '    <blockquote>' + review.quote + '</blockquote>' +
+      '    <p class="local-proof__meta">' + review.author + ' · ' + review.projectType + ' · ' + review.reviewDate + '</p>' +
+      '  </article>' +
+      '  <article class="local-proof__card">' +
+      '    <p class="local-proof__label">What usually matters most</p>' +
+      '    <ul>' + trustBullets.map(function (item) { return '<li>' + item + '</li>'; }).join('') + '</ul>' +
+      '  </article>' +
+      '  <article class="local-proof__card">' +
+      '    <p class="local-proof__label">What happens after you reach out</p>' +
+      '    <ul>' +
+      '      <li>' + (TRUST_ASSETS.responsePromise || 'Most project requests receive a response within one business day.') + '</li>' +
+      '      <li>' + (TRUST_ASSETS.insuranceStatement || 'Insurance and bonding documentation is reviewed during consultation.') + '</li>' +
+      '      <li>' + (BUSINESS_YEARS || 'Experienced Arizona residential landscape planning and construction support.') + '</li>' +
+      '    </ul>' +
+      '  </article>' +
+      '</div>';
+
+    var container = targetSection.querySelector('.container');
+    if (container) {
+      container.appendChild(proofBlock);
+    }
+  }
+
   function toPathname(href) {
     if (!href) return '';
     if (href.charAt(0) === '#') return normalizedPath === '/' ? href : '';
@@ -789,6 +855,8 @@
   applyGoogleReviewSnapshot();
   applyTrustAssets();
   injectLocationBusinessSchema();
+  enhanceAccessibilityAndMedia();
+  injectLocationProofPanels();
   applyFinancingNote();
   renderRecentProjects();
   applyImageTitleFallbacks();
