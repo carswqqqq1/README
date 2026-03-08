@@ -4020,24 +4020,27 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   border-radius: 999px;
   background: var(--green);
   color: #fff;
-  border: none;
+  border: 1px solid rgba(255,255,255,.68);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 200;
-  box-shadow: 0 4px 14px rgba(27,67,50,.35);
+  box-shadow: 0 0 0 4px rgba(255,255,255,.2), 0 14px 32px rgba(15,36,26,.34);
   opacity: 0;
   transform: translateY(12px);
   pointer-events: none;
-  transition: opacity .3s, transform .3s, background .2s;
+  transition: opacity .3s, transform .3s, background .2s, box-shadow .2s;
 }
 .scroll-top.is-visible {
   opacity: 1;
   transform: none;
   pointer-events: auto;
 }
-.scroll-top:hover { background: var(--green-dark, #14532d); }
+.scroll-top:hover {
+  background: var(--green-dark, #14532d);
+  box-shadow: 0 0 0 4px rgba(255,255,255,.24), 0 18px 36px rgba(15,36,26,.38);
+}
 .scroll-top svg { width: 18px; height: 18px; }
 /* Keep above sticky bar on mobile */
 @media (max-width: 640px) {
