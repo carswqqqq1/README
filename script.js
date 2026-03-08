@@ -309,12 +309,14 @@
         link.setAttribute('href', licenseUrl);
         link.removeAttribute('aria-disabled');
         link.classList.remove('is-disabled');
+        link.hidden = false;
       });
     } else {
       document.querySelectorAll('[data-license-verify-link]').forEach(function (link) {
         link.removeAttribute('href');
-        link.setAttribute('aria-disabled', 'true');
+        link.removeAttribute('aria-disabled');
         link.classList.add('is-disabled');
+        link.hidden = true;
       });
     }
 
@@ -328,12 +330,14 @@
         link.setAttribute('href', bondUrl);
         link.removeAttribute('aria-disabled');
         link.classList.remove('is-disabled');
+        link.hidden = false;
       });
     } else {
       document.querySelectorAll('[data-bond-verify-link]').forEach(function (link) {
         link.removeAttribute('href');
-        link.setAttribute('aria-disabled', 'true');
+        link.removeAttribute('aria-disabled');
         link.classList.add('is-disabled');
+        link.hidden = true;
       });
     }
 

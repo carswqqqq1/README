@@ -20,7 +20,7 @@ const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL || '';
 const GOOGLE_SHEETS_WEBHOOK_SECRET = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET || '';
 const GOOGLE_SHEET_URL = process.env.GOOGLE_SHEET_URL || '';
 const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID || '';
-const GOOGLE_SHEET_TAB = process.env.GOOGLE_SHEET_TAB || 'Leads';
+const GOOGLE_SHEET_TAB = process.env.GOOGLE_SHEET_TAB || 'Owner Lead Dashboard';
 const GOOGLE_OAUTH_CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID || '';
 const GOOGLE_OAUTH_CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET || '';
 const GOOGLE_OAUTH_REFRESH_TOKEN = process.env.GOOGLE_OAUTH_REFRESH_TOKEN || process.env.GOOGLE_REFRESH_TOKEN || '';
@@ -556,13 +556,7 @@ function buildOwnerSummary(data) {
   if (isMeaningfulValue(data.service)) pieces.push(`Service: ${safeText(data.service)}`);
   if (isMeaningfulValue(data.lead_quality)) pieces.push(`Lead Quality: ${safeText(data.lead_quality, '')}`);
   if (isMeaningfulValue(data.estimated_project_value)) pieces.push(`Estimated Value: ${safeText(data.estimated_project_value, 'Varies by scope')}`);
-  if (isMeaningfulValue(data.consultation_tier || data.lead_tier)) pieces.push(`Budget Tier: ${safeText(data.consultation_tier || data.lead_tier, '')}`);
-  if (isMeaningfulValue(data.budget_range || data.budget)) pieces.push(`Budget: ${safeText(data.budget_range || data.budget)}`);
   if (isMeaningfulValue(data.start_timeline || data.timeline || data.estimated_timeline)) pieces.push(`Timeline: ${safeText(data.start_timeline || data.timeline || data.estimated_timeline)}`);
-  if (isMeaningfulValue(data.contact_method || data.preferred_contact || data.preferred_contact_method)) pieces.push(`Contact: ${safeText(data.contact_method || data.preferred_contact || data.preferred_contact_method)}`);
-  if (isMeaningfulValue(data.city)) pieces.push(`City: ${safeText(data.city)}`);
-  if (isMeaningfulValue(data.lead_source)) pieces.push(`Source: ${safeText(data.lead_source, 'website')}`);
-  if (isMeaningfulValue(data.selected_style)) pieces.push(`Style: ${safeText(data.selected_style)}`);
   return pieces.join(' · ');
 }
 
@@ -741,14 +735,15 @@ function fillTemplate(template, context) {
 }
 
 function buildDataRow(label, value, options = {}) {
-  if (!isMeaningfulValue(value)) return '';
+  const normalizedValue = normalizeOptionalField(value, '');
+  if (!normalizedValue) return '';
   const escapedLabel = escapeHtml(label);
-  const escapedValue = escapeHtml(String(value));
-  if (options.link === 'email' && isValidEmailAddress(value)) {
-    return `<tr><th>${escapedLabel}</th><td><a class="summary-link" href="mailto:${escapeAttribute(value)}">${escapedValue}</a></td></tr>`;
+  const escapedValue = escapeHtml(String(normalizedValue));
+  if (options.link === 'email' && isValidEmailAddress(normalizedValue)) {
+    return `<tr><th>${escapedLabel}</th><td><a class="summary-link" href="mailto:${escapeAttribute(normalizedValue)}">${escapedValue}</a></td></tr>`;
   }
-  if (options.link === 'phone' && isValidPhone(value)) {
-    return `<tr><th>${escapedLabel}</th><td><a class="summary-link" href="tel:${escapeAttribute(normalizePhone(value))}">${escapedValue}</a></td></tr>`;
+  if (options.link === 'phone' && isValidPhone(normalizedValue)) {
+    return `<tr><th>${escapedLabel}</th><td><a class="summary-link" href="tel:${escapeAttribute(normalizePhone(normalizedValue))}">${escapedValue}</a></td></tr>`;
   }
   return `<tr><th>${escapedLabel}</th><td>${escapedValue}</td></tr>`;
 }
@@ -764,10 +759,12 @@ function buildClientSummaryTables(data) {
 
   const projectRows = [
     buildDataRow('Service', data.service),
-    buildDataRow('Consultation Tier', data.consultation_tier),
     buildDataRow('Budget', data.budget_range),
     buildDataRow('Start Timeline', data.start_timeline),
-    buildDataRow('Estimated Timeline', data.estimated_timeline),
+    buildDataRow(
+      'Estimated Timeline',
+      data.estimated_timeline !== data.start_timeline ? data.estimated_timeline : ''
+    ),
     buildDataRow('Requested Style', data.selected_style)
   ].filter(Boolean).join('');
 
@@ -786,17 +783,15 @@ function buildClientSummaryTables(data) {
 function buildOwnerTables(data) {
   const detailRows = [
     buildDataRow('Service', data.service),
-    buildDataRow('Consultation Tier', data.consultation_tier),
     buildDataRow('Budget Range', data.budget_range),
     buildDataRow('Start Timeline', data.start_timeline),
-    buildDataRow('Lead Quality', data.lead_quality),
-    buildDataRow('Estimated Project Value', data.estimated_project_value),
-    buildDataRow('Estimated Timeline', data.estimated_timeline),
+    buildDataRow(
+      'Estimated Timeline',
+      data.estimated_timeline !== data.start_timeline ? data.estimated_timeline : ''
+    ),
     buildDataRow('Contact Method', data.contact_method),
-    buildDataRow('Status', data.sheet_status),
-    buildDataRow('Lead Source', data.lead_source),
-    buildDataRow('Style Reference', data.selected_style),
     buildDataRow('Project Reference', data.selected_project_label),
+    buildDataRow('Style Reference', data.selected_style),
     buildDataRow('Project Location', data.project_location)
   ].filter(Boolean).join('');
 
@@ -806,10 +801,8 @@ function buildOwnerTables(data) {
     buildDataRow('Lead Quality', data.lead_quality),
     buildDataRow('Estimated Value', data.estimated_project_value),
     buildDataRow('Lead Tags', data.owner_lead_tags),
-    buildDataRow('Consultation Tier', data.consultation_tier),
     buildDataRow('Status', data.sheet_status),
     buildDataRow('Submitted', data.submitted_local),
-    buildDataRow('Budget Signal', data.budget_range),
     buildDataRow('Urgency', data.start_timeline)
   ].filter(Boolean)
     .map((row) => row.replace('<th>', '<td class="k">').replace('</th>', '</td>').replace('<td>', '<td class="v">'))
@@ -1421,7 +1414,7 @@ async function sendToGoogleSheetsDirect(row) {
   }
 
   const accessToken = await getGoogleAccessToken();
-  const tabName = safeText(GOOGLE_SHEET_TAB, 'Leads');
+  const tabName = safeText(GOOGLE_SHEET_TAB, 'Owner Lead Dashboard');
   const sheetMeta = await ensureGoogleSheetTab(accessToken, spreadsheetId, tabName);
   await ensureGoogleSheetHeaders(accessToken, spreadsheetId, tabName);
   await ensureGoogleSheetDashboardFormatting(
@@ -1838,7 +1831,7 @@ exports.handler = async (event) => {
     normalized.sheet_row_url = '';
     normalized.sheet_row_id = '';
     normalized.sheet_url = safeText(normalized.sheet_url, GOOGLE_SHEET_URL);
-    normalized.owner_summary = `${buildOwnerSummary(normalized)} · Lead Score: ${leadScore}/100 (${leadTier}) · Tags: ${leadTagData.tags.join(', ')}`;
+    normalized.owner_summary = buildOwnerSummary(normalized);
 
     const sheetsResult = await sendToGoogleSheets(normalized, {
       created_at: createdAt,
@@ -1861,7 +1854,7 @@ exports.handler = async (event) => {
       normalized.service_match = leadTagData.service_match;
       normalized.lead_quality = reconcileLeadQuality(determineLeadQuality(normalized), leadScore);
       normalized.estimated_project_value = estimateProjectValue(normalized.service, normalized.budget_range);
-      normalized.owner_summary = `${buildOwnerSummary(normalized)} · Lead Score: ${leadScore}/100 (${leadTier}) · Tags: ${leadTagData.tags.join(', ')}`;
+      normalized.owner_summary = buildOwnerSummary(normalized);
     }
     if (!normalized.sheet_row_url || normalized.sheet_row_url === 'Not provided') {
       normalized.sheet_row_url = safeText(normalized.sheet_url, 'https://thinkgreen-az.netlify.app');

@@ -10,8 +10,8 @@
  *    - Who has access: Anyone
  * 5) Copy the Web app URL to Netlify env var GOOGLE_SHEETS_WEBHOOK_URL.
  */
-const SHEET_NAME = 'Leads';
-const SPREADSHEET_TITLE = 'Think Green Leads';
+const SHEET_NAME = 'Owner Lead Dashboard';
+const SPREADSHEET_TITLE = 'Think Green Lead Dashboard';
 const TARGET_SPREADSHEET_ID = ''; // Optional: set to existing sheet ID
 const WEBHOOK_SECRET = 'replace-with-long-random-secret';
 const SPREADSHEET_ID_KEY = 'THINKGREEN_SPREADSHEET_ID';
