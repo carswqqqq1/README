@@ -147,23 +147,59 @@
     });
   }
 
+  function ensureFooterServiceLinks() {
+    var inNestedServicePage = String(window.location.pathname || '').indexOf('/services/') >= 0;
+    var desertHref = inNestedServicePage ? '../services/desert-landscaping.html' : 'services/desert-landscaping.html';
+    document.querySelectorAll('.footer__col').forEach(function (column) {
+      var heading = column.querySelector('h4');
+      var list = column.querySelector('ul');
+      if (!heading || !list) return;
+      if (String(heading.textContent || '').trim().toLowerCase() !== 'services') return;
+      if (list.querySelector('a[href*="desert-landscaping.html"]')) return;
+
+      var item = document.createElement('li');
+      var link = document.createElement('a');
+      link.href = desertHref;
+      link.textContent = 'Desert Landscaping';
+      item.appendChild(link);
+
+      var referenceItem = list.querySelector('a[href*="artificial-turf.html"]');
+      if (referenceItem && referenceItem.parentElement) {
+        referenceItem.parentElement.insertAdjacentElement('beforebegin', item);
+      } else {
+        list.appendChild(item);
+      }
+    });
+  }
+
   function applyContactFormServices() {
-    var select = document.querySelector('[data-service-select]');
     var configuredServices = SITE_CONFIG.contactFormServices;
-    if (!select || !Array.isArray(configuredServices) || !configuredServices.length) return;
+    var selects = document.querySelectorAll('[data-service-select]');
+    if (!selects.length || !Array.isArray(configuredServices) || !configuredServices.length) return;
 
-    select.innerHTML = '';
+    selects.forEach(function (select) {
+      var currentValue = String(select.value || '').trim();
+      select.innerHTML = '';
 
-    var placeholder = document.createElement('option');
-    placeholder.value = '';
-    placeholder.textContent = 'Select a project type…';
-    select.appendChild(placeholder);
+      var placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = 'Select a project type…';
+      select.appendChild(placeholder);
 
-    configuredServices.forEach(function (service) {
-      var option = document.createElement('option');
-      option.value = String(service);
-      option.textContent = String(service);
-      select.appendChild(option);
+      configuredServices.forEach(function (service) {
+        var option = document.createElement('option');
+        option.value = String(service);
+        option.textContent = String(service);
+        select.appendChild(option);
+      });
+
+      if (currentValue) {
+        Array.from(select.options).some(function (option) {
+          var match = option.value.toLowerCase() === currentValue.toLowerCase();
+          if (match) select.value = option.value;
+          return match;
+        });
+      }
     });
   }
 
@@ -303,6 +339,9 @@
     var licenseUrl = String(TRUST_ASSETS.licenseVerifyUrl || '').trim();
     var bondUrl = String(TRUST_ASSETS.bondVerifyUrl || '').trim();
     var insuranceCopy = String(TRUST_ASSETS.insuranceStatement || '').trim();
+    var licenseNumbers = Array.isArray(TRUST_ASSETS.licenseNumbers)
+      ? TRUST_ASSETS.licenseNumbers.map(function (value) { return String(value || '').trim(); }).filter(Boolean)
+      : [];
 
     if (licenseUrl) {
       document.querySelectorAll('[data-license-verify-link]').forEach(function (link) {
@@ -323,6 +362,9 @@
     var licensePrompt = String(TRUST_ASSETS.licensePrompt || '').trim();
     if (licensePrompt) {
       setText('[data-license-verify-text]', licensePrompt);
+    }
+    if (licenseNumbers.length) {
+      setText('[data-license-numbers]', 'Arizona ROC license numbers: ' + licenseNumbers.join(' · '));
     }
 
     if (bondUrl) {
@@ -563,6 +605,7 @@
   applyTrackedPhone();
   applySiteBranding();
   applyDemoLabel();
+  ensureFooterServiceLinks();
   applyContactFormServices();
   applyProjectFitCards();
   applyBeforeAfterContent();
@@ -573,6 +616,57 @@
   renderRecentProjects();
   applyImageTitleFallbacks();
   installAnalytics();
+
+  function getFocusableElements(container) {
+    if (!container) return [];
+    return Array.prototype.slice.call(container.querySelectorAll(
+      'a[href], area[href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])'
+    )).filter(function (element) {
+      return !element.hasAttribute('hidden') && element.offsetParent !== null;
+    });
+  }
+
+  function createFocusTrap(container, onEscape) {
+    var previousActiveElement = null;
+
+    function handleKeydown(event) {
+      if (event.key === 'Escape') {
+        if (typeof onEscape === 'function') onEscape();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+
+      var focusable = getFocusableElements(container);
+      if (!focusable.length) return;
+
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      var active = document.activeElement;
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    return {
+      activate: function activate(initialTarget) {
+        previousActiveElement = document.activeElement;
+        container.addEventListener('keydown', handleKeydown);
+        var target = initialTarget || getFocusableElements(container)[0] || container;
+        if (target && typeof target.focus === 'function') target.focus();
+      },
+      deactivate: function deactivate(restoreFocus) {
+        container.removeEventListener('keydown', handleKeydown);
+        if (restoreFocus !== false && previousActiveElement && typeof previousActiveElement.focus === 'function') {
+          previousActiveElement.focus();
+        }
+      }
+    };
+  }
 
   /* ---- NAV SCROLL STATE ---- */
   var nav = document.getElementById('nav');
@@ -594,6 +688,7 @@
   var contactSection = document.getElementById('contact');
   var isContactInView = false;
   var scrollTopButton = document.createElement('button');
+  var menuFocusTrap = null;
   scrollTopButton.type = 'button';
   scrollTopButton.className = 'scroll-top';
   scrollTopButton.setAttribute('aria-label', 'Scroll back to top');
@@ -605,44 +700,61 @@
     var isMobile = window.innerWidth <= 768;
     var passedHero = window.scrollY > Math.max(220, window.innerHeight * 0.35);
     var menuOpen = overlay && overlay.classList.contains('is-open');
-    var shouldShow = isMobile && passedHero && !menuOpen && !isContactInView;
+    var drawerOpen = document.body.classList.contains('has-consult-drawer-open');
+    var shouldShow = isMobile && passedHero && !menuOpen && !drawerOpen && !isContactInView;
     stickyBar.classList.toggle('is-visible', shouldShow);
   }
 
   function updateScrollTop() {
     if (!scrollTopButton) return;
     var menuOpen = overlay && overlay.classList.contains('is-open');
+    var drawerOpen = document.body.classList.contains('has-consult-drawer-open');
     var shouldShow = window.scrollY > Math.max(420, window.innerHeight * 0.7);
-    scrollTopButton.classList.toggle('is-visible', shouldShow && !menuOpen);
+    scrollTopButton.classList.toggle('is-visible', shouldShow && !menuOpen && !drawerOpen);
   }
 
   function openMenu() {
     if (!overlay || !burger) return;
+    if (typeof closeConsultDrawer === 'function') closeConsultDrawer(false);
     overlay.classList.add('is-open');
     burger.classList.add('is-open');
     overlay.setAttribute('aria-hidden', 'false');
     burger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    if (menuFocusTrap) {
+      menuFocusTrap.activate(close || overlay);
+    }
     updateStickyBar();
     updateScrollTop();
   }
 
-  function closeMenu() {
+  function closeMenu(restoreFocus) {
     if (!overlay || !burger) return;
     overlay.classList.remove('is-open');
     burger.classList.remove('is-open');
     overlay.setAttribute('aria-hidden', 'true');
     burger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
+    document.body.style.overflow = document.body.classList.contains('has-consult-drawer-open') ? 'hidden' : '';
+    if (menuFocusTrap) {
+      menuFocusTrap.deactivate(restoreFocus !== false);
+    }
     updateStickyBar();
     updateScrollTop();
+  }
+
+  if (overlay) {
+    menuFocusTrap = createFocusTrap(overlay, function () {
+      closeMenu();
+    });
   }
 
   if (burger) burger.addEventListener('click', openMenu);
   if (close) close.addEventListener('click', closeMenu);
   if (overlay) {
     overlay.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', closeMenu);
+      a.addEventListener('click', function () {
+        closeMenu(false);
+      });
     });
     /* Close menu when tapping the darkened backdrop area (outside nav panel) */
     overlay.addEventListener('click', function (e) {
@@ -672,6 +784,548 @@
       top: 0,
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
     });
+  });
+
+  var consultDrawerState = null;
+
+  function normalizeSlug(value) {
+    return String(value || '')
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function deriveConsultSource() {
+    var pathname = String(window.location.pathname || '/').toLowerCase();
+    if (pathname.indexOf('/services/') >= 0) return 'service_page';
+    if (pathname.indexOf('portfolio') >= 0) return 'portfolio';
+    if (pathname.indexOf('scottsdale') >= 0) return 'scottsdale_location';
+    if (pathname.indexOf('phoenix') >= 0) return 'phoenix_location';
+    if (pathname.indexOf('search') >= 0) return 'search_topic';
+    if (pathname.indexOf('checklist') >= 0) return 'checklist_download';
+    if (pathname.indexOf('best-landscaper') >= 0) return 'comparison_page';
+    return DETECTED_LEAD_SOURCE || 'website';
+  }
+
+  function resolveServiceFormValue(value) {
+    var cleanValue = String(value || '').trim();
+    if (!cleanValue) return '';
+
+    var requestedSlug = normalizeSlug(cleanValue);
+    var catalog = Array.isArray(window.SERVICES_DATA) ? window.SERVICES_DATA : [];
+    var serviceFromCatalog = catalog.find(function (item) {
+      return normalizeSlug(item.slug) === requestedSlug ||
+        normalizeSlug(item.title) === requestedSlug ||
+        normalizeSlug(item.formValue) === requestedSlug ||
+        normalizeSlug(item.navLabel) === requestedSlug;
+    });
+    if (serviceFromCatalog) {
+      return String(serviceFromCatalog.formValue || serviceFromCatalog.title || '');
+    }
+
+    var configuredServices = Array.isArray(SITE_CONFIG.contactFormServices) ? SITE_CONFIG.contactFormServices : [];
+    var exactMatch = configuredServices.find(function (service) {
+      return normalizeSlug(service) === requestedSlug;
+    });
+    return exactMatch || cleanValue;
+  }
+
+  function parseConsultUrl(rawHref) {
+    var href = String(rawHref || '').trim();
+    if (!href) return null;
+    try {
+      return new URL(href, window.location.href);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function buildConsultPrefillFromTrigger(trigger) {
+    var prefill = {
+      source: deriveConsultSource(),
+      service: '',
+      selected_style: '',
+      selected_image: '',
+      selected_project_label: '',
+      prefill_message: '',
+      estimated_timeline: '',
+      consultation_tier: '',
+      lead_tier: '',
+      budget_range: ''
+    };
+    var parsedUrl = null;
+
+    if (trigger && trigger.getAttribute) {
+      parsedUrl = parseConsultUrl(trigger.getAttribute('href'));
+      if (parsedUrl) {
+        prefill.source = parsedUrl.searchParams.get('source') || prefill.source;
+        prefill.service = parsedUrl.searchParams.get('service') || prefill.service;
+        prefill.selected_style = parsedUrl.searchParams.get('selected_style') || prefill.selected_style;
+        prefill.selected_image = parsedUrl.searchParams.get('selected_image') || prefill.selected_image;
+        prefill.selected_project_label = parsedUrl.searchParams.get('selected_project_label') || prefill.selected_project_label;
+        prefill.prefill_message = parsedUrl.searchParams.get('prefill_message') || prefill.prefill_message;
+        prefill.estimated_timeline = parsedUrl.searchParams.get('estimated_timeline') || parsedUrl.searchParams.get('timeline') || prefill.estimated_timeline;
+      }
+
+      if (trigger.hasAttribute('data-service-choice')) {
+        prefill.service = trigger.getAttribute('data-service-choice') || prefill.service;
+        prefill.source = 'project_fit';
+      }
+      if (trigger.hasAttribute('data-lead-tier')) {
+        prefill.consultation_tier = trigger.getAttribute('data-lead-tier') || '';
+        prefill.lead_tier = prefill.consultation_tier;
+        prefill.budget_range = getBudgetRangeFromTier(prefill.consultation_tier);
+        prefill.source = 'lead_tier';
+      }
+      if (trigger.hasAttribute('data-form-prefill-trigger')) {
+        prefill.service = trigger.getAttribute('data-prefill-service') || prefill.service;
+        prefill.selected_style = trigger.getAttribute('data-prefill-style') || prefill.selected_style;
+        prefill.selected_image = trigger.getAttribute('data-prefill-image') || prefill.selected_image;
+        prefill.selected_project_label = trigger.getAttribute('data-prefill-project-label') || prefill.selected_project_label;
+        prefill.prefill_message = trigger.getAttribute('data-prefill-message') || prefill.prefill_message;
+        prefill.source = trigger.getAttribute('data-prefill-source') || prefill.source;
+      }
+    }
+
+    if (!prefill.service && document.body && document.body.dataset && document.body.dataset.serviceSlug) {
+      prefill.service = document.body.dataset.serviceSlug;
+    }
+
+    if (!prefill.prefill_message && prefill.service) {
+      prefill.prefill_message = 'Interested in ' + resolveServiceFormValue(prefill.service) + '. Please contact me about next steps.';
+    }
+
+    return prefill;
+  }
+
+  function ensureConsultDrawer() {
+    if (consultDrawerState) return consultDrawerState;
+
+    var drawer = document.createElement('div');
+    drawer.className = 'consult-drawer';
+    drawer.id = 'consult-drawer';
+    drawer.setAttribute('aria-hidden', 'true');
+    drawer.innerHTML =
+      '<div class="consult-drawer__backdrop" data-consult-close></div>' +
+      '<aside class="consult-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="consult-drawer-title">' +
+      '  <button type="button" class="consult-drawer__close" id="consult-drawer-close" aria-label="Close consultation drawer">&#x2715;</button>' +
+      '  <div class="consult-drawer__content">' +
+      '    <span class="consult-drawer__eyebrow">Fastest Way to Start</span>' +
+      '    <h2 class="consult-drawer__title" id="consult-drawer-title">Get Free Design Consultation</h2>' +
+      '    <p class="consult-drawer__sub">Share your project type, city, and best contact details. We will follow up quickly with the right next step.</p>' +
+      '    <ul class="consult-drawer__proof">' +
+      '      <li>No homepage scrolling required</li>' +
+      '      <li>Service and style context stay attached to your request</li>' +
+      '      <li>Arizona response team follows up within one business day</li>' +
+      '    </ul>' +
+      '    <div class="consult-drawer__context" id="consult-drawer-context">' +
+      '      <strong id="consult-drawer-context-label">Request Context</strong>' +
+      '      <p id="consult-drawer-context-body"></p>' +
+      '    </div>' +
+      '    <form class="consult-drawer__form" id="consult-drawer-form" novalidate>' +
+      '      <input type="hidden" name="ticket_id" id="consult-ticket-id" value="" />' +
+      '      <input type="hidden" name="submitted_local" id="consult-submitted-local" value="" />' +
+      '      <input type="hidden" name="first_name" id="consult-first-name" value="" />' +
+      '      <input type="hidden" name="last_name" id="consult-last-name" value="" />' +
+      '      <input type="hidden" name="selected_service" id="consult-selected-service" value="" />' +
+      '      <input type="hidden" name="selected_style" id="consult-selected-style" value="" />' +
+      '      <input type="hidden" name="selected_image" id="consult-selected-image" value="" />' +
+      '      <input type="hidden" name="selected_project_label" id="consult-selected-project-label" value="" />' +
+      '      <input type="hidden" name="lead_source" id="consult-lead-source" value="" />' +
+      '      <input type="hidden" name="utm_source" id="consult-utm-source" value="" />' +
+      '      <input type="hidden" name="utm_medium" id="consult-utm-medium" value="" />' +
+      '      <input type="hidden" name="utm_campaign" id="consult-utm-campaign" value="" />' +
+      '      <input type="hidden" name="utm_content" id="consult-utm-content" value="" />' +
+      '      <input type="hidden" name="referrer" id="consult-referrer" value="" />' +
+      '      <input type="hidden" name="landing_path" id="consult-landing-path" value="" />' +
+      '      <input type="hidden" name="page_url" id="consult-page-url" value="" />' +
+      '      <input type="hidden" name="consultation_tier" id="consult-consultation-tier" value="" />' +
+      '      <input type="hidden" name="lead_tier" id="consult-lead-tier" value="" />' +
+      '      <input type="hidden" name="budget_range" id="consult-budget-range" value="" />' +
+      '      <input type="hidden" name="preferred_contact_method" id="consult-contact-method" value="" />' +
+      '      <input type="hidden" name="contact_method" id="consult-contact-method-value" value="" />' +
+      '      <input type="hidden" name="timeline" id="consult-timeline-hidden" value="" />' +
+      '      <input type="hidden" name="start_timeline" id="consult-start-timeline" value="" />' +
+      '      <div class="form-field">' +
+      '        <label for="consult-full-name">Name</label>' +
+      '        <input type="text" id="consult-full-name" name="full_name" placeholder="Your full name" autocomplete="name" required />' +
+      '      </div>' +
+      '      <div class="consult-drawer__grid">' +
+      '        <div class="form-field">' +
+      '          <label for="consult-phone">Phone Number</label>' +
+      '          <input type="tel" id="consult-phone" name="phone" placeholder="(480) 555-0000" autocomplete="tel" inputmode="tel" required />' +
+      '        </div>' +
+      '        <div class="form-field">' +
+      '          <label for="consult-city">City</label>' +
+      '          <input type="text" id="consult-city" name="city" placeholder="' + SITE_CITY + '" autocomplete="address-level2" required />' +
+      '        </div>' +
+      '      </div>' +
+      '      <div class="consult-drawer__grid">' +
+      '        <div class="form-field">' +
+      '          <label for="consult-email">Email (optional)</label>' +
+      '          <input type="email" id="consult-email" name="email_visible" placeholder="you@example.com" autocomplete="email" inputmode="email" />' +
+      '        </div>' +
+      '        <div class="form-field">' +
+      '          <label for="consult-service">Project Type</label>' +
+      '          <select id="consult-service" name="service" data-service-select required></select>' +
+      '        </div>' +
+      '      </div>' +
+      '      <div class="consult-drawer__grid">' +
+      '        <div class="form-field">' +
+      '          <label for="consult-contact-method-choice">Preferred Contact Method</label>' +
+      '          <select id="consult-contact-method-choice" aria-describedby="consult-contact-help">' +
+      '            <option value="">Select if you have a preference</option>' +
+      '            <option value="Phone call">Phone call</option>' +
+      '            <option value="Text message">Text message</option>' +
+      '            <option value="Email">Email</option>' +
+      '          </select>' +
+      '        </div>' +
+      '        <div class="form-field">' +
+      '          <label for="consult-estimated-timeline">Estimated Timeline</label>' +
+      '          <select id="consult-estimated-timeline" name="estimated_timeline">' +
+      '            <option value="">Select a timeline</option>' +
+      '            <option value="3-6 months">3-6 months</option>' +
+      '            <option value="1-3 months">1-3 months</option>' +
+      '            <option value="Within 30 days">Within 30 days</option>' +
+      '            <option value="ASAP">ASAP</option>' +
+      '          </select>' +
+      '        </div>' +
+      '      </div>' +
+      '      <div class="form-field">' +
+      '        <label for="consult-message">Project Notes (optional)</label>' +
+      '        <textarea id="consult-message" name="message" rows="5" placeholder="Share goals, style preferences, or the kind of yard you want to build."></textarea>' +
+      '      </div>' +
+      '      <div class="consult-drawer__actions">' +
+      '        <button type="submit" class="btn btn--submit" id="consult-submit">Get Free Design Consultation</button>' +
+      '        <p class="consult-drawer__note" id="consult-contact-help">We use this only to follow up about your landscaping project.</p>' +
+      '        <p class="consult-drawer__error" id="consult-drawer-error" role="alert" aria-live="polite"></p>' +
+      '      </div>' +
+      '    </form>' +
+      '    <div class="consult-drawer__success" id="consult-drawer-success" aria-live="polite">' +
+      '      <h3>Request received.</h3>' +
+      '      <p>Your project request is on the way to the team now. Redirecting to the confirmation page.</p>' +
+      '    </div>' +
+      '  </div>' +
+      '</aside>';
+
+    document.body.appendChild(drawer);
+    applyContactFormServices();
+
+    consultDrawerState = {
+      drawer: drawer,
+      panel: drawer.querySelector('.consult-drawer__panel'),
+      close: drawer.querySelector('#consult-drawer-close'),
+      backdrop: drawer.querySelector('[data-consult-close]'),
+      form: drawer.querySelector('#consult-drawer-form'),
+      context: drawer.querySelector('#consult-drawer-context'),
+      contextBody: drawer.querySelector('#consult-drawer-context-body'),
+      fullName: drawer.querySelector('#consult-full-name'),
+      phone: drawer.querySelector('#consult-phone'),
+      city: drawer.querySelector('#consult-city'),
+      email: drawer.querySelector('#consult-email'),
+      service: drawer.querySelector('#consult-service'),
+      contactChoice: drawer.querySelector('#consult-contact-method-choice'),
+      timeline: drawer.querySelector('#consult-estimated-timeline'),
+      message: drawer.querySelector('#consult-message'),
+      ticketId: drawer.querySelector('#consult-ticket-id'),
+      submittedLocal: drawer.querySelector('#consult-submitted-local'),
+      firstName: drawer.querySelector('#consult-first-name'),
+      lastName: drawer.querySelector('#consult-last-name'),
+      selectedService: drawer.querySelector('#consult-selected-service'),
+      selectedStyle: drawer.querySelector('#consult-selected-style'),
+      selectedImage: drawer.querySelector('#consult-selected-image'),
+      selectedProjectLabel: drawer.querySelector('#consult-selected-project-label'),
+      leadSource: drawer.querySelector('#consult-lead-source'),
+      utmSource: drawer.querySelector('#consult-utm-source'),
+      utmMedium: drawer.querySelector('#consult-utm-medium'),
+      utmCampaign: drawer.querySelector('#consult-utm-campaign'),
+      utmContent: drawer.querySelector('#consult-utm-content'),
+      referrer: drawer.querySelector('#consult-referrer'),
+      landingPath: drawer.querySelector('#consult-landing-path'),
+      pageUrl: drawer.querySelector('#consult-page-url'),
+      consultationTier: drawer.querySelector('#consult-consultation-tier'),
+      leadTier: drawer.querySelector('#consult-lead-tier'),
+      budgetRange: drawer.querySelector('#consult-budget-range'),
+      contactMethod: drawer.querySelector('#consult-contact-method'),
+      contactMethodValue: drawer.querySelector('#consult-contact-method-value'),
+      timelineHidden: drawer.querySelector('#consult-timeline-hidden'),
+      startTimeline: drawer.querySelector('#consult-start-timeline'),
+      error: drawer.querySelector('#consult-drawer-error'),
+      success: drawer.querySelector('#consult-drawer-success'),
+      submit: drawer.querySelector('#consult-submit')
+    };
+
+    consultDrawerState.focusTrap = createFocusTrap(consultDrawerState.panel, function () {
+      closeConsultDrawer();
+    });
+
+    function syncDrawerContactMethod(value) {
+      var next = String(value || '').trim();
+      consultDrawerState.contactMethod.value = next;
+      consultDrawerState.contactMethodValue.value = next;
+    }
+
+    function syncDrawerTimeline(value) {
+      var next = String(value || '').trim();
+      consultDrawerState.timelineHidden.value = next;
+      consultDrawerState.startTimeline.value = next;
+    }
+
+    function clearDrawerError() {
+      consultDrawerState.error.textContent = '';
+      consultDrawerState.error.classList.remove('is-visible');
+    }
+
+    consultDrawerState.contactChoice.addEventListener('change', function () {
+      syncDrawerContactMethod(this.value);
+    });
+    consultDrawerState.timeline.addEventListener('change', function () {
+      syncDrawerTimeline(this.value);
+    });
+    consultDrawerState.phone.addEventListener('input', function () {
+      var digits = this.value.replace(/\D/g, '');
+      if (digits.length >= 10) {
+        this.value = '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6, 10);
+      } else {
+        this.value = digits;
+      }
+    });
+    consultDrawerState.form.querySelectorAll('input, select, textarea').forEach(function (field) {
+      field.addEventListener('input', function () {
+        this.style.borderColor = '';
+        clearDrawerError();
+      });
+      field.addEventListener('change', function () {
+        this.style.borderColor = '';
+        clearDrawerError();
+      });
+    });
+
+    consultDrawerState.close.addEventListener('click', function () {
+      closeConsultDrawer();
+    });
+    consultDrawerState.backdrop.addEventListener('click', function () {
+      closeConsultDrawer();
+    });
+
+    consultDrawerState.form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      clearDrawerError();
+
+      var requiredFields = [
+        consultDrawerState.fullName,
+        consultDrawerState.phone,
+        consultDrawerState.city,
+        consultDrawerState.service
+      ];
+      var valid = true;
+
+      requiredFields.forEach(function (field) {
+        var ok = String(field.value || '').trim() !== '';
+        field.style.borderColor = ok ? '' : '#c62828';
+        if (!ok) valid = false;
+      });
+
+      if (!valid) {
+        consultDrawerState.error.textContent = 'Please complete the required fields before submitting your project request.';
+        consultDrawerState.error.classList.add('is-visible');
+        return;
+      }
+
+      var ticketId = createTicketId();
+      var submittedDate = new Date();
+      var submittedLocalTime = formatPhoenixDateTime(submittedDate);
+      var nameParts = splitName(consultDrawerState.fullName.value);
+      var service = String(consultDrawerState.service.value || '').trim();
+      var city = String(consultDrawerState.city.value || '').trim();
+      var leadSource = String(consultDrawerState.leadSource.value || deriveConsultSource()).trim();
+      var selectedStyle = String(consultDrawerState.selectedStyle.value || '').trim();
+      var selectedProjectLabel = String(consultDrawerState.selectedProjectLabel.value || '').trim();
+
+      consultDrawerState.ticketId.value = ticketId;
+      consultDrawerState.submittedLocal.value = submittedLocalTime;
+      consultDrawerState.firstName.value = nameParts.first;
+      consultDrawerState.lastName.value = nameParts.last;
+      consultDrawerState.selectedService.value = service;
+      consultDrawerState.leadSource.value = leadSource;
+      consultDrawerState.utmSource.value = String(URL_PARAMS.get('utm_source') || '');
+      consultDrawerState.utmMedium.value = String(URL_PARAMS.get('utm_medium') || '');
+      consultDrawerState.utmCampaign.value = String(URL_PARAMS.get('utm_campaign') || '');
+      consultDrawerState.utmContent.value = String(URL_PARAMS.get('utm_content') || '');
+      consultDrawerState.referrer.value = String(document.referrer || 'direct');
+      consultDrawerState.landingPath.value = String(window.location.pathname || '/');
+      consultDrawerState.pageUrl.value = String(window.location.href || '');
+      syncDrawerContactMethod(consultDrawerState.contactChoice.value);
+      syncDrawerTimeline(consultDrawerState.timeline.value);
+
+      var payload = {};
+      new FormData(consultDrawerState.form).forEach(function (value, key) {
+        payload[key] = String(value);
+      });
+
+      var defaultButtonText = consultDrawerState.submit.textContent;
+      consultDrawerState.submit.disabled = true;
+      consultDrawerState.submit.textContent = 'Submitting...';
+
+      try {
+        var response = await fetch('/.netlify/functions/send-ticket-emails', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: encodeFormData(payload)
+        });
+
+        if (!response.ok) throw new Error('Submission failed');
+
+        consultDrawerState.form.hidden = true;
+        consultDrawerState.success.classList.add('is-visible');
+
+        if (typeof window.trackLeadEvent === 'function') {
+          window.trackLeadEvent('form_submit', {
+            ticket_id: ticketId,
+            service: service,
+            lead_source: leadSource,
+            selected_style: selectedStyle || undefined,
+            selected_project_label: selectedProjectLabel || undefined,
+            city: city,
+            page_location: window.location.href
+          });
+        }
+
+        setTimeout(function () {
+          var thankYouParams = new URLSearchParams({
+            ticket_id: ticketId,
+            service: service,
+            city: city,
+            source: leadSource,
+            selected_style: selectedStyle,
+            selected_project_label: selectedProjectLabel
+          });
+          window.location.href = '/thank-you.html?' + thankYouParams.toString();
+        }, 350);
+      } catch (error) {
+        consultDrawerState.submit.disabled = false;
+        consultDrawerState.submit.textContent = defaultButtonText;
+        consultDrawerState.error.textContent = 'We could not submit your request right now. Please call us at ' + SITE_PHONE_DISPLAY + '.';
+        consultDrawerState.error.classList.add('is-visible');
+      }
+    });
+
+    return consultDrawerState;
+  }
+
+  function openConsultDrawer(prefill) {
+    var state = ensureConsultDrawer();
+    var nextPrefill = prefill || {};
+    var resolvedService = resolveServiceFormValue(nextPrefill.service);
+    var contextLines = [];
+
+    closeMenu(false);
+
+    state.form.reset();
+    state.form.hidden = false;
+    state.success.classList.remove('is-visible');
+    state.submit.disabled = false;
+    state.submit.textContent = 'Get Free Design Consultation';
+    state.error.textContent = '';
+    state.error.classList.remove('is-visible');
+
+    state.ticketId.value = '';
+    state.submittedLocal.value = '';
+    state.firstName.value = '';
+    state.lastName.value = '';
+    state.selectedService.value = resolvedService;
+    state.selectedStyle.value = nextPrefill.selected_style || '';
+    state.selectedImage.value = nextPrefill.selected_image || '';
+    state.selectedProjectLabel.value = nextPrefill.selected_project_label || '';
+    state.leadSource.value = nextPrefill.source || deriveConsultSource();
+    state.consultationTier.value = nextPrefill.consultation_tier || '';
+    state.leadTier.value = nextPrefill.lead_tier || nextPrefill.consultation_tier || '';
+    state.budgetRange.value = nextPrefill.budget_range || '';
+    state.pageUrl.value = String(window.location.href || '');
+    state.referrer.value = String(document.referrer || 'direct');
+    state.landingPath.value = String(window.location.pathname || '/');
+
+    state.service.value = resolvedService;
+    state.contactChoice.value = nextPrefill.contact_method || '';
+    state.timeline.value = nextPrefill.estimated_timeline || '';
+    state.message.value = nextPrefill.prefill_message || '';
+
+    state.contactMethod.value = state.contactChoice.value;
+    state.contactMethodValue.value = state.contactChoice.value;
+    state.timelineHidden.value = state.timeline.value;
+    state.startTimeline.value = state.timeline.value;
+
+    if (resolvedService) {
+      contextLines.push('Project type: ' + resolvedService);
+    }
+    if (nextPrefill.selected_project_label) {
+      contextLines.push('Project reference: ' + nextPrefill.selected_project_label);
+    }
+    if (nextPrefill.selected_style) {
+      contextLines.push('Style direction: ' + toTitleCase(String(nextPrefill.selected_style).replace(/[-_]/g, ' ')));
+    }
+    if (nextPrefill.consultation_tier) {
+      contextLines.push('Budget tier interest: ' + nextPrefill.consultation_tier);
+    }
+
+    state.context.classList.toggle('is-visible', !!contextLines.length);
+    state.contextBody.textContent = contextLines.join(' · ');
+
+    state.drawer.classList.add('is-open');
+    state.drawer.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('has-consult-drawer-open');
+    document.body.style.overflow = 'hidden';
+    state.focusTrap.activate(state.close);
+    state.fullName.focus();
+    updateStickyBar();
+    updateScrollTop();
+
+    if (typeof window.trackLeadEvent === 'function') {
+      window.trackLeadEvent('consult_drawer_open', {
+        source: state.leadSource.value,
+        service: resolvedService || undefined,
+        selected_style: state.selectedStyle.value || undefined,
+        page_location: window.location.href
+      });
+    }
+  }
+
+  function closeConsultDrawer(restoreFocus) {
+    if (!consultDrawerState || !consultDrawerState.drawer.classList.contains('is-open')) return;
+    consultDrawerState.drawer.classList.remove('is-open');
+    consultDrawerState.drawer.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('has-consult-drawer-open');
+    document.body.style.overflow = overlay && overlay.classList.contains('is-open') ? 'hidden' : '';
+    consultDrawerState.focusTrap.deactivate(restoreFocus !== false);
+    updateStickyBar();
+    updateScrollTop();
+  }
+
+  window.openConsultDrawer = openConsultDrawer;
+  window.closeConsultDrawer = closeConsultDrawer;
+
+  document.addEventListener('click', function (event) {
+    var trigger = event.target && event.target.closest ? event.target.closest('a, button') : null;
+    if (!trigger) return;
+    if (trigger.type === 'submit') return;
+    if (trigger.closest('#contact-form') || trigger.closest('#consult-drawer-form')) return;
+    if (trigger.hasAttribute('download')) return;
+
+    var href = String(trigger.getAttribute('href') || '');
+    var text = String(trigger.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    var isConsultTrigger = trigger.hasAttribute('data-service-choice') ||
+      trigger.hasAttribute('data-lead-tier') ||
+      trigger.hasAttribute('data-form-prefill-trigger') ||
+      href.indexOf('#contact') >= 0 ||
+      href.indexOf('selected_style=') >= 0 ||
+      text.indexOf('get free design consultation') >= 0 ||
+      text.indexOf('request a similar project') >= 0;
+
+    if (!isConsultTrigger) return;
+
+    event.preventDefault();
+    openConsultDrawer(buildConsultPrefillFromTrigger(trigger));
   });
 
   /* ---- SMOOTH SCROLL ---- */
@@ -942,32 +1596,46 @@
 
   /* ---- FAQ ACCORDION ---- */
   var faqButtons = document.querySelectorAll('.faq__question');
-  faqButtons.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var item = this.closest('.faq-item');
-      if (!item) return;
-      var willOpen = !item.classList.contains('is-open');
-
-      faqButtons.forEach(function (otherBtn) {
-        var otherItem = otherBtn.closest('.faq-item');
-        if (!otherItem) return;
-        otherItem.classList.remove('is-open');
-        otherBtn.setAttribute('aria-expanded', 'false');
-      });
-
-      if (willOpen) {
-        item.classList.add('is-open');
-        this.setAttribute('aria-expanded', 'true');
-      }
-    });
-  });
+  function setFaqState(item, button, answer, expanded) {
+    item.classList.toggle('is-open', expanded);
+    button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    answer.hidden = !expanded;
+    answer.setAttribute('aria-hidden', expanded ? 'false' : 'true');
+  }
 
   if (faqButtons.length) {
-    var firstFaqItem = faqButtons[0].closest('.faq-item');
-    if (firstFaqItem) {
-      firstFaqItem.classList.add('is-open');
-      faqButtons[0].setAttribute('aria-expanded', 'true');
-    }
+    var hasPresetOpenFaq = Array.prototype.some.call(faqButtons, function (button) {
+      var faqItem = button.closest('.faq-item');
+      return faqItem && faqItem.classList.contains('is-open');
+    });
+
+    faqButtons.forEach(function (btn, index) {
+      var item = btn.closest('.faq-item');
+      var answer = item ? item.querySelector('.faq__answer') : null;
+      if (!item || !answer) return;
+
+      if (!btn.id) btn.id = 'faq-question-' + (index + 1);
+      if (!answer.id) answer.id = 'faq-answer-' + (index + 1);
+      btn.setAttribute('aria-controls', answer.id);
+      answer.setAttribute('role', 'region');
+      answer.setAttribute('aria-labelledby', btn.id);
+
+      var shouldBeOpen = item.classList.contains('is-open') || (!hasPresetOpenFaq && index === 0);
+      setFaqState(item, btn, answer, shouldBeOpen);
+
+      btn.addEventListener('click', function () {
+        var willOpen = btn.getAttribute('aria-expanded') !== 'true';
+        faqButtons.forEach(function (otherBtn) {
+          var otherItem = otherBtn.closest('.faq-item');
+          var otherAnswer = otherItem ? otherItem.querySelector('.faq__answer') : null;
+          if (!otherItem || !otherAnswer) return;
+          setFaqState(otherItem, otherBtn, otherAnswer, false);
+        });
+        if (willOpen) {
+          setFaqState(item, btn, answer, true);
+        }
+      });
+    });
   }
 
   /* ---- CONTACT FORM ---- */
@@ -997,6 +1665,7 @@
   var estimatedTimelineInput = document.getElementById('estimated_timeline');
   var contactMethod = document.getElementById('contact_method');
   var contactMethodValueInput = document.getElementById('contact_method_value');
+  var preferredContactChoiceInput = document.getElementById('preferred_contact_method_visible');
   var leadTierInput = document.getElementById('lead_tier');
   var leadSourceInput = document.getElementById('lead_source');
   var utmSourceInput = document.getElementById('utm_source');
@@ -1114,8 +1783,16 @@
           });
         }
 
-        var section = document.getElementById('contact');
-        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (typeof window.openConsultDrawer === 'function') {
+          window.openConsultDrawer({
+            source: 'project_fit',
+            service: choice || '',
+            prefill_message: choice ? ('Interested in ' + choice + '. Please contact me about next steps.') : ''
+          });
+        } else {
+          var section = document.getElementById('contact');
+          if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
     });
   }
@@ -1156,8 +1833,18 @@
           });
         }
 
-        var section = document.getElementById('contact');
-        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (typeof window.openConsultDrawer === 'function') {
+          window.openConsultDrawer({
+            source: 'lead_tier',
+            consultation_tier: tier,
+            lead_tier: tier,
+            budget_range: getBudgetRangeFromTier(tier),
+            prefill_message: 'Interested in the ' + tier + ' tier.'
+          });
+        } else {
+          var section = document.getElementById('contact');
+          if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
     });
   }
@@ -1352,17 +2039,29 @@
     }
     if (estimatedTimelineInput) {
       var syncTimeline = function syncTimeline(value) {
-        var next = value || 'Planning for later';
+        var next = value || '';
         if (timelineInput) timelineInput.value = next;
         if (startTimelineInput) startTimelineInput.value = next;
       };
-      syncTimeline(estimatedTimelineInput.value || (timelineInput && timelineInput.value));
+      syncTimeline(estimatedTimelineInput.value || (timelineInput && timelineInput.value) || '');
       estimatedTimelineInput.addEventListener('change', function () {
         syncTimeline(this.value);
       });
     }
-    if (contactMethodValueInput) {
-      contactMethodValueInput.value = contactMethod && contactMethod.value ? contactMethod.value : 'Phone call';
+
+    function syncPreferredContact(value) {
+      var next = String(value || '').trim();
+      if (contactMethod) contactMethod.value = next;
+      if (contactMethodValueInput) contactMethodValueInput.value = next;
+    }
+
+    if (preferredContactChoiceInput) {
+      preferredContactChoiceInput.addEventListener('change', function () {
+        syncPreferredContact(this.value);
+      });
+      syncPreferredContact(preferredContactChoiceInput.value || (contactMethodValueInput && contactMethodValueInput.value) || '');
+    } else {
+      syncPreferredContact((contactMethodValueInput && contactMethodValueInput.value) || (contactMethod && contactMethod.value) || '');
     }
 
     applyServicePrefillFromQuery();
@@ -1455,7 +2154,7 @@
       var selectedImage = valueOrFallback(selectedImageInput, '');
       var selectedProjectLabel = valueOrFallback(selectedProjectLabelInput, '');
       var priority = getPriority(budget, timeline);
-      var preferredContact = valueOrFallback(contactMethodValueInput || contactMethod, 'Phone call');
+      var preferredContact = valueOrFallback(contactMethodValueInput || contactMethod, '');
       var projectCity = valueOrFallback(cityInput, '');
       var projectAddress = valueOrFallback(addressInput, '');
       var vision = valueOrFallback(messageInput, 'No project details provided.');

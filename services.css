@@ -40,6 +40,48 @@
     url('../img/projects/slide6.webp') type('image/webp')
   );
 }
+body[data-service-slug="landscape-design"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/slide6-1280.avif') type('image/avif'),
+    url('../img/projects/slide6.webp') type('image/webp')
+  );
+}
+body[data-service-slug="hardscaping"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/fireplace-1280.avif') type('image/avif'),
+    url('../img/projects/fireplace.jpg') type('image/jpeg')
+  );
+}
+body[data-service-slug="outdoor-kitchens"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/shade-structure-640.avif') type('image/avif'),
+    url('../img/projects/shade-structure.jpg') type('image/jpeg')
+  );
+}
+body[data-service-slug="fire-features"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/firepit-640.avif') type('image/avif'),
+    url('../img/projects/firepit.jpg') type('image/jpeg')
+  );
+}
+body[data-service-slug="desert-landscaping"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/zen-garden-640.avif') type('image/avif'),
+    url('../img/projects/zen-garden.jpg') type('image/jpeg')
+  );
+}
+body[data-service-slug="artificial-turf"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/slide10-640.avif') type('image/avif'),
+    url('../img/projects/slide10.webp') type('image/webp')
+  );
+}
+body[data-service-slug="irrigation"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/slide8-640.avif') type('image/avif'),
+    url('../img/projects/slide8.webp') type('image/webp')
+  );
+}
 
 .services-hub-hero__overlay,
 .service-hero__overlay {
@@ -642,7 +684,7 @@
 @media (max-width: 768px) {
   .services-hub-hero,
   .service-hero {
-    min-height: 430px;
+    min-height: 390px;
     padding-top: 102px;
   }
 

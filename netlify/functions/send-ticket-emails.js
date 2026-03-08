@@ -525,7 +525,7 @@ function buildNormalizedData(rawData = {}, meta = {}) {
   normalized.budget_range = normalized.budget;
   normalized.estimated_timeline = normalizeOptionalField(rawData.estimated_timeline || rawData.timeline || rawData.start_timeline || rawData.start_window, '');
   normalized.start_timeline = normalizeOptionalField(rawData.start_timeline || rawData.timeline || rawData.estimated_timeline || rawData.start_window, '');
-  normalized.contact_method = normalizeOptionalField(rawData.contact_method || rawData.preferred_contact_method || rawData.preferred_contact, 'Phone call');
+  normalized.contact_method = normalizeOptionalField(rawData.contact_method || rawData.preferred_contact_method || rawData.preferred_contact, '');
   normalized.preferred_contact = normalized.contact_method;
   normalized.vision = normalizeOptionalField(rawData.vision || rawData.message || rawData.details || rawData.project_details, '');
 

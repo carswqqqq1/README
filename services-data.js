@@ -419,11 +419,115 @@
       ]
     },
     {
+      slug: 'desert-landscaping',
+      path: 'services/desert-landscaping.html',
+      navLabel: 'Desert Landscaping',
+      title: 'Desert Landscaping',
+      formValue: 'Desert / Drought-Tolerant Design',
+      metaTitle: 'Desert Landscaping in Scottsdale & Phoenix | Xeriscape Design',
+      metaDescription: 'Water-smart desert landscaping in Scottsdale and Phoenix with xeriscape planning, low-maintenance planting, decomposed granite, and efficient irrigation design.',
+      heroHeadline: 'Desert Landscaping in Scottsdale and Phoenix',
+      heroSubtext: 'Build a refined Arizona yard with xeriscape planning, drought-tolerant planting, and low-maintenance materials designed for heat, runoff, and year-round curb appeal.',
+      typicalRange: '$8k-$35k',
+      proofBlurbs: [
+        'Desert-smart layouts focus on shade, drainage, and clean material transitions so the yard feels intentional instead of sparse.',
+        'Plant palettes are selected for Arizona heat tolerance, lower maintenance, and visual depth across the full year.',
+        'Water efficiency is planned with irrigation strategy, grading, and material choices rather than treated as an afterthought.'
+      ],
+      whatYouGet: [
+        'Xeriscape planning tailored to sun exposure and how the yard is used',
+        'Drought-tolerant planting palettes suited to Scottsdale and Phoenix conditions',
+        'Decomposed granite, boulder, and hardscape integration planning',
+        'Low-maintenance layout strategy for cleaner long-term upkeep',
+        'Water-efficiency recommendations with irrigation coordination',
+        'Material and finish selections matched to the home architecture'
+      ],
+      process: [
+        'Site review and desert-smart design strategy',
+        'Plant, material, and irrigation direction',
+        'Layout confirmation with phasing or build planning',
+        'Installation coordination and final walkthrough'
+      ],
+      serviceAreaText: 'Think Green designs desert landscaping and xeriscape-focused projects for Scottsdale, Paradise Valley, Phoenix, Fountain Hills, and nearby Valley communities.',
+      faqs: [
+        {
+          q: 'What does desert landscaping usually cost in Scottsdale?',
+          a: 'Project cost depends on square footage, grading, hardscape integration, plant size, and irrigation scope. We provide realistic ranges after we review the property and your priorities.'
+        },
+        {
+          q: 'Can a xeriscape yard still feel high-end and finished?',
+          a: 'Yes. The best desert-smart yards use structure, scale, material contrast, and layered planting so the space feels architectural, not bare.'
+        },
+        {
+          q: 'Do you combine drought-tolerant planting with turf or hardscape?',
+          a: 'Absolutely. Many projects blend xeriscape planting with hardscape, focal turf zones, and outdoor-living elements for a balanced layout.'
+        },
+        {
+          q: 'Will desert landscaping reduce irrigation demand?',
+          a: 'In most cases, yes. We pair plant selection with efficient irrigation strategy to reduce waste while supporting healthy long-term growth.'
+        },
+        {
+          q: 'Can you redesign an older high-maintenance yard into something water-smart?',
+          a: 'Yes. We often replace dated planting and inefficient layouts with cleaner, lower-maintenance desert-smart plans that still deliver strong curb appeal.'
+        }
+      ],
+      gallery: [
+        {
+          src: 'img/projects/zen-garden.jpg',
+          alt: 'Desert landscaping and xeriscape design in Fountain Hills Arizona',
+          width: 1600,
+          height: 954,
+          chip: 'Xeriscape',
+          label: 'Sonoran Plant Palette'
+        },
+        {
+          src: 'img/projects/slide8.webp',
+          alt: 'Water-smart desert landscape layout in Scottsdale Arizona',
+          width: 1000,
+          height: 563,
+          chip: 'Water Smart',
+          label: 'Low-Water Layout'
+        },
+        {
+          src: 'img/projects/slide10.webp',
+          alt: 'Front yard desert landscaping upgrade in Scottsdale Arizona',
+          width: 1630,
+          height: 860,
+          chip: 'Curb Appeal',
+          label: 'Front Yard Refresh'
+        },
+        {
+          src: 'img/projects/after-29.jpg',
+          alt: 'Completed drought-tolerant backyard renovation in Gilbert Arizona',
+          width: 880,
+          height: 670,
+          chip: 'Completed Build',
+          label: 'Low-Maintenance Yard'
+        },
+        {
+          src: 'img/projects/shade-structure.jpg',
+          alt: 'Desert-friendly outdoor living layout in Phoenix Arizona',
+          width: 1000,
+          height: 668,
+          chip: 'Outdoor Living',
+          label: 'Shade + Planting Balance'
+        },
+        {
+          src: 'img/projects/slide7.webp',
+          alt: 'Modern Arizona landscape with drought-tolerant detailing in Chandler',
+          width: 1630,
+          height: 860,
+          chip: 'Modern Desert',
+          label: 'Clean Material Mix'
+        }
+      ]
+    },
+    {
       slug: 'artificial-turf',
       path: 'services/artificial-turf.html',
       navLabel: 'Artificial Turf',
       title: 'Artificial Turf',
-      formValue: 'Desert / Drought-Tolerant Design',
+      formValue: 'Artificial Turf',
       metaTitle: 'Artificial Turf Installation in Scottsdale & Phoenix | Think Green',
       metaDescription: 'Artificial turf installation in Scottsdale and Phoenix for clean curb appeal, lower water use, and low-maintenance outdoor living that looks finished year-round.',
       heroHeadline: 'Artificial Turf Installation in Scottsdale and Phoenix',

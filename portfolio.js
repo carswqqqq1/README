@@ -11,6 +11,7 @@
   var currentLightboxIndex = -1;
   var touchStartX = 0;
   var touchEndX = 0;
+  var lastFocusedElement = null;
   var requestStyleButton = document.getElementById('pf-request-style');
   var pageParams = new URLSearchParams(window.location.search);
 
@@ -66,7 +67,7 @@
     if (slug === 'hardscape' || type.indexOf('hardscape') >= 0) return 'hardscaping';
     if (slug === 'water' || type.indexOf('water') >= 0) return 'irrigation';
     if (slug === 'outdoor' || type.indexOf('outdoor') >= 0 || type.indexOf('kitchen') >= 0) return 'outdoor-kitchens';
-    if (slug === 'desert' || type.indexOf('desert') >= 0 || type.indexOf('xeriscape') >= 0) return 'artificial-turf';
+    if (slug === 'desert' || type.indexOf('desert') >= 0 || type.indexOf('xeriscape') >= 0) return 'desert-landscaping';
     if (slug === 'frontyard' || type.indexOf('curb') >= 0) return 'landscape-design';
     if (type.indexOf('fire') >= 0) return 'fire-features';
     if (slug === 'backyard') return 'landscape-design';
@@ -79,7 +80,7 @@
     if (slug === 'hardscaping') return 'hardscape';
     if (slug === 'outdoor-kitchens') return 'outdoor';
     if (slug === 'fire-features') return 'outdoor';
-    if (slug === 'artificial-turf') return 'desert';
+    if (slug === 'artificial-turf' || slug === 'desert-landscaping') return 'desert';
     if (slug === 'irrigation') return 'water';
     if (slug === 'landscape-design') return 'backyard';
     return 'all';
@@ -155,11 +156,13 @@
     var index = visible.indexOf(item);
     if (index === -1 || !lightbox) return;
 
+    lastFocusedElement = document.activeElement;
     currentLightboxIndex = index;
     updateLightboxFrame(visible[currentLightboxIndex]);
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    if (lightboxClose) lightboxClose.focus();
   }
 
   function closeLightbox() {
@@ -168,6 +171,9 @@
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     currentLightboxIndex = -1;
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus();
+    }
   }
 
   function moveLightbox(step) {
@@ -175,6 +181,24 @@
     if (!visible.length || currentLightboxIndex < 0) return;
     currentLightboxIndex = (currentLightboxIndex + step + visible.length) % visible.length;
     updateLightboxFrame(visible[currentLightboxIndex]);
+  }
+
+  function handleLightboxTabTrap(event) {
+    if (!lightbox || !lightbox.classList.contains('is-open') || event.key !== 'Tab') return;
+    var focusable = Array.prototype.slice.call(lightbox.querySelectorAll('button, a[href]')).filter(function (element) {
+      return element.offsetParent !== null;
+    });
+    if (!focusable.length) return;
+
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   filters.forEach(function (btn) {
@@ -227,6 +251,7 @@
 
   window.addEventListener('keydown', function (event) {
     if (!lightbox || !lightbox.classList.contains('is-open')) return;
+    handleLightboxTabTrap(event);
     if (event.key === 'Escape') closeLightbox();
     if (event.key === 'ArrowLeft') moveLightbox(-1);
     if (event.key === 'ArrowRight') moveLightbox(1);

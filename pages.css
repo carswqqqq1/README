@@ -231,6 +231,12 @@
   overflow: hidden;
 }
 
+.comparison-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+}
+
 .comparison-table th,
 .comparison-table td {
   border-bottom: 1px solid #eee6da;
@@ -305,8 +311,12 @@
 
 @media (max-width: 768px) {
   .page-hero {
-    min-height: 390px;
+    min-height: 360px;
     padding-top: 102px;
+  }
+
+  .page-section {
+    padding-block: 2.3rem;
   }
 
   .page-hero__actions {

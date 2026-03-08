@@ -70,6 +70,11 @@
   [headers.values]
     Cache-Control = "public, max-age=86400"
 
+[[headers]]
+  for = "/search.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
+
 [[redirects]]
   from = "/index.html"
   to = "/"
@@ -118,6 +123,11 @@
 [[redirects]]
   from = "/services/artificial-turf"
   to = "/services/artificial-turf.html"
+  status = 200
+
+[[redirects]]
+  from = "/services/desert-landscaping"
+  to = "/services/desert-landscaping.html"
   status = 200
 
 [[redirects]]

@@ -31,9 +31,7 @@ Core template files:
 - `emails/thinkgreen-client-email.html`
 - `emails/thinkgreen-owner-email.html`
 
-Legacy or unrelated app/tooling files are isolated in `legacy/unrelated-next-app/`.
-
-That folder is not part of the landscaping template runtime or Netlify deploy path. Keep it out of client clones unless you intentionally need the old app stack.
+This branch intentionally excludes the old unrelated Next.js app so the repo stays resale-ready and limited to the live landscaping template.
 
 ## Business Values To Update For A New Client
 

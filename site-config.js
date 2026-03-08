@@ -44,10 +44,11 @@
     contactFormServices: [
       'Landscape Design & Build',
       'Hardscaping',
+      'Artificial Turf',
+      'Desert / Drought-Tolerant Design',
       'Water Feature',
       'Fire Feature / Outdoor Kitchen',
       'Outdoor Lighting',
-      'Desert / Drought-Tolerant Design',
       'Pergola / Shade Structure',
       'Irrigation',
       'Putting Green',
@@ -126,10 +127,10 @@
       snapshotDate: ''
     },
     trustAssets: {
-      licenseVerifyUrl: '',
+      licenseVerifyUrl: 'https://roc.az.gov/search/',
       bondVerifyUrl: '',
       licenseNumbers: ['157201 CR-21', '304902 B-4'],
-      licensePrompt: 'Homeowners can verify active licensing through the Arizona Registrar of Contractors.',
+      licensePrompt: 'Verify current Arizona ROC licensing using the official contractor search and the license numbers shown below.',
       bondPrompt: 'Bond and insurance documentation is provided during consultation so you can review current coverage before project start.',
       insuranceStatement: 'Current insurance and bonding documentation is available during consultation for full transparency.'
     },
