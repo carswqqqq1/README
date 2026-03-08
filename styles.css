@@ -919,11 +919,29 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   border-top: 1px solid var(--paper-alt);
   border-bottom: 1px solid var(--paper-alt);
 }
+.owner-proof-strip__wrap {
+  padding-top: 1.05rem;
+  text-align: center;
+}
+.owner-proof-strip__headline {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: clamp(1.26rem, 2.2vw, 1.65rem);
+  font-weight: 500;
+  color: var(--ink);
+}
+.owner-proof-strip__sub {
+  margin: .4rem auto 0;
+  max-width: 680px;
+  font-size: .92rem;
+  line-height: 1.65;
+  color: var(--ink-light);
+}
 .owner-proof-strip__inner {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: .8rem;
-  padding-block: 1rem;
+  padding-block: .92rem 1.05rem;
 }
 .owner-proof-strip__item {
   display: flex;
@@ -3074,12 +3092,12 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   }
   .hero {
     height: auto;
-    min-height: 100svh;
+    min-height: 92svh;
     padding-bottom: 0;
   }
   .hero__content {
     padding-top: 106px;
-    padding-bottom: 4rem;
+    padding-bottom: 3.25rem;
     margin-inline: auto;
     padding-inline: clamp(1.1rem, 5vw, 1.6rem);
   }
@@ -3101,10 +3119,82 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .lead-tier,
   .project-fit,
   .faq,
-  .contact { padding-block: 4rem; }
+  .cost-expectations,
+  .why-choose,
+  .contact { padding-block: 3.25rem; }
   .portfolio { padding-bottom: 0; }
+  .statement {
+    display: none;
+  }
+  .featured__header {
+    margin-bottom: 1.45rem;
+  }
+  .feature-strip--secondary {
+    display: none;
+  }
+  .feature-strip__body {
+    padding: 1.35rem 1.1rem 1.55rem;
+  }
+  .feature-strip__body h3 {
+    font-size: 1.48rem;
+    margin-block: .52rem .72rem;
+  }
+  .feature-strip__body p {
+    margin-bottom: .95rem;
+    font-size: .94rem;
+    line-height: 1.62;
+  }
+  .about__image {
+    aspect-ratio: 16/8;
+    max-height: 260px;
+  }
+  .about__badge {
+    display: none;
+  }
+  .about__lead {
+    font-size: .98rem;
+    line-height: 1.65;
+    margin-bottom: .7rem;
+  }
+  .about__content > p {
+    margin-bottom: 1rem;
+    line-height: 1.66;
+  }
+  .process__steps {
+    gap: .8rem;
+  }
+  .process__step {
+    padding: 1rem .95rem 1.05rem;
+  }
+  .service-item {
+    padding-block: 1.2rem;
+  }
+  .service-item__body p {
+    line-height: 1.62;
+  }
+  .owner-proof-strip__wrap {
+    padding-top: .95rem;
+  }
+  .owner-proof-strip__headline {
+    font-size: 1.2rem;
+  }
+  .owner-proof-strip__sub {
+    font-size: .86rem;
+    line-height: 1.58;
+    margin-top: .3rem;
+  }
   .owner-proof-strip__inner {
     grid-template-columns: 1fr;
+    gap: .55rem;
+    padding-top: .7rem;
+    padding-bottom: .85rem;
+  }
+  .owner-proof-strip__item {
+    padding: .62rem .72rem;
+  }
+  .owner-proof-strip__item p {
+    font-size: .8rem;
+    line-height: 1.36;
   }
   .featured-project__meta {
     grid-template-columns: 1fr;
@@ -3211,7 +3301,32 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .faq__question span:first-child {
     font-size: .94rem;
   }
+  .faq__question {
+    padding: 1rem 1.05rem;
+    min-height: 56px;
+  }
+  .faq__icon {
+    margin-left: .7rem;
+  }
+  .faq__answer {
+    padding: 0 1.05rem;
+  }
+  .faq-item.is-open .faq__answer {
+    padding-bottom: 1rem;
+  }
   .form-row { grid-template-columns: 1fr; }
+  .contact__grid {
+    gap: 1.1rem;
+  }
+  .contact__info {
+    padding-block: 3rem;
+  }
+  .contact__form-wrap {
+    padding: 2rem 1.15rem;
+  }
+  .contact__form-title {
+    margin-bottom: 1.1rem;
+  }
   .footer__top { grid-template-columns: 1fr; }
   .footer__brand { grid-column: span 1; }
   .footer__bottom { flex-direction: column; text-align: center; }
@@ -3225,21 +3340,22 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   }
   .trust-assets,
   .search-intent,
-  .lead-tier {
-    display: none;
-  }
+  .lead-tier,
   .recent-projects {
-    display: block;
+    display: none;
   }
   .recent-projects__grid,
   .areas__list {
     grid-template-columns: 1fr;
   }
   .areas {
-    padding-top: 2.4rem;
+    padding-top: 2.8rem;
   }
   .cost-expectations {
-    padding-top: 2.4rem;
+    padding-top: 2.8rem;
+  }
+  .reviews__grid .review-card:nth-child(n+5) {
+    display: none;
   }
 }
 
@@ -3273,6 +3389,20 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .hero__stats {
     grid-template-columns: 1fr;
     max-width: 360px;
+  }
+  .featured__header .section-title,
+  .portfolio__header .section-title,
+  .services__header .section-title,
+  .about__content .section-title,
+  .process__header .section-title,
+  .featured-project__header .section-title,
+  .reviews__header .section-title,
+  .areas__header .section-title,
+  .project-fit__header .section-title,
+  .faq__header .section-title,
+  .why-choose__header .section-title {
+    font-size: clamp(1.7rem, 7.5vw, 2.15rem);
+    line-height: 1.15;
   }
   .hero-stat {
     padding: .78rem .78rem .72rem;
