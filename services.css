@@ -751,18 +751,19 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 @media (max-width: 768px) {
   .services-hub-hero,
   .service-hero {
-    min-height: 390px;
-    padding-top: 102px;
+    min-height: 332px;
+    padding-top: 94px;
   }
 
   .services-hub-hero__content,
   .service-hero__content {
-    padding-bottom: 2.25rem;
+    padding-bottom: 1.7rem;
   }
 
   .services-hub-hero__actions,
   .service-hero__actions {
     flex-direction: column;
+    gap: .56rem;
   }
 
   .services-hub-hero__actions .btn,
@@ -772,6 +773,7 @@ body[data-service-slug="irrigation"] .service-hero__bg {
     width: 100%;
     justify-content: center;
     text-align: center;
+    min-height: 46px;
   }
 
   .service-checklist {

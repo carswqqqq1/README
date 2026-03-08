@@ -583,9 +583,38 @@
   }
   .portfolio-page .nav__logo-img { filter: none; }
   .portfolio-page .nav__burger span { background: var(--ink); }
+  .pf-hero {
+    padding-top: calc(90px + 2rem);
+    padding-bottom: 2.1rem;
+  }
+  .pf-hero__back {
+    margin-bottom: .9rem;
+  }
+  .pf-hero__title {
+    margin-block: .35rem .7rem;
+  }
+  .pf-hero__sub,
+  .pf-hero__local {
+    line-height: 1.58;
+  }
+  .pf-hero__proof {
+    margin-top: .85rem;
+    gap: .42rem;
+  }
+  .pf-hero__proof li {
+    padding: .42rem .66rem;
+    font-size: .72rem;
+  }
+  .pf-hero__actions {
+    margin-top: .9rem;
+    gap: .56rem;
+  }
+  .pf-hero__actions .btn {
+    min-height: 46px;
+  }
   .pf-grid { grid-template-columns: 1fr; }
   .pf-filters {
-    padding-block: .9rem;
+    padding-block: .7rem;
     overflow: hidden;
   }
   .pf-filters__inner {
@@ -614,6 +643,10 @@
   }
   .pf-grid {
     gap: .9rem;
+  }
+  .pf-results,
+  .pf-cta {
+    padding-block: 2rem;
   }
   .pf-request {
     flex-direction: column;

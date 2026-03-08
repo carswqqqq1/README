@@ -401,21 +401,23 @@
 
 @media (max-width: 768px) {
   .page-hero {
-    min-height: 360px;
-    padding-top: 102px;
+    min-height: 318px;
+    padding-top: 94px;
   }
 
   .page-section {
-    padding-block: 2.3rem;
+    padding-block: 1.8rem;
   }
 
   .page-hero__actions {
     flex-direction: column;
+    gap: .56rem;
   }
 
   .page-hero__actions .btn {
     width: 100%;
     justify-content: center;
+    min-height: 46px;
   }
 
   .resource-gate__grid {

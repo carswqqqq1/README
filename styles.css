@@ -3519,18 +3519,18 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   }
   .hero {
     height: auto;
-    min-height: 92svh;
+    min-height: 84svh;
     padding-bottom: 0;
   }
   .hero__content {
-    padding-top: 106px;
-    padding-bottom: 3.25rem;
+    padding-top: 98px;
+    padding-bottom: 2.35rem;
     margin-inline: auto;
-    padding-inline: clamp(1.1rem, 5vw, 1.6rem);
+    padding-inline: clamp(.95rem, 4.2vw, 1.3rem);
   }
   .hero__panel {
     border-radius: 14px;
-    padding: .92rem .92rem 1rem;
+    padding: .82rem .82rem .88rem;
     background: rgba(0,0,0,.22);
   }
   .hero__overlay { background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.60) 100%); }
@@ -3541,7 +3541,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .reviews,
   .project-fit,
   .faq,
-  .contact { padding-block: 3.25rem; }
+  .contact { padding-block: 2.55rem; }
   .featured,
   .about,
   .featured-project,
@@ -3549,7 +3549,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .search-intent,
   .lead-tier,
   .cost-expectations,
-  .why-choose { padding-block: 2.2rem; }
+  .why-choose { padding-block: 1.8rem; }
   .portfolio { padding-bottom: 0; }
   .statement {
     display: none;
@@ -3629,7 +3629,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   }
   .hero__eyebrow {
     max-width: calc(100% - 68px);
-    margin-bottom: .8rem;
+    margin-bottom: .55rem;
   }
   .statement__proof {
     grid-template-columns: 1fr;
@@ -3665,8 +3665,8 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .hero__indicators { display: none; }
   .hero__stats {
     grid-template-columns: 1fr 1fr;
-    gap: .58rem;
-    margin-top: 1.35rem;
+    gap: .48rem;
+    margin-top: .95rem;
   }
   .hero-stat {
     padding: .66rem .68rem;
@@ -3747,10 +3747,10 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     gap: 1.1rem;
   }
   .contact__info {
-    padding-block: 3rem;
+    padding-block: 2.2rem;
   }
   .contact__form-wrap {
-    padding: 2rem 1.15rem;
+    padding: 1.45rem .95rem;
   }
   .contact__form-title {
     margin-bottom: 1.1rem;
@@ -3759,7 +3759,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .footer__brand { grid-column: span 1; }
   .footer__bottom { flex-direction: column; text-align: center; }
   .sticky-bar { display: flex; }
-  body { padding-bottom: calc(106px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
   .scroll-top {
     right: .9rem;
     bottom: calc(116px + env(safe-area-inset-bottom));
@@ -3781,15 +3781,15 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .cost-expectations,
   .faq,
   .contact {
-    padding-top: 2.75rem;
-    padding-bottom: 2.75rem;
+    padding-top: 2.1rem;
+    padding-bottom: 2.1rem;
   }
   .services,
   .portfolio,
   .reviews,
   .process {
-    padding-top: 2.35rem;
-    padding-bottom: 2.35rem;
+    padding-top: 1.95rem;
+    padding-bottom: 1.95rem;
   }
   .reviews__grid .review-card:nth-child(n+5) {
     display: none;
@@ -3821,47 +3821,47 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     padding-inline: .75rem;
   }
   .nav__overlay nav {
-    gap: .45rem;
-    margin-top: calc(3.05rem + env(safe-area-inset-top));
+    gap: .3rem;
+    margin-top: calc(2.2rem + env(safe-area-inset-top));
     width: 100%;
-    padding: .78rem;
-    border-radius: 22px;
+    padding: .62rem;
+    border-radius: 18px;
   }
   .nav__overlay-intro {
-    padding: .86rem .88rem;
-    border-radius: 16px;
+    padding: .68rem .72rem;
+    border-radius: 14px;
   }
   .nav__overlay-title {
-    font-size: 1.5rem;
+    font-size: 1.28rem;
   }
   .nav__overlay-sub {
-    font-size: .79rem;
+    font-size: .75rem;
   }
   .nav__overlay-link {
     font-size: .82rem;
-    padding: .78rem .82rem;
+    padding: .62rem .72rem;
     letter-spacing: .035em;
   }
   .nav__overlay-link::before {
-    width: 1.9rem;
-    height: 1.9rem;
+    width: 1.55rem;
+    height: 1.55rem;
     font-size: .63rem;
   }
   .nav__overlay-contact {
     width: 100%;
-    padding: .85rem .85rem .2rem;
-    font-size: .85rem;
+    padding: .65rem .72rem .1rem;
+    font-size: .8rem;
   }
   .nav__overlay-actions {
     width: 100%;
-    gap: .55rem;
+    gap: .45rem;
   }
   .nav__overlay-action {
-    min-height: 50px;
-    padding: .78rem .72rem;
+    min-height: 44px;
+    padding: .68rem .66rem;
     font-size: .69rem;
     letter-spacing: .1em;
-    border-radius: 16px;
+    border-radius: 14px;
   }
   .nav__overlay-close {
     top: calc(.85rem + env(safe-area-inset-top));
