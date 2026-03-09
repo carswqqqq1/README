@@ -9,6 +9,7 @@
   var ADDRESS = SITE_CONFIG.address || {};
   var PHONE = SITE_CONFIG.phone || {};
   var PHONE_TRACKING = SITE_CONFIG.phoneTracking || {};
+  var REVIEW_SUMMARY = SITE_CONFIG.reviewSummary || {};
   var GOOGLE_REVIEWS = SITE_CONFIG.googleReviews || {};
   var SERVICE_AREAS = Array.isArray(SITE_CONFIG.serviceAreas) ? SITE_CONFIG.serviceAreas : [];
   var TRUST_ASSETS = SITE_CONFIG.trustAssets || {};
@@ -26,11 +27,11 @@
   var SITE_CITY = ADDRESS.city || 'Scottsdale';
   var SITE_STATE = ADDRESS.state || 'AZ';
   var SITE_ZIP = ADDRESS.zip || '85260';
-  var REVIEW_RATING = String(SITE_CONFIG.reviewRating || GOOGLE_REVIEWS.rating || '').trim();
-  var REVIEW_COUNT = String(SITE_CONFIG.reviewCount || GOOGLE_REVIEWS.count || '').trim();
-  var REVIEW_SOURCE = String(SITE_CONFIG.reviewSource || GOOGLE_REVIEWS.platform || 'Birdeye').trim();
-  var REVIEW_SOURCE_URL = String(SITE_CONFIG.reviewSourceUrl || GOOGLE_REVIEWS.profileUrl || '').trim();
-  var REVIEW_SNAPSHOT_DATE = String(SITE_CONFIG.reviewSnapshotDate || GOOGLE_REVIEWS.snapshotDate || '').trim();
+  var REVIEW_RATING = String(REVIEW_SUMMARY.rating || SITE_CONFIG.reviewRating || GOOGLE_REVIEWS.rating || '').trim();
+  var REVIEW_COUNT = String(REVIEW_SUMMARY.count || SITE_CONFIG.reviewCount || GOOGLE_REVIEWS.count || '').trim();
+  var REVIEW_SOURCE = String(REVIEW_SUMMARY.source || SITE_CONFIG.reviewSource || GOOGLE_REVIEWS.platform || 'Birdeye').trim();
+  var REVIEW_SOURCE_URL = String(REVIEW_SUMMARY.sourceUrl || SITE_CONFIG.reviewSourceUrl || GOOGLE_REVIEWS.profileUrl || '').trim();
+  var REVIEW_SNAPSHOT_DATE = String(REVIEW_SUMMARY.snapshotDate || SITE_CONFIG.reviewSnapshotDate || GOOGLE_REVIEWS.snapshotDate || '').trim();
   var BUSINESS_YEARS = String(SITE_CONFIG.businessYears || '').trim();
   var SOCIAL_PROFILES = Array.isArray(SITE_CONFIG.socialProfiles) ? SITE_CONFIG.socialProfiles : [];
 

@@ -220,6 +220,13 @@
       primaryMid: '#2d6a4f',
       paper: '#faf7f3'
     },
+    reviewSummary: {
+      rating: '4.7',
+      count: '43',
+      source: 'Birdeye',
+      sourceUrl: reviewSourceUrl,
+      snapshotDate: 'Reviewed March 8, 2026'
+    },
     reviewRating: '4.7',
     reviewCount: '43',
     reviewSource: 'Birdeye',

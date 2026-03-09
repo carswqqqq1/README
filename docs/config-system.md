@@ -13,6 +13,7 @@ Update these fields for each new client:
 - `serviceAreas`
 - `brand.logoPath`, `brand.primary`, `brand.primaryMid`, `brand.paper`
 - `reviewRating`, `reviewCount`, `reviewSource`, `reviewSourceUrl`, `reviewSnapshotDate`
+ - `reviewSummary`
 - `socialProfiles`
 - `trustAssets`
 - `locationPages`

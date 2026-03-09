@@ -283,7 +283,7 @@ function applyOwnerDashboardLayout_(sheet) {
   }
 
   sheet.setFrozenRows(1);
-  sheet.setFrozenColumns(0);
+  sheet.setFrozenColumns(6);
   sheet.showColumns(1, maxColumns);
 
   var widths = [
@@ -319,6 +319,10 @@ function applyOwnerDashboardLayout_(sheet) {
   for (var i = 0; i < widths.length; i += 1) {
     sheet.setColumnWidth(i + 1, widths[i]);
   }
+
+  [15, 16, 17, 19, 24, 25, 26, 27].forEach(function (columnNumber) {
+    sheet.hideColumns(columnNumber);
+  });
 }
 
 function json_(payload) {

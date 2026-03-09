@@ -48,6 +48,7 @@ Update:
 - `phoneTracking`
 - `address`
 - `brand.logoPath`
+- `reviewSummary`
 - `googleReviews.profileUrl`
 - `trustAssets.licenseVerifyUrl`
 - `trustAssets.bondVerifyUrl`

@@ -1097,6 +1097,7 @@ async function ensureGoogleSheetDashboardFormatting(
   const statusColumn = DIRECT_SHEET_HEADERS.indexOf('status');
   const nextActionColumn = DIRECT_SHEET_HEADERS.indexOf('next_action');
   const totalColumns = DIRECT_SHEET_HEADERS.length;
+  const hiddenColumns = [14, 15, 16, 18, 23, 24, 25, 26];
 
   const requests = [];
   for (let index = Number(existingConditionalCount || 0) - 1; index >= 0; index -= 1) {
@@ -1115,7 +1116,7 @@ async function ensureGoogleSheetDashboardFormatting(
           sheetId,
           gridProperties: {
             frozenRowCount: 1,
-            frozenColumnCount: 0
+            frozenColumnCount: 6
           }
         },
         fields: 'gridProperties.frozenRowCount,gridProperties.frozenColumnCount'
@@ -1283,6 +1284,23 @@ async function ensureGoogleSheetDashboardFormatting(
       },
       fields: 'hiddenByUser'
     }
+  });
+
+  hiddenColumns.forEach((column) => {
+    requests.push({
+      updateDimensionProperties: {
+        range: {
+          sheetId,
+          dimension: 'COLUMNS',
+          startIndex: column,
+          endIndex: column + 1
+        },
+        properties: {
+          hiddenByUser: true
+        },
+        fields: 'hiddenByUser'
+      }
+    });
   });
 
   const statusRules = [

@@ -106,14 +106,15 @@
 
   function applyReviewSnapshot(selector) {
     var reviewConfig = window.SITE_CONFIG || {};
+    var reviewSummary = reviewConfig.reviewSummary || {};
     var target = selector ? document.querySelector(selector) : null;
     if (!target) return;
 
-    var rating = String(reviewConfig.reviewRating || (reviewConfig.googleReviews && reviewConfig.googleReviews.rating) || '').trim();
-    var count = String(reviewConfig.reviewCount || (reviewConfig.googleReviews && reviewConfig.googleReviews.count) || '').trim();
-    var platform = String(reviewConfig.reviewSource || (reviewConfig.googleReviews && reviewConfig.googleReviews.platform) || 'Birdeye').trim();
-    var link = String(reviewConfig.reviewSourceUrl || (reviewConfig.googleReviews && reviewConfig.googleReviews.profileUrl) || '').trim();
-    var snapshotDate = String(reviewConfig.reviewSnapshotDate || (reviewConfig.googleReviews && reviewConfig.googleReviews.snapshotDate) || '').trim();
+    var rating = String(reviewSummary.rating || reviewConfig.reviewRating || (reviewConfig.googleReviews && reviewConfig.googleReviews.rating) || '').trim();
+    var count = String(reviewSummary.count || reviewConfig.reviewCount || (reviewConfig.googleReviews && reviewConfig.googleReviews.count) || '').trim();
+    var platform = String(reviewSummary.source || reviewConfig.reviewSource || (reviewConfig.googleReviews && reviewConfig.googleReviews.platform) || 'Birdeye').trim();
+    var link = String(reviewSummary.sourceUrl || reviewConfig.reviewSourceUrl || (reviewConfig.googleReviews && reviewConfig.googleReviews.profileUrl) || '').trim();
+    var snapshotDate = String(reviewSummary.snapshotDate || reviewConfig.reviewSnapshotDate || (reviewConfig.googleReviews && reviewConfig.googleReviews.snapshotDate) || '').trim();
     if (!rating && !count) return;
 
     var text = rating + '-star ' + platform + ' rating';

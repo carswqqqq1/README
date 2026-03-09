@@ -20,6 +20,13 @@
     "Phoenix"
   ],
   "businessYears": "10+ years serving Arizona homeowners",
+  "reviewSummary": {
+    "rating": "4.8",
+    "count": "120",
+    "source": "Google",
+    "sourceUrl": "https://example.com/reviews",
+    "snapshotDate": "Reviewed March 8, 2026"
+  },
   "reviewRating": "4.8",
   "reviewCount": "120",
   "reviewSource": "Google",
@@ -52,5 +59,38 @@
     "trustHighlights": [
       "Licensed, bonded, and insured"
     ]
-  }
+  },
+  "contactFormServices": [
+    "Landscape Design & Build",
+    "Hardscaping",
+    "Outdoor Kitchens",
+    "Outdoor Lighting",
+    "Artificial Turf",
+    "Not sure yet"
+  ],
+  "locationPages": {
+    "/city-landscaping": {
+      "city": "Scottsdale",
+      "nearbyAreas": "North Scottsdale and nearby neighborhoods",
+      "trustBullets": [
+        "Projects are planned around the way homeowners actually use the yard."
+      ],
+      "featuredReview": {
+        "author": "Client Name",
+        "projectType": "Outdoor living remodel",
+        "reviewDate": "January 2026",
+        "quote": "Short verified review quote."
+      }
+    }
+  },
+  "reviews": [
+    {
+      "author": "Client Name",
+      "location": "Scottsdale, AZ",
+      "rating": 5,
+      "projectType": "Outdoor living remodel",
+      "reviewDate": "January 2026",
+      "text": "Verified review text."
+    }
+  ]
 }
