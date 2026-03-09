@@ -2,6 +2,10 @@
 
 Use this checklist when cloning the landscaping template for a new client.
 
+## Status Note
+
+This template is ship-ready for live use. Any remaining work is in the "could improve later" category, such as more SEO content depth or a fuller white-label product system, not broken-site issues.
+
 ## 1. Branch + Environment
 
 1. Create a new client branch from the current production-ready template branch.
@@ -31,8 +35,10 @@ Update `site-config.js` first:
 - `reviewSnapshotDate`
 - `trustAssets`
 - `locationPages`
+- `socialProfiles`
 
 Do not manually search-and-replace copy first. Update config, then sweep for any remaining branded copy.
+If you have a structured client JSON file, apply it with `node scripts/apply-client-config.js path/to/client-config.json` instead of hand-editing every field.
 
 ## 3. Replace Proof Carefully
 

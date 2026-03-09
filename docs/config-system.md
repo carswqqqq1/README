@@ -13,6 +13,7 @@ Update these fields for each new client:
 - `serviceAreas`
 - `brand.logoPath`, `brand.primary`, `brand.primaryMid`, `brand.paper`
 - `reviewRating`, `reviewCount`, `reviewSource`, `reviewSourceUrl`, `reviewSnapshotDate`
+- `socialProfiles`
 - `trustAssets`
 - `locationPages`
 - `contactFormServices`
@@ -38,8 +39,21 @@ Update these fields for each new client:
 ## Clone Workflow
 
 1. Duplicate this project.
-2. Edit only `site-config.js`.
-3. Set Netlify env vars for email routing.
-4. Deploy.
+2. Start from `docs/client-config-template.json`.
+3. Apply it with `node scripts/apply-client-config.js path/to/client-config.json` or edit `site-config.js` directly.
+4. Set Netlify env vars for email routing.
+5. Deploy.
+
+## Release Checks
+
+Run these before launch:
+
+```bash
+npm run build:assets
+npm run check:js
+npm run check:a11y
+npm run check:site
+npm run check:speed
+```
 
 Use `docs/white-label-handoff.md` for the full release-safe clone checklist.

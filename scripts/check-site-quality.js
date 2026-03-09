@@ -24,6 +24,7 @@ const mainIndexedPages = [
 
 const failures = [];
 const envExamplePath = path.join(root, '.env.example');
+const legacyManifestPath = path.join(root, 'site.webmanifest');
 
 function read(file) {
   return fs.readFileSync(path.join(root, file), 'utf8');
@@ -68,6 +69,10 @@ if (fs.existsSync(envExamplePath)) {
   if (/carsonweso@icloud\.com|carson\.elevatemarketing@gmail\.com/i.test(envExample)) {
     failures.push('.env.example: personal email fallback found');
   }
+}
+
+if (fs.existsSync(legacyManifestPath)) {
+  failures.push('site.webmanifest: legacy orphan manifest should be removed');
 }
 
 if (failures.length) {

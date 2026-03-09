@@ -165,6 +165,16 @@ Use Netlify CLI from the template folder. For the Think Green site, deploy expli
 npx netlify deploy --prod --dir . --site=afa9fd9e-aa69-4368-a08f-d93aa497b0a8
 ```
 
+## Release Checks
+
+```bash
+npm run build:assets
+npm run check:js
+npm run check:a11y
+npm run check:site
+npm run check:speed
+```
+
 ## Sales + Ops Docs
 
 - `docs/offer-sheet-template.md`
@@ -177,4 +187,6 @@ npx netlify deploy --prod --dir . --site=afa9fd9e-aa69-4368-a08f-d93aa497b0a8
 - `docs/client-questionnaire-template.md`
 - `docs/client-answer-paste-template.md`
 - `docs/client-build-prompt-template.md`
+- `docs/client-config-template.json`
 - `docs/white-label-handoff.md`
+- `docs/accessibility-release-checklist.md`

@@ -1,0 +1,56 @@
+{
+  "siteBaseUrl": "https://example-client-site.netlify.app",
+  "manifestPath": "/manifest.json",
+  "businessName": "Client Landscaping Company",
+  "shortName": "Client Name",
+  "email": "hello@example.com",
+  "ownerEmail": "owner@example.com",
+  "phone": {
+    "raw": "4805550000",
+    "display": "(480) 555-0000"
+  },
+  "address": {
+    "line1": "1234 Example Ave",
+    "city": "Scottsdale",
+    "state": "AZ",
+    "zip": "85260"
+  },
+  "serviceAreas": [
+    "Scottsdale",
+    "Phoenix"
+  ],
+  "businessYears": "10+ years serving Arizona homeowners",
+  "reviewRating": "4.8",
+  "reviewCount": "120",
+  "reviewSource": "Google",
+  "reviewSourceUrl": "https://example.com/reviews",
+  "reviewSnapshotDate": "Reviewed March 8, 2026",
+  "socialProfiles": [
+    {
+      "label": "Google",
+      "url": "https://example.com/google-profile",
+      "footerLabel": "Find Us on Google"
+    }
+  ],
+  "brand": {
+    "logoPath": "img/logo.png",
+    "primary": "#1b4332",
+    "primaryMid": "#2d6a4f",
+    "paper": "#faf7f3"
+  },
+  "trustAssets": {
+    "licenseVerifyUrl": "https://example.com/license",
+    "bondVerifyUrl": "https://example.com/bond",
+    "licenseNumbers": [
+      "123456"
+    ],
+    "licensePrompt": "Verify licensing using the official state contractor search.",
+    "bondPrompt": "Bond and insurance documentation is available during consultation.",
+    "insuranceStatement": "Current insurance documentation is available during consultation.",
+    "responsePromise": "Most new project requests receive a response within one business day.",
+    "workmanshipWarranty": "Workmanship warranty details are reviewed during handoff.",
+    "trustHighlights": [
+      "Licensed, bonded, and insured"
+    ]
+  }
+}

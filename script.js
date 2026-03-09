@@ -32,6 +32,7 @@
   var REVIEW_SOURCE_URL = String(SITE_CONFIG.reviewSourceUrl || GOOGLE_REVIEWS.profileUrl || '').trim();
   var REVIEW_SNAPSHOT_DATE = String(SITE_CONFIG.reviewSnapshotDate || GOOGLE_REVIEWS.snapshotDate || '').trim();
   var BUSINESS_YEARS = String(SITE_CONFIG.businessYears || '').trim();
+  var SOCIAL_PROFILES = Array.isArray(SITE_CONFIG.socialProfiles) ? SITE_CONFIG.socialProfiles : [];
 
   function setText(selector, value) {
     document.querySelectorAll(selector).forEach(function (el) {
@@ -216,6 +217,31 @@
         item.appendChild(link);
         list.appendChild(item);
       });
+    });
+  }
+
+  function renderFooterSocialLinks() {
+    if (!SOCIAL_PROFILES.length) return;
+
+    document.querySelectorAll('.footer__brand').forEach(function (brand) {
+      if (!brand || brand.querySelector('.footer__social')) return;
+
+      var socialWrap = document.createElement('div');
+      socialWrap.className = 'footer__social';
+      socialWrap.setAttribute('aria-label', 'Review and social profiles');
+
+      SOCIAL_PROFILES.forEach(function (profile) {
+        if (!profile || !profile.url || !profile.footerLabel) return;
+        var link = document.createElement('a');
+        link.className = 'footer__social-link';
+        link.href = profile.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = profile.footerLabel;
+        socialWrap.appendChild(link);
+      });
+
+      brand.appendChild(socialWrap);
     });
   }
 
@@ -860,6 +886,7 @@
   applySiteBranding();
   ensureFooterServiceLinks();
   ensureFooterStudioLinks();
+  renderFooterSocialLinks();
   applyContactFormServices();
   applyProjectFitCards();
   applyBeforeAfterContent();

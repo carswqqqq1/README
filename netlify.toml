@@ -161,9 +161,19 @@
   status = 200
 
 [[redirects]]
+  from = "/search/"
+  to = "/search"
+  status = 301
+
+[[redirects]]
   from = "/resources"
   to = "/resources.html"
   status = 200
+
+[[redirects]]
+  from = "/resources/"
+  to = "/resources"
+  status = 301
 
 [[redirects]]
   from = "/about"
@@ -171,9 +181,19 @@
   status = 200
 
 [[redirects]]
+  from = "/about/"
+  to = "/about"
+  status = 301
+
+[[redirects]]
   from = "/process"
   to = "/process.html"
   status = 200
+
+[[redirects]]
+  from = "/process/"
+  to = "/process"
+  status = 301
 
 [[redirects]]
   from = "/reviews"
@@ -181,9 +201,19 @@
   status = 200
 
 [[redirects]]
+  from = "/reviews/"
+  to = "/reviews"
+  status = 301
+
+[[redirects]]
   from = "/free-consultation"
   to = "/free-consultation.html"
   status = 200
+
+[[redirects]]
+  from = "/free-consultation/"
+  to = "/free-consultation"
+  status = 301
 
 [[redirects]]
   from = "/best-landscaper-scottsdale"
@@ -199,6 +229,11 @@
   from = "/project-planning-checklist"
   to = "/project-planning-checklist.html"
   status = 200
+
+[[redirects]]
+  from = "/project-planning-checklist/"
+  to = "/project-planning-checklist"
+  status = 301
 
 [[redirects]]
   from = "/thank-you"
