@@ -54,6 +54,7 @@
           "telephone": "+1-480-922-9497",
           "email": "thinkgreen@thinkgreenaz.com",
           "priceRange": "$$-$$$",
+          "description": "Residential landscape design-build contractor serving Scottsdale, Phoenix, Paradise Valley, and nearby Arizona cities with hardscaping, outdoor kitchens, lighting, irrigation, and desert-friendly outdoor living projects.",
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "7730 E. Gelding Dr. Ste 1",
@@ -63,15 +64,24 @@
             "addressCountry": "US"
           },
           "areaServed": [
-            "Scottsdale",
-            "Paradise Valley",
-            "Phoenix",
-            "Fountain Hills",
-            "Cave Creek",
-            "Gilbert",
-            "Tempe",
-            "Mesa",
-            "Chandler"
+            {"@type": "City", "name": "Scottsdale"},
+            {"@type": "City", "name": "Paradise Valley"},
+            {"@type": "City", "name": "Phoenix"},
+            {"@type": "City", "name": "Fountain Hills"},
+            {"@type": "City", "name": "Cave Creek"},
+            {"@type": "City", "name": "Gilbert"},
+            {"@type": "City", "name": "Tempe"},
+            {"@type": "City", "name": "Mesa"},
+            {"@type": "City", "name": "Chandler"}
+          ],
+          "contactPoint": [
+            {
+              "@type": "ContactPoint",
+              "telephone": "+1-480-922-9497",
+              "contactType": "sales",
+              "areaServed": "US-AZ",
+              "availableLanguage": ["English"]
+            }
           ],
           "openingHoursSpecification": [
             {
@@ -103,6 +113,17 @@
             "https://www.yelp.com/biz/think-green-design-build-landscape-scottsdale",
             "https://www.google.com/maps/search/?api=1&query=Think+Green+Design+Build+Landscape+Scottsdale+AZ"
           ],
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Think Green Landscape and Outdoor Living Services",
+            "itemListElement": [
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Landscape Design & Build"}},
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Hardscaping"}},
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Outdoor Kitchens"}},
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Desert Landscaping"}},
+              {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Outdoor Lighting"}}
+            ]
+          },
           "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "4.7",
@@ -172,7 +193,11 @@
           "provider": {
             "@id": "https://thinkgreen-az.netlify.app/#business"
           },
-          "areaServed": "Phoenix Metropolitan Area"
+          "areaServed": [
+            {"@type": "City", "name": "Scottsdale"},
+            {"@type": "City", "name": "Phoenix"},
+            {"@type": "City", "name": "Paradise Valley"}
+          ]
         }
       ]
     }
@@ -333,6 +358,7 @@
           <p class="hero__eyebrow">Scottsdale, Arizona Design-Build</p>
           <h1 class="hero__heading">Custom Landscape Design &amp; Outdoor Living for Scottsdale Homes</h1>
           <p class="hero__sub">Design-build landscapes, patios, outdoor kitchens, and fire features built for Arizona living across Scottsdale, Phoenix, and nearby Valley communities.</p>
+          <p class="hero__support">This page covers Think Green&apos;s residential landscaping services, core service cities, visible review proof, and the fastest way to request a free design consultation.</p>
           <div class="hero__actions">
             <a href="#contact" class="btn btn--solid">Get Free Design Consultation</a>
             <a href="tel:4809229497" class="btn btn--ghost" data-site-phone-link>Call Now</a>

@@ -61,6 +61,48 @@
       'Mesa',
       'Chandler'
     ],
+    coreServices: [
+      'Landscape Design & Build',
+      'Hardscaping',
+      'Outdoor Kitchens',
+      'Fire Features',
+      'Desert Landscaping',
+      'Artificial Turf',
+      'Irrigation Systems',
+      'Outdoor Lighting',
+      'Pergolas and Shade Structures'
+    ],
+    trustSignals: {
+      licensed: true,
+      bonded: true,
+      insured: true,
+      responsePromise: 'Most project requests receive a response within one business day.',
+      reviewSourceLabel: 'Birdeye Reviews',
+      projectCountLabel: '150+ completed outdoor living and landscape projects shown across site proof sections',
+      noFakeClaimsNote: 'Do not invent awards, years in business, rankings, or review counts when cloning this template.'
+    },
+    aiReadability: {
+      summary: 'Think Green Design | Build Landscape is a Scottsdale-based residential landscaping and outdoor living company serving homeowners across Scottsdale, Paradise Valley, Phoenix, and nearby East Valley communities.',
+      homeownerFit: 'Best fit for homeowners who want design-build planning, premium hardscape and outdoor living upgrades, desert-climate durability, and a clear consultation path.',
+      consultationPath: '/free-consultation',
+      priorityPages: [
+        { label: 'Home', path: '/' },
+        { label: 'Services', path: '/services' },
+        { label: 'Landscape Design & Build', path: '/services/landscape-design' },
+        { label: 'Hardscaping', path: '/services/hardscaping' },
+        { label: 'Outdoor Kitchens', path: '/services/outdoor-kitchens' },
+        { label: 'Desert Landscaping', path: '/services/desert-landscaping' },
+        { label: 'Scottsdale Landscaping', path: '/scottsdale-landscaping' },
+        { label: 'Phoenix Landscaping', path: '/phoenix-landscaping' },
+        { label: 'Paradise Valley Landscaping', path: '/paradise-valley-landscaping' },
+        { label: 'Portfolio', path: '/portfolio' },
+        { label: 'About', path: '/about' },
+        { label: 'Reviews', path: '/reviews' },
+        { label: 'Process', path: '/process' },
+        { label: 'Free Consultation', path: '/free-consultation' },
+        { label: 'Resources', path: '/resources' }
+      ]
+    },
     locationPages: {
       '/scottsdale-landscaping': {
         city: 'Scottsdale',

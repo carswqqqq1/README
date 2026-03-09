@@ -47,6 +47,10 @@ Update:
 - `phone`
 - `phoneTracking`
 - `address`
+- `serviceAreas`
+- `coreServices`
+- `aiReadability`
+- `trustSignals`
 - `brand.logoPath`
 - `reviewSummary`
 - `googleReviews.profileUrl`
@@ -169,6 +173,7 @@ npx netlify deploy --prod --dir . --site=afa9fd9e-aa69-4368-a08f-d93aa497b0a8
 ## Release Checks
 
 ```bash
+npm run generate:llms
 npm run build:assets
 npm run check:js
 npm run check:a11y
