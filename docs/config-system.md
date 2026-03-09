@@ -40,9 +40,24 @@ Update these fields for each new client:
 
 1. Duplicate this project.
 2. Start from `docs/client-config-template.json`.
-3. Apply it with `node scripts/apply-client-config.js path/to/client-config.json` or edit `site-config.js` directly.
-4. Set Netlify env vars for email routing.
-5. Deploy.
+3. Generate a launch package with `node scripts/generate-client-package.js path/to/client-config.json`.
+4. Apply it with `node scripts/apply-client-config.js path/to/client-config.json` or edit `site-config.js` directly.
+5. Set Netlify env vars for email routing.
+6. Deploy.
+
+## Generated Launch Package
+
+`scripts/generate-client-package.js` creates:
+- a merged config preview
+- a branch + Netlify site naming suggestion
+- a launch checklist
+- a Netlify env template
+
+Default output directory:
+
+```bash
+client-builds/<client-slug>/
+```
 
 ## Release Checks
 

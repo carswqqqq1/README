@@ -40,6 +40,14 @@ Update `site-config.js` first:
 Do not manually search-and-replace copy first. Update config, then sweep for any remaining branded copy.
 If you have a structured client JSON file, apply it with `node scripts/apply-client-config.js path/to/client-config.json` instead of hand-editing every field.
 
+For a cleaner handoff, generate a client launch package first:
+
+```bash
+node scripts/generate-client-package.js path/to/client-config.json
+```
+
+This creates a branch/site naming suggestion, merged config preview, Netlify env template, and launch checklist in `client-builds/<client-slug>/`.
+
 ## 3. Replace Proof Carefully
 
 Do not invent:

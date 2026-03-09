@@ -34,6 +34,9 @@
 - [Free Consultation](https://thinkgreen-az.netlify.app/free-consultation): Dedicated lead page
 - [Scottsdale Hardscaping](https://thinkgreen-az.netlify.app/scottsdale-hardscaping): City-specific hardscape landing page
 - [Phoenix Outdoor Kitchens](https://thinkgreen-az.netlify.app/phoenix-outdoor-kitchens): City-specific outdoor kitchen landing page
+- [Paradise Valley Outdoor Lighting](https://thinkgreen-az.netlify.app/paradise-valley-outdoor-lighting): City-specific outdoor lighting landing page
+- [Mesa Artificial Turf](https://thinkgreen-az.netlify.app/mesa-artificial-turf): City-specific turf landing page
+- [Tempe Pergolas and Shade](https://thinkgreen-az.netlify.app/tempe-pergola-shade): City-specific shade-structure landing page
 
 ## Primary Services
 - Landscape design and build

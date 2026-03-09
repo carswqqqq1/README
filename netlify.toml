@@ -386,6 +386,36 @@
   status = 200
 
 [[redirects]]
+  from = "/paradise-valley-outdoor-lighting"
+  to = "/paradise-valley-outdoor-lighting.html"
+  status = 200
+
+[[redirects]]
+  from = "/paradise-valley-outdoor-lighting/"
+  to = "/paradise-valley-outdoor-lighting"
+  status = 301
+
+[[redirects]]
+  from = "/mesa-artificial-turf"
+  to = "/mesa-artificial-turf.html"
+  status = 200
+
+[[redirects]]
+  from = "/mesa-artificial-turf/"
+  to = "/mesa-artificial-turf"
+  status = 301
+
+[[redirects]]
+  from = "/tempe-pergola-shade"
+  to = "/tempe-pergola-shade.html"
+  status = 200
+
+[[redirects]]
+  from = "/tempe-pergola-shade/"
+  to = "/tempe-pergola-shade"
+  status = 301
+
+[[redirects]]
   from = "/phoenix-outdoor-kitchens/"
   to = "/phoenix-outdoor-kitchens"
   status = 301

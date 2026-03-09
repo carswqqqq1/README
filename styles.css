@@ -2239,6 +2239,26 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   font-size: .82rem;
   color: var(--ink-faint);
 }
+.recent-project__meta {
+  display: grid;
+  gap: .26rem;
+  margin-bottom: .58rem;
+  font-size: .74rem;
+  color: var(--ink-light);
+}
+.recent-project__meta li {
+  line-height: 1.5;
+}
+.recent-project__meta strong {
+  color: var(--ink);
+}
+.recent-project__proof {
+  margin-top: 0;
+  margin-bottom: .68rem;
+  font-size: .78rem;
+  line-height: 1.62;
+  color: var(--ink-light);
+}
 .recent-project__cta {
   display: inline-flex;
   align-items: center;

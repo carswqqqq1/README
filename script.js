@@ -712,7 +712,7 @@
   }
 
   function renderRecentProjects() {
-    var list = Array.isArray(window.RECENT_PROJECTS) ? window.RECENT_PROJECTS.slice(0, 3) : [];
+    var list = Array.isArray(window.RECENT_PROJECTS) ? window.RECENT_PROJECTS.slice(0, 5) : [];
     var grid = document.getElementById('recent-projects-grid');
     if (!grid || !list.length) return;
 
@@ -726,6 +726,9 @@
       var alt = String(project.imageAlt || title + ' in ' + location).trim();
       var width = Number(project.width || 1600);
       var height = Number(project.height || 900);
+      var scope = String(project.scope || '').trim();
+      var timeline = String(project.timeline || '').trim();
+      var proof = String(project.proof || '').trim();
       var requestQuery = new URLSearchParams({
         source: 'recent_projects',
         service: serviceSlug || '',
@@ -745,6 +748,11 @@
         '  <div class="recent-project__body">' +
         '    <h3>' + title + '</h3>' +
         '    <p>' + location + '</p>' +
+        (scope || timeline ? '    <ul class="recent-project__meta">' +
+          (scope ? '<li><strong>Scope:</strong> ' + scope + '</li>' : '') +
+          (timeline ? '<li><strong>Timeline:</strong> ' + timeline + '</li>' : '') +
+        '</ul>' : '') +
+        (proof ? '    <p class="recent-project__proof">' + proof + '</p>' : '') +
         '    <a href="/?' + requestQuery.toString() + '#contact" class="recent-project__cta">Request a Similar Project</a>' +
         '  </div>' +
         '</article>';

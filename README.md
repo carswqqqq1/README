@@ -175,6 +175,20 @@ npm run check:site
 npm run check:speed
 ```
 
+## White-Label Generator
+
+To prepare the next client clone without rebuilding the workflow from scratch:
+
+```bash
+node scripts/generate-client-package.js path/to/client-config.json
+```
+
+This writes a launch package to `client-builds/<client-slug>/` with:
+- merged config preview
+- suggested branch and Netlify site name
+- Netlify env template
+- launch checklist
+
 ## Sales + Ops Docs
 
 - `docs/offer-sheet-template.md`
@@ -190,3 +204,4 @@ npm run check:speed
 - `docs/client-config-template.json`
 - `docs/white-label-handoff.md`
 - `docs/accessibility-release-checklist.md`
+- `docs/manual-accessibility-audit-2026-03-08.md`
