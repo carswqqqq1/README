@@ -80,14 +80,14 @@ function doPost(e) {
 
     const duplicate = findRecentDuplicate_(meta.sheet, normalizedEmail, normalizedPhone, now);
     const status = duplicate ? 'Duplicate' : (String(row.status || '').trim() || 'New');
-    const followUpDue = status === 'New' ? new Date(now.getTime() + 24 * 60 * 60 * 1000) : '';
+    const followUpDue = status === 'New' ? formatPhoenixDate_(new Date(now.getTime() + 24 * 60 * 60 * 1000)) : '';
     const nextAction = status === 'New' ? 'Call' : '';
 
     const tags = normalizeTags_(row.lead_tags || row.owner_lead_tags || '');
     if (duplicate && tags.indexOf('duplicate') === -1) tags.push('duplicate');
 
     const values = {
-      timestamp: sanitizeField_(row.timestamp || now.toISOString()),
+      timestamp: sanitizeField_(row.timestamp || formatPhoenixDate_(now)),
       status: status,
       name: sanitizeField_(row.name || [row.first_name || '', row.last_name || ''].join(' ').trim()),
       phone: sanitizeField_(row.phone),
@@ -109,7 +109,7 @@ function doPost(e) {
       project_location: sanitizeField_(row.project_location || row.project_address),
       contact_method: sanitizeField_(row.contact_method || row.preferred_contact_method),
       submitted_local: sanitizeField_(row.submitted_local),
-      last_touched: now,
+      last_touched: formatPhoenixDate_(now),
       page_url: sanitizeField_(row.page_url),
       utm_source: sanitizeField_(row.utm_source),
       utm_medium: sanitizeField_(row.utm_medium),
@@ -220,6 +220,11 @@ function sanitizeField_(value) {
     return '';
   }
   return text;
+}
+
+function formatPhoenixDate_(value) {
+  var date = value instanceof Date ? value : new Date(value || new Date());
+  return Utilities.formatDate(date, 'America/Phoenix', 'MMM d, yyyy, h:mm a');
 }
 
 function buildRowUrl_(spreadsheet, sheet, row) {

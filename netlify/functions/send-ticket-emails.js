@@ -1444,8 +1444,9 @@ async function sendToGoogleSheetsDirect(row) {
   if (isDuplicate) tags.add('duplicate');
 
   const status = isDuplicate ? 'Duplicate' : 'New';
-  const timestamp = safeText(row.timestamp, new Date().toISOString());
-  const followUpDue = isDuplicate ? '' : new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+  const timestamp = formatPhoenixDate(row.timestamp || new Date().toISOString());
+  const followUpDue = isDuplicate ? '' : formatPhoenixDate(new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString());
+  const lastTouched = formatPhoenixDate(new Date().toISOString());
   const rowValues = [
     timestamp,
     status,
@@ -1469,7 +1470,7 @@ async function sendToGoogleSheetsDirect(row) {
     ownerSheetValue(row.project_location),
     ownerSheetValue(row.contact_method),
     ownerSheetValue(row.submitted_local),
-    timestamp,
+    lastTouched,
     ownerSheetValue(row.page_url),
     ownerSheetValue(row.utm_source),
     ownerSheetValue(row.utm_medium),
