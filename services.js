@@ -31,8 +31,11 @@
   }
 
   function serviceConsultationHref(service) {
-    if (isNestedServicePage) return '#service-consultation';
-    return '#services-consultation';
+    var params = new URLSearchParams();
+    if (service && service.slug) params.set('service', service.slug);
+    params.set('source', isNestedServicePage ? 'service_page' : 'services_hub');
+    params.set('autostart', '1');
+    return withBase('/free-consultation?' + params.toString());
   }
 
   function servicePortfolioHref(service) {
@@ -190,7 +193,7 @@
       heroBackground.style.backgroundImage = 'url(\"../' + service.gallery[0].src + '\")';
     }
 
-    var ctaLabel = service.ctaLabel || ('Request ' + service.title + ' Consultation');
+    var ctaLabel = 'Get Free Design Consultation';
     ctaPrimaryAll.forEach(function (link) {
       link.setAttribute('href', serviceConsultationHref(service));
       link.textContent = ctaLabel;

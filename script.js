@@ -965,6 +965,7 @@
   updateNav();
   dedupeConsultNavigationLinks();
   applyActiveNavigationState();
+  normalizeConsultationLinks();
 
   /* ---- MOBILE MENU ---- */
   var burger = document.getElementById('nav-burger');
@@ -1056,59 +1057,57 @@
   }
 
   function getOverlayConsultHref() {
-    if (normalizedPath === '/services') return '#services-consultation';
-    if (normalizedPath.indexOf('/services/') === 0) return '#service-consultation';
-    if (normalizedPath.indexOf('/portfolio') === 0) return '#portfolio-consultation';
-    if (normalizedPath.indexOf('/resources') === 0) return '#resources-consultation';
-    if (normalizedPath.indexOf('scottsdale-landscaping') >= 0) return '#scottsdale-consultation';
-    if (normalizedPath.indexOf('phoenix-landscaping') >= 0) return '#phoenix-consultation';
-    if (normalizedPath.indexOf('paradise-valley-landscaping') >= 0) return '#paradise-valley-consultation';
-    if (normalizedPath.indexOf('arcadia-landscaping') >= 0) return '#arcadia-consultation';
-    if (normalizedPath.indexOf('mesa-landscaping') >= 0) return '#mesa-consultation';
-    if (normalizedPath.indexOf('chandler-landscaping') >= 0) return '#chandler-consultation';
-    if (normalizedPath.indexOf('tempe-landscaping') >= 0) return '#tempe-consultation';
-    if (normalizedPath.indexOf('gilbert-landscaping') >= 0) return '#gilbert-consultation';
-    if (normalizedPath.indexOf('fountain-hills-landscaping') >= 0) return '#fountain-hills-consultation';
-    if (normalizedPath.indexOf('cave-creek-landscaping') >= 0) return '#cave-creek-consultation';
-    if (normalizedPath.indexOf('/about') === 0) return '/free-consultation';
-    if (normalizedPath.indexOf('/process') === 0) return '/free-consultation';
-    if (normalizedPath.indexOf('/reviews') === 0) return '/free-consultation';
+    if (normalizedPath === '/services') return buildConsultationPageHref({ source: 'services_hub' });
+    if (normalizedPath.indexOf('/services/') === 0) return buildConsultationPageHref({ source: 'service_page' });
+    if (normalizedPath.indexOf('/portfolio') === 0) return buildConsultationPageHref({ source: 'portfolio' });
+    if (normalizedPath.indexOf('/resources') === 0) return buildConsultationPageHref({ source: 'resources_hub' });
+    if (currentPageCity()) return buildConsultationPageHref({ source: 'location_page' });
+    if (normalizedPath.indexOf('/about') === 0) return buildConsultationPageHref({ source: 'about_page' });
+    if (normalizedPath.indexOf('/process') === 0) return buildConsultationPageHref({ source: 'process_page' });
+    if (normalizedPath.indexOf('/reviews') === 0) return buildConsultationPageHref({ source: 'reviews_page' });
     if (normalizedPath.indexOf('/free-consultation') === 0) return '#consultation-request';
-    if (normalizedPath.indexOf('best-landscaper') >= 0) return '#comparison-consultation';
-    if (normalizedPath.indexOf('project-planning-checklist') >= 0) return '#checklist-consultation';
-    if (normalizedPath.indexOf('landscaping-cost-scottsdale') >= 0) return '#cost-guide-consultation';
-    if (normalizedPath.indexOf('xeriscape-vs-turf-arizona') >= 0) return '#yard-choice-consultation';
-    if (normalizedPath.indexOf('pavers-vs-concrete-arizona') >= 0) return '#hardscape-choice-consultation';
-    if (normalizedPath.indexOf('outdoor-kitchen-planning-arizona') >= 0) return '#kitchen-guide-consultation';
+    if (normalizedPath.indexOf('best-landscaper') >= 0) return buildConsultationPageHref({ source: 'comparison_page' });
+    if (normalizedPath.indexOf('project-planning-checklist') >= 0) return buildConsultationPageHref({ source: 'checklist_page' });
+    if (normalizedPath.indexOf('landscaping-cost-scottsdale') >= 0) return buildConsultationPageHref({ source: 'cost_guide' });
+    if (normalizedPath.indexOf('xeriscape-vs-turf-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
+    if (normalizedPath.indexOf('pavers-vs-concrete-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
+    if (normalizedPath.indexOf('outdoor-kitchen-planning-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
     return '#contact';
   }
 
   function getGlobalConsultFallbackHref() {
-    if (normalizedPath === '/services') return '#services-consultation';
-    if (normalizedPath.indexOf('/services/') === 0) return '#service-consultation';
-    if (normalizedPath.indexOf('/portfolio') === 0) return '#portfolio-consultation';
-    if (normalizedPath.indexOf('/resources') === 0) return '#resources-consultation';
-    if (normalizedPath.indexOf('scottsdale-landscaping') >= 0) return '#scottsdale-consultation';
-    if (normalizedPath.indexOf('phoenix-landscaping') >= 0) return '#phoenix-consultation';
-    if (normalizedPath.indexOf('paradise-valley-landscaping') >= 0) return '#paradise-valley-consultation';
-    if (normalizedPath.indexOf('arcadia-landscaping') >= 0) return '#arcadia-consultation';
-    if (normalizedPath.indexOf('mesa-landscaping') >= 0) return '#mesa-consultation';
-    if (normalizedPath.indexOf('chandler-landscaping') >= 0) return '#chandler-consultation';
-    if (normalizedPath.indexOf('tempe-landscaping') >= 0) return '#tempe-consultation';
-    if (normalizedPath.indexOf('gilbert-landscaping') >= 0) return '#gilbert-consultation';
-    if (normalizedPath.indexOf('fountain-hills-landscaping') >= 0) return '#fountain-hills-consultation';
-    if (normalizedPath.indexOf('cave-creek-landscaping') >= 0) return '#cave-creek-consultation';
-    if (normalizedPath.indexOf('/about') === 0) return '/free-consultation';
-    if (normalizedPath.indexOf('/process') === 0) return '/free-consultation';
-    if (normalizedPath.indexOf('/reviews') === 0) return '/free-consultation';
+    if (normalizedPath === '/services') return buildConsultationPageHref({ source: 'services_hub' });
+    if (normalizedPath.indexOf('/services/') === 0) return buildConsultationPageHref({ source: 'service_page' });
+    if (normalizedPath.indexOf('/portfolio') === 0) return buildConsultationPageHref({ source: 'portfolio' });
+    if (normalizedPath.indexOf('/resources') === 0) return buildConsultationPageHref({ source: 'resources_hub' });
+    if (currentPageCity()) return buildConsultationPageHref({ source: 'location_page' });
+    if (normalizedPath.indexOf('/about') === 0) return buildConsultationPageHref({ source: 'about_page' });
+    if (normalizedPath.indexOf('/process') === 0) return buildConsultationPageHref({ source: 'process_page' });
+    if (normalizedPath.indexOf('/reviews') === 0) return buildConsultationPageHref({ source: 'reviews_page' });
     if (normalizedPath.indexOf('/free-consultation') === 0) return '#consultation-request';
-    if (normalizedPath.indexOf('best-landscaper') >= 0) return '#comparison-consultation';
-    if (normalizedPath.indexOf('project-planning-checklist') >= 0) return '#checklist-consultation';
-    if (normalizedPath.indexOf('landscaping-cost-scottsdale') >= 0) return '#cost-guide-consultation';
-    if (normalizedPath.indexOf('xeriscape-vs-turf-arizona') >= 0) return '#yard-choice-consultation';
-    if (normalizedPath.indexOf('pavers-vs-concrete-arizona') >= 0) return '#hardscape-choice-consultation';
-    if (normalizedPath.indexOf('outdoor-kitchen-planning-arizona') >= 0) return '#kitchen-guide-consultation';
+    if (normalizedPath.indexOf('best-landscaper') >= 0) return buildConsultationPageHref({ source: 'comparison_page' });
+    if (normalizedPath.indexOf('project-planning-checklist') >= 0) return buildConsultationPageHref({ source: 'checklist_page' });
+    if (normalizedPath.indexOf('landscaping-cost-scottsdale') >= 0) return buildConsultationPageHref({ source: 'cost_guide' });
+    if (normalizedPath.indexOf('xeriscape-vs-turf-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
+    if (normalizedPath.indexOf('pavers-vs-concrete-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
+    if (normalizedPath.indexOf('outdoor-kitchen-planning-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
     return '/#contact';
+  }
+
+  function normalizeConsultationLinks() {
+    if (isHomePath || normalizedPath.indexOf('/free-consultation') === 0) return;
+    var dedicatedHref = getGlobalConsultFallbackHref();
+    if (!dedicatedHref || dedicatedHref.charAt(0) === '#') return;
+
+    document.querySelectorAll('a[href]').forEach(function (link) {
+      var href = String(link.getAttribute('href') || '').trim();
+      var text = String(link.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      var isConsultText = text.indexOf('consultation') >= 0 || text === 'contact';
+      var isLocalConsultAnchor = href.charAt(0) === '#' && (href.indexOf('consultation') >= 0 || href === '#contact');
+      if (!isConsultText && !isLocalConsultAnchor) return;
+      if (link.hasAttribute('data-service-consultation-link')) return;
+      link.setAttribute('href', dedicatedHref);
+    });
   }
 
   function getOverlayIntroContent() {
@@ -1332,6 +1331,48 @@
     if (pathname.indexOf('checklist') >= 0) return 'checklist_download';
     if (pathname.indexOf('best-landscaper') >= 0) return 'comparison_page';
     return DETECTED_LEAD_SOURCE || 'website';
+  }
+
+  function currentServiceSlug() {
+    return document.body && document.body.dataset && document.body.dataset.serviceSlug
+      ? String(document.body.dataset.serviceSlug).trim()
+      : '';
+  }
+
+  function currentPageCity() {
+    var pathname = String(window.location.pathname || '').toLowerCase();
+    var cityMap = [
+      ['scottsdale-landscaping', 'Scottsdale'],
+      ['phoenix-landscaping', 'Phoenix'],
+      ['paradise-valley-landscaping', 'Paradise Valley'],
+      ['arcadia-landscaping', 'Arcadia'],
+      ['mesa-landscaping', 'Mesa'],
+      ['chandler-landscaping', 'Chandler'],
+      ['tempe-landscaping', 'Tempe'],
+      ['gilbert-landscaping', 'Gilbert'],
+      ['fountain-hills-landscaping', 'Fountain Hills'],
+      ['cave-creek-landscaping', 'Cave Creek']
+    ];
+    var match = cityMap.find(function (entry) {
+      return pathname.indexOf(entry[0]) >= 0;
+    });
+    return match ? match[1] : '';
+  }
+
+  function buildConsultationPageHref(overrides) {
+    var params = new URLSearchParams();
+    var options = overrides || {};
+    var service = String(options.service || currentServiceSlug() || '').trim();
+    var city = String(options.city || currentPageCity() || '').trim();
+    var source = String(options.source || deriveConsultSource() || 'website').trim();
+    var prefillMessage = String(options.prefill_message || '').trim();
+
+    if (service) params.set('service', service);
+    if (city) params.set('city', city);
+    if (source) params.set('source', source);
+    if (prefillMessage) params.set('prefill_message', prefillMessage);
+    params.set('autostart', '1');
+    return '/free-consultation?' + params.toString();
   }
 
   function resolveServiceFormValue(value) {
@@ -1773,6 +1814,7 @@
     state.landingPath.value = String(window.location.pathname || '/');
 
     state.service.value = resolvedService;
+    state.city.value = nextPrefill.city || '';
     state.contactChoice.value = nextPrefill.contact_method || '';
     state.timeline.value = nextPrefill.estimated_timeline || '';
     state.message.value = nextPrefill.prefill_message || '';
@@ -1840,6 +1882,7 @@
 
     var href = String(trigger.getAttribute('href') || '');
     var text = String(trigger.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+    var isDedicatedConsultPageLink = href.indexOf('/free-consultation') >= 0;
     var isConsultTrigger = trigger.hasAttribute('data-service-choice') ||
       trigger.hasAttribute('data-lead-tier') ||
       trigger.hasAttribute('data-form-prefill-trigger') ||
@@ -1849,6 +1892,7 @@
       text.indexOf('request a similar project') >= 0;
 
     if (!isConsultTrigger) return;
+    if (isDedicatedConsultPageLink) return;
 
     event.preventDefault();
     openConsultDrawer(buildConsultPrefillFromTrigger(trigger));
@@ -1874,6 +1918,25 @@
     var offset = nav ? nav.offsetHeight + 8 : 80;
     window.scrollTo({ top: hashTarget.getBoundingClientRect().top + window.scrollY - offset, behavior: 'auto' });
   });
+
+  if (normalizedPath.indexOf('/free-consultation') === 0) {
+    var autostartConsultation = URL_PARAMS.get('autostart') === '1';
+    var prefillingConsultation = URL_PARAMS.get('service') || URL_PARAMS.get('city') || URL_PARAMS.get('prefill_message');
+    if (autostartConsultation || prefillingConsultation) {
+      window.requestAnimationFrame(function () {
+        openConsultDrawer({
+          source: URL_PARAMS.get('source') || 'consultation_page',
+          service: URL_PARAMS.get('service') || '',
+          city: URL_PARAMS.get('city') || '',
+          selected_style: URL_PARAMS.get('selected_style') || '',
+          selected_image: URL_PARAMS.get('selected_image') || '',
+          selected_project_label: URL_PARAMS.get('selected_project_label') || '',
+          prefill_message: URL_PARAMS.get('prefill_message') || '',
+          estimated_timeline: URL_PARAMS.get('estimated_timeline') || URL_PARAMS.get('timeline') || ''
+        });
+      });
+    }
+  }
 
   /* ---- HERO CAROUSEL ---- */
   var slides = document.querySelectorAll('.hero__slide');
