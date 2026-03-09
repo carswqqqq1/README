@@ -15,14 +15,17 @@
   <link rel="icon" type="image/jpeg" href="img/favicon-32.jpg" sizes="32x32" />
   <link rel="icon" type="image/jpeg" href="img/favicon-192.jpg" sizes="192x192" />
   <link rel="apple-touch-icon" href="img/apple-touch-icon.jpg" />
+  <link rel="manifest" href="site.webmanifest" />
   <link rel="canonical" href="https://thinkgreen-az.netlify.app/search.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="pages.css" />
+  <link rel="manifest" href="/manifest.json" />
 </head>
 <body class="simple-page">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="nav is-scrolled" id="nav">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo" aria-label="Think Green home">
@@ -35,11 +38,13 @@
         <a href="index.html" class="nav__link">Home</a>
         <a href="services.html" class="nav__link">Services</a>
         <a href="portfolio.html" class="nav__link">Portfolio</a>
+        <a href="index.html#process" class="nav__link">Process</a>
+        <a href="index.html#reviews" class="nav__link">Reviews</a>
         <a href="index.html#contact" class="nav__link">Contact</a>
       </nav>
       <div class="nav__actions">
         <a href="tel:4809229497" class="nav__call" data-site-phone-link><span data-site-phone-display>(480) 922-9497</span></a>
-        <a href="index.html#contact" class="nav__cta">Get Free Consultation</a>
+        <a href="index.html#contact" class="nav__cta">Get Free Design Consultation</a>
       </div>
     </div>
   </header>
@@ -50,8 +55,10 @@
       <a href="index.html" class="nav__overlay-link">Home</a>
       <a href="services.html" class="nav__overlay-link">Services</a>
       <a href="portfolio.html" class="nav__overlay-link">Portfolio</a>
+      <a href="index.html#process" class="nav__overlay-link">Process</a>
+      <a href="index.html#reviews" class="nav__overlay-link">Reviews</a>
       <a href="index.html#contact" class="nav__overlay-link">Contact</a>
-      <a href="index.html#contact" class="nav__overlay-link nav__overlay-cta">Get Free Consultation</a>
+      <a href="index.html#contact" class="nav__overlay-link nav__overlay-cta">Get Free Design Consultation</a>
     </nav>
     <div class="nav__overlay-contact">
       <a href="tel:4809229497" data-site-phone-link data-site-phone-display>(480) 922-9497</a>
@@ -59,7 +66,7 @@
     </div>
   </div>
 
-  <main>
+  <main id="main-content">
     <section class="page-hero">
       <div class="page-hero__bg" style="background-image:url('img/projects/firepit.jpg')"></div>
       <div class="page-hero__overlay"></div>
@@ -67,6 +74,10 @@
         <p class="eyebrow">Topic Search</p>
         <h1>Find Landscaping Topics Fast</h1>
         <p>Use this page to jump directly to the right service, portfolio category, or consultation prefill for high-intent project searches.</p>
+        <div class="page-hero__actions">
+          <a href="index.html?source=search_topic#contact" class="btn btn--solid">Get Free Design Consultation</a>
+          <a href="services.html" class="btn btn--ghost">Browse Services</a>
+        </div>
       </div>
     </section>
 
@@ -125,8 +136,8 @@
   </footer>
 
   <div class="sticky-bar" id="sticky-bar" aria-label="Mobile call to action">
-    <a href="tel:4809229497" class="btn btn--solid" data-site-phone-link>Call</a>
-    <a href="index.html?source=search_topic#contact" class="btn btn--outline-dark">Book</a>
+    <a href="tel:4809229497" class="btn btn--solid" data-site-phone-link>Call Now</a>
+    <a href="index.html?source=search_topic#contact" class="btn btn--outline-dark">Get Free Design Consultation</a>
   </div>
 
   <script>

@@ -102,12 +102,12 @@
 
     var rating = String(reviewConfig.rating || '').trim();
     var count = String(reviewConfig.count || '').trim();
-    var platform = String(reviewConfig.platform || 'Google Reviews').trim();
+    var platform = String(reviewConfig.platform || 'Homeowner review profile').trim();
     var link = String(reviewConfig.profileUrl || '').trim();
     if (!rating && !count) return;
 
     var text = rating + ' rating';
-    if (count) text += ' from ' + count + ' ' + platform;
+    if (count) text += ' from ' + count + ' on the ' + platform;
 
     target.innerHTML = link
       ? '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' + text + '</a>'
@@ -138,8 +138,8 @@
         }).join('') +
         '  </ul>' +
         '  <div class="service-card__actions">' +
-        '    <a class="btn btn--dark" href="' + service.path + '">Explore Service</a>' +
-        '    <a class="text-link" href="' + serviceConsultationHref(service) + '">Request Consultation &rarr;</a>' +
+        '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">Get Free Design Consultation</a>' +
+        '    <a class="text-link" href="' + service.path + '">View Service Details &rarr;</a>' +
         '  </div>' +
         '</article>';
     }).join('');
@@ -187,6 +187,35 @@
       whatYouGet.innerHTML = service.whatYouGet.map(function (item) {
         return '<li>' + item + '</li>';
       }).join('');
+
+      var existingRange = document.getElementById('service-typical-range');
+      if (existingRange) existingRange.remove();
+      if (service.typicalRange) {
+        var rangeCard = document.createElement('div');
+        rangeCard.className = 'service-range reveal';
+        rangeCard.id = 'service-typical-range';
+        rangeCard.innerHTML = '' +
+          '<div class="service-range__intro">' +
+          '  <p class="eyebrow">Planning Range</p>' +
+          '  <h3>Typical Project Range</h3>' +
+          '</div>' +
+          '<div class="service-range__content">' +
+          '  <p class="service-range__value">' + service.typicalRange + '</p>' +
+          '  <p class="service-range__note">Final pricing depends on scope and site conditions.</p>' +
+          '</div>';
+        whatYouGet.insertAdjacentElement('afterend', rangeCard);
+        if (Array.isArray(service.proofBlurbs) && service.proofBlurbs.length) {
+          var proofStrip = document.createElement('div');
+          proofStrip.className = 'service-proof-blurbs reveal';
+          proofStrip.innerHTML = service.proofBlurbs.map(function (item) {
+            return '' +
+              '<article class="service-proof-blurbs__item">' +
+              '  <p>' + item + '</p>' +
+              '</article>';
+          }).join('');
+          rangeCard.insertAdjacentElement('afterend', proofStrip);
+        }
+      }
     }
 
     if (process) {

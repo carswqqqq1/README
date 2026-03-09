@@ -119,23 +119,26 @@
       }
     ],
     googleReviews: {
-      rating: '4.9',
-      count: '72',
-      platform: 'Google Reviews',
-      profileUrl: 'https://www.google.com/search?q=Think+Green+Landscape+Scottsdale+AZ+reviews',
-      snapshotDate: 'Updated March 2026'
+      rating: '',
+      count: '',
+      platform: 'Homeowner review profile',
+      profileUrl: 'https://reviews.birdeye.com/think-green-design-build-landscape-156221164342730',
+      snapshotDate: ''
     },
     trustAssets: {
-      licenseVerifyUrl: 'https://roc.az.gov/',
-      bondVerifyUrl: 'https://roc.az.gov/',
-      insuranceStatement: 'Insurance and bonding documentation available during consultation.'
+      licenseVerifyUrl: 'https://roc.az.gov/contractor-search',
+      bondVerifyUrl: 'https://roc.az.gov/contractor-search',
+      licenseNumbers: ['157201 CR-21', '304902 B-4'],
+      licensePrompt: 'Use the Arizona ROC contractor search to review the current license record for this business before launch or client handoff.',
+      bondPrompt: 'Use the Arizona ROC contractor search to review current licensing and related bond details for this business before launch or client handoff.',
+      insuranceStatement: 'Arizona contractor search resources are linked below. Insurance and bonding documentation is shared during consultation.'
     },
     financing: {
       enabled: true,
       copy: 'Financing options may be available for qualified projects.'
     },
     analytics: {
-      ga4MeasurementId: ''
+      ga4MeasurementId: 'G-B85D2Y2858'
     }
   };
 })();

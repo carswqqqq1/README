@@ -89,12 +89,14 @@
     var category = item && item.dataset.cat ? item.dataset.cat : currentFilter;
     if (!category || category === 'all') category = 'backyard';
     var itemType = item && item.dataset.type ? item.dataset.type : '';
+    var projectLabel = extractProjectLabel(item);
     var params = new URLSearchParams({
       source: 'portfolio',
       service: mapCategoryToServiceSlug(category, itemType),
       selected_style: normalizeSlug(category),
       selected_image: extractImageId(item),
-      selected_project_label: extractProjectLabel(item)
+      selected_project_label: projectLabel,
+      prefill_message: 'Interested in a ' + (itemType || 'landscape') + ' project similar to ' + projectLabel + '.'
     });
     return 'index.html?' + params.toString() + '#contact';
   }
