@@ -2692,6 +2692,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
    ============================================================ */
 .contact {
   padding-block: clamp(4.5rem, 7.5vw, 6rem);
+  padding-bottom: 0;
 }
 .contact__grid {
   display: grid;
@@ -3071,7 +3072,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
    ============================================================ */
 .footer {
   background: var(--ink);
-  padding-top: 4.5rem;
+  padding-top: 2.1rem;
 }
 .footer__top {
   display: grid;
