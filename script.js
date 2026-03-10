@@ -238,12 +238,41 @@
         link.href = profile.url;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.textContent = profile.footerLabel;
+        if (profile.isPlaceholder) {
+          link.setAttribute('title', 'Placeholder social link. Replace with client profile URL before launch.');
+        }
+        link.innerHTML =
+          '<span class="footer__social-icon" aria-hidden="true">' + getFooterSocialIcon(profile.icon || profile.label) + '</span>' +
+          '<span class="footer__social-text">' + escapeHtml(profile.footerLabel) + '</span>';
         socialWrap.appendChild(link);
       });
 
       brand.appendChild(socialWrap);
     });
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function getFooterSocialIcon(label) {
+    var key = String(label || '').trim().toLowerCase();
+    var icons = {
+      reviews: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.7l2.5 5.1 5.6.8-4.1 4 1 5.6-5-2.6-5 2.6 1-5.6-4.1-4 5.6-.8z"/></svg>',
+      facebook: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.9.3-1.6 1.6-1.6h1.4V4.8c-.2 0-1-.1-2-.1-2 0-3.4 1.2-3.4 3.6V11H8.8v3H11v7z"/></svg>',
+      yelp: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.2 3.3c.7-.1 1.3.3 1.4 1l.7 4.7c.1.7-.3 1.2-1 1.4-.7.1-1.2-.2-1.4-.9l-1.3-4.6c-.2-.8.2-1.4 1-1.6zM6 7.5c.5-.4 1.2-.4 1.7 0l3.3 2.7c.5.4.6 1.1.2 1.7-.4.6-1 .8-1.6.5L5.8 11c-.7-.3-1-.9-.8-1.6.1-.7.5-1.4 1-1.9zm12.7 3c.3.7 0 1.3-.6 1.7l-4.2 1.9c-.6.3-1.3 0-1.6-.6-.3-.7-.1-1.3.5-1.7l3.8-2.4c.6-.4 1.3-.2 1.8.3.3.2.4.5.3.8zm-8.2 4.2c.7.2 1.1.8.9 1.5l-1 4.6c-.2.7-.8 1-1.5.8-.7-.2-1.1-.8-.9-1.5l.4-4.7c.1-.7.7-1.1 1.4-1 .2 0 .5.1.7.3zm5 .7c.4.6.3 1.3-.3 1.7l-3.8 2.3c-.6.4-1.3.2-1.7-.4-.4-.6-.3-1.3.3-1.7l4.2-1.8c.6-.3 1.3-.1 1.7.5.1.1.1.2.1.4z"/></svg>',
+      google: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.8 12.2c0-.7-.1-1.3-.2-1.9H12v3.6h5.5c-.2 1.2-.9 2.3-2 3.1v2.6h3.2c1.9-1.8 3.1-4.4 3.1-7.4z"/><path d="M12 22c2.7 0 4.9-.9 6.6-2.4l-3.2-2.6c-.9.6-2 .9-3.4.9-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6C4.8 19.8 8.1 22 12 22z"/><path d="M6.4 13.8c-.2-.6-.3-1.2-.3-1.8s.1-1.3.3-1.8V7.6H3.1C2.4 9 2 10.5 2 12s.4 3 1.1 4.4l3.3-2.6z"/><path d="M12 6.1c1.5 0 2.9.5 4 1.6l3-3C17 2.9 14.7 2 12 2 8.1 2 4.8 4.2 3.1 7.6l3.3 2.6C7.2 7.9 9.4 6.1 12 6.1z"/></svg>',
+      instagram: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2.2A2.8 2.8 0 004.2 7v10A2.8 2.8 0 007 19.8h10a2.8 2.8 0 002.8-2.8V7A2.8 2.8 0 0017 4.2H7zm5 2.3A5.5 5.5 0 1111.9 17 5.5 5.5 0 0112 6.5zm0 2.2a3.3 3.3 0 103.3 3.3A3.3 3.3 0 0012 8.7zm5.7-3.2a1.3 1.3 0 11-1.3 1.3 1.3 1.3 0 011.3-1.3z"/></svg>',
+      x: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3H22l-6.8 7.7 8 10.3h-6.3l-4.9-6.4L6.4 21H3.3l7.3-8.3L3 3h6.4l4.4 5.8L18.9 3zm-1.1 16h1.7L8.5 4.9H6.7L17.8 19z"/></svg>',
+      youtube: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.9 2.9 0 00-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.9 2.9 0 00-2 2A30.7 30.7 0 002 12a30.7 30.7 0 00.4 4.8 2.9 2.9 0 002 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.9 2.9 0 002-2A30.7 30.7 0 0022 12a30.7 30.7 0 00-.4-4.8zM10 15.5v-7l6 3.5-6 3.5z"/></svg>',
+      linkedin: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.9 8.5A1.9 1.9 0 116.9 4.7a1.9 1.9 0 010 3.8zM5 10h3.8v9H5zm6.1 0h3.6v1.2h.1a4 4 0 013.6-2c3.8 0 4.5 2.5 4.5 5.8v4h-3.8v-3.6c0-.9 0-2.1-1.3-2.1s-1.5 1-1.5 2v3.7h-3.8z"/></svg>'
+    };
+    return icons[key] || icons.reviews;
   }
 
   function applyContactFormServices() {

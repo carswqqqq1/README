@@ -278,22 +278,54 @@
       {
         label: 'Birdeye',
         url: reviewSourceUrl,
-        footerLabel: 'Birdeye Reviews'
+        footerLabel: 'Birdeye Reviews',
+        icon: 'reviews'
       },
       {
         label: 'Facebook',
         url: 'https://www.facebook.com/p/Think-Green-Design-Build-Landscape-61574951487842/',
-        footerLabel: 'Facebook'
+        footerLabel: 'Facebook',
+        icon: 'facebook'
       },
       {
         label: 'Yelp',
         url: 'https://www.yelp.com/biz/think-green-design-build-landscape-scottsdale',
-        footerLabel: 'Yelp'
+        footerLabel: 'Yelp',
+        icon: 'yelp'
       },
       {
         label: 'Google',
         url: 'https://www.google.com/maps/search/?api=1&query=Think+Green+Design+Build+Landscape+Scottsdale+AZ',
-        footerLabel: 'Find Us on Google'
+        footerLabel: 'Find Us on Google',
+        icon: 'google'
+      },
+      {
+        label: 'Instagram',
+        url: 'https://instagram.com/yourbrand',
+        footerLabel: 'Instagram',
+        icon: 'instagram',
+        isPlaceholder: true
+      },
+      {
+        label: 'X',
+        url: 'https://x.com/yourbrand',
+        footerLabel: 'X',
+        icon: 'x',
+        isPlaceholder: true
+      },
+      {
+        label: 'YouTube',
+        url: 'https://youtube.com/@yourbrand',
+        footerLabel: 'YouTube',
+        icon: 'youtube',
+        isPlaceholder: true
+      },
+      {
+        label: 'LinkedIn',
+        url: 'https://linkedin.com/company/yourbrand',
+        footerLabel: 'LinkedIn',
+        icon: 'linkedin',
+        isPlaceholder: true
       }
     ],
     contactFormServices: [
