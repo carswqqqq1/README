@@ -276,28 +276,10 @@
     reviewSnapshotDate: 'Reviewed March 8, 2026',
     socialProfiles: [
       {
-        label: 'Birdeye',
-        url: reviewSourceUrl,
-        footerLabel: 'Birdeye Reviews',
-        icon: 'reviews'
-      },
-      {
-        label: 'Facebook',
-        url: 'https://www.facebook.com/p/Think-Green-Design-Build-Landscape-61574951487842/',
-        footerLabel: 'Facebook',
-        icon: 'facebook'
-      },
-      {
         label: 'Yelp',
         url: 'https://www.yelp.com/biz/think-green-design-build-landscape-scottsdale',
         footerLabel: 'Yelp',
         icon: 'yelp'
-      },
-      {
-        label: 'Google',
-        url: 'https://www.google.com/maps/search/?api=1&query=Think+Green+Design+Build+Landscape+Scottsdale+AZ',
-        footerLabel: 'Find Us on Google',
-        icon: 'google'
       },
       {
         label: 'Instagram',

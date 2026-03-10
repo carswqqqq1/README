@@ -229,7 +229,7 @@
 
       var socialWrap = document.createElement('div');
       socialWrap.className = 'footer__social';
-      socialWrap.setAttribute('aria-label', 'Review and social profiles');
+      socialWrap.setAttribute('aria-label', 'Social profiles');
 
       SOCIAL_PROFILES.forEach(function (profile) {
         if (!profile || !profile.url || !profile.footerLabel) return;
@@ -241,9 +241,9 @@
         if (profile.isPlaceholder) {
           link.setAttribute('title', 'Placeholder social link. Replace with client profile URL before launch.');
         }
+        link.setAttribute('aria-label', escapeHtml(profile.footerLabel || profile.label || 'Social profile'));
         link.innerHTML =
-          '<span class="footer__social-icon" aria-hidden="true">' + getFooterSocialIcon(profile.icon || profile.label) + '</span>' +
-          '<span class="footer__social-text">' + escapeHtml(profile.footerLabel) + '</span>';
+          '<span class="footer__social-icon" aria-hidden="true">' + getFooterSocialIcon(profile.icon || profile.label) + '</span>';
         socialWrap.appendChild(link);
       });
 
