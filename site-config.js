@@ -408,8 +408,8 @@
       snapshotDate: 'Reviewed March 8, 2026'
     },
     trustAssets: {
-      licenseVerifyUrl: 'https://roc.az.gov/search/',
-      bondVerifyUrl: 'https://roc.az.gov/search/',
+      licenseVerifyUrl: 'https://roc.az.gov/contractor-search?combined=157201',
+      bondVerifyUrl: 'https://roc.az.gov/contractor-search?combined=157201',
       licenseNumbers: ['157201 CR-21', '304902 B-4'],
       licensePrompt: 'Homeowners can verify Think Green Design | Build Landscape through the official Arizona ROC contractor search using the license numbers shown below.',
       bondPrompt: 'Bond and insurance documentation is provided during consultation so you can review current coverage before project start.',
