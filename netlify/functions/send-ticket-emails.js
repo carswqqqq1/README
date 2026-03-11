@@ -819,6 +819,9 @@ function buildOwnerTables(data) {
   return {
     owner_detail_rows_html: detailRows,
     owner_intel_rows_html: intelRows,
+    owner_dashboard_action_html: isMeaningfulValue(data.sheet_row_url)
+      ? `<a href="${escapeAttribute(data.sheet_row_url)}" class="action-btn action-secondary">Open Lead Dashboard</a>`
+      : '',
     owner_vision_html: isMeaningfulValue(data.vision) && !isInternalVisionContent(data.vision)
       ? `<div class="section vision"><div class="section-head">Client Vision</div><div class="vision-quote">"${escapeHtml(data.vision)}"</div></div>`
       : ''
@@ -1884,7 +1887,7 @@ exports.handler = async (event) => {
       normalized.owner_summary = buildOwnerSummary(normalized);
     }
     if (!normalized.sheet_row_url || normalized.sheet_row_url === 'Not provided') {
-      normalized.sheet_row_url = safeText(normalized.sheet_url, 'https://thinkgreen-az.netlify.app');
+      normalized.sheet_row_url = safeText(normalized.sheet_url, '');
     }
 
     const context = {
