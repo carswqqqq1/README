@@ -3126,6 +3126,17 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   background: rgba(250,247,243,.16);
   border-color: rgba(250,247,243,.4);
 }
+.footer__social-link--placeholder {
+  cursor: default;
+  opacity: .92;
+}
+
+.footer__social-link--placeholder:hover,
+.footer__social-link--placeholder:focus-visible {
+  transform: none;
+  background: rgba(250,247,243,.08);
+  border-color: rgba(250,247,243,.2);
+}
 .footer__social-icon {
   width: 1rem;
   height: 1rem;

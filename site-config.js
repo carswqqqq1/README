@@ -284,6 +284,34 @@
         url: 'https://www.yelp.com/biz/think-green-design-build-landscape-scottsdale',
         footerLabel: 'Yelp',
         icon: 'yelp'
+      },
+      {
+        label: 'Instagram',
+        url: '',
+        footerLabel: 'Instagram',
+        icon: 'instagram',
+        isPlaceholder: true
+      },
+      {
+        label: 'X',
+        url: '',
+        footerLabel: 'X',
+        icon: 'x',
+        isPlaceholder: true
+      },
+      {
+        label: 'YouTube',
+        url: '',
+        footerLabel: 'YouTube',
+        icon: 'youtube',
+        isPlaceholder: true
+      },
+      {
+        label: 'LinkedIn',
+        url: '',
+        footerLabel: 'LinkedIn',
+        icon: 'linkedin',
+        isPlaceholder: true
       }
     ],
     contactFormServices: [

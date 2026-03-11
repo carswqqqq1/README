@@ -231,14 +231,27 @@
       socialWrap.setAttribute('aria-label', 'Social profiles');
 
       SOCIAL_PROFILES.forEach(function (profile) {
-        if (!profile || !profile.url || !profile.footerLabel) return;
-        if (profile.isPlaceholder) return;
+        if (!profile || !profile.footerLabel) return;
+
+        var label = escapeHtml(profile.footerLabel || profile.label || 'Social profile');
+        var iconMarkup = '<span class="footer__social-icon" aria-hidden="true">' + getFooterSocialIcon(profile.icon || profile.label) + '</span>';
+
+        if (profile.isPlaceholder || !profile.url) {
+          var badge = document.createElement('span');
+          badge.className = 'footer__social-link footer__social-link--placeholder';
+          badge.setAttribute('role', 'img');
+          badge.setAttribute('aria-label', label + ' profile coming soon');
+          badge.innerHTML = iconMarkup;
+          socialWrap.appendChild(badge);
+          return;
+        }
+
         var link = document.createElement('a');
         link.className = 'footer__social-link';
         link.href = profile.url;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.setAttribute('aria-label', escapeHtml(profile.footerLabel || profile.label || 'Social profile'));
+        link.setAttribute('aria-label', label);
         link.innerHTML =
           '<span class="footer__social-icon" aria-hidden="true">' + getFooterSocialIcon(profile.icon || profile.label) + '</span>';
         socialWrap.appendChild(link);
