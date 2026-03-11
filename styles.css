@@ -2705,13 +2705,13 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
    ============================================================ */
 .contact {
   padding-block: clamp(4.5rem, 7.5vw, 6rem);
-  padding-bottom: clamp(4.5rem, 7.5vw, 6rem);
+  padding-bottom: 0;
 }
 .contact__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 740px;
-  border-radius: 16px;
+  border-radius: 16px 16px 16px 0;
   overflow: hidden;
 }
 
