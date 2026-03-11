@@ -2573,7 +2573,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   max-width: 880px;
   margin-inline: auto;
   display: grid;
-  gap: .8rem;
+  gap: 1rem;
 }
 .faq-item {
   background: var(--white);
@@ -2587,7 +2587,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.38rem 1.35rem;
+  padding: 1.5rem 1.5rem;
   text-align: left;
 }
 .faq__question span:first-child {
@@ -2619,13 +2619,14 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   max-height: 0;
   overflow: hidden;
   transition: max-height .3s var(--ease), padding .3s var(--ease);
-  padding: 0 1.35rem;
+  padding: 0 1.5rem;
 }
 .faq-item.is-open .faq__answer {
   max-height: 460px;
-  padding: .38rem 1.35rem 1.38rem;
+  padding: .24rem 1.5rem 1.5rem;
 }
 .faq__answer p {
+  margin: 0;
   font-size: .92rem;
   color: var(--ink-light);
   line-height: 1.75;
@@ -3803,17 +3804,17 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     font-size: .94rem;
   }
   .faq__question {
-    padding: 1rem 1.05rem;
+    padding: 1.08rem 1.1rem;
     min-height: 56px;
   }
   .faq__icon {
     margin-left: .7rem;
   }
   .faq__answer {
-    padding: 0 1.05rem;
+    padding: 0 1.1rem;
   }
   .faq-item.is-open .faq__answer {
-    padding-bottom: 1rem;
+    padding: .16rem 1.1rem 1.08rem;
   }
   .form-row { grid-template-columns: 1fr; }
   .contact__grid {
