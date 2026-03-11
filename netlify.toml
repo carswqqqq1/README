@@ -416,6 +416,46 @@
   status = 301
 
 [[redirects]]
+  from = "/glendale-hardscaping"
+  to = "/glendale-hardscaping.html"
+  status = 200
+
+[[redirects]]
+  from = "/glendale-hardscaping/"
+  to = "/glendale-hardscaping"
+  status = 301
+
+[[redirects]]
+  from = "/peoria-artificial-turf"
+  to = "/peoria-artificial-turf.html"
+  status = 200
+
+[[redirects]]
+  from = "/peoria-artificial-turf/"
+  to = "/peoria-artificial-turf"
+  status = 301
+
+[[redirects]]
+  from = "/north-phoenix-outdoor-lighting"
+  to = "/north-phoenix-outdoor-lighting.html"
+  status = 200
+
+[[redirects]]
+  from = "/north-phoenix-outdoor-lighting/"
+  to = "/north-phoenix-outdoor-lighting"
+  status = 301
+
+[[redirects]]
+  from = "/ahwatukee-landscape-design"
+  to = "/ahwatukee-landscape-design.html"
+  status = 200
+
+[[redirects]]
+  from = "/ahwatukee-landscape-design/"
+  to = "/ahwatukee-landscape-design"
+  status = 301
+
+[[redirects]]
   from = "/phoenix-outdoor-kitchens/"
   to = "/phoenix-outdoor-kitchens"
   status = 301

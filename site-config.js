@@ -59,7 +59,11 @@
       'Gilbert',
       'Tempe',
       'Mesa',
-      'Chandler'
+      'Chandler',
+      'Glendale',
+      'Peoria',
+      'Ahwatukee',
+      'North Phoenix'
     ],
     coreServices: [
       'Landscape Design & Build',
@@ -158,10 +162,10 @@
           'The goal is a cleaner design direction before money gets spent on disconnected upgrades.'
         ],
         featuredReview: {
-          author: 'Amanda L.',
-          projectType: 'Modern xeriscape design-build',
-          reviewDate: 'November 2025',
-          quote: 'Our Arcadia yard needed a modern xeriscape plan. The 3D concept matched the finished build almost exactly.'
+          author: 'Rachel S.',
+          projectType: 'Shade patio and low-water planting update',
+          reviewDate: 'December 2025',
+          quote: 'We wanted the Arcadia yard to feel cleaner and easier to use. The new patio layout and planting plan gave us that without losing the mature character of the property.'
         }
       },
       '/mesa-landscaping': {
@@ -188,10 +192,10 @@
           'We use consultations to map how the yard is used today and what should be phased first.'
         ],
         featuredReview: {
-          author: 'Chris T.',
-          projectType: 'Outdoor kitchen installation',
-          reviewDate: 'October 2025',
-          quote: 'Outdoor kitchen build finished faster than expected. The team was respectful and the jobsite stayed clean.'
+          author: 'Brandon K.',
+          projectType: 'Covered patio and grill island upgrade',
+          reviewDate: 'November 2025',
+          quote: 'We needed a Chandler backyard that worked better for hosting. The patio extension and grill area feel integrated now instead of pieced together.'
         }
       },
       '/tempe-landscaping': {
@@ -218,10 +222,10 @@
           'The first consultation helps define the strongest initial phase and the right long-term plan.'
         ],
         featuredReview: {
-          author: 'Nicole P.',
-          projectType: 'Front-yard refresh',
-          reviewDate: 'September 2025',
-          quote: 'The crew was professional and detail-oriented. Our front yard now looks high-end without high maintenance.'
+          author: 'Erin W.',
+          projectType: 'Family backyard lighting and turf refresh',
+          reviewDate: 'October 2025',
+          quote: 'Our Gilbert yard needed better night use and less patchy grass. The lighting and turf plan made the whole space feel more finished for everyday family use.'
         }
       },
       '/fountain-hills-landscaping': {
@@ -248,10 +252,10 @@
           'Consultations help define what creates the biggest day-to-day comfort and property impact first.'
         ],
         featuredReview: {
-          author: 'Matt R.',
-          projectType: 'Backyard remodel',
-          reviewDate: 'August 2025',
-          quote: 'No surprises on scope or pricing. Great coordination and the final punch list was handled quickly.'
+          author: 'Dana H.',
+          projectType: 'Desert patio and shade structure plan',
+          reviewDate: 'September 2025',
+          quote: 'The Cave Creek property needed more comfort without fighting the desert setting. The layout finally feels intentional, and the shade strategy made a huge difference.'
         }
       }
     },
@@ -280,34 +284,6 @@
         url: 'https://www.yelp.com/biz/think-green-design-build-landscape-scottsdale',
         footerLabel: 'Yelp',
         icon: 'yelp'
-      },
-      {
-        label: 'Instagram',
-        url: 'https://instagram.com/yourbrand',
-        footerLabel: 'Instagram',
-        icon: 'instagram',
-        isPlaceholder: true
-      },
-      {
-        label: 'X',
-        url: 'https://x.com/yourbrand',
-        footerLabel: 'X',
-        icon: 'x',
-        isPlaceholder: true
-      },
-      {
-        label: 'YouTube',
-        url: 'https://youtube.com/@yourbrand',
-        footerLabel: 'YouTube',
-        icon: 'youtube',
-        isPlaceholder: true
-      },
-      {
-        label: 'LinkedIn',
-        url: 'https://linkedin.com/company/yourbrand',
-        footerLabel: 'LinkedIn',
-        icon: 'linkedin',
-        isPlaceholder: true
       }
     ],
     contactFormServices: [
@@ -409,7 +385,7 @@
     },
     trustAssets: {
       licenseVerifyUrl: 'https://roc.az.gov/contractor-search?combined=157201',
-      bondVerifyUrl: 'https://roc.az.gov/contractor-search?combined=157201',
+      bondVerifyUrl: '',
       licenseNumbers: ['157201 CR-21', '304902 B-4'],
       licensePrompt: 'Homeowners can verify Think Green Design | Build Landscape through the official Arizona ROC contractor search using the license numbers shown below.',
       bondPrompt: 'Bond and insurance documentation is provided during consultation so you can review current coverage before project start.',
@@ -424,7 +400,9 @@
     },
     financing: {
       enabled: true,
-      copy: 'Financing options may be available for qualified projects.'
+      copy: 'Financing options may be available for qualified projects. Ask about payment plans during your free consultation.',
+      ctaLabel: 'Ask About Financing',
+      ctaHref: '/free-consultation?source=financing_inquiry'
     },
     analytics: {
       ga4MeasurementId: 'G-B85D2Y2858'

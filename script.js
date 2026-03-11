@@ -160,9 +160,8 @@
   }
 
   function ensureFooterServiceLinks() {
-    var inNestedServicePage = String(window.location.pathname || '').indexOf('/services/') >= 0;
-    var desertHref = inNestedServicePage ? '/services/desert-landscaping' : '/services/desert-landscaping';
-    var lightingHref = inNestedServicePage ? '/services/outdoor-lighting' : '/services/outdoor-lighting';
+    var desertHref = '/services/desert-landscaping';
+    var lightingHref = '/services/outdoor-lighting';
     document.querySelectorAll('.footer__col').forEach(function (column) {
       var heading = column.querySelector('h4');
       var list = column.querySelector('ul');
@@ -233,14 +232,12 @@
 
       SOCIAL_PROFILES.forEach(function (profile) {
         if (!profile || !profile.url || !profile.footerLabel) return;
+        if (profile.isPlaceholder) return;
         var link = document.createElement('a');
         link.className = 'footer__social-link';
         link.href = profile.url;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        if (profile.isPlaceholder) {
-          link.setAttribute('title', 'Placeholder social link. Replace with client profile URL before launch.');
-        }
         link.setAttribute('aria-label', escapeHtml(profile.footerLabel || profile.label || 'Social profile'));
         link.innerHTML =
           '<span class="footer__social-icon" aria-hidden="true">' + getFooterSocialIcon(profile.icon || profile.label) + '</span>';
@@ -815,7 +812,9 @@
       window.gtag('event', name, Object.assign({}, trackingContext, params || {}));
     };
 
-    if (measurementId) {
+    window.initSiteAnalytics = function initSiteAnalytics() {
+      if (!measurementId || window.__tgAnalyticsInitialized) return;
+      window.__tgAnalyticsInitialized = true;
       var gaScript = document.createElement('script');
       gaScript.async = true;
       gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
@@ -830,6 +829,10 @@
       window.gtag('config', measurementId, {
         anonymize_ip: true
       });
+    };
+
+    if (localStorage.getItem('tg_cookie_consent') === 'accepted') {
+      window.initSiteAnalytics();
     }
 
     var callClickMap = new WeakSet();
@@ -3072,6 +3075,9 @@
 
   function dismiss(accepted) {
     localStorage.setItem(COOKIE_KEY, accepted ? 'accepted' : 'declined');
+    if (accepted && typeof window.initSiteAnalytics === 'function') {
+      window.initSiteAnalytics();
+    }
     banner.classList.remove('is-visible');
     setTimeout(function () { banner.remove(); }, 450);
   }
