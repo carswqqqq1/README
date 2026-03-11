@@ -305,6 +305,15 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   text-decoration: none;
   flex-shrink: 0;
 }
+.nav__logo--footer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .45rem;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at center, rgba(250,247,243,.22) 0%, rgba(250,247,243,.1) 54%, rgba(250,247,243,.03) 70%, transparent 74%);
+}
 .nav__logo-img {
   height: 90px;
   width: auto;
@@ -320,8 +329,8 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .nav__logo-img--footer {
   height: 108px;
-  /* White filter on dark footer background */
-  filter: brightness(0) invert(1);
+  /* Stronger contrast treatment on dark footer backgrounds */
+  filter: brightness(0) invert(1) contrast(1.08) drop-shadow(0 6px 16px rgba(0, 0, 0, .3)) !important;
 }
 
 /* Nav links */
