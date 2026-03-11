@@ -706,6 +706,8 @@
 
     var enabled = FINANCING.enabled !== false;
     var copy = String(FINANCING.copy || '').trim();
+    var ctaLabel = String(FINANCING.ctaLabel || '').trim();
+    var ctaHref = String(FINANCING.ctaHref || '').trim();
 
     if (!enabled) {
       financingNote.style.display = 'none';
@@ -713,7 +715,11 @@
     }
 
     if (copy) {
-      financingNote.textContent = copy;
+      if (ctaLabel && ctaHref) {
+        financingNote.innerHTML = copy + ' <a href="' + ctaHref + '" class="financing-note__link">' + ctaLabel + '</a>';
+      } else {
+        financingNote.textContent = copy;
+      }
     }
   }
 

@@ -575,6 +575,91 @@ body[data-service-slug="irrigation"] .service-hero__bg {
   letter-spacing: 0.03em;
 }
 
+.service-story-strip {
+  background: #fff;
+  padding-block: clamp(2.8rem, 7vw, 4.2rem);
+}
+
+.service-story-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.service-story-grid--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.service-story-card {
+  display: grid;
+  gap: 0.72rem;
+  border: 1px solid #e1d7c9;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fbf7f1 0%, #f6efe5 100%);
+  padding: 1rem;
+}
+
+.service-story-card__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  font-size: 0.66rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.service-story-card h3 {
+  font-family: var(--font-head);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.service-story-card__location {
+  margin-top: -0.2rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+.service-story-card__meta {
+  display: grid;
+  gap: 0.38rem;
+  font-size: 0.85rem;
+  color: var(--ink-light);
+}
+
+.service-story-card__meta strong {
+  color: var(--ink);
+}
+
+.service-story-card__outcome {
+  color: var(--ink-light);
+  line-height: 1.7;
+  font-size: 0.9rem;
+}
+
+.service-story-card__actions {
+  display: flex;
+  gap: 0.72rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 0.1rem;
+}
+
+.service-story-card__actions .btn {
+  min-width: 168px;
+  justify-content: center;
+}
+
+.service-story-card__actions .text-link {
+  font-size: 0.78rem;
+  letter-spacing: 0.09em;
+}
+
 .service-area-text {
   margin-top: 0.8rem;
   max-width: 820px;
@@ -731,6 +816,10 @@ body[data-service-slug="irrigation"] .service-hero__bg {
 
   .service-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .service-story-grid {
+    grid-template-columns: 1fr;
   }
 
   .services-hub-grid {

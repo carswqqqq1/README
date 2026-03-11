@@ -34,6 +34,13 @@
         'Build execution and final walkthrough'
       ],
       serviceAreaText: 'Think Green provides landscape design and design-build construction for homeowners in Scottsdale, Paradise Valley, Phoenix, and nearby communities across the Valley.',
+      featuredProject: {
+        title: 'North Scottsdale Master Plan',
+        location: 'North Scottsdale, AZ',
+        scope: '3D design direction, finish palette, phased build planning',
+        timeline: '5 weeks',
+        outcome: 'Gave the homeowners one clear plan for hardscape, planting, and lighting before construction money started going in different directions.'
+      },
       resources: [
         { title: 'Scottsdale project cost guide', path: '/landscaping-cost-scottsdale' },
         { title: 'Paradise Valley service area page', path: '/paradise-valley-landscaping' },
@@ -143,6 +150,13 @@
         'Jointing, cleanup, and final quality walkthrough'
       ],
       serviceAreaText: 'Our hardscaping team serves Scottsdale, Paradise Valley, Phoenix, and surrounding Valley neighborhoods with premium patio and stonework installations.',
+      featuredProject: {
+        title: 'Paver Patio and Drainage Reset',
+        location: 'Glendale, AZ',
+        scope: 'Paver patio, border detailing, drainage correction, circulation cleanup',
+        timeline: '3 weeks',
+        outcome: 'Turned a pooling backyard into a cleaner patio layout that feels easier to furnish and easier to use after monsoon season.'
+      },
       resources: [
         { title: 'Pavers vs. concrete guide', path: '/pavers-vs-concrete-arizona' },
         { title: 'Scottsdale hardscape cost planning', path: '/landscaping-cost-scottsdale' },
@@ -253,6 +267,13 @@
         'Installation, detail finish, and final walkthrough'
       ],
       serviceAreaText: 'Think Green designs and builds outdoor kitchens for Scottsdale, Paradise Valley, Phoenix, and nearby Valley homes focused on entertaining and year-round use.',
+      featuredProject: {
+        title: 'Phoenix Entertaining Kitchen',
+        location: 'Phoenix, AZ',
+        scope: 'Grill island, utility coordination, dining layout, patio tie-in',
+        timeline: '4 weeks',
+        outcome: 'Created a kitchen zone that supports prep, serving, and seating without crowding the rest of the backyard.'
+      },
       resources: [
         { title: 'Outdoor kitchen planning guide', path: '/outdoor-kitchen-planning-arizona' },
         { title: 'Phoenix outdoor kitchen page', path: '/phoenix-outdoor-kitchens' },
@@ -363,6 +384,13 @@
         'Nighttime aiming, testing, and final walkthrough'
       ],
       serviceAreaText: 'Think Green designs and installs outdoor lighting across Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities for curb appeal, safety, and outdoor living use.',
+      featuredProject: {
+        title: 'Paradise Valley Evening Lighting Plan',
+        location: 'Paradise Valley, AZ',
+        scope: 'Path lighting, architectural accents, patio-zone illumination',
+        timeline: '1 week',
+        outcome: 'Improved nighttime arrival and entertaining comfort without making the property feel overlit.'
+      },
       resources: [
         { title: 'Scottsdale service area page', path: '/scottsdale-landscaping' },
         { title: 'Resources hub', path: '/resources' },
@@ -456,6 +484,13 @@
         'Construction coordination and final walkthrough'
       ],
       serviceAreaText: 'Think Green plans pergolas and shade structures across Scottsdale, Paradise Valley, Phoenix, Chandler, Mesa, and nearby Valley communities.',
+      featuredProject: {
+        title: 'Tempe Pergola Lounge Upgrade',
+        location: 'Tempe, AZ',
+        scope: 'Shade structure sizing, lounge layout, lighting coordination',
+        timeline: '3 weeks',
+        outcome: 'Made a compact patio usable earlier in the day and more comfortable for evening hosting without overbuilding the yard.'
+      },
       resources: [
         { title: 'Outdoor kitchen planning guide', path: '/outdoor-kitchen-planning-arizona' },
         { title: 'Portfolio outdoor living projects', path: '/portfolio?service=pergola-shade' },
@@ -549,6 +584,13 @@
         'Final testing and owner walkthrough'
       ],
       serviceAreaText: 'We build custom fire pits and fireplaces for homeowners in Scottsdale, Paradise Valley, Phoenix, and surrounding Valley locations.',
+      featuredProject: {
+        title: 'Arcadia Fire Pit Gathering Zone',
+        location: 'Arcadia, AZ',
+        scope: 'Custom fire feature, seat spacing, patio refresh, finish detailing',
+        timeline: '2.5 weeks',
+        outcome: 'Turned an underused patio corner into a stronger evening gathering space with cleaner traffic flow.'
+      },
       resources: [
         { title: 'Arcadia outdoor living page', path: '/arcadia-landscaping' },
         { title: 'Compare service fit on the resources hub', path: '/resources' },
@@ -658,6 +700,13 @@
         'Installation coordination and final walkthrough'
       ],
       serviceAreaText: 'Think Green designs desert landscaping and xeriscape-focused projects for Scottsdale, Paradise Valley, Phoenix, Fountain Hills, and nearby Valley communities.',
+      featuredProject: {
+        title: 'Fountain Hills Xeriscape Refresh',
+        location: 'Fountain Hills, AZ',
+        scope: 'Low-water planting, boulder placement, DG layout, irrigation tune-up',
+        timeline: '4 weeks',
+        outcome: 'Reduced maintenance and water demand while giving the front yard stronger structure and cleaner curb appeal.'
+      },
       resources: [
         { title: 'Xeriscape vs. turf guide', path: '/xeriscape-vs-turf-arizona' },
         { title: 'Arcadia service area page', path: '/arcadia-landscaping' },
@@ -768,6 +817,13 @@
         'Phoenix front-yard refresh: premium turf paired with drought-tolerant planting for curb appeal.'
       ],
       serviceAreaText: 'Think Green installs artificial turf across Scottsdale, Paradise Valley, Phoenix, and nearby Valley neighborhoods for both front-yard and backyard projects.',
+      featuredProject: {
+        title: 'Mesa Turf and Border Refresh',
+        location: 'Mesa, AZ',
+        scope: 'Premium turf install, border cleanup, drainage prep, planting tie-in',
+        timeline: '1.5 weeks',
+        outcome: 'Delivered a lower-maintenance yard that still feels finished from the street and easier to use every day.'
+      },
       resources: [
         { title: 'Xeriscape vs. turf guide', path: '/xeriscape-vs-turf-arizona' },
         { title: 'Mesa service area page', path: '/mesa-landscaping' },
@@ -881,6 +937,13 @@
         'Testing, calibration, and owner walkthrough'
       ],
       serviceAreaText: 'Think Green designs and upgrades irrigation systems across Scottsdale, Paradise Valley, Phoenix, and neighboring Valley communities.',
+      featuredProject: {
+        title: 'Chandler Irrigation Retrofit',
+        location: 'Chandler, AZ',
+        scope: 'Zone correction, drip conversion, controller setup, runoff cleanup',
+        timeline: '1 week',
+        outcome: 'Improved plant coverage and reduced waste so the homeowners could stop overwatering one area to keep another alive.'
+      },
       resources: [
         { title: 'Mesa service area page', path: '/mesa-landscaping' },
         { title: 'Chandler service area page', path: '/chandler-landscaping' },

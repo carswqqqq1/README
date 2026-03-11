@@ -2982,6 +2982,19 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   border-radius: 8px;
   padding: .56rem .66rem;
 }
+
+.financing-note__link {
+  display: inline-flex;
+  margin-left: .35rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--green);
+}
+
+.financing-note__link:hover {
+  color: var(--green-mid);
+}
+
 .form-error {
   margin-top: .75rem;
   font-size: .8125rem;

@@ -126,6 +126,64 @@
       : text;
   }
 
+  function buildServiceStoryMarkup(service, options) {
+    if (!service || !service.featuredProject) return '';
+
+    var story = service.featuredProject;
+    var isHub = !!(options && options.isHub);
+    var eyebrow = isHub ? service.title : 'Recent Project Story';
+    var detailLinkLabel = isHub ? 'View ' + service.title + ' Service' : 'See More ' + service.title + ' Projects';
+
+    return '' +
+      '<article class="service-story-card reveal reveal--scale">' +
+      '  <p class="service-story-card__eyebrow">' + eyebrow + '</p>' +
+      '  <h3>' + story.title + '</h3>' +
+      '  <p class="service-story-card__location">' + story.location + '</p>' +
+      '  <ul class="service-story-card__meta">' +
+      '    <li><strong>Scope:</strong> ' + story.scope + '</li>' +
+      '    <li><strong>Timeline:</strong> ' + story.timeline + '</li>' +
+      '  </ul>' +
+      '  <p class="service-story-card__outcome">' + story.outcome + '</p>' +
+      '  <div class="service-story-card__actions">' +
+      '    <a class="btn btn--dark" href="' + serviceConsultationHref(service) + '">Get Free Design Consultation</a>' +
+      '    <a class="text-link" href="' + normalizeDisplayPath(service.path) + '">' + detailLinkLabel + ' &rarr;</a>' +
+      '  </div>' +
+      '</article>';
+  }
+
+  function renderHubStories() {
+    var ctaSection = document.querySelector('.services-hub-cta');
+    if (!ctaSection) return;
+
+    var storyServices = services.filter(function (service) {
+      return !!service.featuredProject;
+    }).slice(0, 3);
+
+    if (!storyServices.length) return;
+
+    var existing = document.getElementById('services-hub-stories');
+    if (existing) existing.remove();
+
+    var section = document.createElement('section');
+    section.className = 'service-story-strip service-story-strip--hub';
+    section.id = 'services-hub-stories';
+    section.innerHTML = '' +
+      '<div class="container">' +
+      '  <header class="service-block__header reveal reveal--left">' +
+      '    <p class="eyebrow">Project Stories</p>' +
+      '    <h2 class="section-title">How These Services Show Up in Real Arizona Projects</h2>' +
+      '    <p>Short scope snapshots help homeowners compare service fit before they book a consultation.</p>' +
+      '  </header>' +
+      '  <div class="service-story-grid">' +
+      storyServices.map(function (service) {
+        return buildServiceStoryMarkup(service, { isHub: true });
+      }).join('') +
+      '  </div>' +
+      '</div>';
+
+    ctaSection.parentNode.insertBefore(section, ctaSection);
+  }
+
   function renderHub() {
     var hubGrid = byId('services-hub-grid');
     var hubProof = byId('service-proof');
@@ -159,6 +217,8 @@
         '  </div>' +
         '</article>';
     }).join('');
+
+    renderHubStories();
   }
 
   function renderServicePage() {
@@ -183,6 +243,7 @@
     var related = byId('related-services-list');
     var reviewProof = byId('service-review-proof');
     var relatedSection = related ? related.closest('.service-related') : null;
+    var gallerySection = gallery ? gallery.closest('.service-block') : null;
     var faqHeading = faq && faq.closest('.service-block')
       ? faq.closest('.service-block').querySelector('.section-title')
       : null;
@@ -270,6 +331,28 @@
           '  <span class="service-gallery__label">' + item.label + '</span>' +
           '</a>';
       }).join('');
+    }
+
+    if (gallerySection) {
+      var existingStorySection = document.getElementById('service-project-story-section');
+      if (existingStorySection) existingStorySection.remove();
+      if (service.featuredProject) {
+        var storySection = document.createElement('section');
+        storySection.className = 'service-block service-block--alt service-story-section';
+        storySection.id = 'service-project-story-section';
+        storySection.innerHTML = '' +
+          '<div class="container">' +
+          '  <header class="service-block__header reveal reveal--left">' +
+          '    <p class="eyebrow">Project Story</p>' +
+          '    <h2 class="section-title">One Recent ' + service.title + ' Example</h2>' +
+          '    <p>A quick snapshot of how this service usually gets scoped, timed, and used in real Arizona backyards.</p>' +
+          '  </header>' +
+          '  <div class="service-story-grid service-story-grid--single">' +
+               buildServiceStoryMarkup(service) +
+          '  </div>' +
+          '</div>';
+        gallerySection.insertAdjacentElement('afterend', storySection);
+      }
     }
 
     if (area) {
