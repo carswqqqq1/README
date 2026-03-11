@@ -304,6 +304,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   align-items: center;
   text-decoration: none;
   flex-shrink: 0;
+  overflow: visible;
 }
 .nav__logo--footer {
   display: inline-flex;
@@ -315,7 +316,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     radial-gradient(circle at center, rgba(250,247,243,.22) 0%, rgba(250,247,243,.1) 54%, rgba(250,247,243,.03) 70%, transparent 74%);
 }
 .nav__logo-img {
-  height: 90px;
+  height: 104px;
   width: auto;
   display: block;
   object-fit: contain;
@@ -328,7 +329,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   filter: none;
 }
 .nav__logo-img--footer {
-  height: 108px;
+  height: 126px;
   /* Stronger contrast treatment on dark footer backgrounds */
   filter: brightness(0) invert(1) contrast(1.08) drop-shadow(0 6px 16px rgba(0, 0, 0, .3)) !important;
 }
@@ -3619,10 +3620,10 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     height: 88px;
   }
   .nav__logo-img {
-    height: 66px;
+    height: 78px;
   }
   .nav__logo-img--footer {
-    height: 80px;
+    height: 96px;
   }
   .hero {
     height: auto;
@@ -3916,7 +3917,7 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     padding-inline: .9rem;
   }
   .nav__logo-img {
-    height: 50px;
+    height: 60px;
   }
   .nav__burger {
     padding: .4rem 0 .4rem .4rem;
