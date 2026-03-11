@@ -2169,68 +2169,6 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 
 /* ============================================================
-   PUBLIC PROOF STRIP
-   ============================================================ */
-.verification-strip {
-  padding-block: clamp(3.2rem, 6vw, 4.8rem);
-  background: linear-gradient(180deg, rgba(250,247,243,.6) 0%, rgba(255,255,255,1) 100%);
-}
-.verification-strip__header {
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto 1.8rem;
-}
-.verification-strip__sub {
-  margin-top: .55rem;
-  color: var(--ink-light);
-}
-.verification-strip__grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
-}
-.verification-pill {
-  display: grid;
-  gap: .28rem;
-  padding: 1rem 1.05rem;
-  border-radius: 16px;
-  border: 1px solid rgba(27,67,50,.12);
-  background: rgba(255,255,255,.92);
-  box-shadow: var(--shadow-sm);
-  transition: transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease);
-}
-.verification-pill:hover,
-.verification-pill:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(27,67,50,.22);
-}
-.verification-pill__tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  min-width: 54px;
-  padding: .22rem .55rem;
-  border-radius: 999px;
-  background: rgba(27,67,50,.08);
-  color: var(--green);
-  font-size: .7rem;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-.verification-pill strong {
-  font-size: .98rem;
-  color: var(--ink);
-}
-.verification-pill span:last-child {
-  color: var(--ink-light);
-  font-size: .85rem;
-  line-height: 1.5;
-}
-
-/* ============================================================
    RECENT PROJECTS
    ============================================================ */
 .recent-projects {
@@ -2365,62 +2303,6 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
 }
 .recent-projects__links a {
   min-width: min(260px, 100%);
-}
-
-/* ============================================================
-   PROJECT VIDEO
-   ============================================================ */
-.project-video {
-  padding-block: clamp(3.8rem, 7vw, 5.6rem);
-  background: var(--paper);
-}
-.project-video__grid {
-  display: grid;
-  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
-  gap: clamp(1.8rem, 4vw, 3rem);
-  align-items: center;
-}
-.project-video__sub {
-  margin-top: .65rem;
-  max-width: 640px;
-  color: var(--ink-light);
-}
-.project-video__points {
-  display: grid;
-  gap: .85rem;
-  margin: 1.4rem 0 1.7rem;
-}
-.project-video__points li {
-  position: relative;
-  padding-left: 1.15rem;
-  color: var(--ink);
-}
-.project-video__points li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: .68rem;
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: var(--green);
-}
-.project-video__frame {
-  overflow: hidden;
-  border-radius: 22px;
-  background: #0f1712;
-  box-shadow: var(--shadow-xl);
-}
-.project-video__frame video {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #0f1712;
-}
-.project-video__caption {
-  margin-top: .75rem;
-  color: var(--ink-faint);
-  font-size: .84rem;
 }
 
 /* ============================================================
@@ -3681,14 +3563,8 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
     margin-inline: auto;
     margin-top: 1.1rem;
   }
-  .verification-strip__grid {
-    grid-template-columns: 1fr 1fr;
-  }
   .recent-projects__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .project-video__grid {
-    grid-template-columns: 1fr;
   }
   .contact__grid { grid-template-columns: 1fr; }
   .contact__info { padding-block: 4rem; }
@@ -3864,9 +3740,6 @@ button { cursor: pointer; font-family: var(--font-body); border: none; backgroun
   .owner-proof-strip__item p {
     font-size: .8rem;
     line-height: 1.36;
-  }
-  .verification-strip__grid {
-    grid-template-columns: 1fr;
   }
   .featured-project__meta {
     grid-template-columns: 1fr;
