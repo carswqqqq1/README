@@ -99,7 +99,8 @@
       selected_project_label: projectLabel,
       prefill_message: 'Interested in a ' + (itemType || 'landscape') + ' project similar to ' + projectLabel + '.'
     });
-    return window.location.pathname + '?' + params.toString() + '#portfolio-consultation';
+    params.set('autostart', '1');
+    return '/free-consultation?' + params.toString();
   }
 
   function updateRequestLinks(item) {

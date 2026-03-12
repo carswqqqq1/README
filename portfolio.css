@@ -178,6 +178,8 @@
   justify-content: space-between;
   gap: .85rem;
   margin-bottom: 1.1rem;
+  max-width: 1080px;
+  margin-inline: auto;
 }
 .pf-request .btn--dark {
   background: var(--green);
@@ -203,6 +205,8 @@
   grid-template-columns: .92fr 1.08fr;
   gap: 1rem;
   margin-bottom: 1.1rem;
+  max-width: 1080px;
+  margin-inline: auto;
   padding: 1rem;
   border: 1px solid var(--paper-alt);
   border-radius: var(--r-lg);
@@ -256,6 +260,8 @@
 }
 .pf-grid__header {
   margin-bottom: 1rem;
+  max-width: 1080px;
+  margin-inline: auto;
 }
 .pf-grid__header .eyebrow {
   margin-bottom: .45rem;
@@ -269,6 +275,7 @@
 }
 .pf-grid__header p {
   margin-top: .4rem;
+  max-width: 760px;
   font-size: .9rem;
   color: var(--ink-light);
   line-height: 1.72;

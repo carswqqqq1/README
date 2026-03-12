@@ -658,6 +658,65 @@
     }
   }
 
+  function getPrimaryNavigationItems() {
+    return [
+      { label: 'Home', href: '/' },
+      { label: 'Services', href: '/services' },
+      { label: 'Portfolio', href: '/portfolio' },
+      { label: 'Process', href: '/process' },
+      { label: 'Reviews', href: '/reviews' }
+    ];
+  }
+
+  function createPrimaryNavLink(entry, className) {
+    var link = document.createElement('a');
+    link.className = className;
+    link.href = entry.href;
+    link.textContent = entry.label;
+    return link;
+  }
+
+  function getPrimaryConsultHref() {
+    if (normalizedPath.indexOf('/free-consultation') === 0) return '#consultation-request';
+    if (isHomePath) return buildConsultationPageHref({ source: 'homepage_nav' });
+    return getGlobalConsultFallbackHref();
+  }
+
+  function normalizePrimaryNavigation() {
+    var navLinks = document.getElementById('nav-links');
+    var navItems = getPrimaryNavigationItems();
+    var consultHref = getPrimaryConsultHref();
+    var primaryCta = document.querySelector('.nav__actions .nav__cta');
+    var overlayPanel = document.getElementById('nav-overlay');
+    var overlayNav = overlayPanel ? overlayPanel.querySelector('nav') : null;
+
+    if (navLinks) {
+      navLinks.innerHTML = '';
+      navItems.forEach(function (entry) {
+        navLinks.appendChild(createPrimaryNavLink(entry, 'nav__link'));
+      });
+    }
+
+    if (primaryCta) {
+      primaryCta.setAttribute('href', consultHref);
+      primaryCta.textContent = 'Get Free Design Consultation';
+    }
+
+    if (overlayNav) {
+      Array.prototype.slice.call(overlayNav.querySelectorAll('.nav__overlay-link')).forEach(function (link) {
+        link.remove();
+      });
+      navItems.forEach(function (entry) {
+        overlayNav.appendChild(createPrimaryNavLink(entry, 'nav__overlay-link'));
+      });
+      var overlayCta = createPrimaryNavLink(
+        { href: consultHref, label: 'Get Free Design Consultation' },
+        'nav__overlay-link nav__overlay-cta'
+      );
+      overlayNav.appendChild(overlayCta);
+    }
+  }
+
   function applyActiveNavigationState() {
     var current = normalizedPath.replace(/\/$/, '') || '/';
     var currentHash = window.location.hash || (current === '/' ? '#hero' : '');
@@ -1023,6 +1082,7 @@
   }
   window.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
+  normalizePrimaryNavigation();
   dedupeConsultNavigationLinks();
   applyActiveNavigationState();
   normalizeConsultationLinks();
@@ -1132,7 +1192,7 @@
     if (normalizedPath.indexOf('xeriscape-vs-turf-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
     if (normalizedPath.indexOf('pavers-vs-concrete-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
     if (normalizedPath.indexOf('outdoor-kitchen-planning-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
-    return '#contact';
+    return buildConsultationPageHref({ source: 'homepage_menu' });
   }
 
   function getGlobalConsultFallbackHref() {
@@ -1151,7 +1211,7 @@
     if (normalizedPath.indexOf('xeriscape-vs-turf-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
     if (normalizedPath.indexOf('pavers-vs-concrete-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
     if (normalizedPath.indexOf('outdoor-kitchen-planning-arizona') >= 0) return buildConsultationPageHref({ source: 'resource_article' });
-    return '/#contact';
+    return buildConsultationPageHref({ source: 'homepage_nav' });
   }
 
   function normalizeConsultationLinks() {
