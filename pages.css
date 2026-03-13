@@ -190,6 +190,10 @@
   gap: .85rem;
 }
 
+.page-grid--thirds {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .page-card {
   background: #fff;
   border: 1px solid #e8dfd3;
@@ -332,6 +336,12 @@
   padding: 1.2rem;
 }
 
+.thank-you-card + .thank-you-card,
+.thank-you-card + .local-proof,
+.page-grid + .topic-list {
+  margin-top: 1rem;
+}
+
 .thank-you-card h2 {
   font-family: var(--font-head);
   font-size: 2rem;
@@ -460,6 +470,10 @@
 
 @media (max-width: 920px) {
   .page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-grid--thirds {
     grid-template-columns: 1fr;
   }
 }
