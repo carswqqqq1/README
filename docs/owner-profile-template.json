@@ -1,0 +1,37 @@
+{
+  "ownerName": "",
+  "businessName": "",
+  "primaryPhone": "",
+  "primaryEmail": "",
+  "serviceCities": [],
+  "topServices": [],
+  "brandTone": "",
+  "idealClient": "",
+  "projectMinimums": "",
+  "consultationNotes": "",
+  "trustNotes": {
+    "licensed": "",
+    "bonded": "",
+    "insured": "",
+    "reviewSource": "",
+    "reviewSummary": "",
+    "googleBusinessProfileUrl": ""
+  },
+  "salesNotes": {
+    "bestLeadTypes": [],
+    "badFitProjects": [],
+    "responsePreferences": "",
+    "followUpPreferences": ""
+  },
+  "contentNotes": {
+    "aboutSummary": "",
+    "processSummary": "",
+    "faqNotes": [],
+    "citySpecificNotes": []
+  },
+  "opsNotes": {
+    "sheetOwnerViewNotes": "",
+    "emailRoutingNotes": "",
+    "crmNotes": ""
+  }
+}

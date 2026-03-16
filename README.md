@@ -195,6 +195,19 @@ This writes a launch package to `client-builds/<client-slug>/` with:
 - Netlify env template
 - launch checklist
 
+## Owner Intake Data In GitHub
+
+If you want to keep owner-provided internal notes in the repo without rendering them on the public site, use:
+
+- `docs/owner-profile-template.json`
+
+This file is repo-only reference data. The website does not load it, import it, or expose it in the frontend.
+
+Important:
+
+- if the GitHub repo is public, anything committed there is still publicly viewable in GitHub
+- use this for internal business notes, not passwords, tokens, or private customer data
+
 ## Sales + Ops Docs
 
 - `docs/offer-sheet-template.md`
