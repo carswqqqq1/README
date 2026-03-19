@@ -92,5 +92,21 @@
       "reviewDate": "January 2026",
       "text": "Verified review text."
     }
-  ]
+  ],
+  "_agencyMeta": {
+    "_note": "Internal agency records only. Not read by site-config.js or any build script.",
+    "agencyProjectId": "",
+    "clientSlug": "",
+    "netlifySiteId": "",
+    "githubBranch": "",
+    "initialPaymentDate": "",
+    "initialPaymentAmount": 375,
+    "completionPaymentDate": "",
+    "completionPaymentAmount": 375,
+    "monthlyUpkeepAmount": 250,
+    "monthlyUpkeepStartDate": "",
+    "launchDate": "",
+    "contractSignedDate": "",
+    "notes": ""
+  }
 }

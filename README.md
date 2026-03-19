@@ -208,10 +208,26 @@ Important:
 - if the GitHub repo is public, anything committed there is still publicly viewable in GitHub
 - use this for internal business notes, not passwords, tokens, or private customer data
 
+## Pricing Model
+
+This template is sold and maintained under the following standard pricing:
+
+| Payment | Amount | When |
+|---|---|---|
+| Initial | $375 | At kickoff, before work begins |
+| Completion | $375 | At launch, before DNS is pointed |
+| Monthly upkeep | $250/month | 1st of each month after launch |
+| **First-month total** | **$1,000** | |
+| **Annual value (12 months)** | **$3,750** | |
+
+See `docs/pricing-and-contracts.md` for full terms, cancellation policy, scope creep rates, and revenue projections.
+
 ## Sales + Ops Docs
 
-- `docs/offer-sheet-template.md`
-- `docs/follow-up-sequence.md`
+- `docs/pricing-and-contracts.md` — **standard pricing, payment terms, and revenue model**
+- `docs/offer-sheet-template.md` — client-facing offer with pricing
+- `docs/follow-up-sequence.md` — 3-touch outreach sequence with pricing
+- `docs/white-label-handoff.md` — step-by-step launch guide with payment gates
 - `docs/kpi-tracker-template.csv`
 - `docs/email-deliverability.md`
 - `docs/config-system.md`
@@ -221,6 +237,5 @@ Important:
 - `docs/client-answer-paste-template.md`
 - `docs/client-build-prompt-template.md`
 - `docs/client-config-template.json`
-- `docs/white-label-handoff.md`
 - `docs/accessibility-release-checklist.md`
 - `docs/manual-accessibility-audit-2026-03-08.md`

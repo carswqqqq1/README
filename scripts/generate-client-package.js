@@ -98,9 +98,19 @@ const buildDir = path.join(outputRoot, slug);
 const branchName = `codex/${slug}-site`;
 const netlifySite = `${slug}-site`;
 
+// Pull agency meta if present (not merged into site config)
+const agencyMeta = incoming._agencyMeta || {};
+const initialAmt = agencyMeta.initialPaymentAmount || 375;
+const completionAmt = agencyMeta.completionPaymentAmount || 375;
+const monthlyAmt = agencyMeta.monthlyUpkeepAmount || 250;
+const firstMonthTotal = initialAmt + completionAmt + monthlyAmt;
+const annualTotal = initialAmt + completionAmt + (monthlyAmt * 12);
+
+const today = new Date().toISOString().slice(0, 10);
+
 const summary = `# ${mergedConfig.businessName} Launch Package
 
-Generated on ${new Date().toISOString().slice(0, 10)} from ${absoluteInputPath}
+Generated on ${today} from ${absoluteInputPath}
 
 ## Suggested Branch
 - ${branchName}
@@ -118,14 +128,30 @@ Generated on ${new Date().toISOString().slice(0, 10)} from ${absoluteInputPath}
 - Reviews: ${mergedConfig.reviewRating} stars across ${mergedConfig.reviewCount} reviews on ${mergedConfig.reviewSource}
 - Review snapshot: ${mergedConfig.reviewSnapshotDate}
 
+## Project Pricing
+- Initial payment (kickoff): $${initialAmt}
+- Completion payment (at launch): $${completionAmt}
+- Monthly upkeep: $${monthlyAmt}/month
+- First-month total: $${firstMonthTotal}
+- Annual value (12 months): $${annualTotal}
+
+## Payment Milestones
+- [ ] Initial invoice sent ($${initialAmt}) — date: ${agencyMeta.initialPaymentDate || '__________'}
+- [ ] Initial payment received
+- [ ] Completion invoice sent ($${completionAmt}) — date: ${agencyMeta.completionPaymentDate || '__________'}
+- [ ] Completion payment received
+- [ ] Monthly auto-invoice set up ($${monthlyAmt}/month starting ${agencyMeta.monthlyUpkeepStartDate || '__________'})
+
 ## Recommended Workflow
 1. Create branch \`${branchName}\`.
 2. Run \`node scripts/apply-client-config.js ${absoluteInputPath}\`.
 3. Update review URLs, license verification URLs, and social profiles if needed.
 4. Run \`npm run build:assets\`.
 5. Run all release checks.
-6. Link or create Netlify site \`${netlifySite}\`.
-7. Deploy and do the manual accessibility checklist before final launch.
+6. Collect completion payment before pointing DNS.
+7. Link or create Netlify site \`${netlifySite}\`.
+8. Deploy and do the manual accessibility checklist before final launch.
+9. Set up monthly auto-invoice for $${monthlyAmt}/month.
 `;
 
 const envTemplate = `NETLIFY_AUTH_TOKEN=
@@ -140,20 +166,41 @@ GOOGLE_SHEETS_WEBHOOK_URL=
 
 const checklist = `# ${mergedConfig.shortName} Release Checklist
 
-- [ ] Apply client config
+## Pre-Build
+- [ ] Initial payment collected ($${initialAmt})
+- [ ] Client config JSON complete
+- [ ] Apply client config: \`node scripts/apply-client-config.js <config>\`
 - [ ] Replace logo assets if needed
+
+## Content & Trust
 - [ ] Confirm license, bond, and insurance proof
 - [ ] Confirm review rating, count, and review source URL
 - [ ] Confirm all service areas and location pages
-- [ ] Build minified assets
-- [ ] Run:
-  - npm run check:js
-  - npm run check:a11y
-  - npm run check:site
-  - npm run check:speed
+- [ ] Sweep for any remaining demo/template brand residue
+
+## Build & QA
+- [ ] Build minified assets: \`npm run build:assets\`
+- [ ] \`npm run check:js\`
+- [ ] \`npm run check:a11y\`
+- [ ] \`npm run check:site\`
+- [ ] \`npm run check:speed\`
 - [ ] Run manual accessibility/device audit
-- [ ] Deploy to Netlify
-- [ ] Verify production routes and lead flow
+- [ ] Test contact form (client email + owner email both arrive)
+- [ ] Test sticky mobile CTA and consultation drawer
+- [ ] Verify portfolio lightbox and FAQ toggles
+
+## Launch
+- [ ] Collect completion payment ($${completionAmt})
+- [ ] Deploy to Netlify production
+- [ ] Point DNS to new site
+- [ ] Verify all production routes return 200
+- [ ] Verify lead form submits to Google Sheet
+- [ ] Set up monthly auto-invoice ($${monthlyAmt}/month)
+
+## Handoff
+- [ ] Send client walkthrough (how to submit updates, how to read lead sheet)
+- [ ] Deliver login credentials and handoff doc
+- [ ] Archive client config JSON in \`client-builds/${slug}/\`
 `;
 
 writeFile(path.join(buildDir, 'client-summary.md'), summary);
@@ -162,3 +209,6 @@ writeFile(path.join(buildDir, 'launch-checklist.md'), checklist);
 writeFile(path.join(buildDir, 'merged-site-config-preview.json'), `${JSON.stringify(mergedConfig, null, 2)}\n`);
 
 console.log(`Generated client package in ${buildDir}`);
+console.log(`  Branch:       ${branchName}`);
+console.log(`  Netlify site: ${netlifySite}`);
+console.log(`  Pricing:      $${initialAmt} initial / $${completionAmt} completion / $${monthlyAmt}/month`);
