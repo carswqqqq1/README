@@ -28,7 +28,7 @@ Set these vars for site `thinkgreen-az`:
 
 ## 4) Verify
 
-Submit the contact form once. The script auto-creates a spreadsheet named `Think Green Leads` and writes rows to the `Leads` tab.
+Submit the contact form once. The script auto-creates a spreadsheet named `Think Green Lead Dashboard` and writes rows to the `Owner Lead Dashboard` tab.
 
 Expected behavior:
 

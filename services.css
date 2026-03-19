@@ -40,6 +40,48 @@
     url('../img/projects/slide6.webp') type('image/webp')
   );
 }
+body[data-service-slug="landscape-design"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/slide6-1280.avif') type('image/avif'),
+    url('../img/projects/slide6.webp') type('image/webp')
+  );
+}
+body[data-service-slug="hardscaping"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/fireplace-1280.avif') type('image/avif'),
+    url('../img/projects/fireplace.jpg') type('image/jpeg')
+  );
+}
+body[data-service-slug="outdoor-kitchens"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/shade-structure-640.avif') type('image/avif'),
+    url('../img/projects/shade-structure.jpg') type('image/jpeg')
+  );
+}
+body[data-service-slug="fire-features"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/firepit-640.avif') type('image/avif'),
+    url('../img/projects/firepit.jpg') type('image/jpeg')
+  );
+}
+body[data-service-slug="desert-landscaping"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/zen-garden-640.avif') type('image/avif'),
+    url('../img/projects/zen-garden.jpg') type('image/jpeg')
+  );
+}
+body[data-service-slug="artificial-turf"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/slide10-640.avif') type('image/avif'),
+    url('../img/projects/slide10.webp') type('image/webp')
+  );
+}
+body[data-service-slug="irrigation"] .service-hero__bg {
+  background-image: image-set(
+    url('../img/projects/slide8-640.avif') type('image/avif'),
+    url('../img/projects/slide8.webp') type('image/webp')
+  );
+}
 
 .services-hub-hero__overlay,
 .service-hero__overlay {
@@ -209,7 +251,7 @@
   background: #fff;
   border: 1px solid #e8dfd3;
   border-radius: 14px;
-  padding: 1.15rem;
+  padding: 1.2rem;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
@@ -226,8 +268,8 @@
 .service-card h3 {
   margin-top: 0.45rem;
   font-family: var(--font-head);
-  font-size: 1.85rem;
-  line-height: 1.12;
+  font-size: 2rem;
+  line-height: 1.08;
   font-weight: 500;
   color: var(--ink);
 }
@@ -239,17 +281,43 @@
   line-height: 1.7;
 }
 
+.service-card__range {
+  margin-top: 0.82rem;
+  padding: 0.78rem 0.85rem;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(27, 67, 50, .06) 0%, rgba(255,255,255,.96) 100%);
+  border: 1px solid rgba(27, 67, 50, .12);
+}
+
+.service-card__range span {
+  display: block;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tan);
+}
+
+.service-card__range strong {
+  display: block;
+  margin-top: 0.22rem;
+  color: var(--green);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
 .service-card__list {
-  margin-top: 0.78rem;
+  margin-top: 0.82rem;
   display: grid;
-  gap: 0.45rem;
+  gap: 0.58rem;
 }
 
 .service-card__list li {
   position: relative;
   padding-left: 0.9rem;
   font-size: 0.85rem;
-  line-height: 1.58;
+  line-height: 1.68;
   color: var(--ink-light);
 }
 
@@ -268,9 +336,19 @@
   margin-top: auto;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem;
+  gap: 0.8rem;
   align-items: center;
-  padding-top: 1rem;
+  padding-top: 1.15rem;
+}
+
+.service-card__actions .btn {
+  min-width: 168px;
+  justify-content: center;
+}
+
+.service-card__actions .text-link {
+  font-size: .78rem;
+  letter-spacing: .09em;
 }
 
 .services-hub-cta {
@@ -356,6 +434,40 @@
   height: 9px;
   border-radius: 2px;
   border: 2px solid var(--green);
+}
+
+.service-range {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.05rem;
+  border: 1px solid #ddd2c4;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f8f5ef 0%, #f3ede4 100%);
+}
+
+.service-range__intro h3 {
+  margin-top: .28rem;
+  font-family: var(--font-head);
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  line-height: 1.12;
+  color: var(--ink);
+}
+
+.service-range__value {
+  font-family: var(--font-head);
+  font-size: clamp(1.5rem, 2.7vw, 2.2rem);
+  line-height: 1.1;
+  color: var(--green);
+}
+
+.service-range__note {
+  margin-top: .35rem;
+  color: var(--ink-light);
+  line-height: 1.68;
+  font-size: .9rem;
 }
 
 .service-steps {
@@ -461,6 +573,91 @@
   font-size: 0.76rem;
   font-weight: 600;
   letter-spacing: 0.03em;
+}
+
+.service-story-strip {
+  background: #fff;
+  padding-block: clamp(2.8rem, 7vw, 4.2rem);
+}
+
+.service-story-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.service-story-grid--single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.service-story-card {
+  display: grid;
+  gap: 0.72rem;
+  border: 1px solid #e1d7c9;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fbf7f1 0%, #f6efe5 100%);
+  padding: 1rem;
+}
+
+.service-story-card__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  font-size: 0.66rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.service-story-card h3 {
+  font-family: var(--font-head);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.service-story-card__location {
+  margin-top: -0.2rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+.service-story-card__meta {
+  display: grid;
+  gap: 0.38rem;
+  font-size: 0.85rem;
+  color: var(--ink-light);
+}
+
+.service-story-card__meta strong {
+  color: var(--ink);
+}
+
+.service-story-card__outcome {
+  color: var(--ink-light);
+  line-height: 1.7;
+  font-size: 0.9rem;
+}
+
+.service-story-card__actions {
+  display: flex;
+  gap: 0.72rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 0.1rem;
+}
+
+.service-story-card__actions .btn {
+  min-width: 168px;
+  justify-content: center;
+}
+
+.service-story-card__actions .text-link {
+  font-size: 0.78rem;
+  letter-spacing: 0.09em;
 }
 
 .service-area-text {
@@ -571,6 +768,47 @@
   color: var(--green-mid);
 }
 
+.service-related__resources {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ece2d4;
+}
+
+.service-related__eyebrow {
+  display: inline-flex;
+  margin-bottom: .55rem;
+  font-size: .68rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.service-related__resource-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .58rem;
+}
+
+.service-related__resource-list li a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  border-radius: 10px;
+  background: #f7f2ea;
+  border: 1px solid #e3d7c7;
+  color: var(--ink);
+  font-size: .82rem;
+  font-weight: 600;
+  padding: .55rem .85rem;
+}
+
+.service-related__resource-list li a:hover {
+  border-color: var(--green);
+  color: var(--green);
+  background: #fff;
+}
+
 @media (max-width: 1080px) {
   .service-proof-strip__inner {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -578,6 +816,10 @@
 
   .service-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .service-story-grid {
+    grid-template-columns: 1fr;
   }
 
   .services-hub-grid {
@@ -598,18 +840,19 @@
 @media (max-width: 768px) {
   .services-hub-hero,
   .service-hero {
-    min-height: 430px;
-    padding-top: 102px;
+    min-height: 332px;
+    padding-top: 94px;
   }
 
   .services-hub-hero__content,
   .service-hero__content {
-    padding-bottom: 2.25rem;
+    padding-bottom: 1.7rem;
   }
 
   .services-hub-hero__actions,
   .service-hero__actions {
     flex-direction: column;
+    gap: .56rem;
   }
 
   .services-hub-hero__actions .btn,
@@ -619,9 +862,14 @@
     width: 100%;
     justify-content: center;
     text-align: center;
+    min-height: 46px;
   }
 
   .service-checklist {
+    grid-template-columns: 1fr;
+  }
+
+  .service-range {
     grid-template-columns: 1fr;
   }
 

@@ -4,7 +4,7 @@
   window.SERVICES_DATA = [
     {
       slug: 'landscape-design',
-      path: 'services/landscape-design.html',
+      path: '/services/landscape-design',
       navLabel: 'Landscape Design',
       title: 'Landscape Design & Build',
       formValue: 'Landscape Design & Build',
@@ -12,11 +12,18 @@
       metaDescription: 'Custom landscape design and build in Scottsdale and Phoenix with 3D planning, material coordination, and turnkey construction from one team.',
       heroHeadline: 'Landscape Design & Build in Scottsdale and Phoenix',
       heroSubtext: 'From concept sketches to final walkthrough, we design and build cohesive outdoor spaces that elevate curb appeal and day-to-day living.',
+      typicalRange: '$5k-$15k design planning',
+      proofBlurbs: [
+        'Design presentations are built around circulation, shade, and how the yard will actually be used.',
+        'Selections are coordinated with the home architecture so the finished build feels intentional, not pieced together.',
+        'Clients get one design-build team instead of separate design and construction handoffs.'
+      ],
       whatYouGet: [
         'On-site design consultation and project discovery',
         'Layout planning for circulation, shade, and entertaining',
         'Material and finish selections that match your architecture',
         '3D visual planning before construction begins',
+        'Outdoor lighting, water feature, and specialty upgrade planning when needed',
         'Integrated build execution with one accountable team',
         'Final walkthrough with punch-list and warranty review'
       ],
@@ -27,6 +34,18 @@
         'Build execution and final walkthrough'
       ],
       serviceAreaText: 'Think Green provides landscape design and design-build construction for homeowners in Scottsdale, Paradise Valley, Phoenix, and nearby communities across the Valley.',
+      featuredProject: {
+        title: 'North Scottsdale Master Plan',
+        location: 'North Scottsdale, AZ',
+        scope: '3D design direction, finish palette, phased build planning',
+        timeline: '5 weeks',
+        outcome: 'Gave the homeowners one clear plan for hardscape, planting, and lighting before construction money started going in different directions.'
+      },
+      resources: [
+        { title: 'Scottsdale project cost guide', path: '/landscaping-cost-scottsdale' },
+        { title: 'Paradise Valley service area page', path: '/paradise-valley-landscaping' },
+        { title: 'Project planning checklist', path: '/project-planning-checklist' }
+      ],
       faqs: [
         {
           q: 'How much does landscape design and build cost in Scottsdale?',
@@ -102,7 +121,7 @@
     },
     {
       slug: 'hardscaping',
-      path: 'services/hardscaping.html',
+      path: '/services/hardscaping',
       navLabel: 'Hardscaping',
       title: 'Hardscaping',
       formValue: 'Hardscaping',
@@ -110,6 +129,12 @@
       metaDescription: 'Premium hardscaping in Scottsdale and Phoenix, including patios, paver systems, retaining walls, seating walls, and drainage-aware layout planning.',
       heroHeadline: 'Hardscaping in Scottsdale and Phoenix',
       heroSubtext: 'We build pavers, patios, walkways, and structural stonework that look clean, perform in Arizona heat, and hold up for years.',
+      typicalRange: '$10k-$40k',
+      proofBlurbs: [
+        'Hardscape layouts are planned for drainage, circulation, and daily use before materials are finalized.',
+        'Patios and walkways are detailed to feel clean and architectural instead of oversized or disconnected.',
+        'Material choices are guided by heat performance, maintenance, and how they tie back to the home.'
+      ],
       whatYouGet: [
         'Paver patio and walkway installation',
         'Retaining walls and seating walls with clean detailing',
@@ -125,6 +150,19 @@
         'Jointing, cleanup, and final quality walkthrough'
       ],
       serviceAreaText: 'Our hardscaping team serves Scottsdale, Paradise Valley, Phoenix, and surrounding Valley neighborhoods with premium patio and stonework installations.',
+      featuredProject: {
+        title: 'Paver Patio and Drainage Reset',
+        location: 'Glendale, AZ',
+        scope: 'Paver patio, border detailing, drainage correction, circulation cleanup',
+        timeline: '3 weeks',
+        outcome: 'Turned a pooling backyard into a cleaner patio layout that feels easier to furnish and easier to use after monsoon season.'
+      },
+      resources: [
+        { title: 'Pavers vs. concrete guide', path: '/pavers-vs-concrete-arizona' },
+        { title: 'Scottsdale hardscape cost planning', path: '/landscaping-cost-scottsdale' },
+        { title: 'Scottsdale hardscaping page', path: '/scottsdale-hardscaping' },
+        { title: 'Phoenix service area page', path: '/phoenix-landscaping' }
+      ],
       faqs: [
         {
           q: 'How much does a paver patio cost in Scottsdale?',
@@ -200,7 +238,7 @@
     },
     {
       slug: 'outdoor-kitchens',
-      path: 'services/outdoor-kitchens.html',
+      path: '/services/outdoor-kitchens',
       navLabel: 'Outdoor Kitchens',
       title: 'Outdoor Kitchens',
       formValue: 'Fire Feature / Outdoor Kitchen',
@@ -208,6 +246,12 @@
       metaDescription: 'Custom outdoor kitchens in Scottsdale and Phoenix with grilling stations, counters, utility planning, and durable finishes built for Arizona outdoor living.',
       heroHeadline: 'Outdoor Kitchens in Scottsdale and Phoenix',
       heroSubtext: 'Create an outdoor kitchen that is beautiful, functional, and built for real entertaining in Arizona conditions.',
+      typicalRange: '$20k-$60k',
+      proofBlurbs: [
+        'Outdoor kitchens are laid out around prep flow, seating, and entertaining zones instead of appliance lists alone.',
+        'Utility planning is coordinated early so gas, power, and water do not create last-minute surprises.',
+        'Finish selections are chosen for Arizona heat, weather exposure, and easy long-term upkeep.'
+      ],
       whatYouGet: [
         'Custom kitchen layout and appliance planning',
         'Countertop and cabinet finish coordination',
@@ -223,6 +267,19 @@
         'Installation, detail finish, and final walkthrough'
       ],
       serviceAreaText: 'Think Green designs and builds outdoor kitchens for Scottsdale, Paradise Valley, Phoenix, and nearby Valley homes focused on entertaining and year-round use.',
+      featuredProject: {
+        title: 'Phoenix Entertaining Kitchen',
+        location: 'Phoenix, AZ',
+        scope: 'Grill island, utility coordination, dining layout, patio tie-in',
+        timeline: '4 weeks',
+        outcome: 'Created a kitchen zone that supports prep, serving, and seating without crowding the rest of the backyard.'
+      },
+      resources: [
+        { title: 'Outdoor kitchen planning guide', path: '/outdoor-kitchen-planning-arizona' },
+        { title: 'Phoenix outdoor kitchen page', path: '/phoenix-outdoor-kitchens' },
+        { title: 'Paradise Valley service area page', path: '/paradise-valley-landscaping' },
+        { title: 'Portfolio kitchen inspiration', path: '/portfolio?service=outdoor-kitchens' }
+      ],
       faqs: [
         {
           q: 'How much does an outdoor kitchen cost in Phoenix?',
@@ -297,8 +354,208 @@
       ]
     },
     {
+      slug: 'outdoor-lighting',
+      path: '/services/outdoor-lighting',
+      navLabel: 'Outdoor Lighting',
+      title: 'Outdoor Lighting',
+      formValue: 'Outdoor Lighting',
+      metaTitle: 'Outdoor Lighting in Scottsdale & Phoenix | Think Green',
+      metaDescription: 'Outdoor lighting design and installation in Scottsdale and Phoenix for pathway safety, curb appeal, highlighting, and evening outdoor living.',
+      heroHeadline: 'Outdoor Lighting in Scottsdale and Phoenix',
+      heroSubtext: 'Layered landscape lighting improves safety, curb appeal, and evening usability without making the yard feel overlit or generic.',
+      typicalRange: '$3k-$18k',
+      proofBlurbs: [
+        'Lighting plans are built around pathways, focal points, and entertaining zones instead of random fixture placement.',
+        'Fixture choices are matched to the home style so the yard feels refined at night, not overdone.',
+        'Low-voltage systems are planned for durability, serviceability, and clean long-term maintenance.'
+      ],
+      whatYouGet: [
+        'Pathway and safety-lighting planning',
+        'Accent lighting for planting, architecture, and focal features',
+        'Low-voltage fixture and transformer selection',
+        'Lighting layout coordinated with hardscape and planting',
+        'Evening entertaining-zone illumination strategy',
+        'Final aiming, testing, and owner walkthrough'
+      ],
+      process: [
+        'Lighting goals and property walkthrough',
+        'Fixture and layout planning',
+        'Low-voltage installation and wiring coordination',
+        'Nighttime aiming, testing, and final walkthrough'
+      ],
+      serviceAreaText: 'Think Green designs and installs outdoor lighting across Scottsdale, Paradise Valley, Phoenix, and nearby Valley communities for curb appeal, safety, and outdoor living use.',
+      featuredProject: {
+        title: 'Paradise Valley Evening Lighting Plan',
+        location: 'Paradise Valley, AZ',
+        scope: 'Path lighting, architectural accents, patio-zone illumination',
+        timeline: '1 week',
+        outcome: 'Improved nighttime arrival and entertaining comfort without making the property feel overlit.'
+      },
+      resources: [
+        { title: 'Scottsdale service area page', path: '/scottsdale-landscaping' },
+        { title: 'Resources hub', path: '/resources' },
+        { title: 'Free consultation page', path: '/free-consultation' }
+      ],
+      faqs: [
+        {
+          q: 'How much does outdoor lighting cost in Scottsdale?',
+          a: 'Pricing depends on fixture count, transformer needs, wiring complexity, and whether lighting is being added to an existing yard or integrated into a larger project.'
+        },
+        {
+          q: 'Can outdoor lighting be added to an existing landscape?',
+          a: 'Yes. We can retrofit lighting into existing planting, hardscape, and entry areas or coordinate it with a larger redesign.'
+        },
+        {
+          q: 'What areas should be lit first?',
+          a: 'Most homeowners start with pathways, entry points, seating areas, focal planting, and architectural highlights.'
+        },
+        {
+          q: 'Do you install smart or timer-based controls?',
+          a: 'Yes. We can configure scheduling and controls so lighting is easier to manage and more efficient.'
+        },
+        {
+          q: 'Can lighting be combined with patios, fire features, or kitchens?',
+          a: 'Absolutely. Lighting is strongest when it is planned alongside the rest of the outdoor living layout.'
+        }
+      ],
+      gallery: [
+        {
+          src: 'img/projects/slide10.webp',
+          alt: 'Landscape lighting and curb appeal upgrade in Scottsdale Arizona',
+          width: 1630,
+          height: 860,
+          chip: 'Lighting',
+          label: 'Front Entry Highlighting'
+        },
+        {
+          src: 'img/projects/firepit.jpg',
+          alt: 'Outdoor lighting around patio and fire feature in Scottsdale Arizona',
+          width: 1600,
+          height: 900,
+          chip: 'Outdoor Living',
+          label: 'Patio + Fire Glow'
+        },
+        {
+          src: 'img/projects/shade-structure.jpg',
+          alt: 'Lighting around covered patio in Phoenix Arizona',
+          width: 1000,
+          height: 668,
+          chip: 'Evening Use',
+          label: 'Entertaining Zone'
+        },
+        {
+          src: 'img/projects/fireplace.jpg',
+          alt: 'Landscape lighting and fireplace integration in Paradise Valley Arizona',
+          width: 1600,
+          height: 1066,
+          chip: 'Feature Lighting',
+          label: 'Architectural Accent'
+        }
+      ]
+    },
+    {
+      slug: 'pergola-shade',
+      path: '/services/pergola-shade',
+      navLabel: 'Pergola & Shade',
+      title: 'Pergola & Shade Structures',
+      formValue: 'Pergola / Shade Structure',
+      metaTitle: 'Pergolas and Shade Structures in Scottsdale & Phoenix | Think Green',
+      metaDescription: 'Pergolas and shade structures in Scottsdale and Phoenix for outdoor kitchens, patios, pool zones, and backyard lounge areas that stay usable through Arizona heat.',
+      heroHeadline: 'Pergolas and Shade Structures in Scottsdale and Phoenix',
+      heroSubtext: 'Shade structures help patios, kitchens, and lounge zones work harder through Arizona heat while giving the yard stronger architectural definition.',
+      typicalRange: '$8k-$45k',
+      proofBlurbs: [
+        'Shade structures are sized around the way you actually use the patio, not just dropped in as an afterthought.',
+        'Post placement, traffic flow, and roof orientation are coordinated with outdoor kitchens, fire features, and planting beds.',
+        'Material and finish choices are matched to the home so the structure feels built-in instead of bolted on.'
+      ],
+      whatYouGet: [
+        'Pergola and shade-structure planning around lounge and dining zones',
+        'Layout coordination with kitchens, patios, fire features, and circulation',
+        'Material, finish, and roof-style recommendations',
+        'Sun-angle and comfort planning for hotter afternoon use',
+        'Integrated lighting and utility coordination where needed',
+        'Build-ready structure strategy for long-term outdoor living use'
+      ],
+      process: [
+        'Site walkthrough and shade-comfort planning',
+        'Structure sizing, placement, and finish direction',
+        'Integration with hardscape, utilities, and surrounding features',
+        'Construction coordination and final walkthrough'
+      ],
+      serviceAreaText: 'Think Green plans pergolas and shade structures across Scottsdale, Paradise Valley, Phoenix, Chandler, Mesa, and nearby Valley communities.',
+      featuredProject: {
+        title: 'Tempe Pergola Lounge Upgrade',
+        location: 'Tempe, AZ',
+        scope: 'Shade structure sizing, lounge layout, lighting coordination',
+        timeline: '3 weeks',
+        outcome: 'Made a compact patio usable earlier in the day and more comfortable for evening hosting without overbuilding the yard.'
+      },
+      resources: [
+        { title: 'Outdoor kitchen planning guide', path: '/outdoor-kitchen-planning-arizona' },
+        { title: 'Portfolio outdoor living projects', path: '/portfolio?service=pergola-shade' },
+        { title: 'Free consultation page', path: '/free-consultation' }
+      ],
+      faqs: [
+        {
+          q: 'Do pergolas make sense in Arizona heat?',
+          a: 'Yes, when they are positioned correctly. Shade structures are most effective when orientation, roof style, and adjacent uses are planned around real afternoon sun exposure.'
+        },
+        {
+          q: 'Can a pergola be integrated with an outdoor kitchen or fire feature?',
+          a: 'Absolutely. Many of the strongest backyard layouts combine structure, cooking, seating, and lighting so each element works together instead of competing for space.'
+        },
+        {
+          q: 'What is the typical cost range for a pergola or shade structure?',
+          a: 'It depends on size, materials, electrical scope, finish level, and whether the structure is tied into a larger patio or outdoor living renovation.'
+        },
+        {
+          q: 'Can you help if we are not sure between a pergola, ramada, or covered patio idea?',
+          a: 'Yes. We can compare shade options during consultation and recommend the structure type that best fits your budget, style, and comfort goals.'
+        },
+        {
+          q: 'Do shade structures work as part of a phased project?',
+          a: 'Yes. We can plan the pergola or shade structure as a first phase or integrate it into a broader design-build master plan.'
+        }
+      ],
+      gallery: [
+        {
+          src: 'img/projects/shade-structure.jpg',
+          alt: 'Custom pergola and shade structure for a Phoenix outdoor lounge',
+          width: 1000,
+          height: 668,
+          chip: 'Shade Structure',
+          label: 'Covered Lounge Zone'
+        },
+        {
+          src: 'img/projects/firepit.jpg',
+          alt: 'Pergola and fire feature layout in Scottsdale Arizona',
+          width: 1600,
+          height: 900,
+          chip: 'Outdoor Living',
+          label: 'Shade + Fire'
+        },
+        {
+          src: 'img/projects/after-29.jpg',
+          alt: 'Pergola and dining patio design in Chandler Arizona',
+          width: 880,
+          height: 670,
+          chip: 'Dining Patio',
+          label: 'Hosting Upgrade'
+        },
+        {
+          src: 'img/projects/slide7.webp',
+          alt: 'Modern backyard shade structure in Paradise Valley Arizona',
+          width: 1630,
+          height: 860,
+          chip: 'Architectural Shade',
+          label: 'Backyard Retreat'
+        }
+      ]
+    },
+    {
       slug: 'fire-features',
-      path: 'services/fire-features.html',
+      path: '/services/fire-features',
       navLabel: 'Fire Features',
       title: 'Fire Features',
       formValue: 'Fire Feature / Outdoor Kitchen',
@@ -306,6 +563,12 @@
       metaDescription: 'Custom fire pits and outdoor fireplaces in Scottsdale and Phoenix designed for comfortable entertaining, clean integration, and durable long-term use.',
       heroHeadline: 'Fire Features in Scottsdale and Phoenix',
       heroSubtext: 'Add warmth, ambiance, and year-round gathering space with custom fire pits and fireplaces built into your outdoor layout.',
+      typicalRange: '$5k-$20k',
+      proofBlurbs: [
+        'Fire features are positioned to improve evening use and social flow, not just to fill an empty corner of the yard.',
+        'Scale, seating distance, and finish detailing are planned so the feature feels integrated with the patio.',
+        'Gas and safety considerations are addressed up front to keep the build clean and code-aware.'
+      ],
       whatYouGet: [
         'Custom fire pit and fireplace design options',
         'Safe placement with seating and circulation planning',
@@ -321,6 +584,18 @@
         'Final testing and owner walkthrough'
       ],
       serviceAreaText: 'We build custom fire pits and fireplaces for homeowners in Scottsdale, Paradise Valley, Phoenix, and surrounding Valley locations.',
+      featuredProject: {
+        title: 'Arcadia Fire Pit Gathering Zone',
+        location: 'Arcadia, AZ',
+        scope: 'Custom fire feature, seat spacing, patio refresh, finish detailing',
+        timeline: '2.5 weeks',
+        outcome: 'Turned an underused patio corner into a stronger evening gathering space with cleaner traffic flow.'
+      },
+      resources: [
+        { title: 'Arcadia outdoor living page', path: '/arcadia-landscaping' },
+        { title: 'Compare service fit on the resources hub', path: '/resources' },
+        { title: 'Portfolio fire feature inspiration', path: '/portfolio?service=fire-features' }
+      ],
       faqs: [
         {
           q: 'What is the cost range for a custom fire pit in Scottsdale?',
@@ -395,21 +670,139 @@
       ]
     },
     {
+      slug: 'desert-landscaping',
+      path: '/services/desert-landscaping',
+      navLabel: 'Desert Landscaping',
+      title: 'Desert Landscaping',
+      formValue: 'Desert / Drought-Tolerant Design',
+      metaTitle: 'Desert Landscaping in Scottsdale & Phoenix | Xeriscape Design',
+      metaDescription: 'Water-smart desert landscaping in Scottsdale and Phoenix with xeriscape planning, low-maintenance planting, decomposed granite, and efficient irrigation design.',
+      heroHeadline: 'Desert Landscaping in Scottsdale and Phoenix',
+      heroSubtext: 'Build a refined Arizona yard with xeriscape planning, drought-tolerant planting, and low-maintenance materials designed for heat, runoff, and year-round curb appeal.',
+      typicalRange: '$8k-$35k',
+      proofBlurbs: [
+        'Desert-smart layouts focus on shade, drainage, and clean material transitions so the yard feels intentional instead of sparse.',
+        'Plant palettes are selected for Arizona heat tolerance, lower maintenance, and visual depth across the full year.',
+        'Water efficiency is planned with irrigation strategy, grading, and material choices rather than treated as an afterthought.'
+      ],
+      whatYouGet: [
+        'Xeriscape planning tailored to sun exposure and how the yard is used',
+        'Drought-tolerant planting palettes suited to Scottsdale and Phoenix conditions',
+        'Decomposed granite, boulder, and hardscape integration planning',
+        'Low-maintenance layout strategy for cleaner long-term upkeep',
+        'Water-efficiency recommendations with irrigation coordination',
+        'Material and finish selections matched to the home architecture'
+      ],
+      process: [
+        'Site review and desert-smart design strategy',
+        'Plant, material, and irrigation direction',
+        'Layout confirmation with phasing or build planning',
+        'Installation coordination and final walkthrough'
+      ],
+      serviceAreaText: 'Think Green designs desert landscaping and xeriscape-focused projects for Scottsdale, Paradise Valley, Phoenix, Fountain Hills, and nearby Valley communities.',
+      featuredProject: {
+        title: 'Fountain Hills Xeriscape Refresh',
+        location: 'Fountain Hills, AZ',
+        scope: 'Low-water planting, boulder placement, DG layout, irrigation tune-up',
+        timeline: '4 weeks',
+        outcome: 'Reduced maintenance and water demand while giving the front yard stronger structure and cleaner curb appeal.'
+      },
+      resources: [
+        { title: 'Xeriscape vs. turf guide', path: '/xeriscape-vs-turf-arizona' },
+        { title: 'Arcadia service area page', path: '/arcadia-landscaping' },
+        { title: 'Phoenix service area page', path: '/phoenix-landscaping' }
+      ],
+      faqs: [
+        {
+          q: 'What does desert landscaping usually cost in Scottsdale?',
+          a: 'Project cost depends on square footage, grading, hardscape integration, plant size, and irrigation scope. We provide realistic ranges after we review the property and your priorities.'
+        },
+        {
+          q: 'Can a xeriscape yard still feel high-end and finished?',
+          a: 'Yes. The best desert-smart yards use structure, scale, material contrast, and layered planting so the space feels architectural, not bare.'
+        },
+        {
+          q: 'Do you combine drought-tolerant planting with turf or hardscape?',
+          a: 'Absolutely. Many projects blend xeriscape planting with hardscape, focal turf zones, and outdoor-living elements for a balanced layout.'
+        },
+        {
+          q: 'Will desert landscaping reduce irrigation demand?',
+          a: 'In most cases, yes. We pair plant selection with efficient irrigation strategy to reduce waste while supporting healthy long-term growth.'
+        },
+        {
+          q: 'Can you redesign an older high-maintenance yard into something water-smart?',
+          a: 'Yes. We often replace dated planting and inefficient layouts with cleaner, lower-maintenance desert-smart plans that still deliver strong curb appeal.'
+        }
+      ],
+      gallery: [
+        {
+          src: 'img/projects/zen-garden.jpg',
+          alt: 'Desert landscaping and xeriscape design in Fountain Hills Arizona',
+          width: 1600,
+          height: 954,
+          chip: 'Xeriscape',
+          label: 'Sonoran Plant Palette'
+        },
+        {
+          src: 'img/projects/slide8.webp',
+          alt: 'Water-smart desert landscape layout in Scottsdale Arizona',
+          width: 1000,
+          height: 563,
+          chip: 'Water Smart',
+          label: 'Low-Water Layout'
+        },
+        {
+          src: 'img/projects/slide10.webp',
+          alt: 'Front yard desert landscaping upgrade in Scottsdale Arizona',
+          width: 1630,
+          height: 860,
+          chip: 'Curb Appeal',
+          label: 'Front Yard Refresh'
+        },
+        {
+          src: 'img/projects/after-29.jpg',
+          alt: 'Completed drought-tolerant backyard renovation in Gilbert Arizona',
+          width: 880,
+          height: 670,
+          chip: 'Completed Build',
+          label: 'Low-Maintenance Yard'
+        },
+        {
+          src: 'img/projects/shade-structure.jpg',
+          alt: 'Desert-friendly outdoor living layout in Phoenix Arizona',
+          width: 1000,
+          height: 668,
+          chip: 'Outdoor Living',
+          label: 'Shade + Planting Balance'
+        },
+        {
+          src: 'img/projects/slide7.webp',
+          alt: 'Modern Arizona landscape with drought-tolerant detailing in Chandler',
+          width: 1630,
+          height: 860,
+          chip: 'Modern Desert',
+          label: 'Clean Material Mix'
+        }
+      ]
+    },
+    {
       slug: 'artificial-turf',
-      path: 'services/artificial-turf.html',
+      path: '/services/artificial-turf',
       navLabel: 'Artificial Turf',
       title: 'Artificial Turf',
-      formValue: 'Desert / Drought-Tolerant Design',
+      formValue: 'Artificial Turf',
       metaTitle: 'Artificial Turf Installation in Scottsdale & Phoenix | Think Green',
       metaDescription: 'Artificial turf installation in Scottsdale and Phoenix for clean curb appeal, lower water use, and low-maintenance outdoor living that looks finished year-round.',
       heroHeadline: 'Artificial Turf Installation in Scottsdale and Phoenix',
       heroSubtext: 'Upgrade to premium turf systems with natural appearance, clean edges, and drainage-aware installation for Arizona homes.',
+      typicalRange: '$5k-$15k',
       whatYouGet: [
         'Premium turf product recommendations for your use case',
         'Sub-base prep and grading for long-term performance',
         'Drainage and edge-detail planning',
         'Seam management for clean visual flow',
         'Integration with pavers, planters, and landscape beds',
+        'Optional putting green layout planning for premium backyard use',
         'Low-maintenance care guidance after install'
       ],
       process: [
@@ -418,7 +811,24 @@
         'Base prep, install, and seam finishing',
         'Cleanup and maintenance walkthrough'
       ],
+      proofBlurbs: [
+        'North Scottsdale install: turf plus paver border completed with clean seam lines and drainage correction.',
+        'Arcadia backyard upgrade: low-maintenance turf layout designed to stay usable through summer heat.',
+        'Phoenix front-yard refresh: premium turf paired with drought-tolerant planting for curb appeal.'
+      ],
       serviceAreaText: 'Think Green installs artificial turf across Scottsdale, Paradise Valley, Phoenix, and nearby Valley neighborhoods for both front-yard and backyard projects.',
+      featuredProject: {
+        title: 'Mesa Turf and Border Refresh',
+        location: 'Mesa, AZ',
+        scope: 'Premium turf install, border cleanup, drainage prep, planting tie-in',
+        timeline: '1.5 weeks',
+        outcome: 'Delivered a lower-maintenance yard that still feels finished from the street and easier to use every day.'
+      },
+      resources: [
+        { title: 'Xeriscape vs. turf guide', path: '/xeriscape-vs-turf-arizona' },
+        { title: 'Mesa service area page', path: '/mesa-landscaping' },
+        { title: 'Resources hub', path: '/resources' }
+      ],
       faqs: [
         {
           q: 'How much does artificial turf cost in Scottsdale?',
@@ -435,6 +845,10 @@
         {
           q: 'Can turf be combined with pavers and planting beds?',
           a: 'Absolutely. Most projects blend turf with hardscape and planting for a balanced, finished outdoor design.'
+        },
+        {
+          q: 'Do you build backyard putting green areas too?',
+          a: 'Yes. Putting greens can be integrated into larger turf layouts when the yard has the right space, slope, and use case.'
         },
         {
           q: 'How soon can installation be scheduled?',
@@ -494,7 +908,7 @@
     },
     {
       slug: 'irrigation',
-      path: 'services/irrigation.html',
+      path: '/services/irrigation',
       navLabel: 'Irrigation',
       title: 'Irrigation Systems',
       formValue: 'Irrigation',
@@ -502,6 +916,12 @@
       metaDescription: 'Smart irrigation design and upgrades in Scottsdale and Phoenix, including drip systems, zone planning, controller optimization, and water-efficient retrofits.',
       heroHeadline: 'Irrigation Systems in Scottsdale and Phoenix',
       heroSubtext: 'Keep your landscape healthy with efficient irrigation planning, modern controls, and climate-aware water management built for Arizona.',
+      typicalRange: '$2k-$10k',
+      proofBlurbs: [
+        'Irrigation upgrades focus on healthier plants and lower waste, not just swapping out controllers.',
+        'Zones are evaluated by plant type, exposure, and runoff so watering is more accurate across the property.',
+        'Retrofits are designed to support both existing landscapes and future design-build improvements.'
+      ],
       whatYouGet: [
         'Drip and spray zone planning by plant type',
         'Controller programming and optimization',
@@ -517,6 +937,18 @@
         'Testing, calibration, and owner walkthrough'
       ],
       serviceAreaText: 'Think Green designs and upgrades irrigation systems across Scottsdale, Paradise Valley, Phoenix, and neighboring Valley communities.',
+      featuredProject: {
+        title: 'Chandler Irrigation Retrofit',
+        location: 'Chandler, AZ',
+        scope: 'Zone correction, drip conversion, controller setup, runoff cleanup',
+        timeline: '1 week',
+        outcome: 'Improved plant coverage and reduced waste so the homeowners could stop overwatering one area to keep another alive.'
+      },
+      resources: [
+        { title: 'Mesa service area page', path: '/mesa-landscaping' },
+        { title: 'Chandler service area page', path: '/chandler-landscaping' },
+        { title: 'Project planning checklist', path: '/project-planning-checklist' }
+      ],
       faqs: [
         {
           q: 'How much does an irrigation upgrade cost in Phoenix?',
@@ -594,7 +1026,7 @@
 
   window.SERVICE_PROOF_ITEMS = [
     { label: 'Licensed · Bonded · Insured', icon: 'shield' },
-    { label: '500+ Projects', icon: 'projects' },
+    { label: 'Premium Outdoor Living Focus', icon: 'projects' },
     { label: 'Design to Build', icon: 'plan' },
     { label: '24hr Response', icon: 'clock' }
   ];

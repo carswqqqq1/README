@@ -3,7 +3,15 @@ const path = require('path');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
-const OWNER_EMAIL = process.env.OWNER_EMAIL || 'carsonweso@icloud.com';
+let SITE_CONFIG = {};
+
+try {
+  SITE_CONFIG = require(path.join(process.cwd(), 'site-config.js'));
+} catch (error) {
+  SITE_CONFIG = {};
+}
+
+const OWNER_EMAIL = process.env.OWNER_EMAIL || SITE_CONFIG.ownerEmail || SITE_CONFIG.email || '';
 const FROM_EMAIL = process.env.FROM_EMAIL || '';
 const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || '';
 const EMAIL_PROVIDER = String(process.env.EMAIL_PROVIDER || 'resend').toLowerCase();
@@ -20,7 +28,7 @@ const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL || '';
 const GOOGLE_SHEETS_WEBHOOK_SECRET = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET || '';
 const GOOGLE_SHEET_URL = process.env.GOOGLE_SHEET_URL || '';
 const GOOGLE_SHEET_ID = process.env.GOOGLE_SHEET_ID || '';
-const GOOGLE_SHEET_TAB = process.env.GOOGLE_SHEET_TAB || 'Leads';
+const GOOGLE_SHEET_TAB = process.env.GOOGLE_SHEET_TAB || 'Owner Lead Dashboard';
 const GOOGLE_OAUTH_CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID || process.env.GOOGLE_CLIENT_ID || '';
 const GOOGLE_OAUTH_CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET || '';
 const GOOGLE_OAUTH_REFRESH_TOKEN = process.env.GOOGLE_OAUTH_REFRESH_TOKEN || process.env.GOOGLE_REFRESH_TOKEN || '';
@@ -36,30 +44,36 @@ const EMAIL_DIR = path.join(process.cwd(), 'emails');
 const DEDUPE_WINDOW_MS = 15 * 60 * 1000;
 const processedKeys = new Map();
 const rateLimitStore = new Map();
+const dashboardFormatStore = new Map();
+const DASHBOARD_FORMAT_TTL_MS = 6 * 60 * 60 * 1000;
 const DIRECT_SHEET_HEADERS = [
   'timestamp',
-  'submitted_local',
   'status',
-  'ticket_id',
   'name',
   'phone',
   'email',
   'city',
-  'project_location',
   'service',
-  'consultation_tier',
   'budget_range',
   'start_timeline',
-  'contact_method',
-  'lead_score',
-  'lead_tags',
+  'lead_quality',
+  'estimated_project_value',
   'next_action',
   'follow_up_due',
-  'last_touched',
   'notes',
+  'ticket_id',
+  'lead_tags',
   'lead_source',
   'project_reference',
-  'style_reference'
+  'style_reference',
+  'project_location',
+  'contact_method',
+  'submitted_local',
+  'last_touched',
+  'page_url',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign'
 ];
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 const DISPOSABLE_EMAIL_DOMAINS = new Set([
@@ -267,15 +281,66 @@ function isRateLimited(ip) {
 }
 
 function isPlaceholderValue(value) {
-  const text = String(value || '').trim().toLowerCase();
+  const text = String(value || '')
+    .replace(/\u00a0/g, ' ')
+    .trim()
+    .toLowerCase();
+  if (!text) return true;
+  const normalized = text
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/[.,;:!?]+$/g, '')
+    .trim();
+  if (/^(not set|not provided|not selected|not specified|not discussed yet|to be discussed|to be discussed during consultation|unknown|none|null|undefined|n\/a|na)$/i.test(normalized)) {
+    return true;
+  }
+  if (
+    normalized.includes('not selected') ||
+    normalized.includes('not provided') ||
+    normalized.includes('to be discussed')
+  ) {
+    return true;
+  }
   return (
-    !text ||
-    text === 'not provided' ||
-    text === 'not selected' ||
-    text === 'not discussed yet' ||
-    text === 'to be discussed' ||
-    text === 'to be discussed during consultation'
+    false
   );
+}
+
+function isMeaningfulValue(value) {
+  return !isPlaceholderValue(value);
+}
+
+function normalizeOptionalField(value, fallback = '') {
+  const cleaned = normalizeWhitespace(value);
+  if (!cleaned || isPlaceholderValue(cleaned)) return fallback;
+  return cleaned;
+}
+
+function isInternalVisionContent(value) {
+  const text = normalizeWhitespace(value).toLowerCase();
+  if (!text) return false;
+  const internalPatterns = [
+    'qa',
+    'test',
+    'verification',
+    'pipeline',
+    'assistant',
+    'codex',
+    'browser path',
+    'manual owner',
+    'owner/client delivery',
+    'final production verification'
+  ];
+  return internalPatterns.some((pattern) => text.includes(pattern));
+}
+
+
+function ownerSheetValue(value, fallback = '') {
+  return isMeaningfulValue(value) ? safeText(value, fallback) : fallback;
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value).replace(/"/g, '&quot;');
 }
 
 function splitFullName(fullName = '') {
@@ -289,12 +354,12 @@ function splitFullName(fullName = '') {
 
 function buildFullName(firstName, lastName) {
   const parts = [safeText(firstName, ''), safeText(lastName, '')].filter((part) => !isPlaceholderValue(part));
-  return parts.length ? parts.join(' ') : 'Not provided';
+  return parts.length ? parts.join(' ') : '';
 }
 
 function buildProjectLocation(projectAddress, city) {
   const parts = [safeText(projectAddress, ''), safeText(city, '')].filter((part) => !isPlaceholderValue(part));
-  return parts.length ? parts.join(', ') : 'Not provided';
+  return parts.length ? parts.join(', ') : '';
 }
 
 function cleanBudgetLabel(value) {
@@ -434,72 +499,72 @@ function getSmtpTransporter() {
 function buildNormalizedData(rawData = {}, meta = {}) {
   const normalized = { ...rawData };
   const splitName = splitFullName(rawData.full_name || '');
-  const fallbackFirst = safeText(splitName.first, 'Not provided');
+  const fallbackFirst = safeText(splitName.first, '');
   const fallbackLast = safeText(splitName.last, '');
 
-  normalized.first_name = safeText(rawData.first_name, fallbackFirst);
+  normalized.first_name = normalizeOptionalField(rawData.first_name, fallbackFirst || 'there');
   normalized.last_name = safeText(rawData.last_name, fallbackLast);
-  if (normalized.last_name === 'Not provided') normalized.last_name = '';
+  if (isPlaceholderValue(normalized.last_name)) normalized.last_name = '';
   normalized.full_name = buildFullName(normalized.first_name, normalized.last_name);
+  if (!normalized.full_name) normalized.full_name = 'Website Lead';
 
-  normalized.email = safeText(rawData.email || rawData.email_visible);
-  normalized.phone = safeText(rawData.phone);
-  normalized.project_address = safeText(rawData.project_address || rawData.property_address || rawData.address);
-  normalized.city = safeText(rawData.city || rawData.project_city);
+  normalized.email = normalizeOptionalField(rawData.email || rawData.email_visible, '');
+  normalized.phone = normalizeOptionalField(rawData.phone, '');
+  normalized.project_address = normalizeOptionalField(rawData.project_address || rawData.property_address || rawData.address, '');
+  normalized.city = normalizeOptionalField(rawData.city || rawData.project_city, '');
   normalized.project_location = buildProjectLocation(normalized.project_address, normalized.city);
-  normalized.service = safeText(rawData.service || rawData.project_type || rawData.selected_service);
-  normalized.selected_service = safeText(rawData.selected_service || normalized.service);
-  normalized.consultation_tier = safeText(rawData.consultation_tier || rawData.lead_tier, 'Not selected');
+  normalized.service = normalizeOptionalField(rawData.service || rawData.project_type || rawData.selected_service, 'Landscape Design & Build');
+  normalized.selected_service = normalizeOptionalField(rawData.selected_service || normalized.service, normalized.service);
+  normalized.consultation_tier = normalizeOptionalField(rawData.consultation_tier || rawData.lead_tier, '');
   normalized.lead_tier = normalized.consultation_tier;
-  normalized.selected_style = safeText(rawData.selected_style || rawData.project_style, 'Not selected');
-  normalized.selected_image = safeText(rawData.selected_image || rawData.project_image, 'Not selected');
-  normalized.selected_project_label = safeText(rawData.selected_project_label || rawData.project_reference, 'Not selected');
-  normalized.lead_source = safeText(rawData.lead_source || rawData.source || rawData.utm_source, 'website');
-  normalized.utm_source = safeText(rawData.utm_source, '');
-  normalized.utm_medium = safeText(rawData.utm_medium, '');
-  normalized.utm_campaign = safeText(rawData.utm_campaign, '');
-  normalized.utm_content = safeText(rawData.utm_content, '');
-  normalized.referrer = safeText(rawData.referrer, 'direct');
-  normalized.landing_path = safeText(rawData.landing_path, '/');
+  normalized.selected_style = normalizeOptionalField(rawData.selected_style || rawData.project_style, '');
+  normalized.selected_image = normalizeOptionalField(rawData.selected_image || rawData.project_image, '');
+  normalized.selected_project_label = normalizeOptionalField(rawData.selected_project_label || rawData.project_reference, '');
+  normalized.lead_source = normalizeOptionalField(rawData.lead_source || rawData.source || rawData.utm_source, 'website');
+  normalized.utm_source = normalizeOptionalField(rawData.utm_source, '');
+  normalized.utm_medium = normalizeOptionalField(rawData.utm_medium, '');
+  normalized.utm_campaign = normalizeOptionalField(rawData.utm_campaign, '');
+  normalized.utm_content = normalizeOptionalField(rawData.utm_content, '');
+  normalized.referrer = normalizeOptionalField(rawData.referrer, 'direct');
+  normalized.landing_path = normalizeOptionalField(rawData.landing_path, '/');
+  normalized.page_url = normalizeOptionalField(rawData.page_url || meta.page_url, '');
 
   normalized.budget = normalizeBudgetRange(rawData);
   normalized.budget_range = normalized.budget;
-  normalized.estimated_timeline = safeText(rawData.estimated_timeline || rawData.timeline || rawData.start_timeline || rawData.start_window, 'To be discussed');
-  normalized.start_timeline = safeText(rawData.start_timeline || rawData.timeline || rawData.estimated_timeline || rawData.start_window, 'To be discussed');
-  normalized.contact_method = safeText(rawData.contact_method || rawData.preferred_contact_method || rawData.preferred_contact, 'Phone call');
+  normalized.estimated_timeline = normalizeOptionalField(rawData.estimated_timeline || rawData.timeline || rawData.start_timeline || rawData.start_window, '');
+  normalized.start_timeline = normalizeOptionalField(rawData.start_timeline || rawData.timeline || rawData.estimated_timeline || rawData.start_window, '');
+  normalized.contact_method = normalizeOptionalField(rawData.contact_method || rawData.preferred_contact_method || rawData.preferred_contact, '');
   normalized.preferred_contact = normalized.contact_method;
-  normalized.vision = safeText(rawData.vision || rawData.message || rawData.details || rawData.project_details);
+  normalized.vision = normalizeOptionalField(rawData.vision || rawData.message || rawData.details || rawData.project_details, '');
 
   normalized.timeline = normalized.start_timeline;
   normalized.preferred_contact_method = normalized.contact_method;
   normalized.message = normalized.vision;
 
   normalized.ticket_id = resolveTicketId(rawData, meta.ticket_id);
-  normalized.submitted_local = safeText(rawData.submitted_local, meta.submitted_local);
-  normalized.owner_summary = safeText(rawData.owner_summary, meta.owner_summary);
-  normalized.owner_priority = safeText(rawData.owner_priority, meta.owner_priority);
+  normalized.submitted_local = safeText(rawData.submitted_local, meta.submitted_local || formatPhoenixDate());
+  normalized.owner_summary = normalizeOptionalField(rawData.owner_summary, meta.owner_summary);
+  normalized.owner_priority = normalizeOptionalField(rawData.owner_priority, meta.owner_priority);
   normalized.owner_priority_class = getPriorityClass(normalized.owner_priority);
-  normalized.owner_lead_score = safeText(rawData.owner_lead_score, meta.owner_lead_score);
-  normalized.owner_lead_tier = safeText(rawData.owner_lead_tier, meta.owner_lead_tier);
-  normalized.owner_lead_tags = safeText(rawData.owner_lead_tags, meta.owner_lead_tags);
-  normalized.sheet_status = safeText(meta.sheet_status || rawData.sheet_status, 'New');
-  normalized.sheet_row_id = safeText(meta.sheet_row_id || rawData.sheet_row_id, '');
-  normalized.sheet_row_url = safeText(meta.sheet_row_url || rawData.sheet_row_url, '');
-  normalized.sheet_url = safeText(meta.sheet_url || GOOGLE_SHEET_URL, '');
+  normalized.owner_lead_score = normalizeOptionalField(rawData.owner_lead_score, meta.owner_lead_score);
+  normalized.owner_lead_tier = normalizeOptionalField(rawData.owner_lead_tier, meta.owner_lead_tier);
+  normalized.owner_lead_tags = normalizeOptionalField(rawData.owner_lead_tags, meta.owner_lead_tags);
+  normalized.lead_quality = normalizeOptionalField(rawData.lead_quality, meta.lead_quality);
+  normalized.estimated_project_value = normalizeOptionalField(rawData.estimated_project_value, meta.estimated_project_value);
+  normalized.sheet_status = normalizeOptionalField(meta.sheet_status || rawData.sheet_status, 'New');
+  normalized.sheet_row_id = normalizeOptionalField(meta.sheet_row_id || rawData.sheet_row_id, '');
+  normalized.sheet_row_url = normalizeOptionalField(meta.sheet_row_url || rawData.sheet_row_url, '');
+  normalized.sheet_url = normalizeOptionalField(meta.sheet_url || GOOGLE_SHEET_URL, '');
 
   return normalized;
 }
 
 function buildOwnerSummary(data) {
   const pieces = [];
-  pieces.push(`Service: ${safeText(data.service)}`);
-  pieces.push(`Budget Tier: ${safeText(data.consultation_tier || data.lead_tier, 'Not selected')}`);
-  pieces.push(`Budget: ${safeText(data.budget_range || data.budget)}`);
-  pieces.push(`Timeline: ${safeText(data.start_timeline || data.timeline || data.estimated_timeline)}`);
-  pieces.push(`Contact: ${safeText(data.contact_method || data.preferred_contact || data.preferred_contact_method)}`);
-  pieces.push(`City: ${safeText(data.city)}`);
-  pieces.push(`Source: ${safeText(data.lead_source, 'website')}`);
-  if (!isPlaceholderValue(data.selected_style)) pieces.push(`Style: ${safeText(data.selected_style)}`);
+  if (isMeaningfulValue(data.service)) pieces.push(`Service: ${safeText(data.service)}`);
+  if (isMeaningfulValue(data.lead_quality)) pieces.push(`Lead Quality: ${safeText(data.lead_quality, '')}`);
+  if (isMeaningfulValue(data.estimated_project_value)) pieces.push(`Estimated Value: ${safeText(data.estimated_project_value, 'Varies by scope')}`);
+  if (isMeaningfulValue(data.start_timeline || data.timeline || data.estimated_timeline)) pieces.push(`Timeline: ${safeText(data.start_timeline || data.timeline || data.estimated_timeline)}`);
   return pieces.join(' · ');
 }
 
@@ -514,6 +579,74 @@ function determinePriority(data) {
   return 'Low';
 }
 
+function timelineToMonths(value) {
+  const text = safeText(value, '').toLowerCase();
+  if (!text) return null;
+  if (text.includes('asap') || text.includes('within 30') || text.includes('few weeks')) return 1;
+  const rangeMatch = text.match(/(\d+)\s*-\s*(\d+)\s*month/);
+  if (rangeMatch) return Number(rangeMatch[2]);
+  const monthMatch = text.match(/(\d+)\s*month/);
+  if (monthMatch) return Number(monthMatch[1]);
+  if (text.includes('later') || text.includes('planning')) return 12;
+  return null;
+}
+
+function estimateProjectValue(serviceValue, budgetRangeValue) {
+  const service = safeText(serviceValue, '').toLowerCase();
+  if (service.includes('outdoor kitchen')) return '$20k+';
+  if (service.includes('hardscape') || service.includes('hardscaping') || service.includes('patio') || service.includes('paver')) return '$10k-$40k';
+  if (service.includes('turf')) return '$5k-$15k';
+  if (service.includes('design & build') || service.includes('landscape design') || service.includes('full yard')) return '$30k-$100k+';
+
+  const budgetRange = cleanBudgetLabel(budgetRangeValue);
+  if (budgetRange && budgetRange !== 'Not provided') {
+    if (service.includes('irrigation')) return '$5k-$25k';
+    return budgetRange;
+  }
+  return 'Varies by scope';
+}
+
+function determineLeadQuality(data) {
+  const score = determineLeadScore(data);
+  const budgetLabel = cleanBudgetLabel(data.budget || data.budget_range || normalizeBudgetRange(data));
+  const budgetValues = extractBudgetNumbers(budgetLabel);
+  const budgetMin = budgetValues.length ? Math.min(...budgetValues) : 0;
+  const months = timelineToMonths(data.start_timeline || data.timeline || data.estimated_timeline);
+  const phoneValid = isValidPhone(data.phone);
+  const hasLocation = !isPlaceholderValue(data.project_location) ||
+    !isPlaceholderValue(data.project_address) ||
+    !isPlaceholderValue(data.city);
+  const visionText = safeText(data.vision || data.message || '', '');
+  const normalizedVision = visionText.toLowerCase();
+  const vagueVision = !visionText || visionText.length < 20 ||
+    normalizedVision.includes('not sure') ||
+    normalizedVision.includes('to be discussed');
+  const internalVision = isInternalVisionContent(visionText);
+
+  if (!phoneValid || !hasLocation || vagueVision || internalVision) {
+    return 'Low';
+  }
+
+  if (score >= 78 && budgetMin >= 25000 && months !== null && months <= 3) {
+    return 'High';
+  }
+
+  if (score >= 58 && (budgetMin >= 5000 || (months !== null && months <= 6))) {
+    return 'Medium';
+  }
+
+  return 'Low';
+}
+
+function reconcileLeadQuality(quality, score) {
+  const normalized = String(quality || '').trim();
+  if (score >= 90) return 'High';
+  if (score <= 40) return 'Low';
+  if (score >= 70 && normalized.toLowerCase() === 'low') return 'Medium';
+  if (score >= 55 && !normalized) return 'Medium';
+  return normalized || 'Low';
+}
+
 function determineLeadScore(data) {
   const budgetLabel = cleanBudgetLabel(data.budget || data.budget_range || normalizeBudgetRange(data));
   const budgetValues = extractBudgetNumbers(budgetLabel);
@@ -524,6 +657,12 @@ function determineLeadScore(data) {
   const hasLocation = !isPlaceholderValue(data.project_location) ||
     !isPlaceholderValue(data.project_address) ||
     !isPlaceholderValue(data.city);
+  const visionText = safeText(data.vision || data.message || '', '');
+  const normalizedVision = visionText.toLowerCase();
+  const vagueVision = !visionText || visionText.length < 20 ||
+    normalizedVision.includes('not sure') ||
+    normalizedVision.includes('to be discussed');
+  const internalVision = isInternalVisionContent(visionText);
   const serviceMatched = service.includes('design & build') ||
     service.includes('hardscaping') ||
     service.includes('outdoor kitchen');
@@ -533,6 +672,9 @@ function determineLeadScore(data) {
   if (timeline.includes('asap') || timeline.includes('within 30') || timeline.includes('1-3')) score += 15;
   if (phoneValid) score += 10;
   if (serviceMatched) score += 10;
+  if (!phoneValid) score -= 10;
+  if (!hasLocation) score -= 10;
+  if (vagueVision || internalVision) score -= 25;
   if (!phoneValid && !hasLocation) score -= 20;
 
   return Math.max(0, Math.min(100, score));
@@ -593,9 +735,97 @@ function fillTemplate(template, context) {
         break;
       }
     }
-
-    return escapeHtml(safeText(current, 'Not provided'));
+    if (token.endsWith('_html')) {
+      return String(current || '');
+    }
+    return escapeHtml(safeText(current, ''));
   });
+}
+
+function buildDataRow(label, value, options = {}) {
+  const normalizedValue = normalizeOptionalField(value, '');
+  if (!normalizedValue) return '';
+  const escapedLabel = escapeHtml(label);
+  const escapedValue = escapeHtml(String(normalizedValue));
+  if (options.link === 'email' && isValidEmailAddress(normalizedValue)) {
+    return `<tr><th>${escapedLabel}</th><td><a class="summary-link" href="mailto:${escapeAttribute(normalizedValue)}">${escapedValue}</a></td></tr>`;
+  }
+  if (options.link === 'phone' && isValidPhone(normalizedValue)) {
+    return `<tr><th>${escapedLabel}</th><td><a class="summary-link" href="tel:${escapeAttribute(normalizePhone(normalizedValue))}">${escapedValue}</a></td></tr>`;
+  }
+  return `<tr><th>${escapedLabel}</th><td>${escapedValue}</td></tr>`;
+}
+
+function buildClientSummaryTables(data) {
+  const contactRows = [
+    buildDataRow('Name', data.full_name),
+    buildDataRow('Email', data.email, { link: 'email' }),
+    buildDataRow('Phone', data.phone, { link: 'phone' }),
+    buildDataRow('Contact Method', data.contact_method),
+    buildDataRow('Project Location', data.project_location)
+  ].filter(Boolean).join('');
+
+  const projectRows = [
+    buildDataRow('Service', data.service),
+    buildDataRow('Budget', data.budget_range),
+    buildDataRow('Start Timeline', data.start_timeline),
+    buildDataRow(
+      'Estimated Timeline',
+      data.estimated_timeline !== data.start_timeline ? data.estimated_timeline : ''
+    ),
+    buildDataRow('Requested Style', data.selected_style)
+  ].filter(Boolean).join('');
+
+  return {
+    client_contact_rows_html: contactRows,
+    client_project_rows_html: projectRows,
+    client_request_section_html: '<tr class="summary-group"><td colspan="2">Request Details</td></tr><tr><th>Expected Response</th><td>Within 1-2 business days</td></tr>',
+    client_contact_section_html: contactRows ? `<tr class="summary-group"><td colspan="2">Contact Details</td></tr>${contactRows}` : '',
+    client_project_section_html: projectRows ? `<tr class="summary-group"><td colspan="2">Project Details</td></tr>${projectRows}` : '',
+    client_vision_html: isMeaningfulValue(data.vision) && !isInternalVisionContent(data.vision)
+      ? `<div class="vision"><div class="vision-label">Your Vision</div><div class="vision-quote">"${escapeHtml(data.vision)}"</div></div>`
+      : ''
+  };
+}
+
+function buildOwnerTables(data) {
+  const detailRows = [
+    buildDataRow('Service', data.service),
+    buildDataRow('Budget Range', data.budget_range),
+    buildDataRow('Start Timeline', data.start_timeline),
+    buildDataRow(
+      'Estimated Timeline',
+      data.estimated_timeline !== data.start_timeline ? data.estimated_timeline : ''
+    ),
+    buildDataRow('Contact Method', data.contact_method),
+    buildDataRow('Project Reference', data.selected_project_label),
+    buildDataRow('Style Reference', data.selected_style),
+    buildDataRow('Project Location', data.project_location)
+  ].filter(Boolean).join('');
+
+  const intelRows = [
+    buildDataRow('Priority', data.owner_priority),
+    buildDataRow('Lead Score', isMeaningfulValue(data.owner_lead_score) ? `${data.owner_lead_score} / 100 (${safeText(data.owner_lead_tier, 'Nurture')})` : ''),
+    buildDataRow('Lead Quality', data.lead_quality),
+    buildDataRow('Estimated Value', data.estimated_project_value),
+    buildDataRow('Lead Tags', data.owner_lead_tags),
+    buildDataRow('Status', data.sheet_status),
+    buildDataRow('Submitted', data.submitted_local),
+    buildDataRow('Urgency', data.start_timeline)
+  ].filter(Boolean)
+    .map((row) => row.replace('<th>', '<td class="k">').replace('</th>', '</td>').replace('<td>', '<td class="v">'))
+    .join('');
+
+  return {
+    owner_detail_rows_html: detailRows,
+    owner_intel_rows_html: intelRows,
+    owner_dashboard_action_html: isMeaningfulValue(data.sheet_row_url)
+      ? `<a href="${escapeAttribute(data.sheet_row_url)}" class="action-btn action-secondary">Open Lead Dashboard</a>`
+      : '',
+    owner_vision_html: isMeaningfulValue(data.vision) && !isInternalVisionContent(data.vision)
+      ? `<div class="section vision"><div class="section-head">Client Vision</div><div class="vision-quote">"${escapeHtml(data.vision)}"</div></div>`
+      : ''
+  };
 }
 
 async function sendViaSmtp({ to, subject, html, replyTo }) {
@@ -749,7 +979,7 @@ async function getGoogleAccessToken() {
 
 async function ensureGoogleSheetTab(accessToken, spreadsheetId, title) {
   const metaResponse = await fetch(
-    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?fields=spreadsheetUrl,sheets(properties(sheetId,title))`,
+    `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}?fields=spreadsheetUrl,sheets(properties(sheetId,title,gridProperties(columnCount)),conditionalFormats)`,
     {
       headers: { Authorization: `Bearer ${accessToken}` }
     }
@@ -765,6 +995,8 @@ async function ensureGoogleSheetTab(accessToken, spreadsheetId, title) {
   if (existing && existing.properties) {
     return {
       sheetId: Number(existing.properties.sheetId || 0),
+      conditionalFormatCount: Array.isArray(existing.conditionalFormats) ? existing.conditionalFormats.length : 0,
+      columnCount: Number(existing.properties.gridProperties && existing.properties.gridProperties.columnCount) || 30,
       spreadsheetUrl: safeText(meta.spreadsheetUrl, buildGoogleSheetUrl(spreadsheetId))
     };
   }
@@ -781,7 +1013,7 @@ async function ensureGoogleSheetTab(accessToken, spreadsheetId, title) {
           addSheet: {
             properties: {
               title,
-              gridProperties: { rowCount: 2000, columnCount: 40 }
+              gridProperties: { rowCount: 2000, columnCount: 30 }
             }
           }
         }
@@ -799,6 +1031,8 @@ async function ensureGoogleSheetTab(accessToken, spreadsheetId, title) {
   const properties = added.properties || {};
   return {
     sheetId: Number(properties.sheetId || 0),
+    conditionalFormatCount: 0,
+    columnCount: Number(properties.gridProperties && properties.gridProperties.columnCount) || 30,
     spreadsheetUrl: safeText(meta.spreadsheetUrl, buildGoogleSheetUrl(spreadsheetId))
   };
 }
@@ -844,6 +1078,292 @@ async function ensureGoogleSheetHeaders(accessToken, spreadsheetId, tabName) {
   }
 }
 
+function colorValue(red, green, blue) {
+  return { red, green, blue };
+}
+
+async function ensureGoogleSheetDashboardFormatting(
+  accessToken,
+  spreadsheetId,
+  tabName,
+  sheetId,
+  existingConditionalCount = 0,
+  sheetColumnCount = 30
+) {
+  const key = `${spreadsheetId}:${tabName}`;
+  const now = Date.now();
+  const lastFormattedAt = Number(dashboardFormatStore.get(key) || 0);
+  if (lastFormattedAt && now - lastFormattedAt < DASHBOARD_FORMAT_TTL_MS) {
+    return;
+  }
+
+  const statusColumn = DIRECT_SHEET_HEADERS.indexOf('status');
+  const nextActionColumn = DIRECT_SHEET_HEADERS.indexOf('next_action');
+  const totalColumns = DIRECT_SHEET_HEADERS.length;
+  const hiddenColumns = [14, 15, 16, 18, 23, 24, 25, 26];
+
+  const requests = [];
+  for (let index = Number(existingConditionalCount || 0) - 1; index >= 0; index -= 1) {
+    requests.push({
+      deleteConditionalFormatRule: {
+        sheetId,
+        index
+      }
+    });
+  }
+
+  requests.push(
+    {
+      updateSheetProperties: {
+        properties: {
+          sheetId,
+          gridProperties: {
+            frozenRowCount: 1,
+            frozenColumnCount: 6
+          }
+        },
+        fields: 'gridProperties.frozenRowCount,gridProperties.frozenColumnCount'
+      }
+    },
+    {
+      repeatCell: {
+        range: {
+          sheetId,
+          startRowIndex: 0,
+          endRowIndex: 1,
+          startColumnIndex: 0,
+          endColumnIndex: totalColumns
+        },
+        cell: {
+          userEnteredFormat: {
+            backgroundColor: colorValue(0.11, 0.28, 0.16),
+            textFormat: {
+              foregroundColor: colorValue(1, 1, 1),
+              bold: true,
+              fontSize: 10
+            },
+            horizontalAlignment: 'LEFT',
+            verticalAlignment: 'MIDDLE'
+          }
+        },
+        fields: 'userEnteredFormat(backgroundColor,textFormat,horizontalAlignment,verticalAlignment)'
+      }
+    },
+    {
+      setBasicFilter: {
+        filter: {
+          range: {
+            sheetId,
+            startRowIndex: 0,
+            startColumnIndex: 0,
+            endColumnIndex: totalColumns
+          }
+        }
+      }
+    },
+    {
+      setDataValidation: {
+        range: {
+          sheetId,
+          startRowIndex: 1,
+          startColumnIndex: statusColumn,
+          endColumnIndex: statusColumn + 1
+        },
+        rule: {
+          condition: {
+            type: 'ONE_OF_LIST',
+            values: [
+              { userEnteredValue: 'New' },
+              { userEnteredValue: 'Contacted' },
+              { userEnteredValue: 'Booked' },
+              { userEnteredValue: 'Won' },
+              { userEnteredValue: 'Lost' },
+              { userEnteredValue: 'Duplicate' },
+              { userEnteredValue: 'Spam' }
+            ]
+          },
+          showCustomUi: true,
+          strict: true,
+          inputMessage: 'Lead status'
+        }
+      }
+    },
+    {
+      setDataValidation: {
+        range: {
+          sheetId,
+          startRowIndex: 1,
+          startColumnIndex: nextActionColumn,
+          endColumnIndex: nextActionColumn + 1
+        },
+        rule: {
+          condition: {
+            type: 'ONE_OF_LIST',
+            values: [
+              { userEnteredValue: 'Call' },
+              { userEnteredValue: 'Text' },
+              { userEnteredValue: 'Email' },
+              { userEnteredValue: 'Quote' },
+              { userEnteredValue: 'Site visit' },
+              { userEnteredValue: 'Review Duplicate' }
+            ]
+          },
+          showCustomUi: true,
+          strict: true,
+          inputMessage: 'Next action'
+        }
+      }
+    },
+    {
+      updateDimensionProperties: {
+        range: {
+          sheetId,
+          dimension: 'COLUMNS',
+          startIndex: 0,
+          endIndex: totalColumns
+        },
+        properties: {
+          pixelSize: 150
+        },
+        fields: 'pixelSize'
+      }
+    },
+    {
+      repeatCell: {
+        range: {
+          sheetId,
+          startRowIndex: 1,
+          startColumnIndex: 14,
+          endColumnIndex: totalColumns
+        },
+        cell: {
+          userEnteredFormat: {
+            backgroundColor: colorValue(0.97, 0.96, 0.94),
+            textFormat: {
+              foregroundColor: colorValue(0.38, 0.38, 0.38),
+              fontSize: 10
+            }
+          }
+        },
+        fields: 'userEnteredFormat(backgroundColor,textFormat)'
+      }
+    }
+  );
+
+  const columnWidths = [
+    [0, 168], [1, 118], [2, 170], [3, 145], [4, 220], [5, 130], [6, 180], [7, 150],
+    [8, 134], [9, 124], [10, 172], [11, 136], [12, 150], [13, 240], [14, 150], [15, 220],
+    [16, 132], [17, 172], [18, 168], [19, 220], [20, 140], [21, 172], [22, 140], [23, 260],
+    [24, 132], [25, 132], [26, 140]
+  ];
+
+  columnWidths.forEach(([column, width]) => {
+    requests.push({
+      updateDimensionProperties: {
+        range: {
+          sheetId,
+          dimension: 'COLUMNS',
+          startIndex: column,
+          endIndex: column + 1
+        },
+        properties: {
+          pixelSize: width
+        },
+        fields: 'pixelSize'
+      }
+    });
+  });
+
+  requests.push({
+    updateDimensionProperties: {
+      range: {
+        sheetId,
+        dimension: 'COLUMNS',
+        startIndex: 0,
+        endIndex: Math.max(sheetColumnCount, totalColumns)
+      },
+      properties: {
+        hiddenByUser: false
+      },
+      fields: 'hiddenByUser'
+    }
+  });
+
+  hiddenColumns.forEach((column) => {
+    requests.push({
+      updateDimensionProperties: {
+        range: {
+          sheetId,
+          dimension: 'COLUMNS',
+          startIndex: column,
+          endIndex: column + 1
+        },
+        properties: {
+          hiddenByUser: true
+        },
+        fields: 'hiddenByUser'
+      }
+    });
+  });
+
+  const statusRules = [
+    ['New', colorValue(0.87, 0.95, 0.89), colorValue(0.11, 0.35, 0.16)],
+    ['Contacted', colorValue(1.0, 0.96, 0.8), colorValue(0.45, 0.35, 0.0)],
+    ['Booked', colorValue(0.84, 0.91, 0.98), colorValue(0.06, 0.26, 0.5)],
+    ['Won', colorValue(0.92, 0.87, 0.98), colorValue(0.33, 0.18, 0.56)],
+    ['Lost', colorValue(0.98, 0.86, 0.86), colorValue(0.56, 0.13, 0.13)],
+    ['Duplicate', colorValue(0.93, 0.93, 0.93), colorValue(0.29, 0.29, 0.29)],
+    ['Spam', colorValue(0.82, 0.82, 0.82), colorValue(0.12, 0.12, 0.12)]
+  ];
+
+  statusRules.forEach(([statusValue, backgroundColor, textColor]) => {
+    requests.push({
+      addConditionalFormatRule: {
+        index: 0,
+        rule: {
+          ranges: [
+            {
+              sheetId,
+              startRowIndex: 1,
+              startColumnIndex: statusColumn,
+              endColumnIndex: statusColumn + 1
+            }
+          ],
+          booleanRule: {
+            condition: {
+              type: 'TEXT_EQ',
+              values: [{ userEnteredValue: statusValue }]
+            },
+            format: {
+              backgroundColor,
+              textFormat: {
+                foregroundColor: textColor,
+                bold: true
+              }
+            }
+          }
+        }
+      }
+    });
+  });
+
+  const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ requests })
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Google Sheets format error: ${response.status} ${text}`);
+  }
+
+  dashboardFormatStore.set(key, now);
+}
+
 async function detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, email, phone) {
   const hasEmail = isValidEmailAddress(email);
   const normalizedPhone = normalizePhone(phone);
@@ -871,8 +1391,8 @@ async function detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, e
     if (Number.isFinite(timestamp) && now - timestamp > SEVEN_DAYS_MS) {
       break;
     }
-    const rowPhone = normalizePhone(row[5] || '');
-    const rowEmail = String(row[6] || '').trim().toLowerCase();
+    const rowPhone = normalizePhone(row[3] || '');
+    const rowEmail = String(row[4] || '').trim().toLowerCase();
     if ((hasEmail && rowEmail && rowEmail === targetEmail) || (hasPhone && rowPhone && rowPhone === normalizedPhone)) {
       return true;
     }
@@ -923,9 +1443,17 @@ async function sendToGoogleSheetsDirect(row) {
   }
 
   const accessToken = await getGoogleAccessToken();
-  const tabName = safeText(GOOGLE_SHEET_TAB, 'Leads');
+  const tabName = safeText(GOOGLE_SHEET_TAB, 'Owner Lead Dashboard');
   const sheetMeta = await ensureGoogleSheetTab(accessToken, spreadsheetId, tabName);
   await ensureGoogleSheetHeaders(accessToken, spreadsheetId, tabName);
+  await ensureGoogleSheetDashboardFormatting(
+    accessToken,
+    spreadsheetId,
+    tabName,
+    Number(sheetMeta.sheetId || 0),
+    Number(sheetMeta.conditionalFormatCount || 0),
+    Number(sheetMeta.columnCount || 30)
+  );
 
   const isDuplicate = await detectGoogleSheetDuplicate(accessToken, spreadsheetId, tabName, row.email, row.phone);
   const tags = new Set(
@@ -937,32 +1465,37 @@ async function sendToGoogleSheetsDirect(row) {
   if (isDuplicate) tags.add('duplicate');
 
   const status = isDuplicate ? 'Duplicate' : 'New';
-  const timestamp = safeText(row.timestamp, new Date().toISOString());
-  const followUpDue = isDuplicate ? '' : new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+  const timestamp = formatPhoenixDate(row.timestamp || new Date().toISOString());
+  const followUpDue = isDuplicate ? '' : formatPhoenixDate(new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString());
+  const lastTouched = formatPhoenixDate(new Date().toISOString());
   const rowValues = [
     timestamp,
-    safeText(row.submitted_local, ''),
     status,
-    safeText(row.ticket_id, ''),
-    safeText(row.name, ''),
-    safeText(row.phone, ''),
-    safeText(row.email, ''),
-    safeText(row.city, ''),
-    safeText(row.project_location, ''),
-    safeText(row.service, ''),
-    safeText(row.consultation_tier, ''),
-    safeText(row.budget_range, ''),
-    safeText(row.start_timeline, ''),
-    safeText(row.contact_method, ''),
-    safeText(row.lead_score, ''),
-    Array.from(tags).join(', '),
+    ownerSheetValue(row.name),
+    ownerSheetValue(row.phone),
+    ownerSheetValue(row.email),
+    ownerSheetValue(row.city),
+    ownerSheetValue(row.service),
+    ownerSheetValue(row.budget_range),
+    ownerSheetValue(row.start_timeline),
+    ownerSheetValue(row.lead_quality, 'Low'),
+    ownerSheetValue(row.estimated_project_value, 'Varies by scope'),
     isDuplicate ? 'Review Duplicate' : 'Call',
     followUpDue,
-    timestamp,
     '',
-    safeText(row.lead_source, ''),
-    safeText(row.selected_project_label, ''),
-    safeText(row.selected_style, '')
+    safeText(row.ticket_id, ''),
+    Array.from(tags).join(', '),
+    ownerSheetValue(row.lead_source),
+    ownerSheetValue(row.selected_project_label),
+    ownerSheetValue(row.selected_style),
+    ownerSheetValue(row.project_location),
+    ownerSheetValue(row.contact_method),
+    ownerSheetValue(row.submitted_local),
+    lastTouched,
+    ownerSheetValue(row.page_url),
+    ownerSheetValue(row.utm_source),
+    ownerSheetValue(row.utm_medium),
+    ownerSheetValue(row.utm_campaign)
   ];
 
   const appendResult = await appendGoogleSheetRow(accessToken, spreadsheetId, tabName, rowValues);
@@ -982,52 +1515,55 @@ async function sendToGoogleSheetsDirect(row) {
 }
 
 async function sendToGoogleSheets(normalized, meta = {}) {
+  const sheetValue = (value, fallback = '') => ownerSheetValue(value, fallback);
   const row = {
     timestamp: meta.created_at || new Date().toISOString(),
-    ticket_id: normalized.ticket_id,
-    submitted_local: normalized.submitted_local,
+    ticket_id: sheetValue(normalized.ticket_id),
+    submitted_local: sheetValue(normalized.submitted_local),
     submitted_at_iso: meta.created_at || new Date().toISOString(),
-    name: normalized.full_name,
-    first_name: normalized.first_name,
-    last_name: normalized.last_name,
-    email: normalized.email,
-    phone: normalized.phone,
-    project_location: normalized.project_location,
-    project_address: normalized.project_address,
-    city: normalized.city,
-    service: normalized.service,
-    selected_service: normalized.selected_service,
-    consultation_tier: normalized.consultation_tier,
-    selected_style: normalized.selected_style,
-    selected_image: normalized.selected_image,
-    selected_project_label: normalized.selected_project_label,
-    lead_source: normalized.lead_source,
-    lead_tier: normalized.consultation_tier,
-    budget_range: normalized.budget_range,
-    start_timeline: normalized.start_timeline,
-    timeline: normalized.start_timeline,
-    estimated_timeline: normalized.estimated_timeline,
-    contact_method: normalized.contact_method,
-    preferred_contact_method: normalized.contact_method,
-    utm_source: normalized.utm_source,
-    utm_medium: normalized.utm_medium,
-    utm_campaign: normalized.utm_campaign,
-    utm_content: normalized.utm_content,
-    referrer: normalized.referrer,
-    landing_path: normalized.landing_path,
-    message: normalized.vision,
-    owner_priority: normalized.owner_priority,
-    lead_score: normalized.owner_lead_score,
-    owner_lead_score: normalized.owner_lead_score,
-    owner_lead_tier: normalized.owner_lead_tier,
-    lead_tags: normalized.owner_lead_tags,
-    owner_lead_tags: normalized.owner_lead_tags,
-    high_intent: normalized.high_intent,
-    budget_fit: normalized.budget_fit,
-    service_match: normalized.service_match,
-    status: normalized.sheet_status || 'New',
-    owner_summary: normalized.owner_summary,
-    page_url: safeText(meta.page_url, 'Not provided')
+    name: sheetValue(normalized.full_name),
+    first_name: sheetValue(normalized.first_name),
+    last_name: sheetValue(normalized.last_name),
+    email: sheetValue(normalized.email),
+    phone: sheetValue(normalized.phone),
+    project_location: sheetValue(normalized.project_location),
+    project_address: sheetValue(normalized.project_address),
+    city: sheetValue(normalized.city),
+    service: sheetValue(normalized.service),
+    selected_service: sheetValue(normalized.selected_service),
+    consultation_tier: sheetValue(normalized.consultation_tier),
+    lead_quality: sheetValue(normalized.lead_quality),
+    estimated_project_value: sheetValue(normalized.estimated_project_value, 'Varies by scope'),
+    selected_style: sheetValue(normalized.selected_style),
+    selected_image: sheetValue(normalized.selected_image),
+    selected_project_label: sheetValue(normalized.selected_project_label),
+    lead_source: sheetValue(normalized.lead_source, 'website'),
+    lead_tier: sheetValue(normalized.consultation_tier),
+    budget_range: sheetValue(normalized.budget_range),
+    start_timeline: sheetValue(normalized.start_timeline),
+    timeline: sheetValue(normalized.start_timeline),
+    estimated_timeline: sheetValue(normalized.estimated_timeline),
+    contact_method: sheetValue(normalized.contact_method),
+    preferred_contact_method: sheetValue(normalized.contact_method),
+    utm_source: sheetValue(normalized.utm_source),
+    utm_medium: sheetValue(normalized.utm_medium),
+    utm_campaign: sheetValue(normalized.utm_campaign),
+    utm_content: sheetValue(normalized.utm_content),
+    referrer: sheetValue(normalized.referrer),
+    landing_path: sheetValue(normalized.landing_path),
+    message: sheetValue(normalized.vision),
+    owner_priority: sheetValue(normalized.owner_priority),
+    lead_score: sheetValue(normalized.owner_lead_score),
+    owner_lead_score: sheetValue(normalized.owner_lead_score),
+    owner_lead_tier: sheetValue(normalized.owner_lead_tier),
+    lead_tags: sheetValue(normalized.owner_lead_tags),
+    owner_lead_tags: sheetValue(normalized.owner_lead_tags),
+    high_intent: sheetValue(normalized.high_intent),
+    budget_fit: sheetValue(normalized.budget_fit),
+    service_match: sheetValue(normalized.service_match),
+    status: sheetValue(normalized.sheet_status, 'New'),
+    owner_summary: sheetValue(normalized.owner_summary),
+    page_url: sheetValue(meta.page_url)
   };
 
   if (!GOOGLE_SHEETS_WEBHOOK_URL) {
@@ -1115,7 +1651,7 @@ async function fanOutCrmWebhooks(normalized, meta = {}) {
     ticket_id: normalized.ticket_id,
     submitted_local: normalized.submitted_local,
     submitted_at_iso: meta.created_at || new Date().toISOString(),
-    page_url: safeText(meta.page_url, 'Not provided'),
+    page_url: safeText(meta.page_url, ''),
     first_name: normalized.first_name,
     last_name: normalized.last_name,
     full_name: normalized.full_name,
@@ -1133,6 +1669,8 @@ async function fanOutCrmWebhooks(normalized, meta = {}) {
     consultation_tier: normalized.consultation_tier,
     lead_tier: normalized.consultation_tier,
     budget_range: normalized.budget_range,
+    lead_quality: normalized.lead_quality,
+    estimated_project_value: normalized.estimated_project_value,
     start_timeline: normalized.start_timeline,
     timeline: normalized.start_timeline,
     estimated_timeline: normalized.estimated_timeline,
@@ -1216,7 +1754,7 @@ exports.handler = async (event) => {
     const body = parseRequestBody(event);
     const payload = body.payload || body;
     const submission = payload.submission || payload;
-    const data = submission.data || payload.data || {};
+    const data = submission.data || payload.data || submission || payload || {};
     const clientIp = getClientIp(event, payload);
 
     if (isRateLimited(clientIp)) {
@@ -1251,7 +1789,8 @@ exports.handler = async (event) => {
     const normalized = buildNormalizedData({ ...data, ticket_id: ticketId }, {
       ticket_id: ticketId,
       submitted_local: submittedLocal,
-      sheet_url: GOOGLE_SHEET_URL
+      sheet_url: GOOGLE_SHEET_URL,
+      page_url: pageUrl
     });
 
     const incomingEmail = normalizeWhitespace(data.email || data.email_visible || '');
@@ -1313,6 +1852,8 @@ exports.handler = async (event) => {
     normalized.owner_lead_score = String(leadScore);
     normalized.owner_lead_tier = leadTier;
     normalized.owner_lead_tags = leadTagData.tags.join(', ');
+    normalized.lead_quality = reconcileLeadQuality(determineLeadQuality(normalized), leadScore);
+    normalized.estimated_project_value = estimateProjectValue(normalized.service, normalized.budget_range);
     normalized.high_intent = leadTagData.high_intent;
     normalized.budget_fit = leadTagData.budget_fit;
     normalized.service_match = leadTagData.service_match;
@@ -1320,7 +1861,7 @@ exports.handler = async (event) => {
     normalized.sheet_row_url = '';
     normalized.sheet_row_id = '';
     normalized.sheet_url = safeText(normalized.sheet_url, GOOGLE_SHEET_URL);
-    normalized.owner_summary = `${buildOwnerSummary(normalized)} · Lead Score: ${leadScore}/100 (${leadTier}) · Tags: ${leadTagData.tags.join(', ')}`;
+    normalized.owner_summary = buildOwnerSummary(normalized);
 
     const sheetsResult = await sendToGoogleSheets(normalized, {
       created_at: createdAt,
@@ -1341,17 +1882,21 @@ exports.handler = async (event) => {
       normalized.high_intent = leadTagData.high_intent;
       normalized.budget_fit = leadTagData.budget_fit;
       normalized.service_match = leadTagData.service_match;
-      normalized.owner_summary = `${buildOwnerSummary(normalized)} · Lead Score: ${leadScore}/100 (${leadTier}) · Tags: ${leadTagData.tags.join(', ')}`;
+      normalized.lead_quality = reconcileLeadQuality(determineLeadQuality(normalized), leadScore);
+      normalized.estimated_project_value = estimateProjectValue(normalized.service, normalized.budget_range);
+      normalized.owner_summary = buildOwnerSummary(normalized);
     }
     if (!normalized.sheet_row_url || normalized.sheet_row_url === 'Not provided') {
-      normalized.sheet_row_url = safeText(normalized.sheet_url, 'https://thinkgreen-az.netlify.app');
+      normalized.sheet_row_url = safeText(normalized.sheet_url, '');
     }
 
     const context = {
       submission: {
         data: normalized
       },
-      ...normalized
+      ...normalized,
+      ...buildClientSummaryTables(normalized),
+      ...buildOwnerTables(normalized)
     };
 
     const ownerTemplate = readTemplate('thinkgreen-owner-email.html');
@@ -1360,20 +1905,20 @@ exports.handler = async (event) => {
     const ownerHtml = fillTemplate(ownerTemplate, context);
     const clientHtml = fillTemplate(clientTemplate, context);
 
-    const ownerSubject = `Think Green Ticket ${normalized.ticket_id} | ${normalized.owner_priority}`;
-    const clientSubject = `Think Green - We received your project request (${normalized.ticket_id})`;
+    const ownerSubject = `New Think Green inquiry from ${normalized.full_name}`;
+    const clientSubject = `Think Green received your project request`;
 
     const emailTasks = [
       sendEmail({
         to: OWNER_EMAIL,
         subject: ownerSubject,
         html: ownerHtml,
-        replyTo: normalized.email !== 'Not provided' ? normalized.email : undefined,
+        replyTo: isValidEmailAddress(normalized.email) ? normalized.email : undefined,
         preferredProvider: OWNER_EMAIL_PROVIDER
       })
     ];
 
-    if (normalized.email && normalized.email !== 'Not provided' && isValidEmailAddress(normalized.email)) {
+    if (normalized.email && isValidEmailAddress(normalized.email)) {
       emailTasks.push(
         sendEmail({
           to: normalized.email,
@@ -1419,6 +1964,8 @@ exports.handler = async (event) => {
         sheet_status: normalized.sheet_status,
         normalized_budget_range: normalized.budget_range,
         consultation_tier: normalized.consultation_tier,
+        lead_quality: normalized.lead_quality,
+        estimated_project_value: normalized.estimated_project_value,
         start_timeline: normalized.start_timeline,
         contact_method: normalized.contact_method
       })

@@ -10,8 +10,10 @@
   <meta property="og:title" content="Scottsdale &amp; Phoenix Landscape Portfolio | Think Green" />
   <meta property="og:description" content="Browse real Think Green landscape design-build projects in Scottsdale and Phoenix." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://thinkgreen-az.netlify.app/portfolio.html" />
+  <meta property="og:url" content="https://thinkgreen-az.netlify.app/portfolio" />
   <meta property="og:image" content="https://thinkgreen-az.netlify.app/img/projects/slide6.webp" />
+  <meta property="og:image:width" content="1630" />
+  <meta property="og:image:height" content="860" />
   <meta property="og:image:alt" content="Think Green portfolio project in Scottsdale Arizona" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Scottsdale &amp; Phoenix Landscape Portfolio | Think Green" />
@@ -20,32 +22,30 @@
   <title>Scottsdale Landscape Portfolio | Think Green Projects &amp; Inspiration</title>
 
   <!-- Favicons -->
-  <link rel="icon" type="image/jpeg" href="img/favicon-32.jpg" sizes="32x32" />
-  <link rel="icon" type="image/jpeg" href="img/favicon-192.jpg" sizes="192x192" />
-  <link rel="apple-touch-icon" href="img/apple-touch-icon.jpg" />
-  <link rel="canonical" href="https://thinkgreen-az.netlify.app/portfolio.html" />
-  <link rel="alternate" hreflang="en-us" href="https://thinkgreen-az.netlify.app/portfolio.html" />
-  <link rel="preload" as="image" href="img/projects/slide6.webp" fetchpriority="high" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="portfolio.css" />
+  <link rel="icon" type="image/png" href="img/favicon-32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="img/favicon-192.png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="canonical" href="https://thinkgreen-az.netlify.app/portfolio" />
+  <link rel="alternate" hreflang="en-us" href="https://thinkgreen-az.netlify.app/portfolio" />
+  <link rel="preload" as="image" href="img/projects/slide6-1280.avif" fetchpriority="high" />
+  <link rel="stylesheet" href="/fonts.min.css" />
+  <link rel="stylesheet" href="/styles.min.css" />
+  <link rel="stylesheet" href="/portfolio.min.css" />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "CollectionPage",
-          "@id": "https://thinkgreen-az.netlify.app/portfolio.html#collection",
-          "url": "https://thinkgreen-az.netlify.app/portfolio.html",
+          "@id": "https://thinkgreen-az.netlify.app/portfolio#collection",
+          "url": "https://thinkgreen-az.netlify.app/portfolio",
           "name": "Think Green Landscape Portfolio",
           "description": "Real project inspiration from Think Green landscape design and build work in Scottsdale and Phoenix."
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://thinkgreen-az.netlify.app/portfolio.html#breadcrumb",
+          "@id": "https://thinkgreen-az.netlify.app/portfolio#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
@@ -57,7 +57,7 @@
               "@type": "ListItem",
               "position": 2,
               "name": "Portfolio",
-              "item": "https://thinkgreen-az.netlify.app/portfolio.html"
+              "item": "https://thinkgreen-az.netlify.app/portfolio"
             }
           ]
         }
@@ -66,30 +66,37 @@
   </script>
 </head>
 <body class="portfolio-page">
+  <noscript>
+    <div style="padding:1rem;background:#fef3cd;text-align:center;font-family:sans-serif;">
+      This site works best with JavaScript enabled.
+      Call us directly at (480) 922-9497 to schedule a free consultation.
+    </div>
+  </noscript>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <!-- NAV (same as main site) -->
   <header class="nav is-scrolled" id="nav">
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo" aria-label="Think Green Design Build Landscape — home">
+      <a href="/" class="nav__logo" aria-label="Think Green Design Build Landscape — home">
         <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img" data-site-logo width="106" height="96" />
       </a>
       <button class="nav__burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="nav__links" id="nav-links" aria-label="Primary navigation">
-        <a href="index.html" class="nav__link">Home</a>
-        <a href="services.html" class="nav__link">Services</a>
-        <a href="portfolio.html" class="nav__link nav__link--active">Portfolio</a>
-        <a href="scottsdale-landscaping.html" class="nav__link">Areas</a>
-        <a href="index.html#process" class="nav__link">Process</a>
-        <a href="index.html#reviews" class="nav__link">Reviews</a>
-        <a href="index.html#contact" class="nav__link">Contact</a>
+        <a href="/" class="nav__link">Home</a>
+        <a href="/services" class="nav__link">Services</a>
+        <a href="/portfolio" class="nav__link nav__link--active" aria-current="page">Portfolio</a>
+        <a href="/#process" class="nav__link">Process</a>
+        <a href="/reviews" class="nav__link">Reviews</a>
+        <a href="/free-consultation?source=portfolio&autostart=1" class="nav__link">Contact</a>
       </nav>
       <div class="nav__actions">
         <a href="tel:4809229497" class="nav__call" data-site-phone-link>
-          <span data-site-phone-display>(480) 922-9497</span>
+          <span class="nav__call-number" data-site-phone-display>(480) 922-9497</span>
+          <span class="nav__call-label">Call Now</span>
         </a>
-        <a href="index.html#contact" class="nav__cta">Get Free Landscape Design Consultation</a>
+        <a href="/free-consultation?source=portfolio&autostart=1" class="nav__cta">Get Free Design Consultation</a>
       </div>
     </div>
   </header>
@@ -98,15 +105,13 @@
   <div class="nav__overlay" id="nav-overlay" aria-hidden="true">
     <button class="nav__overlay-close" id="nav-close" aria-label="Close menu">&#x2715;</button>
     <nav aria-label="Mobile navigation">
-      <a href="index.html" class="nav__overlay-link">Home</a>
-      <a href="services.html" class="nav__overlay-link">Services</a>
-      <a href="portfolio.html" class="nav__overlay-link">Portfolio</a>
-      <a href="scottsdale-landscaping.html" class="nav__overlay-link">Scottsdale</a>
-      <a href="phoenix-landscaping.html" class="nav__overlay-link">Phoenix</a>
-      <a href="index.html#process" class="nav__overlay-link">Process</a>
-      <a href="index.html#reviews" class="nav__overlay-link">Reviews</a>
-      <a href="index.html#contact" class="nav__overlay-link">Contact</a>
-      <a href="index.html#contact" class="nav__overlay-link nav__overlay-cta">Get Free Landscape Design Consultation</a>
+      <a href="/" class="nav__overlay-link">Home</a>
+      <a href="/services" class="nav__overlay-link">Services</a>
+      <a href="/portfolio" class="nav__overlay-link">Portfolio</a>
+      <a href="/#process" class="nav__overlay-link">Process</a>
+      <a href="/reviews" class="nav__overlay-link">Reviews</a>
+      <a href="/free-consultation?source=portfolio&autostart=1" class="nav__overlay-link">Contact</a>
+      <a href="/free-consultation?source=portfolio&autostart=1" class="nav__overlay-link nav__overlay-cta">Get Free Design Consultation</a>
     </nav>
     <div class="nav__overlay-contact">
       <a href="tel:4809229497" data-site-phone-link data-site-phone-display>(480) 922-9497</a>
@@ -114,16 +119,25 @@
     </div>
   </div>
 
-  <main>
+  <main id="main-content">
 
     <!-- PAGE HERO -->
     <section class="pf-hero">
       <div class="pf-hero__inner container">
-        <a href="index.html" class="pf-hero__back">&#8592; Back to Home</a>
         <p class="eyebrow">Our Portfolio</p>
         <h1 class="pf-hero__title">Landscape Design Inspiration for Arizona Homes</h1>
         <p class="pf-hero__sub">Use this gallery to compare layout styles, planting direction, and outdoor-living ideas before your consultation.</p>
+        <p class="pf-hero__sub">This page covers real Scottsdale and Phoenix project examples so homeowners and AI agents can match service types, project styles, and likely consultation fit more quickly.</p>
         <p class="pf-hero__local">Think Green builds hardscaping, outdoor kitchens, fire features, water features, and xeriscape projects across Scottsdale, Paradise Valley, Phoenix, Tempe, and Mesa.</p>
+        <ul class="pf-hero__proof">
+          <li>Real project photos from local installs</li>
+          <li>Request a similar layout in one click</li>
+          <li>Best for consultations, scope, and style direction</li>
+        </ul>
+        <div class="pf-hero__actions">
+          <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--solid">Get Free Design Consultation</a>
+          <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--dark">Request a Similar Project</a>
+        </div>
       </div>
     </section>
 
@@ -143,10 +157,29 @@
     <!-- PORTFOLIO GRID -->
     <section class="pf-grid-section container">
       <div class="pf-request reveal">
-        <p>Like what you see? Request a free consultation.</p>
-        <a href="index.html?source=portfolio#contact" class="btn btn--dark" id="pf-request-style">Request This Style</a>
+        <p>See a layout you like? We will prefill the contact form with the style, service direction, and project reference so you can move faster.</p>
+        <a href="/free-consultation?source=portfolio&service=landscape-design&selected_style=backyard&selected_project_label=Featured%20Portfolio%20Style&autostart=1" class="btn btn--dark" id="pf-request-style">Request a Similar Project</a>
       </div>
+      <article class="pf-story reveal">
+        <figure class="pf-story__media">
+          <img src="img/projects/fireplace-1280.avif" alt="Featured Paradise Valley hardscape and fireplace project by Think Green" loading="lazy" width="1600" height="1066" />
+        </figure>
+        <div class="pf-story__body">
+          <p class="eyebrow">Flagship Project Story</p>
+          <h2>Real Outdoor Living Project Built for a Paradise Valley Home</h2>
+          <ul class="pf-story__list">
+            <li><strong>Location:</strong> Paradise Valley, AZ</li>
+            <li><strong>Scope:</strong> Pavers, seating wall, fireplace, lighting</li>
+            <li><strong>Timeline:</strong> 3 weeks</li>
+            <li><strong>Best fit:</strong> Homeowners prioritizing evening entertaining, stronger circulation, and one coordinated outdoor-living layout</li>
+          </ul>
+          <p class="pf-story__text">This project is a strong reference if you want an entertaining-focused layout with warmer night use, cleaner circulation, and materials that feel tailored to the home.</p>
+          <p class="pf-story__text">The biggest win here was not just the finish materials. It was defining the fire feature, hardscape flow, and seating zones before construction so the yard worked as one complete experience instead of a series of disconnected upgrades.</p>
+          <a href="/free-consultation?source=portfolio_story&service=hardscaping&selected_style=hardscaping&selected_image=fireplace.jpg&selected_project_label=Architectural%20Grounds&prefill_message=Interested%20in%20a%20project%20similar%20to%20the%20Featured%20Project.&autostart=1" class="btn btn--solid">Request a Similar Project</a>
+        </div>
+      </article>
       <header class="pf-grid__header reveal reveal--left">
+        <p class="eyebrow">Real Projects Across Scottsdale &amp; Phoenix</p>
         <h2>Browse Project Styles</h2>
         <p>Filter by project type, then tap any image to open full-screen details and inspiration notes.</p>
       </header>
@@ -154,7 +187,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="backyard" data-type="Outdoor Living" data-location="Scottsdale, AZ" data-detail="Layout Planning + Turf + Feature Planting">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/slide6.webp" alt="Think Green resort backyard project in Scottsdale" loading="lazy" width="1630" height="860" />
+            <img src="img/projects/slide6-1280.avif" alt="Think Green resort backyard project in Scottsdale" loading="lazy" width="1630" height="860" />
           </div>
           <span class="pf-item__chip">Outdoor Living</span>
           <figcaption class="pf-item__cap">
@@ -168,7 +201,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="hardscape" data-type="Hardscaping" data-location="Paradise Valley, AZ" data-detail="Pavers + Fireplace + Architectural Walls">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/fireplace.jpg" alt="Think Green estate hardscape and fireplace project in Paradise Valley" loading="lazy" width="1600" height="1066" />
+            <img src="img/projects/fireplace-1280.avif" alt="Think Green estate hardscape and fireplace project in Paradise Valley" loading="lazy" width="1600" height="1066" />
           </div>
           <span class="pf-item__chip">Hardscaping</span>
           <figcaption class="pf-item__cap">
@@ -182,7 +215,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="desert" data-type="Desert Xeriscape" data-location="Fountain Hills, AZ" data-detail="DG + Native Planting + Drip Irrigation">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/zen-garden.jpg" alt="Think Green desert garden project in Fountain Hills" loading="lazy" width="1600" height="954" />
+            <img src="img/projects/zen-garden-1280.avif" alt="Think Green desert garden project in Fountain Hills" loading="lazy" width="1600" height="954" />
           </div>
           <span class="pf-item__chip">Desert Xeriscape</span>
           <figcaption class="pf-item__cap">
@@ -196,7 +229,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="frontyard" data-type="Curb Appeal" data-location="Cave Creek, AZ" data-detail="Entry Refresh + Lighting + Low-Maintenance Planting">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/slide10.webp" alt="Think Green curb appeal landscape in Cave Creek" loading="lazy" width="1630" height="860" />
+            <img src="img/projects/slide10-1280.avif" alt="Think Green curb appeal landscape in Cave Creek" loading="lazy" width="1630" height="860" />
           </div>
           <span class="pf-item__chip">Curb Appeal</span>
           <figcaption class="pf-item__cap">
@@ -210,7 +243,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="outdoor" data-type="Outdoor Living" data-location="Phoenix, AZ" data-detail="Shade Structure + Seating Zone + Entertaining Layout">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/shade-structure.jpg" alt="Think Green outdoor living shade structure in Phoenix" loading="lazy" width="1000" height="668" />
+            <img src="img/projects/shade-structure-1280.avif" alt="Think Green outdoor living shade structure in Phoenix" loading="lazy" width="1000" height="668" />
           </div>
           <span class="pf-item__chip">Outdoor Living</span>
           <figcaption class="pf-item__cap">
@@ -224,7 +257,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="desert" data-type="Desert Xeriscape" data-location="Scottsdale, AZ" data-detail="Drought-Tolerant Planting + Modern Hardscape">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/slide8.webp" alt="Think Green xeriscape style landscape in Scottsdale" loading="lazy" width="1000" height="563" />
+            <img src="img/projects/slide8-1280.avif" alt="Think Green xeriscape style landscape in Scottsdale" loading="lazy" width="1000" height="563" />
           </div>
           <span class="pf-item__chip">Desert Xeriscape</span>
           <figcaption class="pf-item__cap">
@@ -238,7 +271,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="backyard" data-type="Fire Feature" data-location="Scottsdale, AZ" data-detail="Poolside Hardscape + Fire Pit + Seating Wall">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/firepit.jpg" alt="Think Green poolside and fire feature project in Scottsdale" loading="lazy" width="1600" height="900" />
+            <img src="img/projects/firepit-1280.avif" alt="Think Green poolside and fire feature project in Scottsdale" loading="lazy" width="1600" height="900" />
           </div>
           <span class="pf-item__chip">Fire Feature</span>
           <figcaption class="pf-item__cap">
@@ -252,7 +285,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="hardscape" data-type="Hardscaping" data-location="Chandler, AZ" data-detail="Driveway Upgrade + Border Detailing + Drainage">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/slide7.webp" alt="Think Green modern hardscape installation in Chandler" loading="lazy" width="1630" height="860" />
+            <img src="img/projects/slide7-1280.avif" alt="Think Green modern hardscape installation in Chandler" loading="lazy" width="1630" height="860" />
           </div>
           <span class="pf-item__chip">Hardscaping</span>
           <figcaption class="pf-item__cap">
@@ -294,7 +327,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="frontyard" data-type="Curb Appeal" data-location="North Phoenix, AZ" data-detail="Front Walkway + Lighting + Architectural Planting">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/slide4.webp" alt="Think Green front yard transformation in North Phoenix" loading="lazy" width="1620" height="860" />
+            <img src="img/projects/slide4-1280.avif" alt="Think Green front yard transformation in North Phoenix" loading="lazy" width="1620" height="860" />
           </div>
           <span class="pf-item__chip">Curb Appeal</span>
           <figcaption class="pf-item__cap">
@@ -378,7 +411,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="frontyard" data-type="Curb Appeal" data-location="Chandler, AZ" data-detail="Front Entry Refresh + Pavers + Lighting">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/slide1.webp" alt="Think Green curb appeal renovation in Chandler" loading="lazy" width="1630" height="860" />
+            <img src="img/projects/slide1-1280.avif" alt="Think Green curb appeal renovation in Chandler" loading="lazy" width="1630" height="860" />
           </div>
           <span class="pf-item__chip">Curb Appeal</span>
           <figcaption class="pf-item__cap">
@@ -392,7 +425,7 @@
 
         <figure class="pf-item reveal reveal--scale" data-cat="outdoor" data-type="Outdoor Living" data-location="Gilbert, AZ" data-detail="Outdoor Dining Zone + Patio Expansion + Lighting">
           <div class="pf-item__img-wrap">
-            <img src="img/projects/after-29.jpg" alt="Think Green outdoor dining and patio layout in Gilbert" loading="lazy" width="880" height="670" />
+            <img src="img/projects/after-29-1280.avif" alt="Think Green outdoor dining and patio layout in Gilbert" loading="lazy" width="880" height="670" />
           </div>
           <span class="pf-item__chip">Outdoor Living</span>
           <figcaption class="pf-item__cap">
@@ -406,20 +439,21 @@
 
       </div>
       <div class="pf-grid__cta reveal">
-        <a href="index.html#contact" class="btn btn--solid">Get a Free Design Consultation</a>
+        <p class="pf-grid__cta-copy">Want this level of finish, detail, and material quality in your own yard?</p>
+        <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--solid">Get Free Design Consultation</a>
       </div>
     </section>
 
     <!-- CTA STRIP -->
-    <section class="pf-cta">
+    <section class="pf-cta" id="portfolio-consultation">
       <div class="pf-cta__inner container">
         <div class="pf-cta__text reveal">
           <p class="eyebrow">Ready to Begin?</p>
           <h2>Let's Design Your Outdoor Space.</h2>
-          <p>Every project starts with a free, no-pressure consultation at your property. We listen, we plan, we build — and we stand behind every inch of our work.</p>
+          <p>Bring the portfolio ideas you like best. We will translate them into a design direction that fits your property, budget, and day-to-day lifestyle.</p>
         </div>
         <div class="pf-cta__actions reveal">
-          <a href="index.html#contact" class="btn btn--solid">Get a Free Design Consultation</a>
+          <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--solid">Get Free Design Consultation</a>
           <a href="tel:4809229497" class="btn btn--dark" data-site-phone-link>
             <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" style="width:16px;height:16px"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
             <span data-site-phone-display>(480) 922-9497</span>
@@ -434,31 +468,40 @@
   <footer class="footer">
     <div class="footer__top container">
       <div class="footer__brand">
-        <a href="index.html" class="nav__logo nav__logo--footer" aria-label="Think Green Design Build Landscape">
+        <a href="/" class="nav__logo nav__logo--footer" aria-label="Think Green Design Build Landscape">
           <img src="img/logo.png" alt="Think Green Design | Build Landscape" class="nav__logo-img nav__logo-img--footer" data-site-logo width="132" height="118" />
         </a>
         <p>Premium landscape design and construction serving Scottsdale, Phoenix, and nearby Valley communities.</p>
-        <p class="footer__license">Licensed · Bonded · Insured<br>ROC# 157201 CR-21 &nbsp;|&nbsp; ROC# 304902 B-4</p>
+        <p class="footer__license">Arizona licensed, bonded, and insured team</p>
       </div>
       <div class="footer__col">
         <h4>Services</h4>
         <ul>
-          <li><a href="services/landscape-design.html">Landscape Design &amp; Build</a></li>
-          <li><a href="services/hardscaping.html">Hardscaping</a></li>
-          <li><a href="services/outdoor-kitchens.html">Outdoor Kitchens</a></li>
-          <li><a href="services/fire-features.html">Fire Features</a></li>
-          <li><a href="services/artificial-turf.html">Artificial Turf</a></li>
-          <li><a href="services/irrigation.html">Irrigation</a></li>
+          <li><a href="/services/landscape-design">Landscape Design &amp; Build</a></li>
+          <li><a href="/services/hardscaping">Hardscaping</a></li>
+          <li><a href="/services/outdoor-kitchens">Outdoor Kitchens</a></li>
+          <li><a href="/services/fire-features">Fire Features</a></li>
+          <li><a href="/services/artificial-turf">Artificial Turf</a></li>
+          <li><a href="/services/irrigation">Irrigation</a></li>
         </ul>
       </div>
       <div class="footer__col">
         <h4>Studio</h4>
         <ul>
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#process">Our Process</a></li>
-          <li><a href="portfolio.html">Portfolio</a></li>
-          <li><a href="index.html#project-fit">Project Fit</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#process">Our Process</a></li>
+          <li><a href="/portfolio">Portfolio</a></li>
+          <li><a href="/#project-fit">Project Fit</a></li>
+          <li><a href="/free-consultation?source=portfolio&autostart=1">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="/resources">All Resources</a></li>
+          <li><a href="/best-landscaper-scottsdale">Compare Landscapers</a></li>
+          <li><a href="/project-planning-checklist">Planning Checklist</a></li>
+          <li><a href="/landscaping-cost-scottsdale">Cost Guide</a></li>
         </ul>
       </div>
       <div class="footer__col">
@@ -482,31 +525,31 @@
       <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
       Call Now
     </a>
-    <a href="index.html#contact" class="btn btn--outline-dark">Book</a>
+    <a href="/free-consultation?source=portfolio&autostart=1" class="btn btn--outline-dark">Get Free Design Consultation</a>
   </div>
 
-  <div class="pf-lightbox" id="pf-lightbox" aria-hidden="true" role="dialog" aria-label="Project preview">
+  <div class="pf-lightbox" id="pf-lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Project preview">
     <div class="pf-lightbox__backdrop" data-lightbox-close></div>
     <div class="pf-lightbox__dialog" role="document">
       <button type="button" class="pf-lightbox__close" id="pf-lightbox-close" aria-label="Close preview">&times;</button>
       <button type="button" class="pf-lightbox__nav pf-lightbox__nav--prev" id="pf-lightbox-prev" aria-label="Previous project">&#10094;</button>
       <figure class="pf-lightbox__figure">
-        <img id="pf-lightbox-img" src="" alt="" width="1600" height="1066" />
+        <img id="pf-lightbox-img" src="" alt="Expanded portfolio project photo from Think Green Design | Build Landscape" width="1600" height="1066" />
         <figcaption class="pf-lightbox__cap">
           <div class="pf-lightbox__chips">
             <span class="pf-lightbox__chip" id="pf-lightbox-type">Outdoor Living</span>
             <span class="pf-lightbox__chip pf-lightbox__chip--location" id="pf-lightbox-location">Scottsdale / Phoenix Area</span>
           </div>
           <p id="pf-lightbox-detail"></p>
-          <a href="index.html?source=portfolio#contact" class="btn btn--solid pf-lightbox__request" id="pf-lightbox-request">Request This Style</a>
+          <a href="/free-consultation?source=portfolio&service=landscape-design&selected_style=backyard&selected_project_label=Portfolio%20Project&autostart=1" class="btn btn--solid pf-lightbox__request" id="pf-lightbox-request">Request a Similar Project</a>
         </figcaption>
       </figure>
       <button type="button" class="pf-lightbox__nav pf-lightbox__nav--next" id="pf-lightbox-next" aria-label="Next project">&#10095;</button>
     </div>
   </div>
 
-  <script src="site-config.js"></script>
-  <script src="script.js"></script>
-  <script src="portfolio.js"></script>
+  <script src="/site-config.js" defer></script>
+  <script src="/script.min.js" defer></script>
+  <script src="/portfolio.min.js" defer></script>
 </body>
 </html>

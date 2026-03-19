@@ -22,3 +22,7 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
+
+# Local Codex/browser artifacts
+.codex-tmp/
+test-results/
