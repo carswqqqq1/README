@@ -81,6 +81,11 @@
   status = 301
 
 [[redirects]]
+  from = "/lead-command-center"
+  to = "/lead-command-center.html"
+  status = 200
+
+[[redirects]]
   from = "/services"
   to = "/services.html"
   status = 200
