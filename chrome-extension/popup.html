@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen Ask</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Chrome Extension</div>
+          <h1>Screen Ask</h1>
+        </div>
+        <a id="settingsLink" href="#" title="Settings">Settings</a>
+      </header>
+
+      <p class="lede">
+        Drag to select part of the current page, then ask for an answer.
+      </p>
+
+      <section class="stage">
+        <canvas id="captureCanvas"></canvas>
+        <div id="selectionBox" class="selection-box hidden"></div>
+      </section>
+
+      <div class="controls">
+        <button id="captureBtn">Capture screen</button>
+        <button id="askBtn" class="secondary" disabled>Ask AI</button>
+      </div>
+
+      <label for="question">Question</label>
+      <textarea
+        id="question"
+        rows="3"
+        placeholder="What do you want to know about the selected area?"
+      ></textarea>
+
+      <section class="answer-card">
+        <div class="answer-title">Answer</div>
+        <p id="status" class="status">Click capture, drag an area, then ask.</p>
+        <pre id="answer" class="answer"></pre>
+      </section>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
